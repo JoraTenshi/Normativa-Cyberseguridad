@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  backend:
+    build: ./backend
+    container_name: normativa-cyberseguridad-backend
+    expose:
+      - "8000"
+    volumes:
+      - ./backend:/app
+    networks:
+      - cybersecurity-network
+
+  frontend:
+    build: ./frontend
+    container_name: normativa-cyberseguridad-frontend
+    expose:
+      - "3000"
+    volumes:
+      - ./frontend:/app
+    networks:
+      - cybersecurity-network
+
+  nginx:
+    build: ./nginx
+    container_name: normativa-cyberseguridad-nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - cybersecurity-network
+    restart: always
+
+networks:
+  cybersecurity-network:
+    driver: bridge
