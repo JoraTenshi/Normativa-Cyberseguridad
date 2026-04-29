@@ -1,153 +1,295 @@
-# Cybersecurity Regulations
+# CyberAudit — Herramienta de Autoevaluación de Ciberseguridad
 
-A web application to manage and access cybersecurity regulations and compliance rules.
+Aplicación web **full-stack** para evaluar el nivel de cumplimiento de una organización respecto a normativas de ciberseguridad como **ISO 27001** y el **Esquema Nacional de Seguridad (ENS)**.
 
-## About
+---
 
-This project is a containerized web application using Alpine Linux for lightweight and efficient deployments. It consists of:
-- **Nginx (Reverse Proxy)**: Single entry point routing requests to frontend and backend
-- **Frontend Container**: User interface (Alpine-based, port 3000 internal)
-- **Backend Container**: API and data processing (Alpine-based, port 8000 internal)
-- **Docker Compose**: Orchestrates all services for easy local development
-
-## Architecture
+## Estructura del proyecto
 
 ```
-Internet (port 80)
-    ↓
-Nginx (Reverse Proxy - Port 80)
-    ├─→ Frontend (http://frontend:3000)
-    └─→ Backend API (http://backend:8000/api)
+cybersec-audit/
+├── backend/
+│   ├── middleware/
+│   │   └── auth.js               # JWT: requireAuth / optionalAuth
+│   ├── models/
+│   │   ├── Normativa.js          # Normativas y preguntas
+│   │   ├── Resultado.js          # Resultados (vinculados a usuario o anónimos)
+│   │   └── Usuario.js            # Cuentas de usuario (bcrypt)
+│   ├── routes/
+│   │   ├── auth.js               # POST /auth/register, POST /auth/login
+│   │   ├── me.js                 # GET /me, GET /me/historial, GET /me/historial/:id
+│   │   ├── normativas.js         # GET /normativas, GET /normativas/:id
+│   │   └── resultados.js         # POST /resultado
+│   ├── seed/
+│   │   └── seed.js               # Poblar la base de datos con normativas
+│   ├── server.js                 # Punto de entrada del servidor
+│   ├── .env.example
+│   └── package.json
+│
+├── frontend/
+│   ├── public/
+│   │   └── index.html
+│   └── src/
+│       ├── context/
+│       │   └── AuthContext.jsx   # JWT en localStorage, login/logout global
+│       ├── components/
+│       │   ├── BloquePreguntas.jsx
+│       │   └── ProgressBar.jsx
+│       ├── pages/
+│       │   ├── Auth.jsx          # Login / Registro (tabs)
+│       │   ├── Cuestionario.jsx  # Formulario dinámico de preguntas
+│       │   ├── Historial.jsx     # Lista de evaluaciones del usuario
+│       │   ├── HistorialDetalle.jsx  # Desglose completo de una evaluación
+│       │   ├── Home.jsx          # Selector de normativa
+│       │   └── Resultado.jsx     # Informe de cumplimiento
+│       ├── services/
+│       │   └── api.js            # Axios + interceptor JWT automático
+│       ├── App.js
+│       ├── App.css
+│       └── index.js
+│
+├── nginx/
+│   ├── nginx.conf                # Reverse proxy HTTPS, TLS 1.2/1.3, cabeceras de seguridad
+│   └── certs/                   # Certificado SSL (generado por make cert)
+│       ├── cert.pem
+│       └── key.pem
+│
+├── docker-compose.yml            # MongoDB + nginx
+├── Makefile                      # Automatización completa
+└── README.md
 ```
 
-All requests go through Nginx on port 80, which routes them appropriately.
+---
 
-## Getting Started
+## Requisitos previos
 
-### Requirements
+| Herramienta | Uso |
+|-------------|-----|
+| **Docker** | MongoDB y nginx |
+| **Node.js** v18+ | Backend y frontend |
+| **npm** v9+ | Gestión de dependencias |
+| **make** | Automatización |
+| **openssl** | Generación de certificados (incluido en Linux) |
+| **mkcert** *(recomendado)* | Certificados de confianza sin aviso de navegador |
 
-- Docker installed: [https://www.docker.com/](https://www.docker.com/)
-- Docker Compose (included with Docker)
+---
 
-### Quick Start
+## Puesta en marcha
 
-1. Go to the project folder:
-   bash
-   cd Normativa-Cyberseguridad
+### Opción A — Con certificado de confianza (sin aviso de navegador)
 
-2. Start the application:
-   bash
-   docker-compose up --build
+```bash
+# Instalar mkcert una sola vez
+sudo apt install mkcert libnss3-tools
+mkcert -install        # Registra la CA local en el navegador
 
-3. Access the application:
-   - **Application:** http://localhost
-   - **API:** http://localhost/api/
-
-Press `Ctrl + C` to stop, or run `docker-compose down` to stop and remove containers.
-
-## Project Structure
-
-```
-Normativa-Cyberseguridad/
-├── docker-compose.yml      # Docker services configuration
-├── .env.example            # Environment variables template
-├── .gitignore              # Files to ignore
-├── Makefile                # Build and automation commands
-├── README.md               # This file
-├── BACKEND_SETUP.md        # Backend technology guide
-├── backend/                # Backend API container
-│   └── Dockerfile          # Alpine Linux image
-├── frontend/               # Frontend UI container
-│   └── Dockerfile          # Alpine Linux image
-└── nginx/                  # Reverse proxy & gateway
-    ├── Dockerfile          # Nginx Alpine image
-    └── nginx.conf          # Routing configuration
+make up                # Arranca todo
 ```
 
-## How It Works
+### Opción B — Sin mkcert (certificado autofirmado, aviso de navegador)
 
-1. **Nginx** listens on port 80 and acts as a reverse proxy
-2. Requests to `/` are routed to the **Frontend** container
-3. Requests to `/api/` are routed to the **Backend** container
-4. WebSocket connections are upgraded for real-time features
-5. X-Forwarded-For headers are passed for proper client IP tracking
+```bash
+make up
+# El navegador mostrará un aviso: "Avanzado → Continuar de todos modos"
+```
 
-## Docker Commands
+Al terminar verás:
 
-- **Start all services:** `docker-compose up --build`
-- **Start in background:** `docker-compose up -d`
-- **Stop all services:** `docker-compose down`
-- **View running services:** `docker-compose ps`
-- **View all logs:** `docker-compose logs`
-- **View specific service logs:**
-  - Backend: `docker-compose logs backend`
-  - Frontend: `docker-compose logs frontend`
-  - Nginx: `docker-compose logs nginx`
+```
+CyberAudit is up and running!
+  App (HTTPS) -> https://localhost
+  Backend     -> http://localhost:5000  (internal)
+  Frontend    -> http://localhost:3000  (internal)
+```
 
-## Container Information
+> La primera vez tarda más porque instala todos los paquetes npm.
+> El frontend puede tardar 30-60 segundos adicionales en compilar.
 
-### Nginx
-- **Image:** nginx:alpine (lightweight, ~11MB)
-- **Port:** 80 (entry point)
-- **Role:** Reverse proxy and request router
-- **Config:** `/nginx/nginx.conf`
+---
 
-### Backend
-- **Image:** alpine:latest (~7MB + your dependencies)
-- **Internal Port:** 8000
-- **Route:** `/api/*`
-- **Utilities:** curl, wget, git, bash
+## Comandos disponibles
 
-### Frontend
-- **Image:** alpine:latest (~7MB + your dependencies)
-- **Internal Port:** 3000 (typically Vite/React dev server)
-- **Route:** `/`
-- **Utilities:** curl, wget, git, bash
+| Comando | Descripción |
+|---------|-------------|
+| `make up` | Arranca todo: nginx (HTTPS), MongoDB, backend y frontend |
+| `make down` | Para todos los servicios |
+| `make status` | Muestra qué servicios están corriendo |
+| `make logs` | Muestra las últimas líneas de log de backend y frontend |
+| `make seed` | Repuebla la base de datos sin reiniciar los servicios |
+| `make install` | Instala dependencias npm (backend + frontend) |
+| `make cert` | Genera el certificado SSL (mkcert si está disponible, si no openssl) |
+| `make recert` | Fuerza la regeneración del certificado (usar tras instalar mkcert) |
+| `make clean` | Para todo y elimina `node_modules`, `.env` y logs |
 
-## Troubleshooting
+---
 
-**Port 80 already in use?**
-- Check what's using port 80: `sudo lsof -i :80` (on Linux/macOS)
-- Stop other services or change the port mapping in `docker-compose.yml` (e.g., `"8080:80"`)
+## HTTPS y reverse proxy (nginx)
 
-**Containers fail to start?**
-- Check logs: `docker-compose logs`
-- Ensure Docker daemon is running
-- Clean up: `docker-compose down` then rebuild
+El tráfico pasa siempre por nginx (puerto 443). El backend y el frontend **no son accesibles directamente** desde fuera.
 
-**Permission denied errors?**
-- Linux users need Docker permissions: `sudo usermod -aG docker $USER`
-- Then log out and log back in
+```
+Navegador
+   │
+   ▼  HTTPS :443
+ nginx
+   ├── /normativas, /resultado, /auth, /me  ──▶  backend :5000
+   └── /*                                   ──▶  frontend :3000
+```
 
-**Backend/Frontend not accessible via Nginx?**
-- Verify service names in `docker-compose.yml` match `nginx.conf`
-- Check nginx logs: `docker-compose logs nginx`
-- Ensure containers are running: `docker-compose ps`
+### Certificado autofirmado (por defecto)
 
-**WebSocket connection issues?**
-- Nginx is configured to upgrade WebSocket connections
-- Check browser console for errors
-- Verify proxy configuration in `/nginx/nginx.conf`
+Generado automáticamente en `make up`. El navegador muestra un aviso que se puede aceptar una sola vez.
 
-## Next Steps
+### Certificado de confianza con mkcert
 
-- Add your backend technology (Python/Django, Node.js/Express, etc.)
-- See [BACKEND_SETUP.md](BACKEND_SETUP.md) for detailed backend setup
-- Configure frontend application (React, Vue, etc.)
-- Customize `/nginx/nginx.conf` for your specific routing needs
-- Set environment variables in `.env` file
+```bash
+sudo apt install mkcert libnss3-tools
+mkcert -install    # Solo la primera vez — instala la CA en el sistema
+make recert        # Reemplaza el certificado actual por uno de confianza
+sudo docker restart cybersec_nginx
+```
 
-## Notes
+El certificado es válido 365 días. Para renovarlo: `make recert && sudo docker restart cybersec_nginx`.
 
-- **Lightweight:** All containers use Alpine Linux (~7-11MB each)
-- **Production-Ready:** Nginx provides a stable gateway for scaling
-- **Development-Friendly:** Easy to modify and debug with Docker Compose
-- **Security:** Never share your `.env` file
-- **Logs:** Use `docker-compose logs` to debug any issues
-- **Stopping:** Always use `docker-compose down` to properly clean up resources
+---
 
-## Useful Resources
+## Variables de entorno
 
-- [Nginx Documentation](https://nginx.org/en/docs/)
-- [Docker Documentation](https://docs.docker.com/)
-- [Alpine Linux](https://alpinelinux.org/)
+`backend/.env` se crea automáticamente con `make up`. Para ajustarlo antes de arrancar:
+
+```bash
+cp backend/.env.example backend/.env
+# Editar backend/.env
+make up
+```
+
+| Variable | Por defecto | Descripción |
+|----------|------------|-------------|
+| `MONGODB_URI` | `mongodb://localhost:27017/cybersec_audit` | URI de conexión a MongoDB |
+| `PORT` | `5000` | Puerto del backend |
+| `CORS_ORIGIN` | `https://localhost` | Origen permitido por CORS |
+| `JWT_SECRET` | *(cambiar en producción)* | Secreto para firmar tokens JWT |
+
+Para generar un `JWT_SECRET` seguro:
+
+```bash
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+```
+
+Para usar MongoDB Atlas:
+
+```env
+MONGODB_URI=mongodb+srv://usuario:password@cluster.mongodb.net/cybersec_audit
+```
+
+---
+
+## Cuentas de usuario e historial
+
+El registro y login son opcionales. `POST /resultado` funciona de forma anónima o autenticada.
+
+### Flujo con cuenta
+
+1. Registrarse o iniciar sesión desde la navbar → **Iniciar sesión**
+2. Completar un cuestionario normalmente
+3. El resultado queda vinculado a la cuenta automáticamente
+4. Acceder a **Historial** en la navbar para ver todas las evaluaciones pasadas
+5. Hacer clic en cualquier evaluación para ver el desglose por bloque y pregunta
+
+---
+
+## API REST — Endpoints
+
+### Autenticación
+
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| `POST` | `/auth/register` | Registra un nuevo usuario, devuelve JWT |
+| `POST` | `/auth/login` | Inicia sesión, devuelve JWT |
+
+### Perfil e historial *(requieren `Authorization: Bearer <token>`)*
+
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| `GET` | `/me` | Perfil del usuario autenticado |
+| `GET` | `/me/historial` | Lista de evaluaciones (sin respuestas, apta para gráficas) |
+| `GET` | `/me/historial/:id` | Detalle completo con respuestas y bloques |
+
+### Normativas y evaluación
+
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| `GET` | `/normativas` | Lista todas las normativas disponibles |
+| `GET` | `/normativas/:id` | Normativa completa con bloques y preguntas |
+| `POST` | `/resultado` | Calcula y guarda el resultado (anónimo o autenticado) |
+
+### Ejemplos
+
+```json
+POST /auth/register
+{ "nombre": "Ana García", "email": "ana@empresa.com", "password": "secreto123" }
+```
+
+```json
+POST /resultado
+{
+  "normativa": "iso27001",
+  "respuestas": [
+    { "pregunta_id": "ps_1", "valor": 1   },
+    { "pregunta_id": "ps_2", "valor": 0.5 },
+    { "pregunta_id": "ga_1", "valor": 0   }
+  ]
+}
+```
+
+---
+
+## Lógica de cálculo
+
+```
+Puntuación por pregunta = valor_respuesta × peso_pregunta
+
+  Sí      → valor = 1.0
+  Parcial → valor = 0.5
+  No      → valor = 0.0
+
+Porcentaje = (Σ puntuaciones_obtenidas / puntuación_máxima) × 100
+```
+
+| Porcentaje | Nivel | Descripción |
+|------------|-------|-------------|
+| ≥ 85% | Alto | Excelente postura de seguridad |
+| 60–84% | Medio | Mejoras requeridas en algunas áreas |
+| 30–59% | Bajo | Brechas significativas de seguridad |
+| < 30% | Crítico | Revisión urgente necesaria |
+
+---
+
+## Añadir una nueva normativa
+
+Edita `backend/seed/seed.js` y añade un objeto al array `normativas`. Luego:
+
+```bash
+make seed
+```
+
+---
+
+## Tecnologías utilizadas
+
+| Capa | Tecnología |
+|------|-----------|
+| Frontend | React 18, React Router v6, Axios |
+| Backend | Node.js, Express 4, bcryptjs, jsonwebtoken |
+| Seguridad backend | Helmet, express-rate-limit, CORS |
+| Base de datos | MongoDB, Mongoose 8 |
+| Proxy / HTTPS | nginx (Docker), TLS 1.2/1.3, mkcert / openssl |
+| Estilos | CSS personalizado |
+| Dev tools | nodemon, dotenv |
+| Infraestructura | Docker, Docker Compose, Make |
+
+---
+
+## Licencia
+
+MIT — Libre para uso educativo y comercial.
