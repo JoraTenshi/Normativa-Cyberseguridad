@@ -1,10 +1,15 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
+const MAX_ATTEMPTS = 5;
+const LOCK_MINUTES = 15;
+
 const UsuarioSchema = new mongoose.Schema({
-  nombre: { type: String, required: true, trim: true, maxlength: 100 },
-  email:  { type: String, required: true, unique: true, lowercase: true, trim: true },
-  password: { type: String, required: true }
+  nombre:        { type: String, required: true, trim: true, maxlength: 100 },
+  email:         { type: String, required: true, unique: true, lowercase: true, trim: true },
+  password:      { type: String, required: true },
+  loginAttempts: { type: Number, default: 0 },
+  lockUntil:     { type: Date,   default: null }
 }, { timestamps: true });
 
 UsuarioSchema.pre('save', async function (next) {
@@ -15,6 +20,23 @@ UsuarioSchema.pre('save', async function (next) {
 
 UsuarioSchema.methods.verificarPassword = function (plain) {
   return bcrypt.compare(plain, this.password);
+};
+
+UsuarioSchema.methods.isLocked = function () {
+  return this.lockUntil && this.lockUntil > Date.now();
+};
+
+UsuarioSchema.methods.recordFailedLogin = function () {
+  const attempts = this.loginAttempts + 1;
+  const update = { loginAttempts: attempts };
+  if (attempts >= MAX_ATTEMPTS) {
+    update.lockUntil = new Date(Date.now() + LOCK_MINUTES * 60 * 1000);
+  }
+  return this.updateOne(update);
+};
+
+UsuarioSchema.methods.resetLoginAttempts = function () {
+  return this.updateOne({ loginAttempts: 0, lockUntil: null });
 };
 
 module.exports = mongoose.model('Usuario', UsuarioSchema);

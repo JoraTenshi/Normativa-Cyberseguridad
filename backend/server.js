@@ -20,7 +20,15 @@ const ALLOWED_ORIGIN = process.env.CORS_ORIGIN  || 'http://localhost:3000';
 app.set('trust proxy', 1);
 
 // ─── Security middleware ───────────────────────────────────────────────────────
-app.use(helmet());
+app.use(helmet({
+  // nginx already sets these on every response — avoid sending duplicates
+  hsts:            false,
+  frameguard:      false,
+  noSniff:         false,
+  referrerPolicy:  false,
+  // CSP is a frontend concern; the API only serves JSON
+  contentSecurityPolicy: false,
+}));
 app.use(cors({ origin: ALLOWED_ORIGIN }));
 app.use(express.json({ limit: '10kb' }));
 
@@ -67,6 +75,7 @@ app.get('/', (req, res) => {
       'GET  /health',
       'POST /auth/register',
       'POST /auth/login',
+      'POST /auth/logout',
       'GET  /me',
       'GET  /me/historial',
       'GET  /me/historial/:id',

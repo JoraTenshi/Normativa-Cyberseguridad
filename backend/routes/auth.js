@@ -1,14 +1,15 @@
-const express = require('express');
-const router = express.Router();
-const jwt = require('jsonwebtoken');
-const Usuario = require('../models/Usuario');
-const { JWT_SECRET, JWT_EXPIRES } = require('../middleware/auth');
+const express      = require('express');
+const router       = express.Router();
+const jwt          = require('jsonwebtoken');
+const Usuario      = require('../models/Usuario');
+const RevokedToken = require('../models/RevokedToken');
+const { JWT_SECRET, JWT_EXPIRES, generateJti, requireAuth } = require('../middleware/auth');
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function signToken(user) {
   return jwt.sign(
-    { id: user._id, email: user.email, nombre: user.nombre },
+    { id: user._id, email: user.email, nombre: user.nombre, jti: generateJti() },
     JWT_SECRET,
     { expiresIn: JWT_EXPIRES }
   );
@@ -57,16 +58,45 @@ router.post('/login', async (req, res) => {
     }
 
     const usuario = await Usuario.findOne({ email: email.toLowerCase().trim() });
-    // Same error for wrong email or wrong password — avoids user enumeration
-    if (!usuario || !(await usuario.verificarPassword(password))) {
+
+    // Same error for unknown email, wrong password, or locked account — avoids enumeration
+    if (!usuario) {
       return res.status(401).json({ ok: false, error: 'Credenciales incorrectas' });
     }
 
+    if (usuario.isLocked()) {
+      return res.status(429).json({ ok: false, error: 'Cuenta bloqueada temporalmente. Inténtalo más tarde.' });
+    }
+
+    const valid = await usuario.verificarPassword(password);
+    if (!valid) {
+      await usuario.recordFailedLogin();
+      return res.status(401).json({ ok: false, error: 'Credenciales incorrectas' });
+    }
+
+    await usuario.resetLoginAttempts();
     res.json({ ok: true, data: { token: signToken(usuario), usuario: safeUser(usuario) } });
 
   } catch (err) {
     console.error('Error en login:', err.message);
     res.status(500).json({ ok: false, error: 'Error interno al iniciar sesión' });
+  }
+});
+
+// POST /auth/logout — revokes the current token server-side
+router.post('/logout', requireAuth, async (req, res) => {
+  try {
+    const payload = req.user;
+    if (payload?.jti) {
+      await RevokedToken.create({
+        jti:       payload.jti,
+        expiresAt: new Date(payload.exp * 1000)
+      });
+    }
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('Error en logout:', err.message);
+    res.status(500).json({ ok: false, error: 'Error interno al cerrar sesión' });
   }
 });
 
