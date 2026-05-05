@@ -13,7 +13,6 @@ if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32) {
       ? content.replace(/^JWT_SECRET=.*$/m, `JWT_SECRET=${secret}`)
       : content + `\nJWT_SECRET=${secret}\n`;
     fs.writeFileSync(envPath, content, 'utf8');
-    console.log('🔑 JWT_SECRET generated and saved to .env');
   } catch {
     console.warn('⚠️  Could not write to .env — JWT_SECRET valid for this session only');
   }

@@ -48,8 +48,7 @@ async function optionalAuth(req, res, next) {
 }
 
 function extractToken(req) {
-  const auth = req.headers.authorization;
-  return auth && auth.startsWith('Bearer ') ? auth.slice(7) : null;
+  return req.cookies?.cyberaudit_token ?? null;
 }
 
 module.exports = { requireAuth, optionalAuth, generateJti, JWT_SECRET, JWT_EXPIRES };

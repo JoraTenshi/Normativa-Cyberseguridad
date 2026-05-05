@@ -27,7 +27,7 @@ const Auth = () => {
       const data = tab === 'register'
         ? await register(form.nombre, form.email, form.password)
         : await loginApi(form.email, form.password);
-      login(data.usuario, data.token);
+      login(data.usuario);
       navigate(from, { replace: true });
     } catch (err) {
       setError(err.response?.data?.error || 'Error de conexión con el servidor');

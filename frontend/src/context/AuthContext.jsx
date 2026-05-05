@@ -1,33 +1,29 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
+import { logoutApi } from '../services/api';
 
 const AuthContext = createContext(null);
 
-const TOKEN_KEY = 'cyberaudit_token';
-const USER_KEY  = 'cyberaudit_user';
+const USER_KEY = 'cyberaudit_user';
 
 export function AuthProvider({ children }) {
-  const [token, setToken] = useState(() => localStorage.getItem(TOKEN_KEY));
-  const [user,  setUser]  = useState(() => {
+  const [user, setUser] = useState(() => {
     try { return JSON.parse(localStorage.getItem(USER_KEY)); }
     catch { return null; }
   });
 
-  const login = useCallback((userData, jwt) => {
+  const login = useCallback((userData) => {
     setUser(userData);
-    setToken(jwt);
-    localStorage.setItem(USER_KEY,  JSON.stringify(userData));
-    localStorage.setItem(TOKEN_KEY, jwt);
+    localStorage.setItem(USER_KEY, JSON.stringify(userData));
   }, []);
 
   const logout = useCallback(() => {
     setUser(null);
-    setToken(null);
     localStorage.removeItem(USER_KEY);
-    localStorage.removeItem(TOKEN_KEY);
+    logoutApi().catch(() => {});
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

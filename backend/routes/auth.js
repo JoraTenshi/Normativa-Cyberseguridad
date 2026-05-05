@@ -7,6 +7,14 @@ const { JWT_SECRET, JWT_EXPIRES, generateJti, requireAuth } = require('../middle
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+const COOKIE_NAME = 'cyberaudit_token';
+const COOKIE_OPTIONS = {
+  httpOnly: true,
+  secure:   true,
+  sameSite: 'strict',
+  maxAge:   24 * 60 * 60 * 1000  // 1 day, matches JWT_EXPIRES
+};
+
 function signToken(user) {
   return jwt.sign(
     { id: user._id, email: user.email, nombre: user.nombre, jti: generateJti() },
@@ -40,7 +48,8 @@ router.post('/register', async (req, res) => {
     }
 
     const usuario = await Usuario.create({ nombre: nombre.trim(), email, password });
-    res.status(201).json({ ok: true, data: { token: signToken(usuario), usuario: safeUser(usuario) } });
+    res.cookie(COOKIE_NAME, signToken(usuario), COOKIE_OPTIONS);
+    res.status(201).json({ ok: true, data: { usuario: safeUser(usuario) } });
 
   } catch (err) {
     console.error('Error en registro:', err.message);
@@ -59,7 +68,7 @@ router.post('/login', async (req, res) => {
 
     const usuario = await Usuario.findOne({ email: email.toLowerCase().trim() });
 
-    // Same error for unknown email, wrong password, or locked account — avoids enumeration
+    // Same error for unknown email or wrong password — avoids user enumeration
     if (!usuario) {
       return res.status(401).json({ ok: false, error: 'Credenciales incorrectas' });
     }
@@ -75,7 +84,8 @@ router.post('/login', async (req, res) => {
     }
 
     await usuario.resetLoginAttempts();
-    res.json({ ok: true, data: { token: signToken(usuario), usuario: safeUser(usuario) } });
+    res.cookie(COOKIE_NAME, signToken(usuario), COOKIE_OPTIONS);
+    res.json({ ok: true, data: { usuario: safeUser(usuario) } });
 
   } catch (err) {
     console.error('Error en login:', err.message);
@@ -83,7 +93,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// POST /auth/logout — revokes the current token server-side
+// POST /auth/logout — revokes the token server-side and clears the cookie
 router.post('/logout', requireAuth, async (req, res) => {
   try {
     const payload = req.user;
@@ -93,6 +103,7 @@ router.post('/logout', requireAuth, async (req, res) => {
         expiresAt: new Date(payload.exp * 1000)
       });
     }
+    res.clearCookie(COOKIE_NAME, COOKIE_OPTIONS);
     res.json({ ok: true });
   } catch (err) {
     console.error('Error en logout:', err.message);

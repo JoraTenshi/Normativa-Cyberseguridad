@@ -1,15 +1,9 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: '',
+  baseURL:         '',
+  withCredentials: true,  // send the HttpOnly cookie on every request
   headers: { 'Content-Type': 'application/json' }
-});
-
-// Attach JWT automatically on every request when available
-api.interceptors.request.use(config => {
-  const token = localStorage.getItem('cyberaudit_token');
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
 });
 
 // ── Normativas ────────────────────────────────────────────────────────────────
@@ -38,6 +32,10 @@ export const register = async (nombre, email, password) => {
 export const loginApi = async (email, password) => {
   const { data } = await api.post('/auth/login', { email, password });
   return data.data;
+};
+
+export const logoutApi = async () => {
+  await api.post('/auth/logout');
 };
 
 // ── Historial ─────────────────────────────────────────────────────────────────
