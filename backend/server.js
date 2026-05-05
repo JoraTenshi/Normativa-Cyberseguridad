@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('./utils/initSecrets');
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -63,6 +64,7 @@ app.get('/', (req, res) => {
     status: 'ok',
     message: 'API de Autoevaluación de Ciberseguridad activa',
     endpoints: [
+      'GET  /health',
       'POST /auth/register',
       'POST /auth/login',
       'GET  /me',
@@ -72,6 +74,20 @@ app.get('/', (req, res) => {
       'GET  /normativas/:id',
       'POST /resultado'
     ]
+  });
+});
+
+app.get('/health', (req, res) => {
+  const dbState = mongoose.connection.readyState;
+  // 0 disconnected, 1 connected, 2 connecting, 3 disconnecting
+  const db = ['disconnected', 'connected', 'connecting', 'disconnecting'][dbState] ?? 'unknown';
+  const ok = dbState === 1;
+
+  res.status(ok ? 200 : 503).json({
+    ok,
+    uptime: Math.floor(process.uptime()),
+    db,
+    timestamp: new Date().toISOString()
   });
 });
 

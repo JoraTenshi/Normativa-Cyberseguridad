@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret_change_in_production';
+const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES = '7d';
 
 function requireAuth(req, res, next) {

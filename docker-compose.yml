@@ -3,12 +3,55 @@ services:
     image: mongo:7
     container_name: cybersec_mongo
     restart: unless-stopped
-    ports:
-      - "27017:27017"
     volumes:
       - mongo_data:/data/db
     environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-cybersec}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:?MONGO_PASSWORD must be set in .env}
       MONGO_INITDB_DATABASE: cybersec_audit
+    networks:
+      - cybersec-net
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')", "-u", "${MONGO_USER:-cybersec}", "-p", "${MONGO_PASSWORD}", "--authenticationDatabase", "admin"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  backend:
+    build: ./backend
+    container_name: cybersec_backend
+    restart: unless-stopped
+    env_file: ./backend/.env
+    environment:
+      MONGODB_URI: mongodb://${MONGO_USER:-cybersec}:${MONGO_PASSWORD}@mongodb:27017/cybersec_audit?authSource=admin
+    volumes:
+      - ./backend/.env:/app/.env
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - cybersec-net
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:5000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  frontend:
+    build: ./frontend
+    container_name: cybersec_frontend
+    restart: unless-stopped
+    volumes:
+      - ./frontend:/app
+      - frontend_modules:/app/node_modules
+    environment:
+      - HOST=0.0.0.0
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    networks:
+      - cybersec-net
 
   nginx:
     image: nginx:alpine
@@ -20,11 +63,16 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/certs:/etc/nginx/certs:ro
-    # Allows the container to reach Node.js processes running on the host
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     depends_on:
-      - mongodb
+      - backend
+      - frontend
+    networks:
+      - cybersec-net
+
+networks:
+  cybersec-net:
+    driver: bridge
 
 volumes:
   mongo_data:
+  frontend_modules:
