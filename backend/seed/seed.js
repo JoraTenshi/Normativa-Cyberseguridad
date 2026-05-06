@@ -1,9 +1,3 @@
-/**
- * seed/seed.js
- * Script para poblar la base de datos con datos iniciales
- * Ejecutar con: npm run seed
- */
-
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 const mongoose = require('mongoose');
@@ -11,7 +5,6 @@ const Normativa = require('../models/Normativa');
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/cybersec_audit';
 
-// ─── Datos de las normativas ───────────────────────────────────────────────────
 const normativas = [
   {
     id: 'iso27001',
@@ -129,22 +122,19 @@ const normativas = [
   }
 ];
 
-// ─── Ejecutar seed ─────────────────────────────────────────────────────────────
 async function seed() {
   try {
     await mongoose.connect(MONGODB_URI);
     console.log('✅ Conectado a MongoDB');
 
-    // Limpiamos la colección existente antes de insertar
     await Normativa.deleteMany({});
     console.log('🗑️  Colección normativas limpiada');
 
-    // Insertamos los datos
     await Normativa.insertMany(normativas);
     console.log(`✅ ${normativas.length} normativas insertadas correctamente`);
 
-    mongoose.disconnect();
-    console.log('👋 Desconectado de MongoDB. Seed completado.');
+    await mongoose.disconnect();
+    console.log('Seed completado.');
 
   } catch (err) {
     console.error('❌ Error en el seed:', err.message);

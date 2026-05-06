@@ -1,9 +1,3 @@
-/**
- * components/ProgressBar.jsx
- * Barra de progreso del cuestionario
- * Muestra cuántas preguntas se han contestado sobre el total
- */
-
 import React from 'react';
 
 const ProgressBar = ({ contestadas, total }) => {

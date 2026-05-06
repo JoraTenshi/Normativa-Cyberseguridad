@@ -1,14 +1,7 @@
-/**
- * pages/Resultado.jsx
- * Página de resultados de la autoevaluación
- * Muestra el porcentaje de cumplimiento con un indicador visual y nivel de madurez
- */
-
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-// Función que determina el nivel de madurez según el porcentaje
 const getNivel = (porcentaje) => {
   if (porcentaje >= 85) return { nivel: 'Alto',    color: '#22c55e', emoji: '🟢', clase: 'nivel-alto' };
   if (porcentaje >= 60) return { nivel: 'Medio',   color: '#f59e0b', emoji: '🟡', clase: 'nivel-medio' };
@@ -16,7 +9,6 @@ const getNivel = (porcentaje) => {
   return                       { nivel: 'Crítico', color: '#7f1d1d', emoji: '⚫', clase: 'nivel-critico' };
 };
 
-// Recomendaciones según el nivel de cumplimiento
 const RECOMENDACIONES = {
   alto:    ['Mantener y mejorar los controles existentes', 'Buscar certificación formal', 'Realizar auditorías externas periódicas'],
   medio:   ['Priorizar los controles con mayor peso sin cumplir', 'Elaborar un plan de acción con plazos', 'Aumentar la formación del personal'],
@@ -31,21 +23,18 @@ const Resultado = () => {
 
   const { resultado, normativaNombre, normativaId } = location.state || {};
 
-  // Si no hay datos (acceso directo a la URL), redirigir al inicio
   useEffect(() => {
     if (!resultado) {
       navigate('/');
     }
   }, [resultado, navigate]);
 
-  // Estado para la animación del contador de porcentaje
   const [porcentajeAnimado, setPorcentajeAnimado] = useState(0);
 
-  // Animación progresiva del porcentaje al cargar la página
   useEffect(() => {
     if (!resultado) return;
     const target = resultado.porcentaje;
-    const duration = 1500; // ms
+    const duration = 1500;
     const steps = 60;
     const increment = target / steps;
     let current = 0;
@@ -71,19 +60,15 @@ const Resultado = () => {
 
   return (
     <div className="page resultado-page">
-      {/* Cabecera */}
       <div className="resultado-header">
         <h1 className="resultado-titulo">Informe de Cumplimiento</h1>
         <p className="resultado-normativa">{normativaNombre}</p>
       </div>
 
-      {/* Indicador circular de porcentaje */}
       <div className="porcentaje-wrapper">
         <div className={`porcentaje-ring ${nivelInfo.clase}`}>
           <svg viewBox="0 0 200 200" className="ring-svg">
-            {/* Fondo del anillo */}
             <circle cx="100" cy="100" r="80" fill="none" strokeWidth="16" className="ring-bg" />
-            {/* Arco del progreso */}
             <circle
               cx="100" cy="100" r="80"
               fill="none" strokeWidth="16"
@@ -102,7 +87,6 @@ const Resultado = () => {
         </div>
       </div>
 
-      {/* Nivel de madurez */}
       <div className={`nivel-badge ${nivelInfo.clase}`}>
         <span className="nivel-emoji">{nivelInfo.emoji}</span>
         <div>
@@ -111,12 +95,10 @@ const Resultado = () => {
         </div>
       </div>
 
-      {/* Mensaje del sistema */}
       <div className="resultado-mensaje">
         <p>{resultado.mensaje}</p>
       </div>
 
-      {/* Puntuación detallada */}
       <div className="puntuacion-detalle">
         <div className="puntuacion-item">
           <span className="puntuacion-valor">{resultado.puntuacion_total.toFixed(1)}</span>
@@ -129,7 +111,6 @@ const Resultado = () => {
         </div>
       </div>
 
-      {/* Recomendaciones */}
       <div className="recomendaciones">
         <h2 className="recomendaciones-titulo">📋 Recomendaciones</h2>
         <ul className="recomendaciones-lista">
@@ -142,7 +123,6 @@ const Resultado = () => {
         </ul>
       </div>
 
-      {/* Acciones */}
       <div className="resultado-acciones">
         <button
           className="btn-secondary"

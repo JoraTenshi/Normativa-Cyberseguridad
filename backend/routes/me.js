@@ -6,7 +6,6 @@ const Usuario = require('../models/Usuario');
 const Resultado = require('../models/Resultado');
 const Normativa = require('../models/Normativa');
 
-// GET /me — profile of the authenticated user
 router.get('/', requireAuth, async (req, res) => {
   try {
     const usuario = await Usuario.findById(req.user.id, { password: 0, __v: 0 });
@@ -18,14 +17,12 @@ router.get('/', requireAuth, async (req, res) => {
   }
 });
 
-// GET /me/historial — full history list (no respuestas, suitable for charts)
 router.get('/historial', requireAuth, async (req, res) => {
   try {
     const resultados = await Resultado
       .find({ usuario: req.user.id }, { respuestas: 0, __v: 0 })
       .sort({ createdAt: -1 });
 
-    // Fetch normativa names in one pass (cache by id)
     const normativaIds = [...new Set(resultados.map(r => r.normativa))];
     const normativas = await Normativa.find({ id: { $in: normativaIds } }, { id: 1, nombre: 1 });
     const nombrePor = Object.fromEntries(normativas.map(n => [n.id, n.nombre]));
@@ -48,7 +45,6 @@ router.get('/historial', requireAuth, async (req, res) => {
   }
 });
 
-// GET /me/historial/:resultadoId — single result with full respuestas detail
 router.get('/historial/:resultadoId', requireAuth, async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.resultadoId)) {

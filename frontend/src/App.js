@@ -7,6 +7,7 @@ import Resultado        from './pages/Resultado';
 import Auth             from './pages/Auth';
 import Historial        from './pages/Historial';
 import HistorialDetalle from './pages/HistorialDetalle';
+import Settings         from './pages/Settings';
 import './App.css';
 
 function Navbar() {
@@ -30,6 +31,7 @@ function Navbar() {
           {user ? (
             <>
               <Link to="/historial" className="navbar-link">Historial</Link>
+              <Link to="/settings" className="navbar-link">Ajustes</Link>
               <span className="navbar-user">{user.nombre}</span>
               <button className="navbar-logout" onClick={handleLogout}>Salir</button>
             </>
@@ -65,6 +67,7 @@ function App() {
               <Route path="/auth"      element={<Auth />} />
               <Route path="/historial" element={<ProtectedRoute><Historial /></ProtectedRoute>} />
               <Route path="/historial/:id" element={<ProtectedRoute><HistorialDetalle /></ProtectedRoute>} />
+              <Route path="/settings"     element={<ProtectedRoute><Settings /></ProtectedRoute>} />
               <Route path="*" element={
                 <div className="page error-page">
                   <h2>404 — Página no encontrada</h2>

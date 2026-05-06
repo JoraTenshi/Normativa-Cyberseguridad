@@ -12,11 +12,11 @@ services:
     networks:
       - cybersec-net
     healthcheck:
-      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')", "-u", "${MONGO_USER:-cybersec}", "-p", "${MONGO_PASSWORD}", "--authenticationDatabase", "admin"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
+      test: ["CMD-SHELL", "mongosh --quiet --eval \"db.adminCommand('ping')\" \"mongodb://${MONGO_USER:-cybersec}:${MONGO_PASSWORD}@127.0.0.1:27017/admin?authSource=admin\""]
+      interval: 5s
+      timeout: 10s
+      retries: 12
+      start_period: 20s
 
   backend:
     build: ./backend
@@ -33,11 +33,11 @@ services:
     networks:
       - cybersec-net
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:5000/health"]
-      interval: 15s
-      timeout: 5s
-      retries: 3
-      start_period: 15s
+      test: ["CMD-SHELL", "node -e \"require('http').get('http://localhost:5000/health',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))\""]
+      interval: 5s
+      timeout: 10s
+      retries: 12
+      start_period: 20s
 
   frontend:
     build: ./frontend

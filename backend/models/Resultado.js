@@ -11,10 +11,11 @@ const ResultadoSchema = new mongoose.Schema({
   respuestas:       [RespuestaSchema],
   puntuacion_total: { type: Number },
   puntuacion_maxima:{ type: Number },
-  porcentaje:       { type: Number }
+  porcentaje:       { type: Number },
+  expiresAt:        { type: Date, default: null }
 }, { timestamps: true });
 
-// Index to make per-user history queries fast
 ResultadoSchema.index({ usuario: 1, createdAt: -1 });
+ResultadoSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0, partialFilterExpression: { expiresAt: { $type: 'date' } } });
 
 module.exports = mongoose.model('Resultado', ResultadoSchema);

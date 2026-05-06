@@ -1,9 +1,3 @@
-/**
- * pages/Home.jsx
- * Página inicial — Selector de normativa
- * Muestra las normativas disponibles y permite al usuario seleccionar una para evaluarse
- */
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getNormativas } from '../services/api';
@@ -11,12 +5,10 @@ import { getNormativas } from '../services/api';
 const Home = () => {
   const navigate = useNavigate();
 
-  // Estado de la lista de normativas disponibles
   const [normativas, setNormativas] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
 
-  // Cargamos las normativas al montar el componente
   useEffect(() => {
     const cargarNormativas = async () => {
       try {
@@ -31,14 +23,12 @@ const Home = () => {
     cargarNormativas();
   }, []);
 
-  // Redirige al cuestionario de la normativa seleccionada
   const seleccionarNormativa = (id) => {
     navigate(`/cuestionario/${id}`);
   };
 
   return (
     <div className="page home-page">
-      {/* Cabecera principal */}
       <header className="hero">
         <div className="hero-badge">🛡️ Ciberseguridad</div>
         <h1 className="hero-title">
@@ -58,7 +48,6 @@ const Home = () => {
         </div>
       </header>
 
-      {/* Sección de selección de normativa */}
       <section className="normativas-section">
         <h2 className="section-title">Selecciona una normativa para comenzar</h2>
 
@@ -98,7 +87,6 @@ const Home = () => {
         )}
       </section>
 
-      {/* Cómo funciona */}
       <section className="como-funciona">
         <h2 className="section-title">¿Cómo funciona?</h2>
         <div className="pasos-grid">

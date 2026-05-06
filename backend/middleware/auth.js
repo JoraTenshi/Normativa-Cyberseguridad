@@ -6,7 +6,7 @@ const JWT_SECRET  = process.env.JWT_SECRET;
 const JWT_EXPIRES = '1d';
 
 function generateJti() {
-  return crypto.randomBytes(16).toString('hex');
+  return crypto.randomBytes(32).toString('hex');
 }
 
 async function requireAuth(req, res, next) {
@@ -15,7 +15,7 @@ async function requireAuth(req, res, next) {
 
   let payload;
   try {
-    payload = jwt.verify(token, JWT_SECRET);
+    payload = jwt.verify(token, JWT_SECRET, { algorithms: ['HS256'] });
   } catch {
     return res.status(401).json({ ok: false, error: 'Token inválido o expirado' });
   }
@@ -30,7 +30,6 @@ async function requireAuth(req, res, next) {
   next();
 }
 
-// Attaches req.user if a valid non-revoked token is present, never blocks
 async function optionalAuth(req, res, next) {
   const token = extractToken(req);
   if (token) {

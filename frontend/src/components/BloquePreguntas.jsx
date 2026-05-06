@@ -1,12 +1,5 @@
-/**
- * components/BloquePreguntas.jsx
- * Renderiza un bloque temático de preguntas con sus botones de respuesta
- * Cada pregunta muestra: texto, peso, y botones Sí / Parcial / No
- */
-
 import React from 'react';
 
-// Opciones de respuesta con su valor numérico y etiqueta
 const OPCIONES = [
   { valor: 1,   etiqueta: 'Sí',      clase: 'btn-si' },
   { valor: 0.5, etiqueta: 'Parcial', clase: 'btn-parcial' },
@@ -16,14 +9,12 @@ const OPCIONES = [
 const BloquePreguntas = ({ bloque, respuestas, onRespuesta }) => {
   return (
     <div className="bloque">
-      {/* Cabecera del bloque */}
       <div className="bloque-header">
         <span className="bloque-icono">🔐</span>
         <h3 className="bloque-nombre">{bloque.nombre}</h3>
         <span className="bloque-count">{bloque.preguntas.length} preguntas</span>
       </div>
 
-      {/* Lista de preguntas */}
       <div className="preguntas-lista">
         {bloque.preguntas.map((pregunta, idx) => {
           const respuestaActual = respuestas[pregunta.id];
@@ -42,7 +33,6 @@ const BloquePreguntas = ({ bloque, respuestas, onRespuesta }) => {
                 </span>
               </div>
 
-              {/* Botones de respuesta */}
               <div className="respuesta-botones">
                 {OPCIONES.map(opcion => (
                   <button

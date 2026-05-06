@@ -54,7 +54,6 @@ const HistorialDetalle = () => {
 
   return (
     <div className="page detalle-page">
-      {/* Header */}
       <div className="detalle-header">
         <button className="btn-back" onClick={() => navigate('/historial')}>← Historial</button>
         <div>
@@ -63,7 +62,6 @@ const HistorialDetalle = () => {
         </div>
       </div>
 
-      {/* Score summary */}
       <div className="detalle-resumen">
         <div className="porcentaje-ring-sm">
           <svg viewBox="0 0 160 160" className="ring-svg">
@@ -102,7 +100,6 @@ const HistorialDetalle = () => {
         </div>
       </div>
 
-      {/* Per-block breakdown */}
       <h2 className="section-title" style={{ marginTop: '2rem' }}>Detalle por bloque</h2>
 
       <div className="bloques-container">
@@ -144,7 +141,6 @@ const HistorialDetalle = () => {
         })}
       </div>
 
-      {/* Actions */}
       <div className="resultado-acciones">
         <button className="btn-secondary" onClick={() => navigate('/historial')}>
           ← Volver al historial

@@ -6,14 +6,10 @@ const { optionalAuth } = require('../middleware/auth');
 
 const MAX_RESPUESTAS = 500;
 
-// POST /resultado
-// Works for both anonymous and authenticated users.
-// When a valid JWT is present the result is linked to that user's account.
 router.post('/', optionalAuth, async (req, res) => {
   try {
     const { normativa: normativaId, respuestas } = req.body;
 
-    // ── Input validation ──────────────────────────────────────────────────────
     if (typeof normativaId !== 'string' || normativaId.trim() === '') {
       return res.status(400).json({ ok: false, error: 'El campo "normativa" debe ser un string no vacío' });
     }
@@ -36,23 +32,22 @@ router.post('/', optionalAuth, async (req, res) => {
 
     const normativaIdClean = normativaId.trim();
 
-    // ── Fetch normativa ───────────────────────────────────────────────────────
     const normativa = await Normativa.findOne({ id: normativaIdClean });
     if (!normativa) {
       return res.status(404).json({ ok: false, error: 'Normativa no encontrada' });
     }
 
-    // ── Calculate score ───────────────────────────────────────────────────────
     const { puntuacion_total, puntuacion_maxima, porcentaje } = calcularPorcentaje(normativa, respuestas);
 
-    // ── Persist (link to user if authenticated) ───────────────────────────────
+    const ANON_TTL_MS = 24 * 60 * 60 * 1000;
     const resultado = await Resultado.create({
-      usuario: req.user?.id ?? null,
+      usuario:   req.user?.id ?? null,
       normativa: normativaIdClean,
       respuestas,
       puntuacion_total,
       puntuacion_maxima,
-      porcentaje
+      porcentaje,
+      expiresAt: req.user ? null : new Date(Date.now() + ANON_TTL_MS)
     });
 
     res.status(201).json({
@@ -68,7 +63,6 @@ router.post('/', optionalAuth, async (req, res) => {
     });
 
   } catch (err) {
-    console.error('Error al calcular resultado:', err.message);
     res.status(500).json({ ok: false, error: 'Error interno al procesar el resultado' });
   }
 });
