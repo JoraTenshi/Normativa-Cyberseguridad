@@ -10,6 +10,7 @@ const normativas = [
     id: 'iso27001',
     nombre: 'ISO 27001',
     descripcion: 'Estándar internacional para Sistemas de Gestión de Seguridad de la Información (SGSI). Define requisitos para establecer, implementar, mantener y mejorar continuamente la seguridad de la información.',
+    sectores_aplicables: [],
     bloques: [
       {
         id: 'politicas',
@@ -78,6 +79,7 @@ const normativas = [
     id: 'ens',
     nombre: 'Esquema Nacional de Seguridad (ENS)',
     descripcion: 'Marco normativo español para garantizar la seguridad de los sistemas de información en las Administraciones Públicas y sus proveedores. Regulado por el Real Decreto 311/2022.',
+    sectores_aplicables: ['publica'],
     bloques: [
       {
         id: 'marco_organizativo',

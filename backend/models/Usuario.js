@@ -4,10 +4,25 @@ const bcrypt = require('bcryptjs');
 const MAX_ATTEMPTS = 5;
 const LOCK_MINUTES = 15;
 
+const OrganizacionSchema = new mongoose.Schema({
+  sector: {
+    type: String,
+    enum: ['publica', 'sanitaria', 'energia', 'transporte', 'financiero', 'educacion', 'privada', 'otro'],
+    default: null
+  },
+  tamano: {
+    type: String,
+    enum: ['micro', 'pequena', 'mediana', 'grande'],
+    default: null
+  },
+  tipo_actividad: { type: String, trim: true, maxlength: 200, default: null }
+}, { _id: false });
+
 const UsuarioSchema = new mongoose.Schema({
   nombre:        { type: String, required: true, trim: true, maxlength: 100 },
   email:         { type: String, required: true, unique: true, lowercase: true, trim: true },
   password:      { type: String, required: true },
+  organizacion:     { type: OrganizacionSchema, default: () => ({}) },
   loginAttempts:    { type: Number,  default: 0 },
   lockUntil:        { type: Date,    default: null },
   twoFactorSecret:  { type: String,  default: null, select: false },

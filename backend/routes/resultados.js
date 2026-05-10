@@ -37,7 +37,7 @@ router.post('/', optionalAuth, async (req, res) => {
       return res.status(404).json({ ok: false, error: 'Normativa no encontrada' });
     }
 
-    const { puntuacion_total, puntuacion_maxima, porcentaje } = calcularPorcentaje(normativa, respuestas);
+    const { puntuacion_total, puntuacion_maxima, porcentaje, puntuaciones_bloques } = calcularPorcentaje(normativa, respuestas);
 
     const ANON_TTL_MS = 24 * 60 * 60 * 1000;
     const resultado = await Resultado.create({
@@ -47,18 +47,25 @@ router.post('/', optionalAuth, async (req, res) => {
       puntuacion_total,
       puntuacion_maxima,
       porcentaje,
+      puntuaciones_bloques,
       expiresAt: req.user ? null : new Date(Date.now() + ANON_TTL_MS)
     });
+
+    const remediaciones = construirRemediaciones(normativa, respuestas);
 
     res.status(201).json({
       ok: true,
       data: {
-        id: resultado._id,
-        normativa: normativaIdClean,
+        id:                  resultado._id,
+        normativa:           normativaIdClean,
+        normativa_nombre:    normativa.nombre,
         puntuacion_total,
         puntuacion_maxima,
         porcentaje,
-        mensaje: getMensajeNivel(porcentaje)
+        nivel:               getNivel(porcentaje),
+        mensaje:             getMensajeNivel(porcentaje),
+        puntuaciones_bloques,
+        remediaciones
       }
     });
 
@@ -73,11 +80,26 @@ function calcularPorcentaje(normativa, respuestas) {
 
   let puntuacion_total = 0;
   let puntuacion_maxima = 0;
+  const puntuaciones_bloques = [];
 
   normativa.bloques.forEach(bloque => {
+    let bloque_total = 0;
+    let bloque_max   = 0;
+
     bloque.preguntas.forEach(pregunta => {
-      puntuacion_maxima += pregunta.peso;
-      puntuacion_total  += (mapa[pregunta.id] ?? 0) * pregunta.peso;
+      bloque_max   += pregunta.peso;
+      bloque_total += (mapa[pregunta.id] ?? 0) * pregunta.peso;
+    });
+
+    puntuacion_maxima += bloque_max;
+    puntuacion_total  += bloque_total;
+
+    puntuaciones_bloques.push({
+      bloque_id:      bloque.id,
+      nombre:         bloque.nombre,
+      puntuacion:     bloque_total,
+      max_puntuacion: bloque_max,
+      porcentaje:     bloque_max > 0 ? Math.round((bloque_total / bloque_max) * 100) : 0
     });
   });
 
@@ -85,7 +107,42 @@ function calcularPorcentaje(normativa, respuestas) {
     ? Math.round((puntuacion_total / puntuacion_maxima) * 100)
     : 0;
 
-  return { puntuacion_total, puntuacion_maxima, porcentaje };
+  return { puntuacion_total, puntuacion_maxima, porcentaje, puntuaciones_bloques };
+}
+
+function construirRemediaciones(normativa, respuestas) {
+  const mapa = {};
+  respuestas.forEach(r => { mapa[r.pregunta_id] = r.valor; });
+
+  const items = [];
+  normativa.bloques.forEach(bloque => {
+    bloque.preguntas.forEach(pregunta => {
+      const valor = mapa[pregunta.id] ?? 0;
+      if (valor < 1) {
+        const gap = pregunta.peso * (1 - valor);
+        items.push({
+          pregunta_id: pregunta.id,
+          bloque_id:   bloque.id,
+          bloque:      bloque.nombre,
+          pregunta:    pregunta.texto,
+          nivel:       pregunta.nivel ?? null,
+          fase_pds:    pregunta.fase_pds ?? null,
+          remediacion: pregunta.remediacion ?? null,
+          valor_actual: valor,
+          prioridad:   Math.round(gap * 100) / 100
+        });
+      }
+    });
+  });
+
+  return items.sort((a, b) => b.prioridad - a.prioridad);
+}
+
+function getNivel(porcentaje) {
+  if (porcentaje >= 85) return 'Alto';
+  if (porcentaje >= 60) return 'Medio';
+  if (porcentaje >= 30) return 'Bajo';
+  return 'Crítico';
 }
 
 function getMensajeNivel(porcentaje) {

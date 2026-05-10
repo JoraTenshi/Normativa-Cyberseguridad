@@ -6,6 +6,9 @@ const Usuario = require('../models/Usuario');
 const Resultado = require('../models/Resultado');
 const Normativa = require('../models/Normativa');
 
+const SECTORES_VALIDOS = ['publica', 'sanitaria', 'energia', 'transporte', 'financiero', 'educacion', 'privada', 'otro'];
+const TAMANOS_VALIDOS  = ['micro', 'pequena', 'mediana', 'grande'];
+
 router.get('/', requireAuth, async (req, res) => {
   try {
     const usuario = await Usuario.findById(req.user.id, { password: 0, __v: 0 });
@@ -13,6 +16,34 @@ router.get('/', requireAuth, async (req, res) => {
     res.json({ ok: true, data: usuario });
   } catch (err) {
     console.error('Error al obtener perfil:', err.message);
+    res.status(500).json({ ok: false, error: 'Error interno' });
+  }
+});
+
+router.put('/organizacion', requireAuth, async (req, res) => {
+  try {
+    const { sector, tamano, tipo_actividad } = req.body;
+
+    if (sector !== undefined && !SECTORES_VALIDOS.includes(sector))
+      return res.status(400).json({ ok: false, error: `Sector no válido. Valores aceptados: ${SECTORES_VALIDOS.join(', ')}` });
+    if (tamano !== undefined && !TAMANOS_VALIDOS.includes(tamano))
+      return res.status(400).json({ ok: false, error: `Tamaño no válido. Valores aceptados: ${TAMANOS_VALIDOS.join(', ')}` });
+
+    const update = {};
+    if (sector !== undefined)         update['organizacion.sector']        = sector;
+    if (tamano !== undefined)         update['organizacion.tamano']        = tamano;
+    if (tipo_actividad !== undefined) update['organizacion.tipo_actividad'] =
+      typeof tipo_actividad === 'string' ? tipo_actividad.trim().slice(0, 200) || null : null;
+
+    const usuario = await Usuario.findByIdAndUpdate(
+      req.user.id,
+      { $set: update },
+      { new: true, projection: { password: 0, __v: 0 } }
+    );
+    if (!usuario) return res.status(404).json({ ok: false, error: 'Usuario no encontrado' });
+    res.json({ ok: true, data: usuario });
+  } catch (err) {
+    console.error('Error al actualizar perfil de organización:', err.message);
     res.status(500).json({ ok: false, error: 'Error interno' });
   }
 });

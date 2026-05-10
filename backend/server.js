@@ -12,6 +12,7 @@ const resultadosRouter = require('./routes/resultados');
 const authRouter       = require('./routes/auth');
 const meRouter         = require('./routes/me');
 const twoFactorRouter  = require('./routes/twoFactor');
+const pdsRouter        = require('./routes/pds');
 const errorHandler     = require('./middleware/errorHandler');
 
 const app = express();
@@ -61,6 +62,7 @@ app.use('/normativas', normativasRouter);
 app.use('/resultado',  resultadosRouter);
 app.use('/me',         meRouter);
 app.use('/me/2fa',     authLimiter, twoFactorRouter);
+app.use('/me/pds',     pdsRouter);
 
 app.get('/', (req, res) => {
   res.json({
@@ -73,13 +75,16 @@ app.get('/', (req, res) => {
       'POST /auth/logout',
       'POST /auth/2fa/verify',
       'GET  /me',
+      'PUT  /me/organizacion',
       'GET  /me/historial',
       'GET  /me/historial/:id',
+      'GET  /me/pds/:resultadoId',
       'GET  /me/2fa/setup',
       'POST /me/2fa/enable',
       'POST /me/2fa/disable',
       'GET  /normativas',
       'GET  /normativas/:id',
+      'GET  /normativas/aplicables',
       'POST /resultado'
     ]
   });
