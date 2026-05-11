@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
 
     const [total, items] = await Promise.all([
       Licitacion.countDocuments(filter),
-      Licitacion.find(filter, { resumen: 0, fichero_origen: 0 })
+      Licitacion.find(filter, { resumen: 0, fichero_origen: 0, id: 0 })
         .sort({ scraped_at: -1 })
         .skip(skip)
         .limit(limit)

@@ -174,13 +174,16 @@ def guardar_en_mongo(encontradas, anio, mes, mongo_uri, mongo_db):
     ops = [
         UpdateOne(
             {"_id": lic.id},
-            {"$set": {
-                **asdict(lic),
-                "motivos_match": motivos,
-                "anio":       anio,
-                "mes":        mes,
-                "scraped_at": datetime.utcnow(),
-            }},
+            {
+                "$set": {
+                    **{k: v for k, v in asdict(lic).items() if k != "id"},
+                    "motivos_match": motivos,
+                    "anio":       anio,
+                    "mes":        mes,
+                    "scraped_at": datetime.now(datetime.UTC),
+                },
+                "$unset": {"id": ""},
+            },
             upsert=True,
         )
         for lic, motivos in encontradas

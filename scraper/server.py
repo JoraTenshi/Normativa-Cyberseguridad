@@ -51,7 +51,7 @@ def sync_task(anio, mes):
 
         stored = guardar_en_mongo(encontradas, anio, mes, MONGO_URI, MONGO_DB)
         _status = {
-            "last_sync":  datetime.utcnow().isoformat() + "Z",
+            "last_sync":  datetime.now(datetime.UTC).isoformat(),
             "last_count": stored,
             "last_error": None,
         }
