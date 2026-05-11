@@ -25,6 +25,7 @@ services:
     env_file: ./backend/.env
     environment:
       MONGODB_URI: mongodb://${MONGO_USER:-cybersec}:${MONGO_PASSWORD}@mongodb:27017/cybersec_audit?authSource=admin
+      SCRAPER_URL: http://scraper:8001
     volumes:
       - ./backend/.env:/app/.env
     depends_on:
@@ -38,6 +39,22 @@ services:
       timeout: 10s
       retries: 12
       start_period: 20s
+
+  scraper:
+    build: ./scraper
+    container_name: cybersec_scraper
+    restart: unless-stopped
+    environment:
+      MONGODB_URI: mongodb://${MONGO_USER:-cybersec}:${MONGO_PASSWORD}@mongodb:27017/cybersec_audit?authSource=admin
+      MONGO_DB: cybersec_audit
+      SCRAPER_PORT: 8001
+    volumes:
+      - scraper_zips:/tmp/scraper_zips
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - cybersec-net
 
   frontend:
     build: ./frontend
@@ -76,3 +93,4 @@ networks:
 volumes:
   mongo_data:
   frontend_modules:
+  scraper_zips:

@@ -7,13 +7,14 @@ const helmet       = require('helmet');
 const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
 
-const normativasRouter = require('./routes/normativas');
-const resultadosRouter = require('./routes/resultados');
-const authRouter       = require('./routes/auth');
-const meRouter         = require('./routes/me');
-const twoFactorRouter  = require('./routes/twoFactor');
-const pdsRouter        = require('./routes/pds');
-const errorHandler     = require('./middleware/errorHandler');
+const normativasRouter   = require('./routes/normativas');
+const resultadosRouter   = require('./routes/resultados');
+const authRouter         = require('./routes/auth');
+const meRouter           = require('./routes/me');
+const twoFactorRouter    = require('./routes/twoFactor');
+const pdsRouter          = require('./routes/pds');
+const licitacionesRouter = require('./routes/licitaciones');
+const errorHandler       = require('./middleware/errorHandler');
 
 const app = express();
 const PORT           = process.env.PORT         || 5000;
@@ -57,12 +58,13 @@ mongoose
     process.exit(1);
   });
 
-app.use('/auth',       authLimiter, authRouter);
-app.use('/normativas', normativasRouter);
-app.use('/resultado',  resultadosRouter);
-app.use('/me',         meRouter);
-app.use('/me/2fa',     authLimiter, twoFactorRouter);
-app.use('/me/pds',     pdsRouter);
+app.use('/auth',         authLimiter, authRouter);
+app.use('/normativas',   normativasRouter);
+app.use('/resultado',    resultadosRouter);
+app.use('/me',           meRouter);
+app.use('/me/2fa',       authLimiter, twoFactorRouter);
+app.use('/me/pds',       pdsRouter);
+app.use('/licitaciones', licitacionesRouter);
 
 app.get('/', (req, res) => {
   res.json({
@@ -85,7 +87,10 @@ app.get('/', (req, res) => {
       'GET  /normativas',
       'GET  /normativas/:id',
       'GET  /normativas/aplicables',
-      'POST /resultado'
+      'POST /resultado',
+      'GET  /licitaciones',
+      'GET  /licitaciones/status',
+      'POST /licitaciones/sync'
     ]
   });
 });

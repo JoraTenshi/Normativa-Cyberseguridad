@@ -16,7 +16,27 @@ Thumbs.db
 logs/
 *.log
 
+# Environment files
 .env
 
+# Node
 frontend/node_modules/
 backend/node_modules/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# SSL certificates (generated locally by Makefile)
+nginx/certs/
+
+# PLACSP downloaded ZIPs (scraper working directory)
+*.zip
+
+# Test artifacts
+cookies.txt
+
+#Special
+.claude
+.gitignore
