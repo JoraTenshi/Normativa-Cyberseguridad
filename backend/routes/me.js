@@ -5,6 +5,7 @@ const { requireAuth } = require('../middleware/auth');
 const Usuario = require('../models/Usuario');
 const Resultado = require('../models/Resultado');
 const Normativa = require('../models/Normativa');
+const { construirRemediaciones, getNivel } = require('../utils/scoring');
 
 const SECTORES_VALIDOS = ['publica', 'sanitaria', 'energia', 'transporte', 'financiero', 'educacion', 'privada', 'otro'];
 const TAMANOS_VALIDOS  = ['micro', 'pequena', 'mediana', 'grande'];
@@ -89,20 +90,21 @@ router.get('/historial/:resultadoId', requireAuth, async (req, res) => {
     if (!resultado) return res.status(404).json({ ok: false, error: 'Evaluación no encontrada' });
 
     const norm = await Normativa.findOne({ id: resultado.normativa }, { nombre: 1, bloques: 1, _id: 0 });
+    const remediaciones = norm ? construirRemediaciones(norm, resultado.respuestas) : [];
 
     res.json({
       ok: true,
       data: {
-        id:                resultado._id,
-        normativa:         resultado.normativa,
-        normativa_nombre:  norm?.nombre ?? resultado.normativa,
-        porcentaje:        resultado.porcentaje,
-        puntuacion_total:  resultado.puntuacion_total,
-        puntuacion_maxima: resultado.puntuacion_maxima,
-        nivel:             getNivel(resultado.porcentaje),
-        bloques:           norm?.bloques ?? [],
-        respuestas:        resultado.respuestas,
-        createdAt:         resultado.createdAt
+        id:                   resultado._id,
+        normativa:            resultado.normativa,
+        normativa_nombre:     norm?.nombre ?? resultado.normativa,
+        porcentaje:           resultado.porcentaje,
+        puntuacion_total:     resultado.puntuacion_total,
+        puntuacion_maxima:    resultado.puntuacion_maxima,
+        nivel:                getNivel(resultado.porcentaje),
+        puntuaciones_bloques: resultado.puntuaciones_bloques ?? [],
+        remediaciones,
+        createdAt:            resultado.createdAt
       }
     });
   } catch (err) {
@@ -110,12 +112,5 @@ router.get('/historial/:resultadoId', requireAuth, async (req, res) => {
     res.status(500).json({ ok: false, error: 'Error interno' });
   }
 });
-
-function getNivel(porcentaje) {
-  if (porcentaje >= 85) return 'Alto';
-  if (porcentaje >= 60) return 'Medio';
-  if (porcentaje >= 30) return 'Bajo';
-  return 'Crítico';
-}
 
 module.exports = router;

@@ -41,7 +41,7 @@ async function optionalAuth(req, res, next) {
       } else {
         req.user = payload; req.token = token;
       }
-    } catch { /* invalid token — treat as anonymous */ }
+    } catch { }
   }
   next();
 }

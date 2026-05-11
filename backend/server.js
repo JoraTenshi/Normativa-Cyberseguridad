@@ -109,7 +109,7 @@ const server = app.listen(PORT);
 
 function shutdown() {
   server.close(() => {
-    mongoose.connection.close(false).then(() => process.exit(0));
+    mongoose.connection.close().then(() => process.exit(0));
   });
 }
 process.on('SIGTERM', shutdown);

@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const { requireAuth } = require('../middleware/auth');
 const Resultado = require('../models/Resultado');
 const Normativa = require('../models/Normativa');
+const { construirRemediaciones, getNivel } = require('../utils/scoring');
 
 const FASES = {
   1: 'Situación Actual',
@@ -18,38 +19,20 @@ router.get('/:resultadoId', requireAuth, async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.resultadoId))
       return res.status(404).json({ ok: false, error: 'Evaluación no encontrada' });
 
-    const resultado = await Resultado.findOne(
-      { _id: req.params.resultadoId, usuario: req.user.id }
-    );
+    const resultado = await Resultado.findOne({ _id: req.params.resultadoId, usuario: req.user.id });
     if (!resultado) return res.status(404).json({ ok: false, error: 'Evaluación no encontrada' });
 
     const normativa = await Normativa.findOne({ id: resultado.normativa });
     if (!normativa) return res.status(404).json({ ok: false, error: 'Normativa no encontrada' });
 
-    const mapa = {};
-    resultado.respuestas.forEach(r => { mapa[r.pregunta_id] = r.valor; });
-
-    const acciones = [];
-    normativa.bloques.forEach(bloque => {
-      bloque.preguntas.forEach(pregunta => {
-        const valor = mapa[pregunta.id] ?? 0;
-        if (valor < 1) {
-          acciones.push({
-            pregunta_id:  pregunta.id,
-            bloque_id:    bloque.id,
-            bloque:       bloque.nombre,
-            accion:       pregunta.remediacion ?? `Revisar y mejorar: ${pregunta.texto}`,
-            descripcion:  pregunta.texto,
-            nivel:        pregunta.nivel ?? null,
-            fase_pds:     pregunta.fase_pds ?? null,
-            valor_actual: valor,
-            prioridad:    Math.round(pregunta.peso * (1 - valor) * 100) / 100
-          });
-        }
-      });
-    });
-
-    acciones.sort((a, b) => b.prioridad - a.prioridad);
+    const acciones = construirRemediaciones(normativa, resultado.respuestas).map(
+      ({ pregunta_id, bloque_id, bloque, pregunta, nivel, fase_pds, remediacion, valor_actual, prioridad }) => ({
+        pregunta_id, bloque_id, bloque,
+        accion:      remediacion ?? `Revisar y mejorar: ${pregunta}`,
+        descripcion: pregunta,
+        nivel, fase_pds, valor_actual, prioridad
+      })
+    );
 
     const usaFases = acciones.some(a => a.fase_pds !== null);
 
@@ -69,12 +52,12 @@ router.get('/:resultadoId', requireAuth, async (req, res) => {
     res.json({
       ok: true,
       data: {
-        resultado_id:    resultado._id,
-        normativa:       resultado.normativa,
+        resultado_id:     resultado._id,
+        normativa:        resultado.normativa,
         normativa_nombre: normativa.nombre,
-        porcentaje:      resultado.porcentaje,
-        nivel:           getNivel(resultado.porcentaje),
-        total_acciones:  acciones.length,
+        porcentaje:       resultado.porcentaje,
+        nivel:            getNivel(resultado.porcentaje),
+        total_acciones:   acciones.length,
         usa_fases_incibe: usaFases,
         plan
       }
@@ -84,12 +67,5 @@ router.get('/:resultadoId', requireAuth, async (req, res) => {
     res.status(500).json({ ok: false, error: 'Error interno al generar el PDS' });
   }
 });
-
-function getNivel(porcentaje) {
-  if (porcentaje >= 85) return 'Alto';
-  if (porcentaje >= 60) return 'Medio';
-  if (porcentaje >= 30) return 'Bajo';
-  return 'Crítico';
-}
 
 module.exports = router;

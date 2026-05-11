@@ -3,8 +3,11 @@ const router = express.Router();
 const Normativa = require('../models/Normativa');
 const Resultado = require('../models/Resultado');
 const { optionalAuth } = require('../middleware/auth');
+const { construirRemediaciones, getNivel } = require('../utils/scoring');
 
-const MAX_RESPUESTAS = 500;
+const MAX_RESPUESTAS  = 500;
+const VALORES_VALIDOS = [0, 0.5, 1];
+const ANON_TTL_MS     = 24 * 60 * 60 * 1000;
 
 router.post('/', optionalAuth, async (req, res) => {
   try {
@@ -20,12 +23,11 @@ router.post('/', optionalAuth, async (req, res) => {
       return res.status(400).json({ ok: false, error: `El número de respuestas no puede superar ${MAX_RESPUESTAS}` });
     }
 
-    const valoresValidos = [0, 0.5, 1];
     for (const r of respuestas) {
       if (typeof r.pregunta_id !== 'string' || r.pregunta_id.trim() === '') {
         return res.status(400).json({ ok: false, error: 'Cada respuesta debe tener "pregunta_id" como string no vacío' });
       }
-      if (!valoresValidos.includes(r.valor)) {
+      if (!VALORES_VALIDOS.includes(r.valor)) {
         return res.status(400).json({ ok: false, error: 'Los valores de respuesta solo pueden ser 0, 0.5 o 1' });
       }
     }
@@ -39,7 +41,6 @@ router.post('/', optionalAuth, async (req, res) => {
 
     const { puntuacion_total, puntuacion_maxima, porcentaje, puntuaciones_bloques } = calcularPorcentaje(normativa, respuestas);
 
-    const ANON_TTL_MS = 24 * 60 * 60 * 1000;
     const resultado = await Resultado.create({
       usuario:   req.user?.id ?? null,
       normativa: normativaIdClean,
@@ -108,41 +109,6 @@ function calcularPorcentaje(normativa, respuestas) {
     : 0;
 
   return { puntuacion_total, puntuacion_maxima, porcentaje, puntuaciones_bloques };
-}
-
-function construirRemediaciones(normativa, respuestas) {
-  const mapa = {};
-  respuestas.forEach(r => { mapa[r.pregunta_id] = r.valor; });
-
-  const items = [];
-  normativa.bloques.forEach(bloque => {
-    bloque.preguntas.forEach(pregunta => {
-      const valor = mapa[pregunta.id] ?? 0;
-      if (valor < 1) {
-        const gap = pregunta.peso * (1 - valor);
-        items.push({
-          pregunta_id: pregunta.id,
-          bloque_id:   bloque.id,
-          bloque:      bloque.nombre,
-          pregunta:    pregunta.texto,
-          nivel:       pregunta.nivel ?? null,
-          fase_pds:    pregunta.fase_pds ?? null,
-          remediacion: pregunta.remediacion ?? null,
-          valor_actual: valor,
-          prioridad:   Math.round(gap * 100) / 100
-        });
-      }
-    });
-  });
-
-  return items.sort((a, b) => b.prioridad - a.prioridad);
-}
-
-function getNivel(porcentaje) {
-  if (porcentaje >= 85) return 'Alto';
-  if (porcentaje >= 60) return 'Medio';
-  if (porcentaje >= 30) return 'Bajo';
-  return 'Crítico';
 }
 
 function getMensajeNivel(porcentaje) {
