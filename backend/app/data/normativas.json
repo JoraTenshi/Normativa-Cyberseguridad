@@ -1,0 +1,448 @@
+[
+  {
+    "id": "ens",
+    "nombre": "Esquema Nacional de Seguridad (ENS)",
+    "descripcion": "Marco normativo español que establece los principios básicos y requisitos mínimos de seguridad para las Administraciones Públicas.",
+    "version": "RD 311/2022",
+    "bloques": [
+      {
+        "id": "ens-org",
+        "nombre": "Marco Organizativo",
+        "preguntas": [
+          {
+            "id": "ens-org-01",
+            "pregunta": "¿Existe una política de seguridad de la información formalmente aprobada por la dirección?",
+            "peso": 9,
+            "remediacion": "Redactar y aprobar formalmente una Política de Seguridad de la Información alineada con el ENS. Debe incluir objetivos, alcance, roles y revisión periódica.",
+            "tipo": "governance",
+            "nivel": "ALTO",
+            "referencia": "ENS Art. 11 - Política de seguridad"
+          },
+          {
+            "id": "ens-org-02",
+            "pregunta": "¿Se han designado formalmente los roles de Responsable de Seguridad y Responsable del Sistema?",
+            "peso": 8,
+            "remediacion": "Nombrar mediante acto administrativo al Responsable de Seguridad de la Información y al Responsable del Sistema, documentando sus funciones y responsabilidades.",
+            "tipo": "governance",
+            "nivel": "ALTO",
+            "referencia": "ENS Art. 10 - Responsables"
+          },
+          {
+            "id": "ens-org-03",
+            "pregunta": "¿Se realizan revisiones periódicas (al menos anuales) de la política de seguridad?",
+            "peso": 6,
+            "remediacion": "Establecer un calendario de revisiones anuales de la política de seguridad. Documentar cada revisión con acta firmada y registro de cambios.",
+            "tipo": "governance",
+            "nivel": "MEDIO",
+            "referencia": "ENS Art. 11.3 - Revisión de la política"
+          }
+        ]
+      },
+      {
+        "id": "ens-op",
+        "nombre": "Marco Operacional",
+        "preguntas": [
+          {
+            "id": "ens-op-01",
+            "pregunta": "¿Se dispone de un inventario actualizado de activos de información clasificados por nivel de criticidad?",
+            "peso": 8,
+            "remediacion": "Elaborar y mantener un inventario de activos que incluya hardware, software, datos y servicios, con clasificación por niveles de seguridad (BAJO, MEDIO, ALTO).",
+            "tipo": "operacional",
+            "nivel": "ALTO",
+            "referencia": "ENS Anexo II - op.pl.1 Análisis de riesgos"
+          },
+          {
+            "id": "ens-op-02",
+            "pregunta": "¿Se realizan análisis de riesgos formales al menos una vez al año?",
+            "peso": 9,
+            "remediacion": "Implantar una metodología de análisis de riesgos (MAGERIT recomendada). Realizar análisis anuales y ante cambios significativos, documentando amenazas, vulnerabilidades e impactos.",
+            "tipo": "operacional",
+            "nivel": "ALTO",
+            "referencia": "ENS Art. 13 - Análisis y gestión de riesgos"
+          },
+          {
+            "id": "ens-op-03",
+            "pregunta": "¿Existe un plan de continuidad de negocio y recuperación ante desastres aprobado y probado?",
+            "peso": 8,
+            "remediacion": "Desarrollar un Plan de Continuidad de Negocio (BCP) y Plan de Recuperación ante Desastres (DRP). Realizar ejercicios de prueba al menos anuales y documentar resultados.",
+            "tipo": "operacional",
+            "nivel": "ALTO",
+            "referencia": "ENS Anexo II - op.cont.1 Plan de continuidad"
+          },
+          {
+            "id": "ens-op-04",
+            "pregunta": "¿Se gestionan y parchean las vulnerabilidades de sistemas en plazos definidos?",
+            "peso": 9,
+            "remediacion": "Establecer un proceso de gestión de vulnerabilidades con plazos máximos: críticas < 24h, altas < 7 días, medias < 30 días. Usar herramientas de escaneo continuo.",
+            "tipo": "operacional",
+            "nivel": "ALTO",
+            "referencia": "ENS Anexo II - op.exp.4 Mantenimiento"
+          },
+          {
+            "id": "ens-op-05",
+            "pregunta": "¿Se monitorizan y registran los eventos de seguridad mediante un sistema SIEM o equivalente?",
+            "peso": 7,
+            "remediacion": "Implantar un sistema de monitorización centralizada de eventos (SIEM). Definir alertas para eventos críticos y establecer un proceso de revisión periódica de logs.",
+            "tipo": "operacional",
+            "nivel": "ALTO",
+            "referencia": "ENS Anexo II - op.mon.1 Detección de intrusión"
+          }
+        ]
+      },
+      {
+        "id": "ens-med",
+        "nombre": "Medidas de Protección",
+        "preguntas": [
+          {
+            "id": "ens-med-01",
+            "pregunta": "¿Se aplica autenticación multifactor (MFA) para el acceso a sistemas críticos?",
+            "peso": 10,
+            "remediacion": "Implantar MFA en todos los accesos a sistemas clasificados como nivel MEDIO o ALTO. Priorizar sistemas de correo, VPN, acceso remoto y administración de sistemas.",
+            "tipo": "tecnico",
+            "nivel": "ALTO",
+            "referencia": "ENS Anexo II - mp.acc.2 Control de acceso"
+          },
+          {
+            "id": "ens-med-02",
+            "pregunta": "¿Se cifran los datos en reposo y en tránsito para información clasificada?",
+            "peso": 9,
+            "remediacion": "Aplicar cifrado AES-256 para datos en reposo y TLS 1.2+ para datos en tránsito. Gestionar las claves mediante HSM o solución equivalente.",
+            "tipo": "tecnico",
+            "nivel": "ALTO",
+            "referencia": "ENS Anexo II - mp.si.2 Cifrado"
+          },
+          {
+            "id": "ens-med-03",
+            "pregunta": "¿Se realizan copias de seguridad regulares y se verifica su integridad y restauración?",
+            "peso": 8,
+            "remediacion": "Implementar política de backups 3-2-1 (3 copias, 2 medios distintos, 1 offsite). Verificar restauración al menos trimestralmente y documentar resultados.",
+            "tipo": "tecnico",
+            "nivel": "ALTO",
+            "referencia": "ENS Anexo II - mp.si.3 Copias de seguridad"
+          },
+          {
+            "id": "ens-med-04",
+            "pregunta": "¿Se ha segmentado la red y aplicado principio de mínimo privilegio en accesos?",
+            "peso": 8,
+            "remediacion": "Segmentar la red por zonas de seguridad (DMZ, interna, crítica) mediante firewalls y VLANs. Revisar y restringir privilegios de acceso aplicando principio de mínimo privilegio.",
+            "tipo": "tecnico",
+            "nivel": "ALTO",
+            "referencia": "ENS Anexo II - mp.com.1 Perímetro seguro"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "iso27001",
+    "nombre": "ISO/IEC 27001:2022",
+    "descripcion": "Estándar internacional para sistemas de gestión de seguridad de la información (SGSI). Especifica los requisitos para establecer, implementar, mantener y mejorar continuamente un SGSI.",
+    "version": "ISO 27001:2022",
+    "bloques": [
+      {
+        "id": "iso-contexto",
+        "nombre": "Contexto de la Organización",
+        "preguntas": [
+          {
+            "id": "iso-ctx-01",
+            "pregunta": "¿Se han identificado las partes interesadas y sus requisitos de seguridad relevantes?",
+            "peso": 7,
+            "remediacion": "Realizar un análisis de partes interesadas (clientes, reguladores, proveedores) documentando sus expectativas y requisitos de seguridad. Revisar anualmente.",
+            "tipo": "governance",
+            "nivel": "ALTO",
+            "referencia": "ISO 27001:2022 - Cláusula 4.2"
+          },
+          {
+            "id": "iso-ctx-02",
+            "pregunta": "¿Está definido y documentado el alcance del SGSI?",
+            "peso": 8,
+            "remediacion": "Documentar formalmente el alcance del SGSI incluyendo límites físicos, lógicos y organizativos. El alcance debe estar disponible como información documentada.",
+            "tipo": "governance",
+            "nivel": "ALTO",
+            "referencia": "ISO 27001:2022 - Cláusula 4.3"
+          }
+        ]
+      },
+      {
+        "id": "iso-liderazgo",
+        "nombre": "Liderazgo y Compromiso",
+        "preguntas": [
+          {
+            "id": "iso-lead-01",
+            "pregunta": "¿La alta dirección demuestra liderazgo y compromiso con el SGSI?",
+            "peso": 8,
+            "remediacion": "Documentar el compromiso de la dirección mediante la aprobación formal de la política de seguridad, asignación de recursos y participación en revisiones periódicas del SGSI.",
+            "tipo": "governance",
+            "nivel": "ALTO",
+            "referencia": "ISO 27001:2022 - Cláusula 5.1"
+          },
+          {
+            "id": "iso-lead-02",
+            "pregunta": "¿Se han asignado y comunicado las responsabilidades de seguridad de la información?",
+            "peso": 7,
+            "remediacion": "Crear una matriz RACI para roles de seguridad. Incluir responsabilidades de seguridad en descripciones de puestos y comunicarlas formalmente a todos los empleados.",
+            "tipo": "governance",
+            "nivel": "ALTO",
+            "referencia": "ISO 27001:2022 - Cláusula 5.3"
+          }
+        ]
+      },
+      {
+        "id": "iso-controles",
+        "nombre": "Controles Tecnológicos (Anexo A)",
+        "preguntas": [
+          {
+            "id": "iso-ctrl-01",
+            "pregunta": "¿Se gestionan las identidades y accesos mediante un sistema centralizado (IAM)?",
+            "peso": 9,
+            "remediacion": "Implementar una solución IAM centralizada (AD, LDAP, etc.). Establecer procesos de provisioning/deprovisioning de cuentas y revisiones periódicas de accesos.",
+            "tipo": "tecnico",
+            "nivel": "ALTO",
+            "referencia": "ISO 27001:2022 - A.5.15 Control de acceso"
+          },
+          {
+            "id": "iso-ctrl-02",
+            "pregunta": "¿Se realiza formación en concienciación de seguridad para todos los empleados al menos anualmente?",
+            "peso": 7,
+            "remediacion": "Desarrollar un programa de concienciación en seguridad con formación anual obligatoria. Incluir phishing simulado, políticas de uso aceptable y reportes de incidentes.",
+            "tipo": "personas",
+            "nivel": "MEDIO",
+            "referencia": "ISO 27001:2022 - A.6.3 Concienciación"
+          },
+          {
+            "id": "iso-ctrl-03",
+            "pregunta": "¿Existe un proceso formal de gestión de incidentes de seguridad con plazos de respuesta definidos?",
+            "peso": 9,
+            "remediacion": "Implementar un proceso de gestión de incidentes (detección, análisis, contención, erradicación, recuperación, lecciones aprendidas). Definir SLAs por severidad y designar un equipo de respuesta.",
+            "tipo": "operacional",
+            "nivel": "ALTO",
+            "referencia": "ISO 27001:2022 - A.5.26 Respuesta a incidentes"
+          },
+          {
+            "id": "iso-ctrl-04",
+            "pregunta": "¿Se evalúa la seguridad de proveedores y terceros antes de contratarlos y durante la relación?",
+            "peso": 7,
+            "remediacion": "Establecer un proceso de due diligence de proveedores. Incluir cláusulas de seguridad en contratos, cuestionarios de evaluación y revisiones periódicas de riesgo de terceros.",
+            "tipo": "governance",
+            "nivel": "MEDIO",
+            "referencia": "ISO 27001:2022 - A.5.19 Seguridad en la cadena de suministro"
+          },
+          {
+            "id": "iso-ctrl-05",
+            "pregunta": "¿Se realizan auditorías internas del SGSI al menos una vez al año?",
+            "peso": 8,
+            "remediacion": "Establecer un programa de auditoría interna anual. Designar auditores independientes, documentar hallazgos y hacer seguimiento de acciones correctivas.",
+            "tipo": "governance",
+            "nivel": "ALTO",
+            "referencia": "ISO 27001:2022 - Cláusula 9.2"
+          },
+          {
+            "id": "iso-ctrl-06",
+            "pregunta": "¿Se aplica hardening a sistemas operativos y aplicaciones siguiendo estándares reconocidos (CIS Benchmarks)?",
+            "peso": 8,
+            "remediacion": "Adoptar los CIS Benchmarks para hardening de SO, bases de datos y aplicaciones. Automatizar la verificación de configuración mediante herramientas como CIS-CAT o OpenSCAP.",
+            "tipo": "tecnico",
+            "nivel": "ALTO",
+            "referencia": "ISO 27001:2022 - A.8.8 Gestión de vulnerabilidades técnicas"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gdpr",
+    "nombre": "Reglamento General de Protección de Datos (RGPD)",
+    "descripcion": "Reglamento europeo que establece normas relativas a la protección de las personas físicas en lo que respecta al tratamiento de datos personales y la libre circulación de estos datos.",
+    "version": "UE 2016/679",
+    "bloques": [
+      {
+        "id": "gdpr-base",
+        "nombre": "Bases Legales y Principios",
+        "preguntas": [
+          {
+            "id": "gdpr-base-01",
+            "pregunta": "¿Se ha nombrado un Delegado de Protección de Datos (DPD/DPO) cuando es obligatorio?",
+            "peso": 9,
+            "remediacion": "Evaluar si la organización está obligada a designar un DPO (organismos públicos, tratamiento a gran escala de datos sensibles). Si procede, nombrar un DPO cualificado y comunicarlo a la AEPD.",
+            "tipo": "governance",
+            "nivel": "ALTO",
+            "referencia": "RGPD Art. 37-39 - Delegado de Protección de Datos"
+          },
+          {
+            "id": "gdpr-base-02",
+            "pregunta": "¿Se mantiene un Registro de Actividades de Tratamiento (RAT) actualizado?",
+            "peso": 9,
+            "remediacion": "Crear y mantener el Registro de Actividades de Tratamiento documentando: responsable, finalidad, categorías de datos, destinatarios, transferencias internacionales y plazos de conservación.",
+            "tipo": "governance",
+            "nivel": "ALTO",
+            "referencia": "RGPD Art. 30 - Registro de actividades de tratamiento"
+          },
+          {
+            "id": "gdpr-base-03",
+            "pregunta": "¿Se ha realizado una Evaluación de Impacto (EIPD/DPIA) para tratamientos de alto riesgo?",
+            "peso": 8,
+            "remediacion": "Identificar tratamientos de alto riesgo y realizar DPIA antes de iniciarlos. Consultar con el DPO y, si persiste el riesgo, con la autoridad supervisora (AEPD).",
+            "tipo": "governance",
+            "nivel": "ALTO",
+            "referencia": "RGPD Art. 35 - Evaluación de impacto relativa a la protección de datos"
+          }
+        ]
+      },
+      {
+        "id": "gdpr-derechos",
+        "nombre": "Derechos de los Interesados",
+        "preguntas": [
+          {
+            "id": "gdpr-der-01",
+            "pregunta": "¿Existen procedimientos para atender los derechos ARSOLP (acceso, rectificación, supresión, oposición, limitación, portabilidad) en el plazo de un mes?",
+            "peso": 8,
+            "remediacion": "Implementar canales y procedimientos formales para ejercicio de derechos. Definir flujos de trabajo con responsables y plazos. Registrar todas las solicitudes y respuestas.",
+            "tipo": "operacional",
+            "nivel": "ALTO",
+            "referencia": "RGPD Art. 12-22 - Derechos del interesado"
+          },
+          {
+            "id": "gdpr-der-02",
+            "pregunta": "¿Las políticas de privacidad son claras, accesibles y cumplen con los requisitos de información del RGPD?",
+            "peso": 7,
+            "remediacion": "Revisar y actualizar políticas de privacidad para incluir toda la información requerida por los Art. 13 y 14. Usar lenguaje claro, estructurado por capas y accesible.",
+            "tipo": "legal",
+            "nivel": "MEDIO",
+            "referencia": "RGPD Art. 13-14 - Información que debe facilitarse"
+          }
+        ]
+      },
+      {
+        "id": "gdpr-seguridad",
+        "nombre": "Seguridad del Tratamiento",
+        "preguntas": [
+          {
+            "id": "gdpr-seg-01",
+            "pregunta": "¿Existe un procedimiento de notificación de brechas a la AEPD en menos de 72 horas?",
+            "peso": 10,
+            "remediacion": "Establecer un procedimiento documentado de gestión de brechas de seguridad con notificación a la AEPD en < 72h. Incluir plantillas de notificación y árbol de decisión para evaluar obligación de notificar.",
+            "tipo": "operacional",
+            "nivel": "ALTO",
+            "referencia": "RGPD Art. 33 - Notificación de una violación de la seguridad de los datos personales"
+          },
+          {
+            "id": "gdpr-seg-02",
+            "pregunta": "¿Se aplica el principio de privacidad desde el diseño (Privacy by Design) en nuevos desarrollos?",
+            "peso": 7,
+            "remediacion": "Integrar requisitos de privacidad en el SDLC. Incluir revisión de privacidad en fases de diseño, usar minimización de datos y realizar revisiones de código orientadas a privacidad.",
+            "tipo": "tecnico",
+            "nivel": "MEDIO",
+            "referencia": "RGPD Art. 25 - Protección de datos desde el diseño"
+          },
+          {
+            "id": "gdpr-seg-03",
+            "pregunta": "¿Se han firmado acuerdos de tratamiento de datos (DPA) con todos los encargados de tratamiento?",
+            "peso": 8,
+            "remediacion": "Identificar todos los encargados del tratamiento (proveedores cloud, SaaS, etc.) y firmar acuerdos DPA conformes al Art. 28 RGPD. Mantener un registro actualizado de encargados.",
+            "tipo": "legal",
+            "nivel": "ALTO",
+            "referencia": "RGPD Art. 28 - Encargado del tratamiento"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nis2",
+    "nombre": "Directiva NIS2",
+    "descripcion": "Directiva europea sobre medidas destinadas a garantizar un elevado nivel común de ciberseguridad en la Unión, aplicable a entidades esenciales e importantes.",
+    "version": "Directiva UE 2022/2555",
+    "bloques": [
+      {
+        "id": "nis2-gestion",
+        "nombre": "Gestión de Riesgos de Ciberseguridad",
+        "preguntas": [
+          {
+            "id": "nis2-gest-01",
+            "pregunta": "¿El órgano de dirección ha aprobado las medidas de gestión de riesgos de ciberseguridad y supervisa su aplicación?",
+            "peso": 9,
+            "remediacion": "Formalizar la aprobación por el consejo/dirección de las políticas de ciberseguridad. Establecer informes periódicos al órgano de gobierno sobre el estado de la ciberseguridad.",
+            "tipo": "governance",
+            "nivel": "ALTO",
+            "referencia": "NIS2 Art. 20 - Gobernanza"
+          },
+          {
+            "id": "nis2-gest-02",
+            "pregunta": "¿Se han implementado medidas de seguridad en la cadena de suministro (proveedores y prestadores de servicios)?",
+            "peso": 8,
+            "remediacion": "Establecer un programa de seguridad de la cadena de suministro: evaluación de riesgos de proveedores, cláusulas contractuales de ciberseguridad y monitorización continua de terceros críticos.",
+            "tipo": "operacional",
+            "nivel": "ALTO",
+            "referencia": "NIS2 Art. 21.2.d - Seguridad de la cadena de suministro"
+          },
+          {
+            "id": "nis2-gest-03",
+            "pregunta": "¿Existen políticas y procedimientos para el uso de criptografía y, en su caso, cifrado?",
+            "peso": 7,
+            "remediacion": "Desarrollar una política criptográfica que defina algoritmos aprobados, gestión de claves y uso obligatorio de cifrado. Alinear con guías del CCN-CERT (IA-38).",
+            "tipo": "tecnico",
+            "nivel": "ALTO",
+            "referencia": "NIS2 Art. 21.2.h - Criptografía"
+          }
+        ]
+      },
+      {
+        "id": "nis2-notificacion",
+        "nombre": "Notificación de Incidentes",
+        "preguntas": [
+          {
+            "id": "nis2-noti-01",
+            "pregunta": "¿Existe un procedimiento para notificar incidentes significativos al CSIRT nacional en menos de 24 horas (alerta temprana)?",
+            "peso": 10,
+            "remediacion": "Implementar un procedimiento de notificación de incidentes con tres fases: alerta temprana (< 24h), notificación de incidente (< 72h) e informe final (< 1 mes). Identificar el punto de contacto con el CSIRT-CV/CCN-CERT.",
+            "tipo": "operacional",
+            "nivel": "ALTO",
+            "referencia": "NIS2 Art. 23 - Obligaciones de notificación de incidentes"
+          },
+          {
+            "id": "nis2-noti-02",
+            "pregunta": "¿Se dispone de un equipo o función de respuesta a incidentes de ciberseguridad (CSIRT interno o contratado)?",
+            "peso": 9,
+            "remediacion": "Constituir un equipo de respuesta a incidentes (CERT/CSIRT) interno o contratar un servicio externo. Documentar el plan de respuesta, definir roles y realizar simulacros anuales.",
+            "tipo": "operacional",
+            "nivel": "ALTO",
+            "referencia": "NIS2 Art. 21.2.b - Gestión de incidentes"
+          }
+        ]
+      },
+      {
+        "id": "nis2-medidas",
+        "nombre": "Medidas Técnicas y Operativas",
+        "preguntas": [
+          {
+            "id": "nis2-med-01",
+            "pregunta": "¿Se han implementado controles de seguridad para la adquisición, desarrollo y mantenimiento de sistemas?",
+            "peso": 8,
+            "remediacion": "Integrar la seguridad en el ciclo de vida del desarrollo (SSDLC): revisiones de código, pruebas SAST/DAST, gestión segura de dependencias y pruebas de penetración periódicas.",
+            "tipo": "tecnico",
+            "nivel": "ALTO",
+            "referencia": "NIS2 Art. 21.2.e - Seguridad en la adquisición, desarrollo y mantenimiento"
+          },
+          {
+            "id": "nis2-med-02",
+            "pregunta": "¿Se utiliza autenticación multifactor (MFA) o autenticación continua en todos los accesos críticos?",
+            "peso": 9,
+            "remediacion": "Desplegar MFA obligatorio para todos los accesos remotos, sistemas críticos y cuentas privilegiadas. Considerar soluciones passwordless o de autenticación continua para entornos de alta criticidad.",
+            "tipo": "tecnico",
+            "nivel": "ALTO",
+            "referencia": "NIS2 Art. 21.2.j - Autenticación multifactor"
+          },
+          {
+            "id": "nis2-med-03",
+            "pregunta": "¿Existe una política de seguridad para los recursos humanos (formación, controles previos al empleo, gestión de bajas)?",
+            "peso": 7,
+            "remediacion": "Implementar controles de RRHH: verificación de antecedentes previa al empleo, formación obligatoria en ciberseguridad, acuerdos de confidencialidad y procedimientos de offboarding seguro.",
+            "tipo": "personas",
+            "nivel": "MEDIO",
+            "referencia": "NIS2 Art. 21.2.i - Seguridad de los recursos humanos"
+          }
+        ]
+      }
+    ]
+  }
+]

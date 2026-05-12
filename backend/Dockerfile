@@ -1,17 +1,12 @@
-# Backend Dockerfile using Alpine (Lightweight)
-FROM alpine:latest
+FROM python:3.12-slim
 
 WORKDIR /app
 
-# Install basic utilities
-RUN apk add --no-cache \
-    curl \
-    wget \
-    git \
-    bash
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
 EXPOSE 8000
 
-CMD ["/bin/bash"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

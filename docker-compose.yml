@@ -1,20 +1,46 @@
 version: '3.8'
+
 services:
+  db:
+    image: postgres:16-alpine
+    container_name: normativa-cyberseguridad-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-normativacheck}
+      POSTGRES_USER: ${POSTGRES_USER:-normativa}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - cybersecurity-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-normativa}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   backend:
     build: ./backend
     container_name: normativa-cyberseguridad-backend
     expose:
       - "8000"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-normativa}:${POSTGRES_PASSWORD:-changeme}@db:5432/${POSTGRES_DB:-normativacheck}
+      ENV: ${ENV:-development}
     volumes:
       - ./backend:/app
     networks:
       - cybersecurity-network
+    depends_on:
+      db:
+        condition: service_healthy
 
   frontend:
     build: ./frontend
     container_name: normativa-cyberseguridad-frontend
     expose:
       - "3000"
+    environment:
+      REACT_APP_API_URL: ${REACT_APP_API_URL:-http://localhost/api}
     volumes:
       - ./frontend:/app
     networks:
@@ -35,3 +61,6 @@ services:
 networks:
   cybersecurity-network:
     driver: bridge
+
+volumes:
+  postgres_data:
