@@ -1,4 +1,7 @@
+import { useTranslation } from 'react-i18next';
+
 export default function RemediacionItem({ item }) {
+  const { t } = useTranslation();
   const esPrioritario = item.peso >= 8;
 
   return (
@@ -10,7 +13,7 @@ export default function RemediacionItem({ item }) {
             esPrioritario ? 'bg-red-900 text-red-300' : 'bg-yellow-900 text-yellow-300'
           }`}
         >
-          {esPrioritario ? 'Prioritario' : 'Recomendado'}
+          {esPrioritario ? t('remediation.priority') : t('remediation.recommended')}
         </span>
       </div>
       <p className="text-slate-400 text-sm mb-3 leading-relaxed">{item.remediacion}</p>
@@ -21,7 +24,11 @@ export default function RemediacionItem({ item }) {
             item.valor === 'parcialmente' ? 'text-yellow-500' : 'text-red-500'
           }`}
         >
-          Respondido: {item.valor === 'parcialmente' ? 'Parcialmente' : 'No'}
+          {t('remediation.answered', {
+            value: item.valor === 'parcialmente'
+              ? t('remediation.value_partial')
+              : t('remediation.value_no'),
+          })}
         </span>
       </div>
     </div>
