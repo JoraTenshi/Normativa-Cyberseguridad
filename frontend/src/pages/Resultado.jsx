@@ -1,4 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import RemediacionItem from '../components/RemediacionItem.jsx';
 
 function coloresPorNivel(nivel) {
@@ -12,6 +13,7 @@ function coloresPorNivel(nivel) {
 export default function Resultado() {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   if (!state?.resultado) {
     navigate('/', { replace: true });
@@ -23,7 +25,7 @@ export default function Resultado() {
 
   return (
     <div className="max-w-3xl mx-auto px-6 py-10">
-      <h1 className="text-2xl font-bold text-white mb-8">Resultado de evaluación</h1>
+      <h1 className="text-2xl font-bold text-white mb-8">{t('resultado.title')}</h1>
 
       <div className="bg-slate-800 rounded-xl p-8 border border-slate-700 mb-8 flex flex-col sm:flex-row items-center gap-8">
         <div
@@ -37,14 +39,14 @@ export default function Resultado() {
           <div
             className={`inline-block text-sm font-bold px-3 py-1 rounded-full mb-3 ${colores.badge}`}
           >
-            Nivel {resultado.nivel_cumplimiento}
+            {t('resultado.level', { nivel: resultado.nivel_cumplimiento })}
           </div>
           <p className="text-slate-400 text-sm">
-            {resultado.preguntas_evaluadas} preguntas evaluadas
+            {t('resultado.questions_evaluated', { count: resultado.preguntas_evaluadas })}
           </p>
           {resultado.remediaciones.length === 0 && (
             <p className="text-green-400 text-sm mt-2 font-medium">
-              ¡Cumplimiento completo! No hay remediaciones pendientes.
+              {t('resultado.full_compliance')}
             </p>
           )}
         </div>
@@ -53,7 +55,7 @@ export default function Resultado() {
       {resultado.remediaciones.length > 0 && (
         <section className="mb-10">
           <h2 className="text-lg font-semibold text-white mb-4">
-            Remediaciones ({resultado.remediaciones.length})
+            {t('resultado.remediations', { count: resultado.remediaciones.length })}
           </h2>
           <div className="space-y-4">
             {resultado.remediaciones.map((item) => (
@@ -67,7 +69,7 @@ export default function Resultado() {
         onClick={() => navigate('/')}
         className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
       >
-        ← Volver al inicio
+        {t('resultado.back_home')}
       </button>
     </div>
   );
