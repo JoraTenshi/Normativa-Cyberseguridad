@@ -20,5 +20,5 @@ it('muestra nombre, versión, descripción y número de preguntas', () => {
   expect(screen.getByText(normativa.nombre)).toBeInTheDocument();
   expect(screen.getByText(normativa.version)).toBeInTheDocument();
   expect(screen.getByText(normativa.descripcion)).toBeInTheDocument();
-  expect(screen.getByText(/12 preguntas/)).toBeInTheDocument();
+  expect(screen.getByText(/12 (preguntas|questions)/)).toBeInTheDocument();
 });

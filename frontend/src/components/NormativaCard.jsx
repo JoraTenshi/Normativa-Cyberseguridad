@@ -1,7 +1,9 @@
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function NormativaCard({ normativa }) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <button
@@ -15,7 +17,9 @@ export default function NormativaCard({ normativa }) {
         </span>
       </div>
       <p className="text-slate-400 text-sm mb-4 leading-relaxed">{normativa.descripcion}</p>
-      <p className="text-blue-400 text-sm font-medium">{normativa.total_preguntas} preguntas →</p>
+      <p className="text-blue-400 text-sm font-medium">
+        {t('card.questions', { count: normativa.total_preguntas })}
+      </p>
     </button>
   );
 }
