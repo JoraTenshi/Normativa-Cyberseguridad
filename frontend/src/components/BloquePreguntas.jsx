@@ -1,12 +1,16 @@
+import { useTranslation } from 'react-i18next';
+
 const OPCIONES = [
-  { valor: 'si', label: 'Sí', activa: 'bg-green-600 hover:bg-green-700 text-white ring-2 ring-white ring-offset-2 ring-offset-slate-800' },
-  { valor: 'parcialmente', label: 'Parcialmente', activa: 'bg-yellow-500 hover:bg-yellow-600 text-white ring-2 ring-white ring-offset-2 ring-offset-slate-800' },
-  { valor: 'no', label: 'No', activa: 'bg-red-600 hover:bg-red-700 text-white ring-2 ring-white ring-offset-2 ring-offset-slate-800' },
+  { valor: 'si', labelKey: 'options.yes', activa: 'bg-green-600 hover:bg-green-700 text-white ring-2 ring-white ring-offset-2 ring-offset-slate-800' },
+  { valor: 'parcialmente', labelKey: 'options.partial', activa: 'bg-yellow-500 hover:bg-yellow-600 text-white ring-2 ring-white ring-offset-2 ring-offset-slate-800' },
+  { valor: 'no', labelKey: 'options.no', activa: 'bg-red-600 hover:bg-red-700 text-white ring-2 ring-white ring-offset-2 ring-offset-slate-800' },
 ];
 
 const INACTIVA = 'bg-slate-600 hover:bg-slate-500 text-slate-300';
 
 export default function BloquePreguntas({ bloque, respuestas, onRespuesta }) {
+  const { t } = useTranslation();
+
   return (
     <section className="mb-8">
       <h2 className="text-lg font-semibold text-white bg-slate-700 rounded-lg px-4 py-3 mb-4">
@@ -27,7 +31,7 @@ export default function BloquePreguntas({ bloque, respuestas, onRespuesta }) {
                       seleccionada ? opcion.activa : INACTIVA
                     }`}
                   >
-                    {opcion.label}
+                    {t(opcion.labelKey)}
                   </button>
                 );
               })}

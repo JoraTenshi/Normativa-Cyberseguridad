@@ -21,7 +21,7 @@ it('muestra el nombre del bloque y las preguntas', () => {
 it('llama onRespuesta con preguntaId y valor al hacer click en Sí', () => {
   const onRespuesta = vi.fn();
   render(<BloquePreguntas bloque={bloque} respuestas={{}} onRespuesta={onRespuesta} />);
-  const siButtons = screen.getAllByText('Sí');
+  const siButtons = screen.getAllByRole('button', { name: /yes|sí/i });
   fireEvent.click(siButtons[0]);
   expect(onRespuesta).toHaveBeenCalledWith('p1', 'si');
 });
@@ -29,7 +29,7 @@ it('llama onRespuesta con preguntaId y valor al hacer click en Sí', () => {
 it('llama onRespuesta con "no" al hacer click en No', () => {
   const onRespuesta = vi.fn();
   render(<BloquePreguntas bloque={bloque} respuestas={{}} onRespuesta={onRespuesta} />);
-  const noButtons = screen.getAllByText('No');
+  const noButtons = screen.getAllByRole('button', { name: /^no$/i });
   fireEvent.click(noButtons[1]);
   expect(onRespuesta).toHaveBeenCalledWith('p2', 'no');
 });
@@ -38,6 +38,6 @@ it('marca el botón seleccionado cuando hay respuesta en respuestas prop', () =>
   render(
     <BloquePreguntas bloque={bloque} respuestas={{ p1: 'si' }} onRespuesta={() => {}} />
   );
-  const siButtons = screen.getAllByText('Sí');
+  const siButtons = screen.getAllByRole('button', { name: /yes|sí/i });
   expect(siButtons[0]).toHaveClass('ring-2');
 });
