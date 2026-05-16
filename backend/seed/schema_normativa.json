@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://normativacheck.local/schemas/normativa.schema.json",
+  "title": "NormativaCheck — Normativa Schema",
+  "description": "Esquema canónico que todo archivo de normativa del proyecto NormativaCheck debe cumplir antes de ser ingerido por el back-end. Es la 'contrato de datos' compartido por Cris (productora de contenido), Jorge (back-end) y el motor de cumplimiento.",
+
+  "type": "object",
+  "required": ["id", "nombre", "referencia_oficial", "descripcion", "sectores_aplicables", "bloques"],
+  "additionalProperties": false,
+
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 30,
+      "pattern": "^[a-z0-9_]+$",
+      "description": "Identificador corto en minúsculas, sin espacios ni guiones. Ej: 'nis2', 'iso27002', 'rgpd'."
+    },
+    "nombre": {
+      "type": "string",
+      "minLength": 3,
+      "description": "Nombre completo de la normativa en español."
+    },
+    "referencia_oficial": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Cita legal completa con fecha de publicación."
+    },
+    "descripcion": {
+      "type": "string",
+      "minLength": 20,
+      "description": "2-3 frases que expliquen el propósito de la normativa y a quién aplica."
+    },
+    "sectores_aplicables": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Lista de sectores o tipos de entidad a los que aplica. Puede estar vacía (universal)."
+    },
+    "bloques": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/Bloque" },
+      "description": "Lista de bloques temáticos de la normativa. Debe haber al menos uno."
+    }
+  },
+
+  "$defs": {
+    "Bloque": {
+      "type": "object",
+      "required": ["id", "nombre", "descripcion", "peso_bloque", "preguntas"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Z0-9]+-[A-Z0-9_]+$",
+          "description": "Identificador del bloque con prefijo de normativa. Ej: 'NIS2-GOB', 'ISO27002-ORG', 'ENS-MARCO_ORG'."
+        },
+        "nombre": { "type": "string", "minLength": 3 },
+        "descripcion": { "type": "string", "minLength": 10 },
+        "peso_bloque": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Peso del bloque dentro de la normativa. La SUMA de pesos de todos los bloques debe ser EXACTAMENTE 100 (regla validada en el script de Python)."
+        },
+        "preguntas": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/Pregunta" }
+        }
+      }
+    },
+
+    "Pregunta": {
+      "type": "object",
+      "required": [
+        "id", "texto", "ayuda", "requisito_original", "tipo",
+        "aplicabilidad", "peso", "nivel", "fase_pds",
+        "remediacion", "referencia_articulo"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Z0-9]+-[A-Z0-9_]+-[0-9]{3}$",
+          "description": "Identificador con prefijo de bloque + número correlativo de 3 dígitos. Ej: 'NIS2-GOB-001'."
+        },
+        "texto": {
+          "type": "string",
+          "minLength": 10,
+          "description": "La pregunta en sí, redactada como Sí/No."
+        },
+        "ayuda": {
+          "type": "string",
+          "minLength": 10,
+          "description": "Texto de ayuda en lenguaje plano para el usuario final."
+        },
+        "requisito_original": {
+          "type": "string",
+          "minLength": 10,
+          "description": "Cita textual del fragmento legal que origina la pregunta."
+        },
+        "tipo": {
+          "type": "string",
+          "enum": ["obligatorio", "recomendado"]
+        },
+        "aplicabilidad": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" },
+          "description": "Perfiles/categorías a los que aplica la pregunta. Al menos un valor."
+        },
+        "peso": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10
+        },
+        "nivel": {
+          "type": "string",
+          "enum": ["bajo", "medio", "alto", "critico"]
+        },
+        "fase_pds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5,
+          "description": "Fase del Plan Director de Seguridad (modelo INCIBE): 1=Análisis inicial, 2=Análisis de riesgos, 3=Definición del plan, 4=Implantación, 5=Mejora continua."
+        },
+        "remediacion": {
+          "type": "string",
+          "minLength": 20
+        },
+        "referencia_articulo": {
+          "type": "string",
+          "minLength": 5,
+          "description": "Cita exacta al artículo, control o sección. Ej: 'Art. 23.4.a Directiva (UE) 2022/2555'."
+        }
+      }
+    }
+  }
+}

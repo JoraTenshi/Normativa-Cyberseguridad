@@ -1,0 +1,609 @@
+{
+  "id": "nis2",
+  "nombre": "Directiva NIS2",
+  "referencia_oficial": "Directiva (UE) 2022/2555 del Parlamento Europeo y del Consejo, de 14 de diciembre de 2022",
+  "descripcion": "Directiva europea relativa a las medidas destinadas a garantizar un elevado nivel común de ciberseguridad en toda la Unión. Establece obligaciones de gobernanza, gestión de riesgos y notificación de incidentes para las entidades clasificadas como esenciales o importantes según los Anexos I y II.",
+  "sectores_aplicables": ["esencial", "importante"],
+  "bloques": [
+    {
+      "id": "NIS2-GOB",
+      "nombre": "Gobernanza y política de ciberseguridad",
+      "descripcion": "Obligaciones de la dirección en materia de aprobación, supervisión y responsabilidad sobre las medidas de gestión de riesgos de ciberseguridad. Incluye la formación obligatoria de los órganos de dirección.",
+      "peso_bloque": 12,
+      "preguntas": [
+        {
+          "id": "NIS2-GOB-001",
+          "texto": "¿El órgano de dirección ha aprobado formalmente las medidas de gestión de riesgos de ciberseguridad?",
+          "ayuda": "La Directiva NIS2 exige que el órgano de dirección (Consejo de Administración o equivalente) apruebe formalmente las medidas de gestión de riesgos de ciberseguridad. No basta con que existan: deben estar respaldadas y supervisadas por la cúpula directiva, que asume la responsabilidad personal de su ejecución.",
+          "requisito_original": "Los órganos de dirección de las entidades esenciales e importantes aprobarán las medidas de gestión de riesgos de ciberseguridad adoptadas y supervisarán su ejecución.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 1,
+          "remediacion": "Convocar sesión del órgano de dirección para aprobar formalmente un documento de medidas de gestión de riesgos de ciberseguridad. Registrar el acuerdo en acta y designar un responsable de seguimiento. Establecer revisiones periódicas (mínimo anuales).",
+          "referencia_articulo": "Art. 20.1 Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-GOB-002",
+          "texto": "¿Los miembros del órgano de dirección han recibido formación en ciberseguridad suficiente para identificar riesgos y evaluar su impacto?",
+          "ayuda": "Los miembros del órgano de dirección deben recibir formación periódica en ciberseguridad para poder evaluar correctamente los riesgos y tomar decisiones informadas. NIS2 hace responsables personalmente a los directivos por incumplimientos, por lo que su formación es obligatoria.",
+          "requisito_original": "Los miembros de los órganos de dirección deberán seguir formación y alentar a los empleados a adquirir periódicamente formación similar en materia de ciberseguridad.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Organizar un programa de formación en ciberseguridad orientado a perfiles directivos, con contenidos sobre gestión de riesgos, obligaciones NIS2 e impacto de incidentes. Registrar la asistencia y repetir al menos anualmente.",
+          "referencia_articulo": "Art. 20.2 Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-GOB-003",
+          "texto": "¿Existe una política de seguridad de las redes y sistemas de información aprobada y comunicada a toda la organización?",
+          "ayuda": "La política de seguridad de redes y sistemas es el documento marco que define los objetivos, principios y responsabilidades en materia de ciberseguridad. Debe estar aprobada por la dirección, comunicada a toda la organización y revisada periódicamente.",
+          "requisito_original": "Las entidades adoptarán políticas de seguridad de las redes y sistemas de información que abarquen el análisis de riesgos y la seguridad de los sistemas de información.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 3,
+          "remediacion": "Redactar y aprobar una Política de Seguridad de Redes y Sistemas de Información firmada por la dirección. Incluir objetivos, alcance, roles, responsabilidades y ciclo de revisión. Comunicarla a toda la plantilla y proveedores clave.",
+          "referencia_articulo": "Art. 21.2.a Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-GOB-004",
+          "texto": "¿Se han definido y asignado formalmente los roles y responsabilidades en materia de ciberseguridad dentro de la organización?",
+          "ayuda": "Toda función de ciberseguridad (CISO, responsable de sistemas, DPO, gestor de incidentes...) debe tener un titular identificado y responsabilidades documentadas. Sin asignación clara no hay rendición de cuentas posible.",
+          "requisito_original": "Las entidades definirán las funciones y responsabilidades en el ámbito de la ciberseguridad de forma coherente con las medidas adoptadas.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Elaborar un documento de asignación de roles de ciberseguridad (CISO, responsable de sistemas, DPO si aplica). Definir funciones, líneas de reporte y sustitutos. Publicar y mantener actualizado el organigrama de seguridad.",
+          "referencia_articulo": "Art. 21.2.a Directiva (UE) 2022/2555"
+        }
+      ]
+    },
+    {
+      "id": "NIS2-RIE",
+      "nombre": "Gestión de riesgos de ciberseguridad",
+      "descripcion": "Proceso de identificación, análisis, evaluación y tratamiento de los riesgos que afectan a las redes y sistemas de información. Base de todo el marco NIS2.",
+      "peso_bloque": 15,
+      "preguntas": [
+        {
+          "id": "NIS2-RIE-001",
+          "texto": "¿Existe una metodología formal y documentada de análisis y evaluación de riesgos de ciberseguridad?",
+          "ayuda": "Una metodología formal de análisis de riesgos (ISO 27005, MAGERIT...) establece cómo se identifican activos, amenazas y vulnerabilidades, y cómo se valoran impacto y probabilidad. Es la base sobre la que se construye toda la estrategia de ciberseguridad.",
+          "requisito_original": "Las entidades adoptarán medidas técnicas, operativas y organizativas adecuadas y proporcionadas para gestionar los riesgos que se planteen para la seguridad de las redes y sistemas de información.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 2,
+          "remediacion": "Implementar una metodología de análisis de riesgos (p.ej. basada en ISO 27005 o MAGERIT). Documentar el inventario de activos, amenazas, vulnerabilidades, impacto y probabilidad. Producir un mapa de riesgos y un plan de tratamiento aprobado por la dirección.",
+          "referencia_articulo": "Art. 21.1 y 21.2.a Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-RIE-002",
+          "texto": "¿Se realiza una evaluación de riesgos de ciberseguridad al menos una vez al año o ante cambios significativos?",
+          "ayuda": "Los riesgos cambian con el tiempo: nuevas amenazas aparecen, la infraestructura evoluciona, los servicios se modifican. La evaluación de riesgos debe repetirse al menos una vez al año y siempre que se produzcan cambios significativos.",
+          "requisito_original": "Las medidas de gestión de riesgos deberán ser adecuadas y proporcionales, teniendo en cuenta el estado de la técnica y la evolución de las amenazas.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 2,
+          "remediacion": "Establecer un calendario de revisión anual obligatoria del análisis de riesgos. Incluir la reevaluación como paso obligatorio ante cambios tecnológicos relevantes, nuevos servicios o incidentes graves. Archivar cada versión con fecha y aprobación directiva.",
+          "referencia_articulo": "Art. 21.1 Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-RIE-003",
+          "texto": "¿Existe un plan de tratamiento de riesgos en ejecución con medidas, responsables y plazos definidos?",
+          "ayuda": "Identificar riesgos no es suficiente: para cada uno hay que decidir si se acepta, mitiga, transfiere o evita, asignar un responsable, dotarlo de recursos y fijar plazos. El plan de tratamiento materializa esas decisiones.",
+          "requisito_original": "Las entidades adoptarán medidas técnicas, operativas y organizativas adecuadas y proporcionadas para gestionar los riesgos identificados.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Elaborar un plan de tratamiento de riesgos con las medidas decididas (aceptar, mitigar, transferir, evitar), asignando responsable, recursos y fecha límite para cada acción. Hacer seguimiento trimestral y reportar el estado a la dirección.",
+          "referencia_articulo": "Art. 21.1 Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-RIE-004",
+          "texto": "¿Se tienen en cuenta los riesgos derivados de las relaciones con proveedores y terceros en el análisis de riesgos?",
+          "ayuda": "Los riesgos de la cadena de suministro (proveedores cloud, MSP, software de terceros) son una de las principales vías de incidentes graves. NIS2 los considera explícitamente parte de la gestión de riesgos.",
+          "requisito_original": "Las medidas de gestión de riesgos abarcarán la seguridad de la cadena de suministro, incluidos los aspectos de seguridad relativos a las relaciones entre cada entidad y sus proveedores.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 2,
+          "remediacion": "Incluir en el análisis de riesgos un apartado específico de riesgos de terceros. Evaluar a los proveedores críticos mediante cuestionarios de seguridad. Incorporar cláusulas de ciberseguridad en los contratos con proveedores.",
+          "referencia_articulo": "Art. 21.2.d Directiva (UE) 2022/2555"
+        }
+      ]
+    },
+    {
+      "id": "NIS2-INC",
+      "nombre": "Gestión de incidentes de seguridad",
+      "descripcion": "Capacidades de detección, análisis, contención, respuesta y notificación de incidentes de seguridad. Incluye los plazos y canales de notificación obligatoria a las autoridades.",
+      "peso_bloque": 15,
+      "preguntas": [
+        {
+          "id": "NIS2-INC-001",
+          "texto": "¿Existe un procedimiento documentado de gestión de incidentes de ciberseguridad que cubra detección, análisis, contención, erradicación y recuperación?",
+          "ayuda": "Un procedimiento de gestión de incidentes documenta paso a paso cómo actuar ante un evento de seguridad: quién hace qué, en qué orden, con qué herramientas y a quién se notifica. NIS2 exige cubrir todo el ciclo (detección → análisis → contención → erradicación → recuperación → lecciones aprendidas).",
+          "requisito_original": "Las entidades adoptarán políticas y procedimientos para el tratamiento de incidentes.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 3,
+          "remediacion": "Redactar y aprobar un procedimiento de respuesta a incidentes con fases definidas: preparación, detección, análisis, contención, erradicación, recuperación y lecciones aprendidas. Asignar un equipo de respuesta (CSIRT interno o externo) con roles claros.",
+          "referencia_articulo": "Art. 21.2.b Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-INC-002",
+          "texto": "¿Se dispone de un sistema de registro y seguimiento de todos los incidentes de seguridad detectados?",
+          "ayuda": "Todo incidente, por pequeño que sea, debe quedar registrado con fecha, descripción, impacto, acciones realizadas y resultado. Sin registro es imposible identificar patrones, mejorar las defensas o justificar el cumplimiento ante una auditoría.",
+          "requisito_original": "Las entidades adoptarán medidas para el tratamiento de incidentes, incluyendo su detección y clasificación.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Implementar una herramienta de ticketing o registro de incidentes (puede ser un SIEM, una plataforma GRC o incluso una hoja de registro estructurada). Registrar fecha, descripción, clasificación, impacto, acciones y cierre de cada incidente.",
+          "referencia_articulo": "Art. 21.2.b Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-INC-003",
+          "texto": "¿Se notifican los incidentes significativos al CSIRT nacional o autoridad competente en un plazo máximo de 24 horas desde su detección (alerta temprana)?",
+          "ayuda": "El Art. 23.4.a de NIS2 obliga a notificar una 'alerta temprana' al CSIRT nacional en un máximo de 24 horas desde la detección de un incidente significativo. Es una obligación legal, no una recomendación. En España, los CSIRT de referencia son CCN-CERT (AA.PP.), INCIBE-CERT (sector privado) y los CSIRT autonómicos como CSIRT-CV.",
+          "requisito_original": "Las entidades presentarán una alerta temprana al CSIRT o a la autoridad competente sin demora indebida y, en cualquier caso, en el plazo de 24 horas desde que tengan conocimiento del incidente significativo.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 4,
+          "remediacion": "Establecer en el procedimiento de incidentes un paso específico de evaluación de significatividad y una vía de notificación urgente al CSIRT-CV, CCN-CERT o INCIBE-CERT según corresponda. Designar un responsable de notificaciones con disponibilidad 24/7.",
+          "referencia_articulo": "Art. 23.4.a Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-INC-004",
+          "texto": "¿Se presenta una notificación completa del incidente significativo a la autoridad competente en un plazo máximo de 72 horas?",
+          "ayuda": "Pasadas 72 horas desde la detección, debe enviarse una notificación de incidente más completa, con una primera evaluación de impacto, severidad e indicadores de compromiso. Esto se suma a la alerta temprana de 24 horas.",
+          "requisito_original": "Las entidades presentarán una notificación de incidente sin demora indebida y, en cualquier caso, en el plazo de 72 horas desde que tengan conocimiento del incidente significativo, con una primera evaluación del mismo.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 4,
+          "remediacion": "Documentar en el procedimiento de incidentes la obligación de enviar la notificación completa en 72h, con los campos exigidos por la autoridad: descripción, impacto estimado, medidas adoptadas y estado. Conservar copia de todas las notificaciones enviadas.",
+          "referencia_articulo": "Art. 23.4.b Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-INC-005",
+          "texto": "¿Se elabora un informe final de cada incidente significativo en el plazo de un mes desde la notificación inicial?",
+          "ayuda": "Como cierre del ciclo de notificación, NIS2 requiere un informe final al cabo de un mes con descripción detallada del incidente, causa raíz, medidas aplicadas y posible impacto transfronterizo.",
+          "requisito_original": "Las entidades presentarán un informe final a más tardar un mes después de haber presentado la notificación del incidente, con descripción detallada, tipo, causa raíz, medidas aplicadas y posible impacto transfronterizo.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Incluir en el procedimiento de incidentes la elaboración obligatoria de un informe post-incidente con análisis de causa raíz, lecciones aprendidas, mejoras aplicadas y cierre formal. Enviar a la autoridad competente y archivar internamente.",
+          "referencia_articulo": "Art. 23.4.d Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-INC-006",
+          "texto": "¿Se dispone de criterios documentados para determinar si un incidente es 'significativo' en el sentido de la Directiva NIS2?",
+          "ayuda": "No todos los incidentes deben notificarse: sólo los 'significativos' según el Art. 23.3. La organización debe tener documentados los criterios (impacto en el servicio, número de afectados, pérdidas, duración...) para decidir cuándo se activa la notificación obligatoria. Evita tanto notificar de menos (sanción) como notificar de más (saturación).",
+          "requisito_original": "Un incidente se considerará significativo si ha causado o puede causar perturbaciones operativas graves o pérdidas financieras para la entidad afectada, o si ha afectado o puede afectar a otras personas físicas o jurídicas causando perjuicios considerables.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Elaborar una matriz de clasificación de incidentes con criterios de significatividad: impacto en la prestación del servicio, número de usuarios afectados, duración, pérdidas económicas estimadas y potencial de propagación. Validar los criterios con asesoría legal.",
+          "referencia_articulo": "Art. 23.3 Directiva (UE) 2022/2555"
+        }
+      ]
+    },
+    {
+      "id": "NIS2-CON",
+      "nombre": "Continuidad del negocio y gestión de crisis",
+      "descripcion": "Medidas para garantizar la continuidad de las operaciones y la recuperación ante incidentes graves. Incluye copias de seguridad, planes de continuidad y gestión de crisis.",
+      "peso_bloque": 10,
+      "preguntas": [
+        {
+          "id": "NIS2-CON-001",
+          "texto": "¿Existe un Plan de Continuidad de Negocio (BCP) que cubra escenarios de ciberincidente grave?",
+          "ayuda": "El Plan de Continuidad de Negocio (BCP) describe cómo la organización seguirá operando durante y después de un incidente disruptivo. NIS2 exige que cubra explícitamente escenarios de ciberincidente: ransomware, indisponibilidad masiva, exfiltración de datos.",
+          "requisito_original": "Las entidades adoptarán la continuidad de las actividades empresariales y la gestión de crisis en el contexto de la ciberseguridad.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Elaborar un Plan de Continuidad de Negocio que incluya escenarios de ciberincidente (ransomware, indisponibilidad de sistemas críticos, pérdida de datos). Definir RTO y RPO por servicio, responsables de activación y procedimientos de comunicación en crisis.",
+          "referencia_articulo": "Art. 21.2.c Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-CON-002",
+          "texto": "¿Existe un Plan de Recuperación ante Desastres (DRP) con procedimientos técnicos de restauración de sistemas?",
+          "ayuda": "El Plan de Recuperación ante Desastres (DRP) es la parte técnica del BCP: pasos concretos para restaurar sistemas, datos e infraestructura. Define RTO (tiempo máximo de recuperación) y RPO (pérdida máxima de datos aceptable).",
+          "requisito_original": "Las entidades adoptarán medidas de recuperación en caso de catástrofe y gestión de crisis como parte de las medidas de ciberseguridad.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Redactar un Plan de Recuperación ante Desastres con los pasos técnicos detallados para restaurar cada sistema crítico. Incluir árbol de dependencias, procedimientos de failover, contactos de proveedores y tiempos esperados de recuperación.",
+          "referencia_articulo": "Art. 21.2.c Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-CON-003",
+          "texto": "¿Se realizan pruebas periódicas de los planes de continuidad y recuperación (al menos una vez al año)?",
+          "ayuda": "Un plan sin probar es papel mojado. Los planes de continuidad y recuperación deben ejercitarse al menos una vez al año mediante simulacros (tabletop o pruebas técnicas reales) y actualizarse según los hallazgos.",
+          "requisito_original": "Las medidas adoptadas deben ser eficaces, proporcionales y revisadas periódicamente para garantizar su adecuación al estado de la técnica.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 5,
+          "remediacion": "Planificar ejercicios de simulación de crisis (tabletop exercises) y pruebas técnicas de restauración de backups al menos anualmente. Documentar los resultados, identificar brechas y actualizar los planes en consecuencia.",
+          "referencia_articulo": "Art. 21.1 Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-CON-004",
+          "texto": "¿Se realizan copias de seguridad periódicas de los datos y sistemas críticos, verificando su integridad y capacidad de restauración?",
+          "ayuda": "Las copias de seguridad son la última línea de defensa frente a ransomware y pérdidas catastróficas. Aplica la regla 3-2-1 (3 copias, 2 soportes distintos, 1 offsite) y verifica periódicamente su integridad mediante restauraciones de prueba.",
+          "requisito_original": "Las entidades adoptarán medidas de continuidad de las actividades empresariales, como la gestión de copias de seguridad y la recuperación en caso de catástrofe.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 4,
+          "remediacion": "Implementar una política de copias de seguridad con regla 3-2-1 (3 copias, 2 soportes distintos, 1 offsite). Automatizar las copias, verificar su integridad periódicamente mediante restauraciones de prueba y registrar los resultados.",
+          "referencia_articulo": "Art. 21.2.c Directiva (UE) 2022/2555"
+        }
+      ]
+    },
+    {
+      "id": "NIS2-SUP",
+      "nombre": "Seguridad de la cadena de suministro",
+      "descripcion": "Gestión de los riesgos de ciberseguridad derivados de las relaciones con proveedores y prestadores de servicios, incluyendo proveedores de servicios gestionados y de seguridad gestionada.",
+      "peso_bloque": 10,
+      "preguntas": [
+        {
+          "id": "NIS2-SUP-001",
+          "texto": "¿Existe un inventario actualizado de todos los proveedores con acceso a redes, sistemas o datos de la organización?",
+          "ayuda": "No se puede gestionar lo que no se conoce. Un inventario actualizado de proveedores con acceso a sistemas/datos es el prerrequisito para evaluar y mitigar los riesgos de cadena de suministro.",
+          "requisito_original": "Las entidades abordarán la seguridad de la cadena de suministro incluidos los aspectos de seguridad relativos a las relaciones entre cada entidad y sus proveedores o prestadores de servicios directos.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 1,
+          "remediacion": "Elaborar y mantener actualizado un registro de proveedores con acceso lógico o físico a los sistemas. Clasificar cada proveedor por nivel de criticidad. Revisar el inventario al menos semestralmente y ante cada alta o baja de proveedor.",
+          "referencia_articulo": "Art. 21.2.d Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-SUP-002",
+          "texto": "¿Se evalúa la postura de ciberseguridad de los proveedores críticos antes de su contratación y periódicamente durante la relación?",
+          "ayuda": "Los proveedores críticos deben evaluarse antes de su contratación (due diligence de ciberseguridad) y periódicamente durante la relación. Métodos: cuestionarios estandarizados, exigencia de certificaciones (ISO 27001, ENS) o auditorías.",
+          "requisito_original": "Las entidades tendrán en cuenta las vulnerabilidades específicas de cada proveedor y prestador de servicios y la calidad general de los productos y prácticas de ciberseguridad de sus proveedores.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Aplicar cuestionarios de seguridad a proveedores críticos antes de la firma del contrato y con periodicidad anual. Para proveedores de alto impacto, solicitar certificaciones (ISO 27001, ENS) o realizar auditorías de seguridad. Documentar los resultados y las decisiones adoptadas.",
+          "referencia_articulo": "Art. 21.2.d Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-SUP-003",
+          "texto": "¿Los contratos con proveedores críticos incluyen cláusulas de ciberseguridad, obligaciones de notificación de incidentes y derecho de auditoría?",
+          "ayuda": "Los contratos son la palanca jurídica para imponer requisitos de ciberseguridad a los proveedores: notificación obligatoria de incidentes, derecho de auditoría, niveles mínimos de servicio, penalizaciones por incumplimiento.",
+          "requisito_original": "Las entidades abordarán la seguridad de la cadena de suministro teniendo en cuenta los resultados de las evaluaciones coordinadas de los riesgos para la seguridad de las cadenas de suministro críticas.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Revisar todos los contratos con proveedores críticos e incorporar: cláusulas de cumplimiento NIS2, obligación de notificar incidentes que afecten al cliente, requisitos mínimos de seguridad, derecho de auditoría y penalizaciones por incumplimiento.",
+          "referencia_articulo": "Art. 21.2.d Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-SUP-004",
+          "texto": "¿Se gestionan los riesgos específicos derivados del uso de software, hardware y servicios cloud de terceros?",
+          "ayuda": "Cada componente de software, hardware o servicio cloud introducido en la infraestructura aporta su propia superficie de ataque. Requisitos de seguridad deben formar parte de los criterios de adquisición.",
+          "requisito_original": "Las entidades tendrán en cuenta la calidad y resiliencia generales de los productos y servicios de ciberseguridad, incluidas sus prácticas de desarrollo seguro.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 4,
+          "remediacion": "Incorporar en el proceso de adquisición de software y hardware criterios de seguridad (desarrollo seguro, parches, soporte). Para servicios cloud, verificar las certificaciones de seguridad del proveedor y las condiciones contractuales relativas a la soberanía de los datos.",
+          "referencia_articulo": "Art. 21.2.d Directiva (UE) 2022/2555"
+        }
+      ]
+    },
+    {
+      "id": "NIS2-DES",
+      "nombre": "Seguridad en el desarrollo y adquisición de sistemas",
+      "descripcion": "Medidas de seguridad aplicadas durante el ciclo de vida del desarrollo de software y la adquisición de sistemas, incluyendo la gestión y divulgación de vulnerabilidades.",
+      "peso_bloque": 8,
+      "preguntas": [
+        {
+          "id": "NIS2-DES-001",
+          "texto": "¿Existe una política de desarrollo seguro de software que incluya pruebas de seguridad antes de la puesta en producción?",
+          "ayuda": "El ciclo de vida de desarrollo seguro (SSDLC) incorpora prácticas de seguridad en cada fase: requisitos, diseño, código, pruebas, despliegue, mantenimiento. Evita que vulnerabilidades lleguen a producción.",
+          "requisito_original": "Las entidades adoptarán seguridad en la adquisición, el desarrollo y el mantenimiento de redes y sistemas de información, incluidas la gestión y divulgación de vulnerabilidades.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Implantar un ciclo de vida de desarrollo seguro (SSDLC): revisión de requisitos de seguridad, análisis de código estático (SAST), pruebas de penetración antes de producción y revisión de dependencias de terceros. Documentar los criterios de aceptación de seguridad.",
+          "referencia_articulo": "Art. 21.2.e Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-DES-002",
+          "texto": "¿Existe un proceso formal de gestión de vulnerabilidades que incluya identificación, evaluación, priorización y remediación?",
+          "ayuda": "Identificar vulnerabilidades es continuo: escaneos periódicos, suscripción a CVE, priorización por CVSS y un plazo definido de remediación según la criticidad. Sin proceso formal, las vulnerabilidades se acumulan.",
+          "requisito_original": "Las entidades adoptarán medidas relativas a la gestión y divulgación de vulnerabilidades en sus redes y sistemas de información.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Implementar un proceso de gestión de vulnerabilidades: suscripción a fuentes de inteligencia (CVE, CERT), escaneo periódico de vulnerabilidades, clasificación por criticidad (CVSS), asignación de plazos de remediación según nivel y registro de todas las acciones tomadas.",
+          "referencia_articulo": "Art. 21.2.e Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-DES-003",
+          "texto": "¿Se aplican actualizaciones y parches de seguridad en los sistemas con una frecuencia y criterios definidos?",
+          "ayuda": "Aplicar parches con rapidez es una de las medidas más efectivas para reducir riesgo. La política debe definir plazos por criticidad (p. ej., parches críticos en 72h) y mantener un inventario de sistemas y versiones.",
+          "requisito_original": "Las entidades adoptarán medidas adecuadas para la seguridad en la adquisición, el desarrollo y el mantenimiento de sus sistemas, incluyendo la gestión de vulnerabilidades.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Definir una política de gestión de parches con plazos máximos de aplicación según criticidad (p.ej. crítica: 72h, alta: 7 días, media: 30 días). Automatizar la aplicación de parches donde sea posible. Mantener un registro de sistemas y sus versiones.",
+          "referencia_articulo": "Art. 21.2.e Directiva (UE) 2022/2555"
+        }
+      ]
+    },
+    {
+      "id": "NIS2-EVA",
+      "nombre": "Evaluación de la eficacia de las medidas de ciberseguridad",
+      "descripcion": "Procesos para medir, auditar y revisar la efectividad de las medidas de ciberseguridad implantadas, incluyendo auditorías internas y revisiones por la dirección.",
+      "peso_bloque": 8,
+      "preguntas": [
+        {
+          "id": "NIS2-EVA-001",
+          "texto": "¿Existen indicadores o métricas definidas para medir la eficacia de las medidas de ciberseguridad implantadas?",
+          "ayuda": "Sin métricas no se puede demostrar que las medidas funcionan. Un cuadro de mando con KPIs (MTTD, MTTR, % parcheado, cobertura formativa...) permite evaluar la eficacia de la ciberseguridad de forma objetiva.",
+          "requisito_original": "Las entidades adoptarán políticas y procedimientos para evaluar la eficacia de las medidas de gestión de riesgos de ciberseguridad.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 5,
+          "remediacion": "Definir un cuadro de mando de ciberseguridad con KPIs medibles: tiempo medio de detección (MTTD), tiempo medio de respuesta (MTTR), número de incidentes por mes, porcentaje de sistemas parcheados, cobertura de formación, etc. Revisar trimestralmente con la dirección.",
+          "referencia_articulo": "Art. 21.2.f Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-EVA-002",
+          "texto": "¿Se realizan auditorías internas o revisiones periódicas del estado de cumplimiento NIS2 al menos una vez al año?",
+          "ayuda": "Una auditoría interna anual con alcance NIS2 verifica el cumplimiento real frente al previsto, identifica no conformidades y alimenta el plan de acciones correctivas. Las guías de ENISA aportan checklist de referencia.",
+          "requisito_original": "Las entidades adoptarán políticas y procedimientos para evaluar la eficacia de las medidas de gestión de riesgos de ciberseguridad.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 5,
+          "remediacion": "Planificar una auditoría interna de ciberseguridad anual con alcance NIS2. Usar como referencia la lista de verificación del Art. 21 y las guías de la ENISA. Documentar hallazgos, no conformidades y un plan de acciones correctivas con responsables y plazos.",
+          "referencia_articulo": "Art. 21.2.f Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-EVA-003",
+          "texto": "¿La alta dirección revisa periódicamente el estado de la ciberseguridad y aprueba las acciones de mejora?",
+          "ayuda": "La alta dirección debe revisar periódicamente (mínimo trimestral) el estado de la ciberseguridad: KPIs, incidentes, auditorías, plan de tratamiento de riesgos. NIS2 hace responsables personalmente a los directivos por incumplimientos.",
+          "requisito_original": "Los órganos de dirección supervisarán la ejecución de las medidas de gestión de riesgos de ciberseguridad adoptadas y serán responsables de los incumplimientos.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 5,
+          "remediacion": "Establecer un comité o reunión de seguridad con participación directiva de frecuencia mínima trimestral. Presentar el estado de los KPIs de ciberseguridad, incidentes relevantes, resultado de auditorías y estado del plan de tratamiento de riesgos. Registrar acuerdos y decisiones.",
+          "referencia_articulo": "Art. 20.1 Directiva (UE) 2022/2555"
+        }
+      ]
+    },
+    {
+      "id": "NIS2-FOR",
+      "nombre": "Ciberhigiene y formación en ciberseguridad",
+      "descripcion": "Medidas de concienciación, formación y prácticas básicas de higiene digital para todo el personal de la organización.",
+      "peso_bloque": 7,
+      "preguntas": [
+        {
+          "id": "NIS2-FOR-001",
+          "texto": "¿Existe un programa de formación y concienciación en ciberseguridad para todos los empleados, actualizado al menos anualmente?",
+          "ayuda": "Toda la plantilla debe recibir formación en ciberseguridad al menos una vez al año, con contenidos adaptados a su rol y a las amenazas actuales (phishing, contraseñas, notificación de incidentes, protección de datos).",
+          "requisito_original": "Las entidades adoptarán prácticas básicas de ciberhigiene y formación en materia de ciberseguridad.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Diseñar un programa de concienciación en ciberseguridad con sesiones obligatorias para todo el personal (mínimo anual). Incluir: phishing, contraseñas, uso seguro de dispositivos, notificación de incidentes y protección de datos. Registrar la participación y evaluar la comprensión.",
+          "referencia_articulo": "Art. 21.2.g Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-FOR-002",
+          "texto": "¿Se realizan simulaciones de phishing u otros ejercicios prácticos de ciberseguridad para el personal?",
+          "ayuda": "Las simulaciones de phishing son ejercicios prácticos que miden y mejoran la capacidad real de la plantilla para detectar correos maliciosos. Recomendadas al menos 2 veces al año, con enfoque formativo (no punitivo).",
+          "requisito_original": "Las entidades adoptarán prácticas básicas de ciberhigiene como parte de sus medidas de ciberseguridad.",
+          "tipo": "recomendado",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 6,
+          "nivel": "medio",
+          "fase_pds": 4,
+          "remediacion": "Implementar campañas periódicas de simulación de phishing (al menos 2 veces al año). Usar los resultados para identificar áreas de mejora y personalizar la formación. No usar los resultados con fines punitivos, sino formativos.",
+          "referencia_articulo": "Art. 21.2.g Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-FOR-003",
+          "texto": "¿Existen políticas de ciberhigiene documentadas y de cumplimiento obligatorio para todos los empleados (contraseñas, actualizaciones, uso de dispositivos)?",
+          "ayuda": "Las prácticas básicas de ciberhigiene (contraseñas robustas, actualizaciones, escritorio limpio, uso seguro de dispositivos...) deben estar recogidas en una política de cumplimiento obligatorio y aceptada formalmente por cada empleado.",
+          "requisito_original": "Las entidades adoptarán prácticas básicas de ciberhigiene y formación en materia de ciberseguridad.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Publicar una política de uso aceptable y ciberhigiene que incluya: requisitos de contraseñas, obligación de actualización de software, uso de dispositivos corporativos, política de escritorio limpio y notificación de incidentes. Requerir firma de aceptación por todos los empleados.",
+          "referencia_articulo": "Art. 21.2.g Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-FOR-004",
+          "texto": "¿El personal técnico de ciberseguridad recibe formación especializada y actualizada acorde con sus responsabilidades?",
+          "ayuda": "El equipo técnico de ciberseguridad necesita formación especializada y actualizada: certificaciones (CISSP, CISM, CEH, OSCP...), asistencia a eventos del sector y acceso a fuentes de inteligencia de amenazas.",
+          "requisito_original": "Las entidades adoptarán formación en materia de ciberseguridad de forma proporcional a la exposición al riesgo y a las funciones desempeñadas.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 4,
+          "remediacion": "Definir un plan de formación específico para el equipo técnico de seguridad: certificaciones relevantes (CISSP, CISM, CEH, etc.), asistencia a eventos del sector, suscripción a fuentes de inteligencia de amenazas. Presupuestar y ejecutar anualmente.",
+          "referencia_articulo": "Art. 21.2.g Directiva (UE) 2022/2555"
+        }
+      ]
+    },
+    {
+      "id": "NIS2-CRI",
+      "nombre": "Criptografía y cifrado",
+      "descripcion": "Uso de criptografía y cifrado para proteger la confidencialidad, integridad y autenticidad de la información en tránsito y en reposo.",
+      "peso_bloque": 7,
+      "preguntas": [
+        {
+          "id": "NIS2-CRI-001",
+          "texto": "¿Existe una política de uso de criptografía que defina los algoritmos, longitudes de clave y casos de uso obligatorio?",
+          "ayuda": "Una política de criptografía define qué algoritmos están aprobados (AES-256, RSA-2048+, TLS 1.2+), en qué casos es obligatorio cifrar (datos en tránsito, datos sensibles en reposo, autenticación), y cómo se gestiona el ciclo de vida de las claves.",
+          "requisito_original": "Las entidades adoptarán el uso de la criptografía y, si procede, del cifrado como medida de gestión de riesgos de ciberseguridad.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Redactar una política de criptografía que defina: algoritmos aprobados (AES-256, RSA-2048+, ECDSA), protocolos (TLS 1.2 mínimo, preferible TLS 1.3), casos de uso obligatorio (datos en tránsito, datos sensibles en reposo, autenticación) y gestión del ciclo de vida de claves.",
+          "referencia_articulo": "Art. 21.2.h Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-CRI-002",
+          "texto": "¿Se cifran las comunicaciones que contienen información sensible o que se producen a través de redes no confiables?",
+          "ayuda": "Todas las comunicaciones que transporten información sensible o atraviesen redes no confiables deben cifrarse con TLS 1.2 o superior (TLS 1.3 preferido). HSTS, certificate pinning y auditorías de configuración son complementos recomendables.",
+          "requisito_original": "Las entidades adoptarán el uso de la criptografía y, si procede, del cifrado.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Verificar que todas las comunicaciones externas e internas con datos sensibles usan TLS 1.2 o superior. Implementar HSTS en aplicaciones web. Cifrar el correo electrónico corporativo para comunicaciones confidenciales. Auditar periódicamente la configuración TLS de los servicios expuestos.",
+          "referencia_articulo": "Art. 21.2.h Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-CRI-003",
+          "texto": "¿Se cifran los datos sensibles almacenados (en bases de datos, dispositivos móviles, portátiles y soportes extraíbles)?",
+          "ayuda": "Los datos sensibles almacenados deben cifrarse: discos de portátiles y móviles, campos sensibles en bases de datos, soportes extraíbles. Sin cifrado en reposo, una pérdida física o un acceso lógico no autorizado expone toda la información.",
+          "requisito_original": "Las entidades adoptarán el uso de la criptografía y, si procede, del cifrado como parte de sus medidas de gestión de riesgos.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Activar el cifrado de disco completo en portátiles y dispositivos móviles corporativos. Cifrar los campos sensibles en bases de datos. Cifrar los soportes extraíbles. Inventariar todos los repositorios de datos sensibles y verificar el estado de cifrado de cada uno.",
+          "referencia_articulo": "Art. 21.2.h Directiva (UE) 2022/2555"
+        }
+      ]
+    },
+    {
+      "id": "NIS2-ACC",
+      "nombre": "Control de acceso, autenticación y seguridad de recursos humanos",
+      "descripcion": "Gestión de identidades y accesos, autenticación robusta, principio de mínimo privilegio, y medidas de seguridad vinculadas al ciclo de vida del empleado.",
+      "peso_bloque": 8,
+      "preguntas": [
+        {
+          "id": "NIS2-ACC-001",
+          "texto": "¿Se aplica el principio de mínimo privilegio en la asignación de accesos a sistemas y datos?",
+          "ayuda": "El principio de mínimo privilegio (PoLP) consiste en otorgar a cada cuenta sólo los permisos estrictamente necesarios para su función, ni uno más. RBAC (control de acceso basado en roles) es el mecanismo estándar para implementarlo a escala.",
+          "requisito_original": "Las entidades adoptarán medidas de control de acceso y gestión de activos como parte de las medidas de gestión de riesgos de ciberseguridad.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 4,
+          "remediacion": "Revisar todos los permisos de acceso y reducirlos al mínimo necesario para cada rol. Implementar control de acceso basado en roles (RBAC). Revisar los accesos privilegiados trimestralmente y revocarlos cuando no sean necesarios. Documentar el proceso de alta, cambio y baja de accesos.",
+          "referencia_articulo": "Art. 21.2.i Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-ACC-002",
+          "texto": "¿Se implementa autenticación multifactor (MFA) para el acceso a sistemas críticos, acceso remoto y cuentas privilegiadas?",
+          "ayuda": "La autenticación multifactor (MFA) añade una segunda capa más allá de la contraseña: aplicación TOTP, llave hardware FIDO2 o factor biométrico. NIS2 la considera obligatoria en acceso remoto, cuentas privilegiadas y sistemas críticos.",
+          "requisito_original": "Las entidades adoptarán el uso de soluciones de autenticación multifactor o de autenticación continua, sistemas de comunicaciones de voz, vídeo y texto seguros y sistemas de comunicación de emergencia seguros.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 4,
+          "remediacion": "Implementar MFA en: VPN y acceso remoto, correo corporativo, panel de administración de sistemas, acceso a datos sensibles y todas las cuentas con privilegios elevados. Priorizar el uso de aplicaciones de autenticación (TOTP) o llaves de seguridad hardware (FIDO2) sobre SMS.",
+          "referencia_articulo": "Art. 21.2.j Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-ACC-003",
+          "texto": "¿Existe un proceso formal de gestión de identidades que cubra el ciclo completo: alta, modificación, revisión y baja de accesos?",
+          "ayuda": "La gestión de identidades cubre todo el ciclo del empleado: alta (qué accesos se conceden), modificación (si cambia de puesto), revisión periódica (¿siguen siendo necesarios?) y baja (revocación inmediata). Las cuentas huérfanas son uno de los vectores de ataque más explotados.",
+          "requisito_original": "Las entidades adoptarán medidas de control de acceso y gestión de activos como parte de sus medidas técnicas y organizativas de ciberseguridad.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Definir procedimientos de onboarding y offboarding que incluyan la gestión de accesos. Garantizar la revocación inmediata de accesos en caso de baja del empleado. Realizar revisiones periódicas (mínimo semestral) de todos los accesos activos, especialmente los privilegiados.",
+          "referencia_articulo": "Art. 21.2.i Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-ACC-004",
+          "texto": "¿Se aplican medidas de seguridad en los recursos humanos, incluyendo verificaciones previas a la contratación y acuerdos de confidencialidad?",
+          "ayuda": "Las medidas de seguridad en RR.HH. cubren todo el ciclo de vida del empleado: verificación de antecedentes (cuando la ley lo permita), firma de NDA, formación inicial, devolución de activos a la baja y revocación inmediata de accesos.",
+          "requisito_original": "Las entidades adoptarán medidas de seguridad en los recursos humanos, políticas de control de acceso y gestión de activos.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 3,
+          "remediacion": "Incluir en el proceso de contratación: verificación de antecedentes (donde lo permita la ley), firma de acuerdo de confidencialidad (NDA), formación de seguridad inicial y aceptación de las políticas de uso. Definir el proceso de devolución de activos y revocación de accesos en la baja.",
+          "referencia_articulo": "Art. 21.2.i Directiva (UE) 2022/2555"
+        },
+        {
+          "id": "NIS2-ACC-005",
+          "texto": "¿Se utilizan comunicaciones seguras (cifradas) para las comunicaciones internas que contengan información sensible?",
+          "ayuda": "Las comunicaciones internas con información sensible deben usar herramientas con cifrado de extremo a extremo. Adicionalmente, hay que disponer de canales seguros de comunicación de emergencia para situaciones de crisis o incidente grave.",
+          "requisito_original": "Las entidades adoptarán el uso de sistemas de comunicaciones de voz, vídeo y texto seguros y sistemas de comunicación de emergencia seguros dentro de la entidad.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["esencial", "importante"],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 4,
+          "remediacion": "Evaluar las herramientas de comunicación interna en uso y garantizar que las que manejan información sensible utilizan cifrado de extremo a extremo. Definir canales de comunicación de emergencia seguros para situaciones de crisis o incidente grave.",
+          "referencia_articulo": "Art. 21.2.j Directiva (UE) 2022/2555"
+        }
+      ]
+    }
+  ]
+}

@@ -40,6 +40,19 @@
 - Las normativas con `sectores_aplicables: []` son universales y se muestran a todos
 - Las normativas con sectores definidos sólo se muestran a los usuarios del sector correspondiente
 
+#### Esquema canónico y validación
+
+Las normativas nuevas (a partir de NIS2) siguen un contrato JSON canónico definido en `backend/seed/schema_normativa.json`. El validador `backend/seed/validate_normativa.py` se ejecuta en `make seed` (en el host) **antes** del seed real y aborta si algún JSON no cumple el contrato (campos obligatorios, enums válidos, suma de `peso_bloque` = 100).
+
+Campos canónicos por pregunta: `id`, `texto`, `peso`, `nivel`, `fase_pds`, `remediacion`, `ayuda` (texto plano para tooltip), `requisito_original` (cita textual del fragmento legal), `tipo` (`obligatorio` / `recomendado`), `aplicabilidad` (perfiles aplicables, p. ej. `["esencial","importante"]`), `referencia_articulo` (cita al artículo o control). Campos canónicos por bloque: `descripcion`, `peso_bloque` (0–100, deben sumar 100). Campo canónico por normativa: `referencia_oficial` (cita legal con fecha).
+
+Las normativas legacy (`iso27001`, `ens`) tienen `null` / `[]` en estos campos hasta que Cris las regenere en formato canónico.
+
+Estado actual del seed:
+- `iso27001` — 6 bloques, 25 preguntas (placeholder, sin campos canónicos)
+- `ens` — 4 bloques, 15 preguntas (placeholder, sin campos canónicos)
+- `nis2` — 10 bloques, 40 preguntas (formato canónico completo)
+
 ### Evaluaciones — `/resultado`
 | Método | Endpoint | Descripción |
 |--------|----------|-------------|
@@ -120,3 +133,15 @@ No existe ninguna página en el frontend. Se necesita una página nueva con:
 - Filtros por estado y periodo
 - Enlace a la ficha original en PLACSP (campo `enlace`)
 - Botón de sincronización con indicador de estado (en curso / última sincronización / total de registros)
+
+### 7. Campos canónicos enriquecidos en las preguntas
+**Devueltos por:** `GET /normativas/:id` (y por cualquier endpoint que serialice una normativa)
+
+A partir de NIS2, cada pregunta incluye campos que el frontend actualmente ignora:
+- `ayuda` — texto en lenguaje plano para mostrar como tooltip o panel desplegable junto a la pregunta
+- `requisito_original` — cita textual del fragmento legal que origina la pregunta (útil en informes / PDS)
+- `tipo` — `obligatorio` o `recomendado` (badge de prioridad en el cuestionario)
+- `aplicabilidad` — perfiles a los que aplica la pregunta (badge informativo)
+- `referencia_articulo` — cita exacta al artículo (p. ej. `"Art. 21.2.h Directiva (UE) 2022/2555"`)
+
+A nivel de bloque, `descripcion` y `peso_bloque` también se ignoran hoy. `Cuestionario.jsx` y `Resultado.jsx` son los principales candidatos para consumir estos campos.
