@@ -7,11 +7,11 @@ const Normativa = require('../models/Normativa');
 const { construirRemediaciones, getNivel } = require('../utils/scoring');
 
 const FASES = {
-  1: 'Situación Actual',
-  2: 'Sistema de Gestión de Seguridad',
-  3: 'Normativa y Procedimientos',
-  4: 'Formación y Concienciación',
-  5: 'Servicios Externos y Mejora Continua'
+  1: 'Análisis de situación inicial',
+  2: 'Análisis y evaluación de riesgos',
+  3: 'Definición del Plan Director',
+  4: 'Implantación de medidas',
+  5: 'Monitorización y mejora continua'
 };
 
 router.get('/:resultadoId', requireAuth, async (req, res) => {
