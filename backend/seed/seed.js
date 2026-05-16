@@ -1,10 +1,15 @@
+const fs = require('fs');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 const mongoose = require('mongoose');
 const Normativa = require('../models/Normativa');
-const NIS2 = require('./NIS2_normativa.json');
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/cybersec_audit';
+
+const normativasCanonicas = fs.readdirSync(__dirname)
+  .filter(f => f.endsWith('_normativa.json') && f !== 'schema_normativa.json')
+  .sort()
+  .map(f => require(`./${f}`));
 
 const normativas = [
   {
@@ -123,7 +128,7 @@ const normativas = [
       }
     ]
   },
-  NIS2
+  ...normativasCanonicas
 ];
 
 async function seed() {

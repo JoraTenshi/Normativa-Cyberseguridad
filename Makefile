@@ -54,7 +54,7 @@ up: setup cert $(BACKEND_DIR)/.env
 	done
 	@echo " Backend ready."
 	@echo ">>> [4/4] Validating normativa JSONs and seeding database..."
-	@cd $(BACKEND_DIR)/seed && python3 validate_normativa.py NIS2_normativa.json
+	@cd $(BACKEND_DIR)/seed && for f in *_normativa.json; do [ "$$f" = "schema_normativa.json" ] && continue; python3 validate_normativa.py "$$f" || exit 1; done
 	docker exec cybersec_backend node seed/seed.js
 	@echo ""
 	@echo "CyberAudit is up and running!"
@@ -117,7 +117,7 @@ $(FRONTEND_DIR)/node_modules: $(FRONTEND_DIR)/package.json
 
 # ── Database seed (validates on host, then runs inside backend container) ────
 seed:
-	@cd $(BACKEND_DIR)/seed && python3 validate_normativa.py NIS2_normativa.json
+	@cd $(BACKEND_DIR)/seed && for f in *_normativa.json; do [ "$$f" = "schema_normativa.json" ] && continue; python3 validate_normativa.py "$$f" || exit 1; done
 	docker exec cybersec_backend node seed/seed.js
 
 # ── Logs ──────────────────────────────────────────────────────────────────────
