@@ -40,7 +40,7 @@ services:
     expose:
       - "3000"
     environment:
-      VITE_API_URL: ${VITE_API_URL:-http://localhost/api}
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:8080/api}
     volumes:
       - ./frontend:/app
     networks:
@@ -50,7 +50,7 @@ services:
     build: ./nginx
     container_name: normativa-cyberseguridad-nginx
     ports:
-      - "80:80"
+      - "8080:80"
     depends_on:
       - backend
       - frontend
