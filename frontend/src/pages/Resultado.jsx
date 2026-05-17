@@ -39,7 +39,7 @@ export default function Resultado() {
           <div
             className={`inline-block text-sm font-bold px-3 py-1 rounded-full mb-3 ${colores.badge}`}
           >
-            {t('resultado.level', { nivel: resultado.nivel_cumplimiento })}
+            {t('resultado.level', { nivel: t('nivel.' + resultado.nivel_cumplimiento) })}
           </div>
           <p className="text-slate-400 text-sm">
             {t('resultado.questions_evaluated', { count: resultado.preguntas_evaluadas })}

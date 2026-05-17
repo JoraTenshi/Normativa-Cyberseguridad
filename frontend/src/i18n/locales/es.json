@@ -23,5 +23,8 @@
   "remediation.recommended": "Recomendado",
   "remediation.answered": "Respondido: {{value}}",
   "remediation.value_partial": "Parcialmente",
-  "remediation.value_no": "No"
+  "remediation.value_no": "No",
+  "nivel.ALTO": "ALTO",
+  "nivel.MEDIO": "MEDIO",
+  "nivel.BAJO": "BAJO"
 }
