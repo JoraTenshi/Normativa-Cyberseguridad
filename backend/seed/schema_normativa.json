@@ -63,6 +63,30 @@
           "maximum": 100,
           "description": "Peso del bloque dentro de la normativa. La SUMA de pesos de todos los bloques debe ser EXACTAMENTE 100 (regla validada en el script de Python)."
         },
+        "temas": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "access_control",
+              "asset_management",
+              "authentication",
+              "awareness_training",
+              "business_continuity",
+              "cryptography",
+              "data_protection",
+              "incident_response",
+              "logging_monitoring",
+              "network_security",
+              "physical_security",
+              "risk_management",
+              "security_policy",
+              "supplier_risk",
+              "vulnerability_management"
+            ]
+          },
+          "description": "Temas transversales del bloque (vocabulario cerrado para cross-mapping multinormativa). Opcional. Si se omite, el bloque no contribuye a la estimación cruzada. Mantener sincronizado con backend/constants/temas.js."
+        },
         "preguntas": {
           "type": "array",
           "minItems": 1,

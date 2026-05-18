@@ -5,7 +5,7 @@ const { requireAuth } = require('../middleware/auth');
 const Usuario = require('../models/Usuario');
 const Resultado = require('../models/Resultado');
 const Normativa = require('../models/Normativa');
-const { construirRemediaciones, getNivel } = require('../utils/scoring');
+const { construirRemediaciones, getNivel, calcularCoberturaEstimada } = require('../utils/scoring');
 
 const SECTORES_VALIDOS = ['publica', 'sanitaria', 'energia', 'transporte', 'financiero', 'educacion', 'privada', 'otro'];
 const TAMANOS_VALIDOS  = ['micro', 'pequena', 'mediana', 'grande'];
@@ -92,6 +92,13 @@ router.get('/historial/:resultadoId', requireAuth, async (req, res) => {
     const norm = await Normativa.findOne({ id: resultado.normativa }, { nombre: 1, bloques: 1, _id: 0 });
     const remediaciones = norm ? construirRemediaciones(norm, resultado.respuestas) : [];
 
+    const otrasNormativas = norm
+      ? await Normativa.find({ id: { $ne: resultado.normativa } })
+      : [];
+    const cobertura_estimada = norm
+      ? calcularCoberturaEstimada(norm, resultado.puntuaciones_bloques ?? [], otrasNormativas)
+      : [];
+
     res.json({
       ok: true,
       data: {
@@ -104,6 +111,7 @@ router.get('/historial/:resultadoId', requireAuth, async (req, res) => {
         nivel:                getNivel(resultado.porcentaje),
         puntuaciones_bloques: resultado.puntuaciones_bloques ?? [],
         remediaciones,
+        cobertura_estimada,
         createdAt:            resultado.createdAt
       }
     });

@@ -33,4 +33,78 @@ function getNivel(porcentaje) {
   return 'Crítico';
 }
 
-module.exports = { construirRemediaciones, getNivel };
+function calcularCoberturaEstimada(normativaActual, puntuacionesBloques, otrasNormativas) {
+  const mapaBloquesActual = new Map(
+    normativaActual.bloques.map(b => [b.id, b])
+  );
+
+  const perfilAcumulado = {};
+  for (const pb of puntuacionesBloques) {
+    const bloqueDef = mapaBloquesActual.get(pb.bloque_id);
+    if (!bloqueDef || !bloqueDef.temas || bloqueDef.temas.length === 0) continue;
+    for (const tema of bloqueDef.temas) {
+      if (!perfilAcumulado[tema]) perfilAcumulado[tema] = { suma: 0, peso: 0 };
+      perfilAcumulado[tema].suma += pb.porcentaje * pb.max_puntuacion;
+      perfilAcumulado[tema].peso += pb.max_puntuacion;
+    }
+  }
+
+  const perfilTematico = {};
+  for (const [tema, { suma, peso }] of Object.entries(perfilAcumulado)) {
+    perfilTematico[tema] = peso > 0 ? suma / peso : null;
+  }
+
+  if (Object.keys(perfilTematico).length === 0) return [];
+
+  return otrasNormativas.map(norm => {
+    const bloquesEstimados = norm.bloques.map(bloque => {
+      const temasBloque = bloque.temas ?? [];
+      const valores = temasBloque
+        .map(t => perfilTematico[t])
+        .filter(v => v !== undefined && v !== null);
+
+      if (valores.length === 0) {
+        return {
+          bloque_id:           bloque.id,
+          nombre:              bloque.nombre,
+          porcentaje_estimado: null
+        };
+      }
+
+      const media = valores.reduce((s, v) => s + v, 0) / valores.length;
+      return {
+        bloque_id:           bloque.id,
+        nombre:              bloque.nombre,
+        porcentaje_estimado: Math.round(media)
+      };
+    });
+
+    let sumaPond = 0;
+    let pesoTotal = 0;
+    let bloquesConDato = 0;
+    for (const be of bloquesEstimados) {
+      if (be.porcentaje_estimado === null) continue;
+      const bloqueDef = norm.bloques.find(b => b.id === be.bloque_id);
+      const pesoBloque = bloqueDef.preguntas.reduce((s, p) => s + p.peso, 0);
+      sumaPond += be.porcentaje_estimado * pesoBloque;
+      pesoTotal += pesoBloque;
+      bloquesConDato++;
+    }
+
+    const porcentajeEstimado = pesoTotal > 0 ? Math.round(sumaPond / pesoTotal) : null;
+    const coberturaTematica = norm.bloques.length > 0
+      ? Math.round((bloquesConDato / norm.bloques.length) * 100) / 100
+      : 0;
+
+    return {
+      normativa_id:        norm.id,
+      normativa_nombre:    norm.nombre,
+      porcentaje_estimado: porcentajeEstimado,
+      cobertura_tematica:  coberturaTematica,
+      bloques_estimados:   bloquesEstimados,
+      tipo:                'estimado'
+    };
+  });
+}
+
+module.exports = { construirRemediaciones, getNivel, calcularCoberturaEstimada };

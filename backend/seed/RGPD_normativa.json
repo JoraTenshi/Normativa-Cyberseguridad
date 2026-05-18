@@ -1,0 +1,320 @@
+{
+  "id": "rgpd",
+  "nombre": "RGPD — Reglamento General de Protección de Datos",
+  "referencia_oficial": "Reglamento (UE) 2016/679 del Parlamento Europeo y del Consejo, de 27 de abril de 2016",
+  "descripcion": "Reglamento europeo relativo a la protección de las personas físicas en lo que respecta al tratamiento de datos personales y a la libre circulación de estos datos. Establece las obligaciones de responsables y encargados del tratamiento, los derechos de los interesados y el régimen sancionador. Es directamente aplicable en todos los Estados miembros de la UE y a cualquier organización que trate datos de residentes en la UE.",
+  "sectores_aplicables": ["responsable", "encargado"],
+  "bloques": [
+    {
+      "id": "RGPD-BAS",
+      "nombre": "Bases legales del tratamiento",
+      "descripcion": "Identificación, justificación y documentación de la base jurídica que legitima cada tratamiento de datos personales (consentimiento, contrato, obligación legal, interés vital, interés público o interés legítimo).",
+      "peso_bloque": 15,
+      "preguntas": [
+        {
+          "id": "RGPD-BAS-001",
+          "texto": "¿La organización ha identificado y documentado la base legal (Art. 6 RGPD) para cada uno de los tratamientos de datos personales que realiza?",
+          "ayuda": "Todo tratamiento de datos personales debe estar amparado por al menos una de las seis bases legales del Art. 6 del RGPD: consentimiento, ejecución de un contrato, obligación legal, interés vital, interés público o interés legítimo. Sin base legal, el tratamiento es ilícito desde el primer momento.",
+          "requisito_original": "El tratamiento solo será lícito si se cumple al menos una de las condiciones siguientes: consentimiento, ejecución de contrato, obligación legal, interés vital, interés público o interés legítimo.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable", "encargado"],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 3,
+          "remediacion": "Realizar un inventario de todas las actividades de tratamiento e identificar para cada una la base legal aplicable del Art. 6 RGPD. Documentar la justificación en el Registro de Actividades de Tratamiento (RAT). Revisar la base legal al menos anualmente y ante cambios en los tratamientos.",
+          "referencia_articulo": "Art. 6 Reglamento (UE) 2016/679"
+        },
+        {
+          "id": "RGPD-BAS-002",
+          "texto": "¿Cuando el tratamiento se basa en el interés legítimo, se ha realizado y documentado un test de ponderación frente a los derechos del interesado?",
+          "ayuda": "El interés legítimo (Art. 6.1.f) solo puede usarse como base legal si supera un test de ponderación en tres pasos: identificación del interés legítimo, necesidad del tratamiento y equilibrio frente a los derechos y libertades del interesado. Este test debe documentarse por escrito y conservarse como prueba de cumplimiento.",
+          "requisito_original": "El tratamiento será lícito cuando sea necesario para la satisfacción de intereses legítimos perseguidos por el responsable o por un tercero, siempre que sobre dichos intereses no prevalezcan los intereses o los derechos y libertades fundamentales del interesado.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable"],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Para cada tratamiento basado en interés legítimo, elaborar un test de ponderación documentado siguiendo la metodología del CEPD (antiguo Grupo de Trabajo del Artículo 29). Conservar el documento junto al RAT y revisarlo cuando cambien las circunstancias del tratamiento.",
+          "referencia_articulo": "Art. 6.1.f Reglamento (UE) 2016/679"
+        },
+        {
+          "id": "RGPD-BAS-003",
+          "texto": "¿Se aplican garantías reforzadas y una base legal específica (Art. 9 RGPD) cuando se tratan categorías especiales de datos (salud, biométricos, ideología, orientación sexual, etc.)?",
+          "ayuda": "Las categorías especiales de datos (Art. 9 RGPD: salud, datos genéticos, biométricos, origen racial, opiniones políticas, convicciones religiosas, afiliación sindical, vida sexual u orientación sexual) están en principio prohibidas, salvo que concurra alguna de las excepciones del Art. 9.2. Requieren además medidas de seguridad reforzadas.",
+          "requisito_original": "Quedan prohibidos el tratamiento de datos personales que revelen el origen étnico o racial, las opiniones políticas, las convicciones religiosas o filosóficas, o la afiliación sindical, y el tratamiento de datos genéticos, datos biométricos dirigidos a identificar de manera unívoca a una persona física, datos relativos a la salud o datos relativos a la vida sexual o las orientaciones sexuales de una persona física.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable", "encargado"],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 3,
+          "remediacion": "Identificar todos los tratamientos que impliquen categorías especiales de datos. Documentar la excepción del Art. 9.2 que los legitima (consentimiento explícito, obligación laboral, interés vital, etc.). Aplicar medidas técnicas y organizativas reforzadas: cifrado, control de acceso estricto, formación específica y, si procede, EIPD.",
+          "referencia_articulo": "Art. 9 Reglamento (UE) 2016/679"
+        }
+      ]
+    },
+    {
+      "id": "RGPD-DER",
+      "nombre": "Derechos de los interesados",
+      "descripcion": "Garantía y atención efectiva de los derechos de acceso, rectificación, supresión, limitación, portabilidad, oposición y a no ser objeto de decisiones automatizadas reconocidos en los Arts. 15 a 22 del RGPD.",
+      "peso_bloque": 15,
+      "preguntas": [
+        {
+          "id": "RGPD-DER-001",
+          "texto": "¿Existe un procedimiento documentado para atender las solicitudes de derechos de los interesados (acceso, rectificación, supresión, limitación, portabilidad, oposición) en el plazo máximo de un mes?",
+          "ayuda": "Los interesados pueden ejercer sus derechos en cualquier momento. El responsable debe responder en un mes (prorrogable a dos más si la solicitud es compleja, comunicándolo al interesado). Sin un procedimiento documentado es imposible cumplir el plazo y se incurre en infracción.",
+          "requisito_original": "El responsable del tratamiento facilitará al interesado información relativa a sus actuaciones sobre la base de una solicitud con arreglo a los artículos 15 a 22, y, en cualquier caso, en el plazo de un mes a partir de la recepción de la solicitud.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable"],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 3,
+          "remediacion": "Redactar un procedimiento de atención de derechos con plazos, responsables, canales de recepción (correo electrónico dedicado, formulario web) y plantillas de respuesta. Habilitar mecanismos de verificación de identidad proporcionados. Registrar todas las solicitudes recibidas y sus tiempos de respuesta.",
+          "referencia_articulo": "Arts. 12, 15-22 Reglamento (UE) 2016/679"
+        },
+        {
+          "id": "RGPD-DER-002",
+          "texto": "¿Se facilita a los interesados, a solicitud, una copia de sus datos personales tratados en un formato estructurado, de uso común y lectura mecánica (derecho de portabilidad)?",
+          "ayuda": "El derecho a la portabilidad (Art. 20 RGPD) aplica cuando el tratamiento se basa en consentimiento o contrato y se realiza por medios automatizados. El interesado puede pedir sus datos en formato estructurado (CSV, JSON, XML) y transmitirlos a otro responsable.",
+          "requisito_original": "El interesado tendrá derecho a recibir los datos personales que le incumban, que haya facilitado a un responsable del tratamiento, en un formato estructurado, de uso común y lectura mecánica, y a transmitirlos a otro responsable del tratamiento sin que lo impida el responsable al que se los hubiera facilitado.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable"],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 4,
+          "remediacion": "Desarrollar funcionalidades técnicas para exportar los datos personales de cada interesado en formatos estructurados estándar (CSV, JSON o XML). Documentar el alcance del derecho (solo datos facilitados por el interesado, no derivados). Incluir esta capacidad en el procedimiento general de atención de derechos.",
+          "referencia_articulo": "Art. 20 Reglamento (UE) 2016/679"
+        },
+        {
+          "id": "RGPD-DER-003",
+          "texto": "¿Cuando se emplean decisiones automatizadas o elaboración de perfiles con efectos jurídicos sobre el interesado, se le informa y se le garantiza el derecho a obtener intervención humana?",
+          "ayuda": "El Art. 22 RGPD prohíbe, salvo excepciones, las decisiones individuales basadas únicamente en tratamiento automatizado (incluida la elaboración de perfiles) que produzcan efectos jurídicos o afecten significativamente al interesado. Cuando se permitan, debe garantizarse información significativa sobre la lógica aplicada y derecho a intervención humana, expresar el punto de vista e impugnar la decisión.",
+          "requisito_original": "Todo interesado tendrá derecho a no ser objeto de una decisión basada únicamente en el tratamiento automatizado, incluida la elaboración de perfiles, que produzca efectos jurídicos en él o le afecte significativamente de modo similar.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable"],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Identificar todos los procesos con decisiones automatizadas (scoring crediticio, selección de personal, fijación de precios, etc.). Documentar la lógica aplicada en términos comprensibles. Habilitar un canal para que el interesado pueda solicitar intervención humana, expresar su punto de vista e impugnar la decisión.",
+          "referencia_articulo": "Art. 22 Reglamento (UE) 2016/679"
+        }
+      ]
+    },
+    {
+      "id": "RGPD-DOC",
+      "nombre": "Documentación y responsabilidad proactiva",
+      "descripcion": "Obligaciones documentales del responsable y encargado del tratamiento: Registro de Actividades de Tratamiento (RAT), contratos de encargo, Evaluaciones de Impacto (EIPD) y demostración del cumplimiento del principio de responsabilidad proactiva (accountability).",
+      "peso_bloque": 14,
+      "preguntas": [
+        {
+          "id": "RGPD-DOC-001",
+          "texto": "¿La organización mantiene un Registro de Actividades de Tratamiento (RAT) actualizado y completo conforme al Art. 30 RGPD?",
+          "ayuda": "El Registro de Actividades de Tratamiento (RAT) es el documento maestro que inventaría todos los tratamientos de datos personales que realiza la organización: finalidades, categorías de datos, destinatarios, plazos de conservación, transferencias internacionales y medidas de seguridad. Es obligatorio para responsables y encargados (con limitadas excepciones para entidades de menos de 250 empleados).",
+          "requisito_original": "Cada responsable y, en su caso, su representante llevarán un registro de las actividades de tratamiento efectuadas bajo su responsabilidad.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable", "encargado"],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 1,
+          "remediacion": "Elaborar un Registro de Actividades de Tratamiento siguiendo la plantilla de la AEPD. Incluir para cada tratamiento: finalidad, base legal, categorías de interesados y datos, destinatarios, transferencias internacionales, plazos de conservación y medidas técnicas y organizativas. Revisarlo al menos anualmente y ante cualquier cambio relevante.",
+          "referencia_articulo": "Art. 30 Reglamento (UE) 2016/679"
+        },
+        {
+          "id": "RGPD-DOC-002",
+          "texto": "¿Se realiza una Evaluación de Impacto relativa a la Protección de Datos (EIPD) en los tratamientos que puedan suponer un alto riesgo para los derechos y libertades de los interesados?",
+          "ayuda": "La EIPD (Art. 35 RGPD) es obligatoria cuando el tratamiento suponga un alto riesgo: tratamientos a gran escala de categorías especiales, perfilado sistemático, videovigilancia a gran escala, uso de nuevas tecnologías, etc. La AEPD ha publicado una lista de tratamientos que requieren EIPD.",
+          "requisito_original": "Cuando sea probable que un tipo de tratamiento, en particular si utiliza nuevas tecnologías, por su naturaleza, alcance, contexto o fines, entrañe un alto riesgo para los derechos y libertades de las personas físicas, el responsable del tratamiento realizará, antes del tratamiento, una evaluación del impacto.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 2,
+          "remediacion": "Identificar los tratamientos de alto riesgo siguiendo la lista de la AEPD y los criterios del CEPD. Realizar la EIPD utilizando la herramienta Gestiona EIPD de la AEPD o una metodología equivalente. Documentar el resultado, las medidas adoptadas y, si el riesgo residual sigue siendo alto, consultar previamente a la AEPD.",
+          "referencia_articulo": "Art. 35 Reglamento (UE) 2016/679"
+        },
+        {
+          "id": "RGPD-DOC-003",
+          "texto": "¿Existen contratos de encargo de tratamiento (Art. 28 RGPD) firmados con todos los proveedores que acceden a datos personales en nombre de la organización?",
+          "ayuda": "Cualquier proveedor que trate datos personales por cuenta del responsable (hosting, CRM, gestoría, soporte informático, etc.) es un encargado y requiere un contrato escrito con las cláusulas obligatorias del Art. 28.3 RGPD: objeto, duración, finalidad, tipo de datos, obligaciones del encargado, subencargados, etc.",
+          "requisito_original": "Cuando se vaya a realizar un tratamiento por cuenta de un responsable del tratamiento, este elegirá únicamente un encargado que ofrezca garantías suficientes. El tratamiento por el encargado se regirá por un contrato u otro acto jurídico que vincule al encargado respecto del responsable.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable", "encargado"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Identificar a todos los proveedores que tratan datos personales por cuenta de la organización. Firmar con cada uno un contrato de encargo conforme al Art. 28 RGPD (puede usarse la cláusula tipo de la AEPD). Mantener un repositorio actualizado de contratos y revisarlos al menos anualmente. Exigir al encargado autorización previa para subencargos.",
+          "referencia_articulo": "Art. 28 Reglamento (UE) 2016/679"
+        }
+      ]
+    },
+    {
+      "id": "RGPD-SEG",
+      "nombre": "Seguridad del tratamiento",
+      "descripcion": "Medidas técnicas y organizativas apropiadas para garantizar un nivel de seguridad adecuado al riesgo, incluyendo confidencialidad, integridad, disponibilidad y resiliencia, así como la notificación de brechas de seguridad.",
+      "peso_bloque": 12,
+      "preguntas": [
+        {
+          "id": "RGPD-SEG-001",
+          "texto": "¿Se han implantado medidas técnicas y organizativas apropiadas al riesgo (cifrado, seudonimización, control de acceso, etc.) para garantizar la seguridad de los datos personales?",
+          "ayuda": "El Art. 32 RGPD obliga a aplicar medidas de seguridad proporcionales al riesgo. Cita expresamente el cifrado y la seudonimización, la capacidad de garantizar la confidencialidad, integridad, disponibilidad y resiliencia de los sistemas, la capacidad de restaurar el acceso tras un incidente y un proceso de verificación periódica.",
+          "requisito_original": "El responsable y el encargado del tratamiento aplicarán medidas técnicas y organizativas apropiadas para garantizar un nivel de seguridad adecuado al riesgo, que en su caso incluya, entre otros: la seudonimización y el cifrado, la confidencialidad, integridad, disponibilidad y resiliencia, la capacidad de restaurar la disponibilidad y un proceso de verificación periódica.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable", "encargado"],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 4,
+          "remediacion": "Realizar un análisis de riesgos específico de protección de datos. Implementar medidas proporcionales: cifrado de datos en tránsito y en reposo, seudonimización cuando sea posible, control de acceso basado en roles, copias de seguridad, registro de accesos y pruebas periódicas de eficacia. Alinear con ENS o ISO 27001 cuando proceda.",
+          "referencia_articulo": "Art. 32 Reglamento (UE) 2016/679"
+        },
+        {
+          "id": "RGPD-SEG-002",
+          "texto": "¿Existe un procedimiento para notificar las violaciones de seguridad de datos personales a la AEPD en un plazo máximo de 72 horas y, cuando proceda, a los interesados afectados?",
+          "ayuda": "Toda brecha de seguridad que entrañe riesgo para los derechos y libertades de los interesados debe notificarse a la AEPD en un plazo máximo de 72 horas desde su conocimiento (Art. 33 RGPD). Si el riesgo es alto, también hay que comunicarla a los interesados sin dilación indebida (Art. 34 RGPD).",
+          "requisito_original": "En caso de violación de la seguridad de los datos personales, el responsable del tratamiento la notificará a la autoridad de control competente sin dilación indebida y, de ser posible, a más tardar 72 horas después de que haya tenido constancia de ella.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable", "encargado"],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 4,
+          "remediacion": "Redactar un procedimiento de gestión de brechas de seguridad con criterios de evaluación de riesgo, vías de notificación a la AEPD (sede electrónica) y plantillas de comunicación a interesados. Designar un responsable con disponibilidad 24/7. Mantener un registro interno de todas las brechas, notificadas o no, conforme al Art. 33.5 RGPD.",
+          "referencia_articulo": "Arts. 33 y 34 Reglamento (UE) 2016/679"
+        }
+      ]
+    },
+    {
+      "id": "RGPD-TRA",
+      "nombre": "Transparencia e información al interesado",
+      "descripcion": "Obligaciones de información al interesado sobre el tratamiento de sus datos en el momento de la recogida y a lo largo de la relación, conforme a los Arts. 12, 13 y 14 RGPD.",
+      "peso_bloque": 12,
+      "preguntas": [
+        {
+          "id": "RGPD-TRA-001",
+          "texto": "¿Se proporciona a los interesados información clara y completa sobre el tratamiento de sus datos en el momento de la recogida (Arts. 13 y 14 RGPD)?",
+          "ayuda": "En el momento de recoger datos personales del propio interesado (Art. 13) o de una fuente diferente (Art. 14), debe proporcionarse información mínima obligatoria: identidad del responsable, finalidades, base legal, destinatarios, plazos de conservación, derechos, posibilidad de reclamación ante la AEPD, etc.",
+          "requisito_original": "Cuando se obtengan de un interesado datos personales relativos a él, el responsable del tratamiento, en el momento en que estos se obtengan, le facilitará toda la información indicada en el artículo 13: identidad del responsable, finalidades, base jurídica, destinatarios, plazos de conservación y derechos.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable"],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 3,
+          "remediacion": "Redactar cláusulas de información completas siguiendo el modelo por capas recomendado por la AEPD (información básica + ampliada). Incluirlas en formularios web, contratos, comunicaciones de RR.HH. y cualquier punto de recogida de datos. Revisar la redacción al menos anualmente.",
+          "referencia_articulo": "Arts. 13 y 14 Reglamento (UE) 2016/679"
+        },
+        {
+          "id": "RGPD-TRA-002",
+          "texto": "¿La información facilitada al interesado se presenta en lenguaje claro, sencillo y accesible (Art. 12 RGPD), evitando la jerga jurídica?",
+          "ayuda": "El Art. 12 RGPD exige que la información se facilite de forma concisa, transparente, inteligible y de fácil acceso, con un lenguaje claro y sencillo, en particular cuando se dirija a menores. No basta con que esté: tiene que entenderse.",
+          "requisito_original": "El responsable del tratamiento tomará las medidas oportunas para facilitar al interesado toda información relativa al tratamiento en forma concisa, transparente, inteligible y de fácil acceso, con un lenguaje claro y sencillo, en particular cualquier información dirigida específicamente a un niño.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable"],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 3,
+          "remediacion": "Revisar todas las cláusulas informativas con criterios de legibilidad (índice Flesch, lectura nivel ESO). Sustituir la jerga jurídica por ejemplos y lenguaje plano. Usar el modelo por capas: resumen breve + información ampliada accesible mediante enlace. Si se dirige a menores, adaptar especialmente el lenguaje.",
+          "referencia_articulo": "Art. 12 Reglamento (UE) 2016/679"
+        }
+      ]
+    },
+    {
+      "id": "RGPD-CON",
+      "nombre": "Consentimiento",
+      "descripcion": "Requisitos del consentimiento como base legal: condiciones de validez, gestión, prueba y posibilidad de retirada, conforme al Art. 7 y al Art. 8 RGPD para menores.",
+      "peso_bloque": 11,
+      "preguntas": [
+        {
+          "id": "RGPD-CON-001",
+          "texto": "¿Cuando el tratamiento se basa en el consentimiento, este se obtiene de forma libre, específica, informada e inequívoca, mediante una acción afirmativa clara del interesado?",
+          "ayuda": "El Art. 7 RGPD exige que el consentimiento sea libre, específico, informado e inequívoco. No valen casillas premarcadas, silencios ni consentimientos genéricos o forzados. Cada finalidad distinta requiere su propio consentimiento.",
+          "requisito_original": "El consentimiento debe darse mediante un acto afirmativo claro que refleje una manifestación de voluntad libre, específica, informada e inequívoca del interesado de aceptar el tratamiento de datos de carácter personal que le conciernen.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable"],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 4,
+          "remediacion": "Revisar todos los formularios y mecanismos de obtención de consentimiento. Eliminar casillas premarcadas y consentimientos agrupados. Separar consentimientos por finalidad. Implementar un sistema técnico que registre fecha, hora, versión de la política y acción afirmativa concreta del interesado.",
+          "referencia_articulo": "Art. 7 Reglamento (UE) 2016/679"
+        },
+        {
+          "id": "RGPD-CON-002",
+          "texto": "¿La organización puede demostrar (mediante registro) que cada interesado prestó consentimiento, y permite su retirada de forma tan fácil como su otorgamiento?",
+          "ayuda": "El Art. 7.1 RGPD impone al responsable la carga de la prueba del consentimiento. El Art. 7.3 exige que retirarlo sea tan fácil como darlo: si se aceptó con un clic, debe poder retirarse con un clic. Y la retirada no afecta a la licitud del tratamiento previo.",
+          "requisito_original": "Cuando el tratamiento se base en el consentimiento del interesado, el responsable deberá ser capaz de demostrar que aquel consintió el tratamiento de sus datos personales. El interesado tendrá derecho a retirar su consentimiento en cualquier momento. Será tan fácil retirar el consentimiento como darlo.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Implementar un sistema de gestión de consentimientos (CMP) que registre cada acto afirmativo con timestamp, IP, versión textual e identificador del interesado. Habilitar un mecanismo equivalente para la retirada (mismo canal, misma facilidad). Conservar el histórico de consentimientos.",
+          "referencia_articulo": "Art. 7 Reglamento (UE) 2016/679"
+        }
+      ]
+    },
+    {
+      "id": "RGPD-INT",
+      "nombre": "Transferencias internacionales de datos",
+      "descripcion": "Cumplimiento del régimen específico para las transferencias de datos personales fuera del Espacio Económico Europeo (EEE), conforme al Capítulo V del RGPD.",
+      "peso_bloque": 10,
+      "preguntas": [
+        {
+          "id": "RGPD-INT-001",
+          "texto": "¿Las transferencias internacionales de datos fuera del EEE se realizan exclusivamente a países con decisión de adecuación o aplicando garantías adecuadas (Arts. 45 y 46 RGPD)?",
+          "ayuda": "Para transferir datos fuera del EEE hay que cumplir el Capítulo V del RGPD: solo se permite si el país de destino tiene decisión de adecuación de la Comisión, o si se aplican garantías adecuadas (cláusulas contractuales tipo, normas corporativas vinculantes, mecanismos de certificación). Tras la sentencia Schrems II, las cláusulas tipo requieren además una evaluación de impacto sobre la transferencia (TIA).",
+          "requisito_original": "Solo podrán realizarse transferencias de datos personales que sean objeto de tratamiento o vayan a serlo tras su transferencia a un tercer país u organización internacional si el responsable y el encargado del tratamiento cumplen las condiciones establecidas en el presente capítulo.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable", "encargado"],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 3,
+          "remediacion": "Inventariar todas las transferencias internacionales (incluidos accesos remotos a sistemas desde fuera del EEE). Para cada una, verificar la base de transferencia: adecuación, cláusulas contractuales tipo nuevas (Decisión 2021/914), BCR o excepciones del Art. 49. Realizar el Transfer Impact Assessment (TIA) para verificar la efectividad de las garantías frente a la legislación del país de destino.",
+          "referencia_articulo": "Arts. 44 a 49 Reglamento (UE) 2016/679"
+        },
+        {
+          "id": "RGPD-INT-002",
+          "texto": "¿Se informa expresamente a los interesados de las transferencias internacionales de sus datos, indicando país de destino y garantías aplicables?",
+          "ayuda": "Los Arts. 13.1.f y 14.1.f obligan a informar al interesado, en el momento de la recogida, de cualquier transferencia internacional prevista, indicando el país de destino y la base jurídica de la transferencia (adecuación, cláusulas tipo, etc.) y dónde puede obtener una copia de las garantías.",
+          "requisito_original": "Cuando se obtengan datos personales del interesado, el responsable le facilitará la intención del responsable del tratamiento de transferir datos personales a un tercer país u organización internacional y la existencia o ausencia de una decisión de adecuación, o referencia a las garantías adecuadas o apropiadas.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable"],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 3,
+          "remediacion": "Revisar las cláusulas informativas y añadir el detalle de transferencias internacionales: país de destino, base de transferencia (adecuación, cláusulas tipo, etc.) y dónde solicitar copia de las garantías. Mantener actualizada esta información si cambia el proveedor o su ubicación.",
+          "referencia_articulo": "Arts. 13.1.f y 14.1.f Reglamento (UE) 2016/679"
+        }
+      ]
+    },
+    {
+      "id": "RGPD-GOB",
+      "nombre": "Gobernanza y Delegado de Protección de Datos",
+      "descripcion": "Estructura interna de gobernanza de la protección de datos: designación del Delegado de Protección de Datos (DPO) cuando proceda, sus funciones, su independencia y la cultura de cumplimiento.",
+      "peso_bloque": 11,
+      "preguntas": [
+        {
+          "id": "RGPD-GOB-001",
+          "texto": "¿La organización ha designado un Delegado de Protección de Datos (DPO) cuando es obligatorio según el Art. 37 RGPD, y lo ha comunicado a la AEPD?",
+          "ayuda": "La designación del DPO es obligatoria para: (a) autoridades y organismos públicos; (b) responsables cuya actividad principal requiera observación habitual y sistemática a gran escala; (c) tratamiento a gran escala de categorías especiales de datos o relativos a condenas. Además, el Art. 34 LOPDPyGDD añade supuestos adicionales en España. Una vez designado, debe comunicarse a la AEPD y publicarse su contacto.",
+          "requisito_original": "El responsable y el encargado del tratamiento designarán un delegado de protección de datos siempre que el tratamiento lo lleve a cabo una autoridad u organismo público, las actividades principales del responsable o del encargado consistan en operaciones de tratamiento que requieran una observación habitual y sistemática de interesados a gran escala, o las actividades principales del responsable o del encargado consistan en el tratamiento a gran escala de categorías especiales de datos.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable", "encargado"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Analizar si la organización está obligada a designar DPO conforme al Art. 37 RGPD y al Art. 34 LOPDPyGDD. Si procede, designar a una persona con conocimientos especializados, formalizar el nombramiento, garantizar su independencia y publicar sus datos de contacto. Comunicar la designación a la AEPD a través de su sede electrónica.",
+          "referencia_articulo": "Arts. 37 a 39 Reglamento (UE) 2016/679"
+        },
+        {
+          "id": "RGPD-GOB-002",
+          "texto": "¿Se imparte formación periódica en protección de datos al personal con acceso a datos personales?",
+          "ayuda": "El factor humano es la primera causa de incidentes de protección de datos. El RGPD, en sus principios de responsabilidad proactiva y seguridad, exige que el personal con acceso a datos personales reciba formación adecuada y periódica, y que firme compromiso de confidencialidad.",
+          "requisito_original": "El responsable y el encargado del tratamiento aplicarán medidas técnicas y organizativas apropiadas, entre las que figura la formación del personal y la sensibilización en materia de protección de datos.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable", "encargado"],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 5,
+          "remediacion": "Elaborar un plan anual de formación en protección de datos diferenciado por perfiles (administrativos, técnicos, RR.HH., dirección). Incluir formación obligatoria al alta del empleado y refresco anual. Registrar asistencia y evaluación. Combinar con campañas de concienciación y simulacros (phishing).",
+          "referencia_articulo": "Art. 39.1.b Reglamento (UE) 2016/679"
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # CyberAudit — Herramienta de Autoevaluación de Ciberseguridad
 
-Aplicación web para evaluar el nivel de cumplimiento de una organización respecto a normativas de ciberseguridad. Actualmente incluye **ISO 27001** y el **Esquema Nacional de Seguridad (ENS)**.
+Aplicación web para evaluar el nivel de cumplimiento de una organización respecto a normativas de ciberseguridad. Actualmente incluye **NIS2**, **ISO/IEC 27001:2022**, **ISO/IEC 27002:2022**, **RGPD**, **LOPDPyGDD** y el **Esquema Nacional de Seguridad (ENS)**.
 
 Los usuarios responden un cuestionario por bloques temáticos y obtienen un informe de cumplimiento con puntuación y nivel de riesgo. Las cuentas registradas conservan el historial de evaluaciones.
 
@@ -101,15 +101,20 @@ Porcentaje = (Σ puntuaciones_obtenidas / puntuación_máxima) × 100
 | 30–59% | Bajo |
 | < 30% | Crítico |
 
+### Cobertura estimada multinormativa
+
+Al contestar una normativa, la respuesta de `POST /resultado` (y de `GET /me/historial/:id`) incluye además el campo `cobertura_estimada`: una estimación aproximada del cumplimiento del usuario en el resto de normativas, calculada por proyección temática. Cada bloque puede declarar un array `temas` (vocabulario cerrado de 15 valores en `backend/constants/temas.js`); el motor construye un perfil temático ponderado a partir de las respuestas y lo proyecta sobre los bloques de las normativas no contestadas. Las entradas se marcan con `tipo: 'estimado'` para que el frontend las diferencie del cumplimiento medido. Los bloques sin temas comunes con el perfil aparecen como `porcentaje_estimado: null`.
+
 ---
 
 ## Añadir una normativa
 
-Edita `backend/seed/seed.js` añadiendo un objeto al array `normativas` con sus bloques y preguntas. Aplica los cambios con:
+Las normativas siguen un contrato JSON canónico definido en `backend/seed/schema_normativa.json`. Para añadir una nueva:
 
-```bash
-make seed
-```
+1. Crear un archivo `<NOMBRE>_normativa.json` (p. ej. `CRA_normativa.json`) en `backend/seed/`.
+2. Ejecutar `make seed`.
+
+El validador (`backend/seed/validate_normativa.py`) se ejecuta automáticamente en el host antes del seed real y verifica el esquema y la regla de negocio "la suma de `peso_bloque` debe ser 100". Cualquier `*_normativa.json` válido es descubierto e ingerido sin tocar código.
 
 ---
 

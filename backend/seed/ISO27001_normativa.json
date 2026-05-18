@@ -1,0 +1,260 @@
+{
+  "id": "iso27001",
+  "nombre": "ISO/IEC 27001:2022 — Sistema de Gestión de Seguridad de la Información (SGSI)",
+  "referencia_oficial": "ISO/IEC 27001:2022 — Information security, cybersecurity and privacy protection — Information security management systems — Requirements",
+  "descripcion": "Estándar internacional certificable que establece los requisitos para implantar, mantener y mejorar de forma continua un Sistema de Gestión de Seguridad de la Información (SGSI). Sigue la estructura de alto nivel ISO (Annex SL) y se articula en siete cláusulas (de la 4 a la 10) que cubren contexto, liderazgo, planificación, soporte, operación, evaluación del desempeño y mejora. Los controles técnicos del Anexo A se desarrollan en el estándar complementario ISO/IEC 27002.",
+  "sectores_aplicables": ["organizacion"],
+  "bloques": [
+    {
+      "id": "ISO27001-CTX",
+      "nombre": "Contexto de la organización",
+      "descripcion": "Cláusula 4 de la norma. Comprensión de la organización y su contexto, partes interesadas, alcance del SGSI y el propio sistema de gestión como tal.",
+      "peso_bloque": 12,
+      "preguntas": [
+        {
+          "id": "ISO27001-CTX-001",
+          "texto": "¿La organización ha determinado y documentado las cuestiones internas y externas relevantes para el SGSI y las necesidades y expectativas de las partes interesadas?",
+          "ayuda": "La cláusula 4.1 y 4.2 exigen identificar el contexto (cuestiones internas y externas: mercado, tecnología, regulación, recursos) y a las partes interesadas (clientes, empleados, reguladores, proveedores) con sus necesidades de seguridad. Es el punto de partida del SGSI: sin contexto, las decisiones de seguridad son ciegas.",
+          "requisito_original": "La organización debe determinar las cuestiones externas e internas pertinentes para su propósito y que afecten a su capacidad para lograr los resultados previstos de su sistema de gestión de la seguridad de la información. La organización debe determinar las partes interesadas pertinentes para el sistema de gestión de la seguridad de la información y los requisitos pertinentes de estas partes interesadas en materia de seguridad de la información.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["organizacion"],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 1,
+          "remediacion": "Realizar un análisis de contexto documentado: análisis DAFO, PESTEL o equivalente. Identificar las partes interesadas (stakeholders) y sus requisitos de seguridad. Mantener un registro vivo, revisado al menos anualmente y ante cambios significativos del entorno o de la organización.",
+          "referencia_articulo": "Cláusulas 4.1 y 4.2 ISO/IEC 27001:2022"
+        },
+        {
+          "id": "ISO27001-CTX-002",
+          "texto": "¿Se ha definido y documentado formalmente el alcance del SGSI, incluyendo límites, exclusiones justificadas e interfaces con terceros?",
+          "ayuda": "La cláusula 4.3 obliga a documentar el alcance del SGSI: qué procesos, ubicaciones, activos y servicios cubre el sistema, qué queda excluido y por qué. El alcance es lo que se audita y certifica: una mala definición compromete toda la implantación.",
+          "requisito_original": "La organización debe determinar los límites y la aplicabilidad del sistema de gestión de la seguridad de la información para establecer su alcance. El alcance debe estar disponible como información documentada.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["organizacion"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Redactar un documento de alcance del SGSI que incluya: procesos y servicios cubiertos, ubicaciones físicas, unidades organizativas, sistemas TI, exclusiones justificadas e interfaces con terceros (proveedores, filiales). Aprobarlo por la dirección y revisarlo al menos anualmente.",
+          "referencia_articulo": "Cláusula 4.3 ISO/IEC 27001:2022"
+        }
+      ]
+    },
+    {
+      "id": "ISO27001-LID",
+      "nombre": "Liderazgo y compromiso de la dirección",
+      "descripcion": "Cláusula 5 de la norma. Demostración del liderazgo y compromiso de la alta dirección, política de seguridad de la información y asignación de roles, responsabilidades y autoridades.",
+      "peso_bloque": 15,
+      "preguntas": [
+        {
+          "id": "ISO27001-LID-001",
+          "texto": "¿La alta dirección demuestra liderazgo visible con el SGSI y ha asignado responsabilidades y autoridades para los roles relevantes en seguridad de la información?",
+          "ayuda": "Las cláusulas 5.1 y 5.3 exigen que la alta dirección demuestre liderazgo (decisiones, recursos, rendición de cuentas) y asigne responsabilidad y autoridad para que el SGSI cumpla los requisitos de la norma. Suele materializarse con un Responsable del SGSI (CISO o equivalente) con autoridad reconocida y línea directa de reporte a la dirección.",
+          "requisito_original": "La alta dirección debe demostrar liderazgo y compromiso con respecto al sistema de gestión de la seguridad de la información. La alta dirección debe asegurarse de que las responsabilidades y autoridades para los roles pertinentes a la seguridad de la información se asignen y comuniquen dentro de la organización, y asignar la responsabilidad y autoridad para asegurarse de que el sistema de gestión de la seguridad de la información sea conforme con los requisitos de esta norma.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["organizacion"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Formalizar la implicación directiva: actas del comité de dirección donde se traten temas del SGSI, asignación de presupuesto e indicadores reportados periódicamente. Designar formalmente por escrito un Responsable del SGSI (CISO o equivalente) con autoridad reconocida y línea de reporte directo a la dirección. Publicar el organigrama de seguridad y mantenerlo actualizado.",
+          "referencia_articulo": "Cláusulas 5.1 y 5.3 ISO/IEC 27001:2022"
+        },
+        {
+          "id": "ISO27001-LID-002",
+          "texto": "¿Existe una política de seguridad de la información aprobada por la alta dirección, comunicada y revisada periódicamente?",
+          "ayuda": "La cláusula 5.2 exige una política de seguridad de la información que sea apropiada al propósito de la organización, proporcione un marco para fijar objetivos, incluya el compromiso de cumplir requisitos aplicables y mejorar continuamente. Debe estar documentada, comunicada y disponible para las partes interesadas.",
+          "requisito_original": "La alta dirección debe establecer una política de seguridad de la información que sea apropiada al propósito de la organización, incluya objetivos de seguridad de la información o proporcione el marco de referencia para establecer los objetivos de la seguridad de la información, incluya un compromiso de cumplir los requisitos aplicables relacionados con la seguridad de la información, e incluya un compromiso de mejora continua del sistema de gestión de la seguridad de la información.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["organizacion"],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 3,
+          "remediacion": "Redactar y aprobar formalmente la política de seguridad de la información firmada por la alta dirección. Incluir propósito, marco para objetivos, compromiso con requisitos aplicables y con la mejora continua. Comunicarla a toda la plantilla y publicarla en un repositorio accesible. Revisarla al menos anualmente.",
+          "referencia_articulo": "Cláusula 5.2 ISO/IEC 27001:2022"
+        }
+      ]
+    },
+    {
+      "id": "ISO27001-PLA",
+      "nombre": "Planificación, riesgos y objetivos",
+      "descripcion": "Cláusula 6 de la norma. Acciones para abordar riesgos y oportunidades, apreciación y tratamiento de riesgos de seguridad de la información, objetivos de seguridad y planificación de cambios.",
+      "peso_bloque": 22,
+      "preguntas": [
+        {
+          "id": "ISO27001-PLA-001",
+          "texto": "¿La organización tiene un proceso documentado de apreciación de riesgos de seguridad de la información con criterios definidos para aceptación y evaluación?",
+          "ayuda": "La cláusula 6.1.2 exige un proceso formal de apreciación (assessment) de riesgos: definir criterios de aceptación, identificar riesgos asociados a la pérdida de confidencialidad, integridad y disponibilidad, asignar propietarios y valorar consecuencias y probabilidad. Es la base sobre la que se construye todo el plan de tratamiento.",
+          "requisito_original": "La organización debe definir y aplicar un proceso de apreciación del riesgo de la seguridad de la información que establezca y mantenga criterios de riesgo de la seguridad de la información que incluyan los criterios de aceptación del riesgo y los criterios para realizar apreciaciones del riesgo, identifique los riesgos de la seguridad de la información, analice los riesgos y los evalúe.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["organizacion"],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 2,
+          "remediacion": "Adoptar una metodología de análisis de riesgos formal (ISO 27005, MAGERIT o equivalente). Definir criterios de aceptación de riesgo aprobados por la dirección. Documentar el inventario de activos, amenazas, vulnerabilidades, impacto y probabilidad. Producir un mapa de riesgos y actualizarlo al menos anualmente.",
+          "referencia_articulo": "Cláusula 6.1.2 ISO/IEC 27001:2022"
+        },
+        {
+          "id": "ISO27001-PLA-002",
+          "texto": "¿Existe un Plan de Tratamiento de Riesgos con controles seleccionados, propietarios y plazos, y una Declaración de Aplicabilidad (SoA) actualizada?",
+          "ayuda": "La cláusula 6.1.3 exige seleccionar opciones de tratamiento, determinar los controles necesarios, comparar con el Anexo A de la norma y producir una Declaración de Aplicabilidad (SoA) justificando inclusiones y exclusiones. Es el documento más auditado en una certificación ISO 27001.",
+          "requisito_original": "La organización debe definir y aplicar un proceso de tratamiento del riesgo de la seguridad de la información para seleccionar las opciones apropiadas de tratamiento del riesgo, determinar todos los controles que sean necesarios para implementar las opciones elegidas, comparar los controles determinados con los del Anexo A y verificar que no se ha omitido ningún control necesario, y producir una Declaración de Aplicabilidad que contenga los controles necesarios y la justificación de las inclusiones y exclusiones.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["organizacion"],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 3,
+          "remediacion": "Elaborar un Plan de Tratamiento de Riesgos con opciones decididas (modificar, mantener, evitar, compartir), responsables, recursos y plazos. Mapear los controles seleccionados contra los 93 controles del Anexo A de la ISO 27001:2022. Redactar la Declaración de Aplicabilidad (SoA) justificando cada inclusión y exclusión. Mantener viva.",
+          "referencia_articulo": "Cláusula 6.1.3 ISO/IEC 27001:2022"
+        },
+        {
+          "id": "ISO27001-PLA-003",
+          "texto": "¿Se han establecido objetivos de seguridad medibles con planes para alcanzarlos, y se planifican formalmente los cambios en el propio SGSI?",
+          "ayuda": "Las cláusulas 6.2 y 6.3 (la 6.3 es nueva en la versión 2022) exigen objetivos de seguridad medibles a las funciones y niveles pertinentes con un plan para alcanzarlos (qué, recursos, responsable, plazos, método de evaluación) y, además, que cualquier cambio en el propio SGSI se planifique de forma controlada (alcance, política, estructura, controles fundamentales). Sin objetivos medibles no hay forma de demostrar mejora continua.",
+          "requisito_original": "La organización debe establecer los objetivos de la seguridad de la información en las funciones y niveles pertinentes. Los objetivos de la seguridad de la información deben ser coherentes con la política de la seguridad de la información, medibles si es factible, tener en cuenta los requisitos aplicables y los resultados de la apreciación y tratamiento de los riesgos. Cuando la organización determine la necesidad de cambios en el sistema de gestión de la seguridad de la información, los cambios deben planificarse de forma controlada.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["organizacion"],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Definir objetivos SMART para el SGSI alineados con la política: reducción de incidentes, mejora de tiempos de respuesta, cobertura de formación, madurez de controles, etc. Para cada objetivo, documentar acciones, recursos, responsable, plazo y método de medición. Establecer un procedimiento de gestión de cambios del propio SGSI con análisis previo (riesgos derivados, recursos, impacto en certificación) y registro de cada cambio significativo con su justificación y resultado.",
+          "referencia_articulo": "Cláusulas 6.2 y 6.3 ISO/IEC 27001:2022"
+        }
+      ]
+    },
+    {
+      "id": "ISO27001-SOP",
+      "nombre": "Soporte: recursos, competencia, concienciación y documentación",
+      "descripcion": "Cláusula 7 de la norma. Recursos para el SGSI, competencia del personal, toma de conciencia, comunicación interna y externa, e información documentada.",
+      "peso_bloque": 14,
+      "preguntas": [
+        {
+          "id": "ISO27001-SOP-001",
+          "texto": "¿Se proporcionan los recursos necesarios para el SGSI, se garantiza la competencia del personal y se mantiene una toma de conciencia continua sobre la política y la contribución al sistema?",
+          "ayuda": "Las cláusulas 7.1, 7.2 y 7.3 exigen proporcionar los recursos (humanos, técnicos, presupuestarios) del SGSI, asegurar la competencia del personal mediante educación, formación o experiencia, y mantener una concienciación continua sobre la política, la contribución personal al SGSI y las implicaciones de no cumplir los requisitos. La concienciación es continua y mensurable, no un mero curso anual.",
+          "requisito_original": "La organización debe determinar y proporcionar los recursos necesarios para el establecimiento, la implementación, el mantenimiento y la mejora continua del sistema de gestión de la seguridad de la información. La organización debe determinar la competencia necesaria de las personas que realicen un trabajo que afecte a su desempeño en seguridad de la información, y asegurarse de que sean competentes basándose en la educación, formación o experiencia apropiadas. Las personas que realicen el trabajo bajo el control de la organización deben tomar conciencia de la política, de su contribución a la eficacia del sistema de gestión y de las implicaciones de no cumplir los requisitos.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["organizacion"],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 5,
+          "remediacion": "Documentar la asignación de recursos al SGSI (personal, presupuesto, herramientas). Definir competencias requeridas por rol y mantener un registro de cualificaciones (currículo, certificaciones, formación). Diseñar un programa continuo de concienciación: onboarding con formación obligatoria, comunicaciones periódicas, campañas temáticas (phishing simulado, escritorio limpio) y refresco anual. Medir la eficacia mediante encuestas, simulacros y métricas de incidentes humanos.",
+          "referencia_articulo": "Cláusulas 7.1, 7.2 y 7.3 ISO/IEC 27001:2022"
+        },
+        {
+          "id": "ISO27001-SOP-002",
+          "texto": "¿Existe un proceso formal de comunicación y de control de la información documentada del SGSI, que cubra creación, actualización, distribución y conservación?",
+          "ayuda": "Las cláusulas 7.4 y 7.5 cubren la comunicación (qué, cuándo, a quién, cómo) y la información documentada del SGSI: políticas, procedimientos, registros. Debe controlarse identificación (título, fecha, versión), formato, distribución, acceso, recuperación, control de cambios y conservación.",
+          "requisito_original": "La organización debe determinar las comunicaciones internas y externas pertinentes al sistema de gestión de la seguridad de la información. El sistema de gestión de la seguridad de la información de la organización debe incluir la información documentada requerida por esta norma y la información documentada que la organización determine como necesaria para la eficacia del sistema. La información documentada requerida por el sistema de gestión de la seguridad de la información y por esta norma debe controlarse para asegurar que esté disponible y sea idónea para su uso, y que esté protegida adecuadamente.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["organizacion"],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 3,
+          "remediacion": "Definir matriz de comunicaciones del SGSI (interna y externa) con responsables y frecuencias. Establecer un procedimiento de control documental: identificación (código, título, versión, fecha), aprobación, distribución, control de cambios, retención y eliminación. Centralizar toda la documentación del SGSI en un repositorio único con control de versiones.",
+          "referencia_articulo": "Cláusulas 7.4 y 7.5 ISO/IEC 27001:2022"
+        }
+      ]
+    },
+    {
+      "id": "ISO27001-OPE",
+      "nombre": "Operación del SGSI",
+      "descripcion": "Cláusula 8 de la norma. Planificación y control operacional, ejecución de las apreciaciones y tratamiento de los riesgos de seguridad de la información en el día a día.",
+      "peso_bloque": 12,
+      "preguntas": [
+        {
+          "id": "ISO27001-OPE-001",
+          "texto": "¿Se planifican, implementan y controlan los procesos necesarios para cumplir los requisitos de seguridad y para implementar las acciones del Plan de Tratamiento de Riesgos?",
+          "ayuda": "La cláusula 8.1 exige planificar, implementar y controlar los procesos del SGSI; controlar los cambios planificados y revisar las consecuencias de los cambios no previstos; asegurar el control de procesos contratados externamente. La operación es el día a día del SGSI: lo que realmente protege.",
+          "requisito_original": "La organización debe planificar, implementar y controlar los procesos necesarios para cumplir los requisitos y para implementar las acciones determinadas en el capítulo 6, mediante el establecimiento de criterios para los procesos y la implementación del control de los procesos de acuerdo con los criterios. La organización debe controlar los cambios planificados y revisar las consecuencias de los cambios no previstos, tomando medidas para mitigar cualquier efecto adverso, según sea necesario.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["organizacion"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Documentar los procesos operativos del SGSI y los criterios de control para cada uno. Mantener evidencias de su ejecución (registros, logs, actas). Controlar los procesos externalizados mediante contratos, SLA y verificaciones periódicas. Gestionar formalmente los cambios y revisar las consecuencias de los no previstos.",
+          "referencia_articulo": "Cláusula 8.1 ISO/IEC 27001:2022"
+        },
+        {
+          "id": "ISO27001-OPE-002",
+          "texto": "¿Se realizan apreciaciones de riesgos a intervalos planificados o ante cambios significativos, y se ejecuta el Plan de Tratamiento de Riesgos?",
+          "ayuda": "Las cláusulas 8.2 y 8.3 exigen ejecutar las apreciaciones de riesgo a intervalos planificados o cuando se propongan cambios significativos, y ejecutar el plan de tratamiento. La gestión de riesgos no es un documento: es una práctica operativa continua.",
+          "requisito_original": "La organización debe realizar apreciaciones del riesgo de la seguridad de la información a intervalos planificados o cuando se propongan u ocurran cambios significativos. La organización debe implementar el plan de tratamiento del riesgo de la seguridad de la información.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["organizacion"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 2,
+          "remediacion": "Establecer un calendario mínimo anual de reevaluación de riesgos y un trigger automático ante cambios significativos (nuevos servicios, fusiones, brechas, cambios regulatorios). Conservar evidencias documentales de cada apreciación. Realizar seguimiento trimestral del avance del Plan de Tratamiento.",
+          "referencia_articulo": "Cláusulas 8.2 y 8.3 ISO/IEC 27001:2022"
+        }
+      ]
+    },
+    {
+      "id": "ISO27001-EVA",
+      "nombre": "Evaluación del desempeño",
+      "descripcion": "Cláusula 9 de la norma. Seguimiento, medición, análisis y evaluación del SGSI; auditorías internas y revisión por la dirección.",
+      "peso_bloque": 15,
+      "preguntas": [
+        {
+          "id": "ISO27001-EVA-001",
+          "texto": "¿La organización mide y evalúa periódicamente el desempeño del SGSI mediante indicadores definidos, y realiza auditorías internas a intervalos planificados?",
+          "ayuda": "Las cláusulas 9.1 y 9.2 obligan a determinar qué medir (KPIs), los métodos, frecuencia y responsables del análisis, y a realizar auditorías internas planificadas que verifiquen la conformidad con los requisitos propios de la organización y los de la norma. Sin medición y sin auditoría interna no hay forma objetiva de saber si el SGSI funciona ni de detectar no conformidades antes de la auditoría externa.",
+          "requisito_original": "La organización debe evaluar el desempeño de la seguridad de la información, así como la eficacia del sistema de gestión de la seguridad de la información, determinando a qué hacer seguimiento y qué medir, los métodos aplicables, cuándo y por quién. La organización debe llevar a cabo auditorías internas a intervalos planificados para proporcionar información acerca de si el sistema de gestión de la seguridad de la información es conforme con los requisitos propios de la organización y los requisitos de esta norma, y si se implementa y mantiene de manera eficaz. La organización debe planificar, establecer, implementar y mantener uno o varios programas de auditoría.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["organizacion"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 5,
+          "remediacion": "Definir un cuadro de mando de seguridad con KPIs claros: número de incidentes, tiempo medio de respuesta, cobertura de parcheo, ratio de personal formado, no conformidades abiertas. Establecer responsables, frecuencia y método de medición. Establecer un programa anual de auditorías internas que cubra todo el SGSI a lo largo de un ciclo de 1-3 años, designando auditores internos competentes e independientes del área auditada. Documentar plan, ejecución, hallazgos y no conformidades.",
+          "referencia_articulo": "Cláusulas 9.1 y 9.2 ISO/IEC 27001:2022"
+        },
+        {
+          "id": "ISO27001-EVA-002",
+          "texto": "¿La alta dirección revisa el SGSI a intervalos planificados para asegurar su conveniencia, adecuación y eficacia continuas?",
+          "ayuda": "La cláusula 9.3 obliga a la alta dirección a revisar el SGSI considerando entradas como: cambios en cuestiones externas e internas, retroalimentación sobre el desempeño, no conformidades, resultados de auditorías y oportunidades de mejora continua. La revisión debe documentarse con decisiones y acciones acordadas.",
+          "requisito_original": "La alta dirección debe revisar el sistema de gestión de la seguridad de la información de la organización a intervalos planificados para asegurarse de su conveniencia, adecuación y eficacia continuas. La revisión por la dirección debe incluir consideraciones sobre el estado de las acciones desde anteriores revisiones, los cambios en las cuestiones externas e internas pertinentes al sistema de gestión de la seguridad de la información, la retroalimentación sobre el desempeño de la seguridad de la información, los resultados de la apreciación del riesgo, el estado del plan de tratamiento del riesgo y las oportunidades de mejora continua.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["organizacion"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 5,
+          "remediacion": "Convocar al menos una revisión anual del SGSI por la alta dirección con un guion documentado (entradas obligatorias de la cláusula 9.3). Levantar acta con decisiones, asignaciones y plazos. Hacer seguimiento de los acuerdos en la siguiente revisión. Conservar registros como evidencia documental.",
+          "referencia_articulo": "Cláusula 9.3 ISO/IEC 27001:2022"
+        }
+      ]
+    },
+    {
+      "id": "ISO27001-MEJ",
+      "nombre": "Mejora continua y no conformidades",
+      "descripcion": "Cláusula 10 de la norma. Gestión de no conformidades y acciones correctivas, así como la mejora continua de la conveniencia, adecuación y eficacia del SGSI.",
+      "peso_bloque": 10,
+      "preguntas": [
+        {
+          "id": "ISO27001-MEJ-001",
+          "texto": "¿Existe un proceso formal de gestión de no conformidades y acciones correctivas, con análisis de causa raíz y verificación de la eficacia?",
+          "ayuda": "La cláusula 10.2 exige reaccionar ante las no conformidades, evaluar la necesidad de eliminar sus causas mediante análisis de causa raíz, implementar las acciones correctivas, revisar su eficacia y, si procede, realizar cambios en el SGSI. No basta con apagar el fuego: hay que evitar que vuelva a producirse.",
+          "requisito_original": "Cuando ocurra una no conformidad, la organización debe reaccionar ante la no conformidad y, según sea aplicable, tomar acciones para controlarla y corregirla, hacer frente a las consecuencias, evaluar la necesidad de acciones para eliminar las causas de la no conformidad, con el fin de que no vuelva a ocurrir ni ocurra en otra parte, mediante la revisión y el análisis de la no conformidad, la determinación de las causas y la determinación de si existen no conformidades similares, o que potencialmente puedan ocurrir.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["organizacion"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 5,
+          "remediacion": "Establecer un procedimiento de gestión de no conformidades con análisis de causa raíz (5 porqués, Ishikawa). Documentar cada no conformidad con responsable, plazo de cierre y verificación de eficacia. Centralizar el seguimiento en una herramienta (GRC, ticketing). Reportar tendencias a la dirección.",
+          "referencia_articulo": "Cláusula 10.2 ISO/IEC 27001:2022"
+        },
+        {
+          "id": "ISO27001-MEJ-002",
+          "texto": "¿La organización promueve la mejora continua de la conveniencia, adecuación y eficacia del SGSI mediante acciones documentadas?",
+          "ayuda": "La cláusula 10.1 (renombrada y reubicada en la versión 2022, antes 10.3) exige mejorar continuamente la conveniencia, adecuación y eficacia del SGSI. La mejora puede venir de auditorías, métricas, incidentes, sugerencias del personal o del entorno cambiante. La clave es documentarla y demostrarla.",
+          "requisito_original": "La organización debe mejorar continuamente la conveniencia, adecuación y eficacia del sistema de gestión de la seguridad de la información.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["organizacion"],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 5,
+          "remediacion": "Mantener un registro de oportunidades de mejora alimentado por auditorías, métricas, incidentes, sugerencias del personal y entrevistas con partes interesadas. Priorizar y asignar responsables. Revisar el avance en cada revisión por la dirección y comunicar los avances a la organización.",
+          "referencia_articulo": "Cláusula 10.1 ISO/IEC 27001:2022"
+        }
+      ]
+    }
+  ]
+}

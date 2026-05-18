@@ -1,0 +1,174 @@
+{
+  "id": "lopdpygdd",
+  "nombre": "LOPDPyGDD — Ley Orgánica de Protección de Datos Personales y Garantía de los Derechos Digitales",
+  "referencia_oficial": "Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales",
+  "descripcion": "Norma española que adapta el ordenamiento jurídico interno al Reglamento (UE) 2016/679 y desarrolla aspectos específicos no cubiertos por el RGPD. Establece la edad de consentimiento de menores en 14 años, regula el tratamiento de datos de personas fallecidas, introduce un catálogo de derechos digitales (desconexión, intimidad laboral, olvido en redes y buscadores) y desarrolla supuestos específicos como videovigilancia, sistemas de denuncias internas y tratamientos por las administraciones públicas. Las preguntas se centran exclusivamente en lo que la LOPDPyGDD añade al RGPD, evitando duplicidades con éste.",
+  "sectores_aplicables": ["responsable", "encargado"],
+  "bloques": [
+    {
+      "id": "LOPDPYGDD-MEN",
+      "nombre": "Tratamiento de datos de menores de edad",
+      "descripcion": "Especialidades españolas respecto al consentimiento y al tratamiento de datos personales de menores, conforme al Art. 7 de la LOPDPyGDD que fija en 14 años la edad mínima para el consentimiento.",
+      "peso_bloque": 12,
+      "preguntas": [
+        {
+          "id": "LOPDPYGDD-MEN-001",
+          "texto": "¿Cuando se recogen datos personales directamente de menores, se respeta la edad mínima de 14 años fijada en España y se obtiene el consentimiento de padres o tutores en menores de esa edad?",
+          "ayuda": "El Art. 7 de la LOPDPyGDD fija en 14 años la edad mínima para que un menor pueda prestar consentimiento por sí mismo, frente al marco general del RGPD que la fija en 16 años. Por debajo de esa edad, el consentimiento debe ser otorgado por el titular de la patria potestad o tutela, y el responsable debe poder demostrarlo. Esto afecta a todas las plataformas digitales, juegos en línea, redes sociales y servicios que se dirijan a menores.",
+          "requisito_original": "El tratamiento de los datos personales de un menor de edad únicamente podrá fundarse en su consentimiento cuando sea mayor de catorce años. Se exceptúan los supuestos en que la ley exija la asistencia de los titulares de la patria potestad o tutela para la celebración del acto o negocio jurídico en cuyo contexto se recaba el consentimiento para el tratamiento. El tratamiento de los datos de los menores de catorce años, fundado en el consentimiento, sólo será lícito si consta el del titular de la patria potestad o tutela.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable"],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 4,
+          "remediacion": "Identificar todos los puntos de recogida de datos donde puedan participar menores (formularios web, apps, juegos, plataformas educativas). Implementar mecanismos técnicos de verificación de edad (fecha de nacimiento obligatoria, verificación reforzada en menores de 14). Diseñar un flujo específico de consentimiento parental verificable (correo de doble confirmación, identificación del progenitor) y conservar evidencia. Redactar las cláusulas informativas en lenguaje claro y adaptado a la edad cuando se dirijan a menores.",
+          "referencia_articulo": "Art. 7 Ley Orgánica 3/2018"
+        }
+      ]
+    },
+    {
+      "id": "LOPDPYGDD-FAL",
+      "nombre": "Tratamiento de datos de personas fallecidas",
+      "descripcion": "Régimen específico español para el tratamiento de los datos de personas fallecidas, que el RGPD no regula al aplicar solo a personas físicas vivas.",
+      "peso_bloque": 10,
+      "preguntas": [
+        {
+          "id": "LOPDPYGDD-FAL-001",
+          "texto": "¿La organización dispone de un procedimiento para atender las solicitudes de las personas vinculadas al fallecido para acceder, rectificar o suprimir sus datos, respetando las instrucciones que en su caso dejara la persona fallecida?",
+          "ayuda": "El Art. 3 de la LOPDPyGDD habilita a personas vinculadas al fallecido (familiares, herederos y personas designadas en testamento digital) a dirigirse al responsable para acceder a los datos del difunto y solicitar su rectificación o supresión, con los límites que en su caso hubiera expresado el propio fallecido. Es un caso no cubierto por el RGPD y muy relevante para redes sociales, servicios cloud, plataformas de mensajería y servicios sanitarios.",
+          "requisito_original": "Las personas vinculadas al fallecido por razones familiares o de hecho así como sus herederos podrán dirigirse al responsable o encargado del tratamiento al objeto de solicitar el acceso a los datos personales de aquella y, en su caso, su rectificación o supresión. Las personas o instituciones a las que el fallecido hubiese designado expresamente para ello podrán también solicitar el acceso a los datos personales y, en su caso, su rectificación o supresión, con sujeción en su caso a las instrucciones por él dictadas.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable"],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Redactar un procedimiento de gestión de solicitudes post mortem que distinga: personas legitimadas (familiares, herederos o designados expresamente), documentación acreditativa exigible (certificado de defunción, libro de familia, testamento), verificación de instrucciones previas dejadas por el fallecido y registro de cada solicitud. Integrar este procedimiento dentro del flujo general de atención de derechos.",
+          "referencia_articulo": "Art. 3 Ley Orgánica 3/2018"
+        }
+      ]
+    },
+    {
+      "id": "LOPDPYGDD-DER",
+      "nombre": "Garantía de los derechos digitales",
+      "descripcion": "Título X de la LOPDPyGDD: catálogo de derechos digitales sin parangón en el RGPD, especialmente relevantes en el entorno laboral (desconexión digital, intimidad frente a videovigilancia y geolocalización) y en el entorno público (derecho al olvido en buscadores y redes sociales).",
+      "peso_bloque": 30,
+      "preguntas": [
+        {
+          "id": "LOPDPYGDD-DER-001",
+          "texto": "¿La organización tiene aprobada una política interna de desconexión digital, elaborada con la representación legal de los trabajadores, que garantice el derecho de la plantilla a no atender comunicaciones fuera del horario laboral?",
+          "ayuda": "El Art. 88 de la LOPDPyGDD reconoce el derecho a la desconexión digital de los trabajadores y obliga al empleador a elaborar una política interna que la garantice, con audiencia previa a la representación legal de los trabajadores. Aplica a todo empleador, incluido el teletrabajo. No respetar esta política puede dar lugar a reclamaciones laborales y a sanciones de la AEPD.",
+          "requisito_original": "Los trabajadores y los empleados públicos tendrán derecho a la desconexión digital a fin de garantizar, fuera del tiempo de trabajo legal o convencionalmente establecido, el respeto de su tiempo de descanso, permisos y vacaciones, así como de su intimidad personal y familiar. El empleador, previa audiencia de los representantes de los trabajadores, elaborará una política interna dirigida a trabajadores, incluidos los que ocupen puestos directivos, en la que definirán las modalidades de ejercicio del derecho a la desconexión.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Elaborar una política interna de desconexión digital con audiencia previa a la representación legal de los trabajadores. Definir horarios de no comunicación, excepciones por urgencia, criterios para teletrabajo y guardias. Comunicar la política a toda la plantilla y publicarla en el portal del empleado. Realizar formación específica para mandos intermedios y dirección. Revisar la política al menos cada dos años.",
+          "referencia_articulo": "Art. 88 Ley Orgánica 3/2018"
+        },
+        {
+          "id": "LOPDPYGDD-DER-002",
+          "texto": "¿Se informa a los trabajadores, expresa, clara y previamente, del uso de dispositivos digitales, videovigilancia y sistemas de geolocalización en el ámbito laboral, respetando criterios mínimos de proporcionalidad?",
+          "ayuda": "Los Arts. 87, 89 y 90 de la LOPDPyGDD regulan el derecho a la intimidad de los trabajadores frente al uso de dispositivos digitales puestos a su disposición, frente a la videovigilancia en el lugar de trabajo y frente a los sistemas de geolocalización. En todos los casos se exige información previa, expresa, clara y, en el caso de los representantes de los trabajadores, también su consulta. La videovigilancia en zonas de descanso o aseos está prohibida en todo caso.",
+          "requisito_original": "Los trabajadores y los empleados públicos tendrán derecho a la protección de su intimidad en el uso de los dispositivos digitales puestos a su disposición por su empleador. Los empleadores podrán tratar las imágenes obtenidas a través de sistemas de cámaras o videocámaras para el ejercicio de las funciones de control de los trabajadores o los empleados públicos previstas, respectivamente, en el artículo 20.3 del Estatuto de los Trabajadores y en la legislación de función pública, siempre que estas funciones se ejerzan dentro de su marco legal y con los límites inherentes al mismo. Los empleadores deberán informar con carácter previo, y de forma expresa, clara e inequívoca a los trabajadores. Los empleadores podrán tratar los datos obtenidos a través de sistemas de geolocalización para el ejercicio de las funciones de control de los trabajadores, siempre que estas funciones se ejerzan dentro del marco legal.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Redactar políticas internas separadas sobre uso de dispositivos digitales, videovigilancia laboral y geolocalización, todas ellas con consulta previa a la representación de los trabajadores. Informar de forma expresa, clara e inequívoca a la plantilla (carteles informativos, manual del empleado, comunicación firmada). Eliminar cualquier dispositivo en zonas de descanso, vestuarios y aseos. Documentar la proporcionalidad del control y conservar las informaciones entregadas.",
+          "referencia_articulo": "Arts. 87, 89 y 90 Ley Orgánica 3/2018"
+        },
+        {
+          "id": "LOPDPYGDD-DER-003",
+          "texto": "¿La organización dispone de un procedimiento para atender las solicitudes de derecho al olvido en búsquedas de internet y en servicios de redes sociales y equivalentes?",
+          "ayuda": "Los Arts. 93 y 94 de la LOPDPyGDD desarrollan el derecho al olvido en dos vertientes específicamente españolas: en búsquedas de internet (toda persona puede solicitar que los motores de búsqueda dejen de incluir información obsoleta, inexacta o inadecuada) y en servicios de redes sociales y equivalentes (donde el usuario puede pedir la supresión de datos publicados por él mismo o por terceros con consentimiento del afectado o legitimación legal). Aplica especialmente a buscadores, redes sociales, foros y plataformas UGC.",
+          "requisito_original": "Toda persona tiene derecho a que los motores de búsqueda en Internet eliminen de las listas de resultados que se obtuvieran tras una búsqueda efectuada a partir de su nombre los enlaces publicados que contuvieran información relativa a esa persona cuando fuesen inadecuados, inexactos, no pertinentes, no actualizados o excesivos. Toda persona tiene derecho a que sean suprimidos, a su simple solicitud, los datos personales que hubiese facilitado para su publicación por servicios de redes sociales y servicios de la sociedad de la información equivalentes.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable"],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Habilitar un canal específico para solicitudes de olvido digital con plazo de respuesta máximo de un mes (artículo 12 RGPD). Definir criterios de evaluación: obsolescencia, inexactitud, falta de pertinencia o exceso. Documentar las decisiones adoptadas, especialmente las denegaciones, con motivación. Integrar el canal con la atención general de derechos del RGPD.",
+          "referencia_articulo": "Arts. 93 y 94 Ley Orgánica 3/2018"
+        }
+      ]
+    },
+    {
+      "id": "LOPDPYGDD-VID",
+      "nombre": "Videovigilancia y tratamientos específicos con fines de seguridad",
+      "descripcion": "Régimen específico español del tratamiento de imágenes con fines de videovigilancia conforme al Art. 22 de la LOPDPyGDD, que desarrolla las garantías del RGPD para este tratamiento masivo en empresas, comunidades de vecinos y espacios públicos.",
+      "peso_bloque": 12,
+      "preguntas": [
+        {
+          "id": "LOPDPYGDD-VID-001",
+          "texto": "¿Los sistemas de videovigilancia cumplen las condiciones del Art. 22 LOPDPyGDD: finalidad de preservar la seguridad, cartelería informativa visible, conservación máxima de 1 mes y prohibición de captar espacios ajenos?",
+          "ayuda": "El Art. 22 de la LOPDPyGDD regula la videovigilancia con fines de seguridad: solo permite captación dentro del recinto propio, exige cartel informativo visible siguiendo el modelo de la AEPD, conservación máxima de 30 días (salvo conservación derivada de incidentes para su comunicación a las autoridades), e impone la información ampliada disponible a quien la solicite. La cartelería defectuosa es una de las infracciones más sancionadas por la AEPD.",
+          "requisito_original": "Las personas físicas o jurídicas, públicas o privadas, podrán llevar a cabo el tratamiento de imágenes a través de sistemas de cámaras o videocámaras con la finalidad de preservar la seguridad de las personas y bienes, así como de sus instalaciones. Solo podrán captarse imágenes de la vía pública en la medida en que resulte imprescindible para la finalidad mencionada. Los datos serán suprimidos en el plazo máximo de un mes desde su captación, salvo cuando hubieran de ser conservados para acreditar la comisión de actos que atenten contra la integridad de personas, bienes o instalaciones. El deber de información previsto en el artículo 12 del Reglamento (UE) 2016/679 se entenderá cumplido mediante la colocación de un dispositivo informativo en lugar suficientemente visible.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable"],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Realizar un inventario de cámaras de videovigilancia y su orientación, eliminando o reorientando las que capten vía pública o propiedades ajenas más allá de lo imprescindible. Instalar el cartel informativo de la AEPD en lugar visible antes de cada zona videovigilada, con código QR o referencia a la información ampliada. Configurar el borrado automático a los 30 días. Documentar los protocolos de conservación excepcional por incidentes y el procedimiento de entrega a fuerzas y cuerpos de seguridad.",
+          "referencia_articulo": "Art. 22 Ley Orgánica 3/2018"
+        }
+      ]
+    },
+    {
+      "id": "LOPDPYGDD-AAP",
+      "nombre": "Tratamientos específicos: sector público y sistemas de información crediticia",
+      "descripcion": "Supuestos específicos regulados por la LOPDPyGDD para el sector público y para tratamientos de gran impacto en España, como los sistemas de información crediticia (ficheros de morosos) y los tratamientos de las Administraciones Públicas.",
+      "peso_bloque": 18,
+      "preguntas": [
+        {
+          "id": "LOPDPYGDD-AAP-001",
+          "texto": "¿Si la organización realiza tratamientos de datos relativos al incumplimiento de obligaciones dinerarias (ficheros de morosidad), cumple los requisitos específicos del Art. 20 LOPDPyGDD?",
+          "ayuda": "El Art. 20 de la LOPDPyGDD regula los sistemas de información crediticia (ficheros de morosos como ASNEF o BADEXCUG) imponiendo requisitos específicos: la deuda debe ser cierta, vencida, exigible, impagada, y debe haber sido previamente requerida de pago al deudor. Hay que notificar al afectado en 30 días desde la inclusión, conservar máximo 5 años desde el vencimiento, y solo pueden acceder los acreedores tras haber realizado solicitud de financiación o crédito. Es uno de los tratamientos más vigilados por la AEPD.",
+          "requisito_original": "Salvo prueba en contrario, se presumirá lícito el tratamiento de datos personales relativos al incumplimiento de obligaciones dinerarias, financieras o de crédito por sistemas comunes de información crediticia cuando se cumplan los requisitos siguientes: que los datos hayan sido facilitados por el acreedor o por quien actúe por su cuenta o interés; que se refieran a deudas ciertas, vencidas y exigibles, cuya existencia o cuantía no hubiese sido objeto de reclamación administrativa o judicial; que el acreedor haya informado al afectado en el contrato o en el momento de requerir el pago acerca de la posibilidad de inclusión en dichos sistemas; que los datos únicamente se mantengan en el sistema mientras persista el incumplimiento, con el límite máximo de cinco años desde la fecha de vencimiento de la obligación dineraria.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable"],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Si la organización incorpora deudores a sistemas comunes de información crediticia, verificar el cumplimiento estricto de los seis requisitos del Art. 20: comunicación previa al deudor del posible registro, certeza y exigibilidad de la deuda, ausencia de reclamación judicial, notificación al afectado en plazo de 30 días desde la inscripción, conservación máxima de 5 años y limitación de acceso a acreedores legitimados. Documentar el procedimiento de inclusión y mantener trazabilidad documental de cada inscripción.",
+          "referencia_articulo": "Art. 20 Ley Orgánica 3/2018"
+        },
+        {
+          "id": "LOPDPYGDD-AAP-002",
+          "texto": "Si la organización es una Administración Pública o trata datos en su nombre, ¿cumple las obligaciones específicas del Título VIII (designación obligatoria de DPO, codificación de bases jurídicas y comunicaciones entre AA.PP.)?",
+          "ayuda": "Los Arts. 34 a 43 de la LOPDPyGDD desarrollan obligaciones específicas para el sector público español: la designación de Delegado de Protección de Datos es obligatoria para todas las AA.PP. (Art. 34), las bases jurídicas del tratamiento deben estar previstas en norma con rango de ley (Art. 8) y se regulan supuestos específicos de comunicaciones entre administraciones. Aplica también a entidades del sector público instrumental y a los encargados que traten datos por cuenta de AA.PP.",
+          "requisito_original": "Los responsables y encargados del tratamiento deberán designar un delegado de protección de datos en los supuestos previstos en el artículo 37.1 del Reglamento (UE) 2016/679 y, en todo caso, cuando se trate de: los Colegios Profesionales y sus Consejos Generales, los centros docentes que ofrezcan enseñanzas en cualquiera de los niveles establecidos en la legislación reguladora del derecho a la educación, así como las Universidades públicas y privadas, las entidades que exploten redes y presten servicios de comunicaciones electrónicas conforme a lo dispuesto en su legislación específica, los prestadores de servicios de la sociedad de la información cuando elaboren a gran escala perfiles de los usuarios del servicio, las entidades incluidas en el artículo 1 de la Ley 10/2014, de 26 de junio, de ordenación, supervisión y solvencia de entidades de crédito, los establecimientos financieros de crédito, las entidades aseguradoras y reaseguradoras, las empresas de servicios de inversión, los distribuidores y comercializadores de energía eléctrica y los distribuidores y comercializadores de gas natural.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable", "encargado"],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Verificar si la organización está incluida en el listado del Art. 34 LOPDPyGDD que amplía los supuestos obligatorios de designación de DPO respecto al RGPD (Colegios Profesionales, centros educativos, operadores de telecomunicaciones, prestadores de la sociedad de la información que perfilen a gran escala, entidades de crédito, aseguradoras, distribuidores de energía y gas, entre otros). Si la organización pertenece al sector público, garantizar la designación del DPO, su comunicación a la AEPD y la cobertura legal expresa de cada tratamiento. Documentar la base jurídica con rango de ley para los tratamientos del sector público.",
+          "referencia_articulo": "Arts. 34 y concordantes del Título VIII Ley Orgánica 3/2018"
+        }
+      ]
+    },
+    {
+      "id": "LOPDPYGDD-DEN",
+      "nombre": "Sistemas de información de denuncias internas",
+      "descripcion": "Régimen específico del Art. 24 LOPDPyGDD para los canales de denuncias internas (whistleblowing), reforzado tras la Ley 2/2023 reguladora de la protección de las personas que informen sobre infracciones normativas y de lucha contra la corrupción.",
+      "peso_bloque": 18,
+      "preguntas": [
+        {
+          "id": "LOPDPYGDD-DEN-001",
+          "texto": "¿Si la organización dispone de un canal de denuncias internas, garantiza la confidencialidad del denunciante, permite las denuncias anónimas y limita el acceso a los datos al personal estrictamente necesario?",
+          "ayuda": "El Art. 24 LOPDPyGDD habilita los sistemas de denuncias internas, exige garantizar la confidencialidad de la identidad del denunciante y de los terceros mencionados, permite las denuncias anónimas, limita el acceso a los datos al personal con funciones específicas (Cumplimiento, RR.HH., asesoría legal), fija un plazo máximo de conservación de 3 meses salvo apertura de expediente, y prohíbe el acceso a otro personal o a terceros. Tras la Ley 2/2023, los canales de denuncia son obligatorios para empresas con 50 o más empleados.",
+          "requisito_original": "Será lícita la creación y mantenimiento de sistemas de información a través de los cuales pueda ponerse en conocimiento de una entidad de Derecho privado, incluso anónimamente, la comisión en el seno de la misma o en la actuación de terceros que contratasen con ella, de actos o conductas que pudieran resultar contrarios a la normativa general o sectorial que le fuera aplicable. El acceso a los datos contenidos en estos sistemas quedará limitado exclusivamente a quienes, incardinados o no en el seno de la entidad, desarrollen las funciones de control interno y de cumplimiento, o a los encargados del tratamiento que eventualmente se designen a tal efecto. Los datos de quien formule la comunicación y de los empleados y terceros deberán conservarse en el sistema de denuncias únicamente durante el tiempo imprescindible para decidir sobre la procedencia de iniciar una investigación sobre los hechos denunciados.",
+          "tipo": "obligatorio",
+          "aplicabilidad": ["responsable"],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 4,
+          "remediacion": "Implantar un canal de denuncias interno conforme al Art. 24 LOPDPyGDD y a la Ley 2/2023 (obligatorio para empresas con 50 o más empleados). Garantizar la posibilidad de denuncia anónima y la confidencialidad de la identidad del denunciante. Limitar el acceso al personal de Cumplimiento, RR.HH. y asesoría legal estrictamente necesario. Configurar plazos máximos de conservación: 3 meses si no se abre expediente, conservación durante la investigación si se abre. Realizar una EIPD específica del canal e incluir el tratamiento en el RAT.",
+          "referencia_articulo": "Art. 24 Ley Orgánica 3/2018 y Ley 2/2023"
+        }
+      ]
+    }
+  ]
+}

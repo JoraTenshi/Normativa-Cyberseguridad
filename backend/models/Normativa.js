@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const TEMAS_VALIDOS = require('../constants/temas');
 
 const PreguntaSchema = new mongoose.Schema({
   id:                  { type: String, required: true },
@@ -19,6 +20,7 @@ const BloqueSchema = new mongoose.Schema({
   nombre:      { type: String, required: true },
   descripcion: { type: String, default: null },
   peso_bloque: { type: Number, min: 0, max: 100, default: null },
+  temas:       { type: [String], enum: TEMAS_VALIDOS, default: [] },
   preguntas:   [PreguntaSchema]
 }, { _id: false });
 

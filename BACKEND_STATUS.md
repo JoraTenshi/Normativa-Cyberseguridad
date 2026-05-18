@@ -46,12 +46,25 @@ Las normativas nuevas (a partir de NIS2) siguen un contrato JSON canónico defin
 
 Campos canónicos por pregunta: `id`, `texto`, `peso`, `nivel`, `fase_pds`, `remediacion`, `ayuda` (texto plano para tooltip), `requisito_original` (cita textual del fragmento legal), `tipo` (`obligatorio` / `recomendado`), `aplicabilidad` (perfiles aplicables, p. ej. `["esencial","importante"]`), `referencia_articulo` (cita al artículo o control). Campos canónicos por bloque: `descripcion`, `peso_bloque` (0–100, deben sumar 100). Campo canónico por normativa: `referencia_oficial` (cita legal con fecha).
 
-Las normativas legacy (`iso27001`, `ens`) tienen `null` / `[]` en estos campos hasta que Cris las regenere en formato canónico.
+La normativa legacy `ens` tiene `null` / `[]` en estos campos hasta que Cris la regenere en formato canónico.
 
-Estado actual del seed:
-- `iso27001` — 6 bloques, 25 preguntas (placeholder, sin campos canónicos)
+`backend/seed/seed.js` auto-descubre cualquier `*_normativa.json` que se deje caer en `backend/seed/` (excluyendo `schema_normativa.json`), por lo que añadir una nueva normativa canónica es un *drop-in*: copiar el JSON al directorio, ejecutar `make seed`, y el validador + el seed la procesan automáticamente.
+
+Estado actual del seed (6 normativas, 142 preguntas):
+- `iso27001` — 7 bloques, 15 preguntas (canónico)
+- `iso27002` — 4 bloques, 50 preguntas (canónico)
+- `lopdpygdd` — 6 bloques, 9 preguntas (canónico)
+- `nis2` — 10 bloques, 40 preguntas (canónico)
+- `rgpd` — 8 bloques, 19 preguntas (canónico)
 - `ens` — 4 bloques, 15 preguntas (placeholder, sin campos canónicos)
-- `nis2` — 10 bloques, 40 preguntas (formato canónico completo)
+
+#### Cobertura estimada multinormativa
+
+`POST /resultado` y `GET /historial/:id` devuelven adicionalmente el campo `cobertura_estimada`: una lista con la estimación aproximada del cumplimiento del usuario en cada normativa **distinta** a la que ha contestado, calculada por proyección temática.
+
+El cross-mapping se basa en el campo `temas` (opcional, en cada bloque) que toma valores de un vocabulario cerrado de 15 temas definido en `backend/constants/temas.js` y replicado en el enum del schema canónico. Cada entrada de `cobertura_estimada` incluye `normativa_id`, `normativa_nombre`, `porcentaje_estimado` (entero 0–100 o `null` si ningún bloque pudo estimarse), `cobertura_tematica` (ratio 0–1 de bloques estimables), `bloques_estimados` y `tipo: 'estimado'` como marcador semántico para que el frontend lo diferencie del cumplimiento medido.
+
+Hoy solo el placeholder `ens` tiene `temas` tagueados (vía seed inline). Las normativas canónicas (`nis2`, `iso27001`, `iso27002`, `lopdpygdd`, `rgpd`) no llevan `temas` todavía, así que `cobertura_estimada` devuelve `null` para ellas hasta que Cris las etiquete en sus JSONs.
 
 ### Evaluaciones — `/resultado`
 | Método | Endpoint | Descripción |
@@ -64,6 +77,7 @@ La respuesta incluye:
 - `puntuaciones_bloques` — desglose de puntuación por bloque temático
 - `remediaciones` — acciones de mejora priorizadas ordenadas por brecha (`peso × (1 − valor)`)
 - `normativa_nombre` — nombre legible de la normativa
+- `cobertura_estimada` — estimación cruzada del cumplimiento del usuario en el resto de normativas (ver subsección anterior)
 
 Funciona de forma anónima (el resultado caduca en 24 h) o autenticada (el resultado se persiste).
 
@@ -145,3 +159,10 @@ A partir de NIS2, cada pregunta incluye campos que el frontend actualmente ignor
 - `referencia_articulo` — cita exacta al artículo (p. ej. `"Art. 21.2.h Directiva (UE) 2022/2555"`)
 
 A nivel de bloque, `descripcion` y `peso_bloque` también se ignoran hoy. `Cuestionario.jsx` y `Resultado.jsx` son los principales candidatos para consumir estos campos.
+
+### 8. Cobertura estimada multinormativa
+**Devuelto por:** `POST /resultado` y `GET /me/historial/:id` como `cobertura_estimada`
+
+`Resultado.jsx` y `HistorialDetalle.jsx` reciben el array `cobertura_estimada` pero no lo renderizan. Cada entrada lleva `normativa_id`, `normativa_nombre`, `porcentaje_estimado`, `cobertura_tematica` (0–1), `bloques_estimados` y `tipo: 'estimado'`.
+
+Diseño recomendado en el frontend: bajo el porcentaje principal medido, una sección "Cobertura estimada en otras normativas" con cada entrada mostrando nombre, porcentaje con prefijo `≈` o badge "Estimación", indicador de cobertura temática (p. ej. "estimación basada en el 83% de la normativa"), y opcionalmente un botón "Contestar esta normativa" que lleve al cuestionario. La sección debe ser visualmente más discreta que el porcentaje principal — las estimaciones son contexto, el porcentaje medido manda.

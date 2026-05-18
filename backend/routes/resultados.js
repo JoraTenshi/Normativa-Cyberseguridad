@@ -3,7 +3,7 @@ const router = express.Router();
 const Normativa = require('../models/Normativa');
 const Resultado = require('../models/Resultado');
 const { optionalAuth } = require('../middleware/auth');
-const { construirRemediaciones, getNivel } = require('../utils/scoring');
+const { construirRemediaciones, getNivel, calcularCoberturaEstimada } = require('../utils/scoring');
 
 const MAX_RESPUESTAS  = 500;
 const VALORES_VALIDOS = [0, 0.5, 1];
@@ -39,6 +39,8 @@ router.post('/', optionalAuth, async (req, res) => {
       return res.status(404).json({ ok: false, error: 'Normativa no encontrada' });
     }
 
+    const otrasNormativas = await Normativa.find({ id: { $ne: normativaIdClean } });
+
     const { puntuacion_total, puntuacion_maxima, porcentaje, puntuaciones_bloques } = calcularPorcentaje(normativa, respuestas);
 
     const resultado = await Resultado.create({
@@ -53,6 +55,7 @@ router.post('/', optionalAuth, async (req, res) => {
     });
 
     const remediaciones = construirRemediaciones(normativa, respuestas);
+    const cobertura_estimada = calcularCoberturaEstimada(normativa, puntuaciones_bloques, otrasNormativas);
 
     res.status(201).json({
       ok: true,
@@ -66,7 +69,8 @@ router.post('/', optionalAuth, async (req, res) => {
         nivel:               getNivel(porcentaje),
         mensaje:             getMensajeNivel(porcentaje),
         puntuaciones_bloques,
-        remediaciones
+        remediaciones,
+        cobertura_estimada
       }
     });
 
