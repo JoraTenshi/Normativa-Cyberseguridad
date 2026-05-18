@@ -16,12 +16,17 @@ Thumbs.db
 logs/
 *.log
 
-# Environment files
-.env
+# Environment files (keep .env.example templates tracked)
+.env*
+!**/.env.example
 
 # Node
 frontend/node_modules/
 backend/node_modules/
+
+# Frontend build output
+frontend/build/
+frontend/dist/
 
 # Python
 __pycache__/
@@ -37,6 +42,10 @@ nginx/certs/
 # Test artifacts
 cookies.txt
 
-#Special
+# Backup / temp files
+*.bak
+*.orig
+*.tmp
+
+# Special
 .claude
-.gitignore
