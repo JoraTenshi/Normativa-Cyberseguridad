@@ -103,7 +103,7 @@ Porcentaje = (Σ puntuaciones_obtenidas / puntuación_máxima) × 100
 
 ### Cobertura estimada multinormativa
 
-Al contestar una normativa, la respuesta de `POST /resultado` (y de `GET /me/historial/:id`) incluye además el campo `cobertura_estimada`: una estimación aproximada del cumplimiento del usuario en el resto de normativas, calculada por proyección temática. Cada bloque puede declarar un array `temas` (vocabulario cerrado de 15 valores en `backend/constants/temas.js`); el motor construye un perfil temático ponderado a partir de las respuestas y lo proyecta sobre los bloques de las normativas no contestadas. Las entradas se marcan con `tipo: 'estimado'` para que el frontend las diferencie del cumplimiento medido. Los bloques sin temas comunes con el perfil aparecen como `porcentaje_estimado: null`.
+Al contestar una normativa, la respuesta de `POST /resultado` (y de `GET /me/historial/:id`) incluye además el campo `cobertura_estimada`: una estimación aproximada del cumplimiento del usuario en el resto de normativas, calculada por proyección temática. Cada bloque puede declarar un array `temas` (vocabulario cerrado de 29 valores en `backend/constants/temas.js`); el motor construye un perfil temático ponderado a partir de las respuestas y lo proyecta sobre los bloques de las normativas no contestadas. Las entradas se marcan con `tipo: 'estimado'` para que el frontend las diferencie del cumplimiento medido. Los bloques sin temas comunes con el perfil aparecen como `porcentaje_estimado: null`.
 
 ---
 

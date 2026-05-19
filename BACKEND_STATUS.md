@@ -62,7 +62,7 @@ Estado actual del seed (6 normativas, 142 preguntas):
 
 `POST /resultado` y `GET /historial/:id` devuelven adicionalmente el campo `cobertura_estimada`: una lista con la estimación aproximada del cumplimiento del usuario en cada normativa **distinta** a la que ha contestado, calculada por proyección temática.
 
-El cross-mapping se basa en el campo `temas` (opcional, en cada bloque) que toma valores de un vocabulario cerrado de 15 temas definido en `backend/constants/temas.js` y replicado en el enum del schema canónico. Cada entrada de `cobertura_estimada` incluye `normativa_id`, `normativa_nombre`, `porcentaje_estimado` (entero 0–100 o `null` si ningún bloque pudo estimarse), `cobertura_tematica` (ratio 0–1 de bloques estimables), `bloques_estimados` y `tipo: 'estimado'` como marcador semántico para que el frontend lo diferencie del cumplimiento medido.
+El cross-mapping se basa en el campo `temas` (opcional, en cada bloque) que toma valores de un vocabulario cerrado de 29 temas definido en `backend/constants/temas.js` y replicado en el enum del schema canónico. Cada entrada de `cobertura_estimada` incluye `normativa_id`, `normativa_nombre`, `porcentaje_estimado` (entero 0–100 o `null` si ningún bloque pudo estimarse), `cobertura_tematica` (ratio 0–1 de bloques estimables), `bloques_estimados` y `tipo: 'estimado'` como marcador semántico para que el frontend lo diferencie del cumplimiento medido.
 
 Hoy solo el placeholder `ens` tiene `temas` tagueados (vía seed inline). Las normativas canónicas (`nis2`, `iso27001`, `iso27002`, `lopdpygdd`, `rgpd`) no llevan `temas` todavía, así que `cobertura_estimada` devuelve `null` para ellas hasta que Cris las etiquete en sus JSONs.
 

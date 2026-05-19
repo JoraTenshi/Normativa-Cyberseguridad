@@ -43,7 +43,7 @@ const normativas = [
       {
         id: 'infraestructura',
         nombre: 'Seguridad de la Infraestructura',
-        temas: ['network_security', 'vulnerability_management', 'logging_monitoring'],
+        temas: ['network_security', 'vulnerability_management', 'logging_audit_trail', 'security_monitoring'],
         preguntas: [
           { id: 'if_1', texto: '¿Se aplican parches de seguridad de forma periódica?', peso: 3 },
           { id: 'if_2', texto: '¿Existe segmentación de red y control de tráfico mediante firewalls?', peso: 3 },
