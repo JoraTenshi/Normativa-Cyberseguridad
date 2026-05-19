@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { register, loginApi, verify2fa } from '../services/api';
 
@@ -11,10 +11,13 @@ const Auth = () => {
   const [needs2fa, setNeeds2fa] = useState(false);
   const [totpCode, setTotpCode] = useState('');
 
-  const { login } = useAuth();
+  const { user, login } = useAuth();
   const navigate  = useNavigate();
   const location  = useLocation();
   const from      = location.state?.from || '/';
+
+  // Si ya hay sesión iniciada, no mostrar el formulario: redirigir.
+  if (user) return <Navigate to={from} replace />;
 
   const handleChange = e =>
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
