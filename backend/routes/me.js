@@ -110,6 +110,8 @@ router.get('/historial/:resultadoId', requireAuth, async (req, res) => {
         puntuacion_maxima:    resultado.puntuacion_maxima,
         nivel:                getNivel(resultado.porcentaje),
         puntuaciones_bloques: resultado.puntuaciones_bloques ?? [],
+        respuestas:           resultado.respuestas ?? [],
+        bloques:              norm?.bloques ?? [],
         remediaciones,
         cobertura_estimada,
         createdAt:            resultado.createdAt
