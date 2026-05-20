@@ -68,13 +68,11 @@ const Auth = () => {
       <div className="page auth-page">
         <div className="auth-card">
           <div className="auth-brand">
-            <span className="auth-icon">🛡️</span>
-            <span className="auth-title">CyberAudit</span>
+            <span className="auth-title">CyberLaw</span>
           </div>
 
           <form onSubmit={handle2faSubmit} className="auth-form">
             <div className="twofa-prompt">
-              <div className="twofa-prompt-icon">🔐</div>
               <div className="twofa-prompt-title">Verificación en dos pasos</div>
               <p className="twofa-prompt-desc">Introduce el código de tu aplicación de autenticación.</p>
             </div>
@@ -121,8 +119,7 @@ const Auth = () => {
     <div className="page auth-page">
       <div className="auth-card">
         <div className="auth-brand">
-          <span className="auth-icon">🛡️</span>
-          <span className="auth-title">CyberAudit</span>
+          <span className="auth-title">CyberLaw</span>
         </div>
 
         <div className="auth-tabs">

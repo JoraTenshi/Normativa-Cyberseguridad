@@ -49,13 +49,11 @@ function Navbar() {
         </div>
       </nav>
 
-      {/* Overlay */}
       <div
         className={`drawer-overlay${open ? ' visible' : ''}`}
         onClick={close}
       />
 
-      {/* Drawer */}
       <div className={`drawer${open ? ' open' : ''}`}>
         <div className="drawer-header">
           <div className="drawer-logo">
