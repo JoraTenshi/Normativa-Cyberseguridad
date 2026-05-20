@@ -6,6 +6,8 @@ CERT_DIR     = nginx/certs
 CERT_FILE    = $(CERT_DIR)/cert.pem
 KEY_FILE     = $(CERT_DIR)/key.pem
 
+DC := $(shell docker compose version >/dev/null 2>&1 && echo 'docker compose' || echo 'docker-compose')
+
 .DEFAULT_GOAL := help
 
 help:
@@ -36,7 +38,7 @@ setup:
 # ── Main target ───────────────────────────────────────────────────────────────
 up: setup cert $(BACKEND_DIR)/.env
 	@echo ">>> [1/4] Building and starting all services..."
-	docker-compose up -d --build
+	$(DC) up -d --build
 	@echo ">>> [2/4] Waiting for MongoDB to be healthy..."
 	@while [ "$$(docker inspect --format='{{.State.Health.Status}}' cybersec_mongo 2>/dev/null)" != "healthy" ]; do \
 		if [ "$$(docker inspect --format='{{.State.Status}}' cybersec_mongo 2>/dev/null)" = "exited" ]; then \
@@ -122,19 +124,19 @@ seed:
 
 # ── Logs ──────────────────────────────────────────────────────────────────────
 logs:
-	docker-compose logs -f --tail=50 backend frontend
+	$(DC) logs -f --tail=50 backend frontend
 
 # ── Status ────────────────────────────────────────────────────────────────────
 status:
-	@docker-compose ps
+	@$(DC) ps
 
 # ── Stop ──────────────────────────────────────────────────────────────────────
 down:
-	docker-compose down
+	$(DC) down
 
 # ── Clean ─────────────────────────────────────────────────────────────────────
 clean: down
-	docker-compose down -v --rmi local 2>/dev/null || true
+	$(DC) down -v --rmi local 2>/dev/null || true
 	rm -rf $(BACKEND_DIR)/node_modules $(FRONTEND_DIR)/node_modules
 	rm -f  $(BACKEND_DIR)/.env
 	@echo "Clean complete. (SSL certs kept in $(CERT_DIR) — delete manually to regenerate)"
