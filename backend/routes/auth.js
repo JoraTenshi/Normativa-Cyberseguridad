@@ -1,10 +1,17 @@
 const express      = require('express');
+const crypto       = require('crypto');
 const router       = express.Router();
 const jwt          = require('jsonwebtoken');
 const speakeasy    = require('speakeasy');
 const Usuario      = require('../models/Usuario');
 const RevokedToken = require('../models/RevokedToken');
+const { enviarEmailRecuperacion } = require('../utils/mailer');
 const { JWT_SECRET, JWT_EXPIRES, generateJti, requireAuth } = require('../middleware/auth');
+
+const RESET_TTL_MS = 30 * 60 * 1000; // 30 minutos
+const APP_URL = (process.env.APP_URL || process.env.CORS_ORIGIN || 'https://localhost').replace(/\/$/, '');
+
+const hashResetToken = raw => crypto.createHash('sha256').update(raw).digest('hex');
 
 const EMAIL_RE    = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PASSWORD_RE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
@@ -159,6 +166,76 @@ router.post('/2fa/verify', async (req, res) => {
 
   } catch (err) {
     res.status(500).json({ ok: false, error: 'Error interno al verificar 2FA' });
+  }
+});
+
+// Solicitar recuperación: genera un token de un solo uso y envía el enlace.
+// Responde siempre 200 genérico (no revela si el email existe).
+router.post('/forgot-password', async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (typeof email !== 'string' || !EMAIL_RE.test(email)) {
+      return res.status(400).json({ ok: false, error: 'Email inválido' });
+    }
+
+    const respuestaGenerica = {
+      ok: true,
+      message: 'Si el email está registrado, recibirás un enlace de recuperación.'
+    };
+
+    const usuario = await Usuario.findOne({ email: email.toLowerCase().trim() });
+    if (!usuario) return res.json(respuestaGenerica); // sin enumeración de cuentas
+
+    const rawToken = crypto.randomBytes(32).toString('hex');
+    usuario.resetPasswordToken   = hashResetToken(rawToken);
+    usuario.resetPasswordExpires = new Date(Date.now() + RESET_TTL_MS);
+    await usuario.save();
+
+    const resetUrl = `${APP_URL}/reset-password?token=${rawToken}`;
+    try {
+      await enviarEmailRecuperacion(usuario.email, resetUrl);
+    } catch (mailErr) {
+      console.error('Error al enviar email de recuperación:', mailErr.message);
+      // No revelamos el fallo de envío al cliente.
+    }
+
+    res.json(respuestaGenerica);
+  } catch (err) {
+    res.status(500).json({ ok: false, error: 'Error interno al solicitar la recuperación' });
+  }
+});
+
+// Restablecer contraseña con el token recibido por correo (un solo uso).
+router.post('/reset-password', async (req, res) => {
+  try {
+    const { token, password } = req.body;
+
+    if (typeof token !== 'string' || token.trim() === '') {
+      return res.status(400).json({ ok: false, error: 'Token inválido' });
+    }
+    if (typeof password !== 'string' || !PASSWORD_RE.test(password)) {
+      return res.status(400).json({ ok: false, error: 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número' });
+    }
+
+    const usuario = await Usuario.findOne({
+      resetPasswordToken:   hashResetToken(token),
+      resetPasswordExpires: { $gt: new Date() }
+    }).select('+resetPasswordToken +resetPasswordExpires');
+
+    if (!usuario) {
+      return res.status(400).json({ ok: false, error: 'El enlace de recuperación es inválido o ha caducado' });
+    }
+
+    usuario.password             = password; // el pre-save hashea con bcrypt
+    usuario.resetPasswordToken   = null;
+    usuario.resetPasswordExpires = null;
+    usuario.loginAttempts        = 0;
+    usuario.lockUntil            = null;
+    await usuario.save();
+
+    res.json({ ok: true, message: 'Contraseña actualizada. Ya puedes iniciar sesión.' });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: 'Error interno al restablecer la contraseña' });
   }
 });
 

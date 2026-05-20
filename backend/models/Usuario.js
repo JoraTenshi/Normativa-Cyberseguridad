@@ -26,7 +26,9 @@ const UsuarioSchema = new mongoose.Schema({
   loginAttempts:    { type: Number,  default: 0 },
   lockUntil:        { type: Date,    default: null },
   twoFactorSecret:  { type: String,  default: null, select: false },
-  twoFactorEnabled: { type: Boolean, default: false }
+  twoFactorEnabled: { type: Boolean, default: false },
+  resetPasswordToken:   { type: String, default: null, select: false },
+  resetPasswordExpires: { type: Date,   default: null, select: false }
 }, { timestamps: true });
 
 UsuarioSchema.pre('save', async function (next) {
