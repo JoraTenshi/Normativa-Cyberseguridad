@@ -1,0 +1,4 @@
+Contact: mailto:security@cyber-law.app
+Expires: 2027-05-20T00:00:00.000Z
+Preferred-Languages: es, en
+Policy: https://cyber-law.app/seguridad#divulgacion
