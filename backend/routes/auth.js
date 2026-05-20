@@ -8,7 +8,7 @@ const RevokedToken = require('../models/RevokedToken');
 const { enviarEmailRecuperacion } = require('../utils/mailer');
 const { JWT_SECRET, JWT_EXPIRES, generateJti, requireAuth } = require('../middleware/auth');
 
-const RESET_TTL_MS = 30 * 60 * 1000; // 30 minutos
+const RESET_TTL_MS = 30 * 60 * 1000;
 const APP_URL = (process.env.APP_URL || process.env.CORS_ORIGIN || 'https://localhost').replace(/\/$/, '');
 
 const hashResetToken = raw => crypto.createHash('sha256').update(raw).digest('hex');
@@ -169,8 +169,6 @@ router.post('/2fa/verify', async (req, res) => {
   }
 });
 
-// Solicitar recuperación: genera un token de un solo uso y envía el enlace.
-// Responde siempre 200 genérico (no revela si el email existe).
 router.post('/forgot-password', async (req, res) => {
   try {
     const { email } = req.body;
@@ -184,7 +182,7 @@ router.post('/forgot-password', async (req, res) => {
     };
 
     const usuario = await Usuario.findOne({ email: email.toLowerCase().trim() });
-    if (!usuario) return res.json(respuestaGenerica); // sin enumeración de cuentas
+    if (!usuario) return res.json(respuestaGenerica);
 
     const rawToken = crypto.randomBytes(32).toString('hex');
     usuario.resetPasswordToken   = hashResetToken(rawToken);
@@ -196,7 +194,6 @@ router.post('/forgot-password', async (req, res) => {
       await enviarEmailRecuperacion(usuario.email, resetUrl);
     } catch (mailErr) {
       console.error('Error al enviar email de recuperación:', mailErr.message);
-      // No revelamos el fallo de envío al cliente.
     }
 
     res.json(respuestaGenerica);
@@ -205,7 +202,6 @@ router.post('/forgot-password', async (req, res) => {
   }
 });
 
-// Restablecer contraseña con el token recibido por correo (un solo uso).
 router.post('/reset-password', async (req, res) => {
   try {
     const { token, password } = req.body;
@@ -226,7 +222,7 @@ router.post('/reset-password', async (req, res) => {
       return res.status(400).json({ ok: false, error: 'El enlace de recuperación es inválido o ha caducado' });
     }
 
-    usuario.password             = password; // el pre-save hashea con bcrypt
+    usuario.password             = password;
     usuario.resetPasswordToken   = null;
     usuario.resetPasswordExpires = null;
     usuario.loginAttempts        = 0;

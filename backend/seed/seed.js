@@ -11,26 +11,24 @@ const normativasCanonicas = fs.readdirSync(__dirname)
   .sort()
   .map(f => require(`./${f}`));
 
-// Todas las normativas (incluida ENS) se cargan ahora desde sus
-// `*_normativa.json` canónicos vía auto-descubrimiento.
 const normativas = [...normativasCanonicas];
 
 async function seed() {
   try {
     await mongoose.connect(MONGODB_URI);
-    console.log('✅ Conectado a MongoDB');
+    console.log('Conectado a MongoDB');
 
     await Normativa.deleteMany({});
-    console.log('🗑️  Colección normativas limpiada');
+    console.log('Colección normativas limpiada');
 
     await Normativa.insertMany(normativas);
-    console.log(`✅ ${normativas.length} normativas insertadas correctamente`);
+    console.log(`${normativas.length} normativas insertadas correctamente`);
 
     await mongoose.disconnect();
     console.log('Seed completado.');
 
   } catch (err) {
-    console.error('❌ Error en el seed:', err.message);
+    console.error('Error en el seed:', err.message);
     process.exit(1);
   }
 }

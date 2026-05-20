@@ -147,7 +147,7 @@ const Cuestionario = () => {
           {enviando ? (
             <><span className="spinner small" /> Calculando...</>
           ) : (
-            '📊 Ver mi resultado'
+            'Ver mi resultado'
           )}
         </button>
       </div>

@@ -30,7 +30,7 @@ const Home = () => {
   return (
     <div className="page home-page">
       <header className="hero">
-        <div className="hero-badge">🛡️ Ciberseguridad</div>
+        <div className="hero-badge">Ciberseguridad</div>
         <h1 className="hero-title">
           Autoevaluación de
           <span className="hero-highlight"> Ciberseguridad</span>
@@ -73,9 +73,7 @@ const Home = () => {
                 className="normativa-card"
                 onClick={() => seleccionarNormativa(normativa.id)}
               >
-                <div className="normativa-card-icon">
-                  {normativa.id === 'iso27001' ? '🌐' : '🏛️'}
-                </div>
+                
                 <div className="normativa-card-content">
                   <h3 className="normativa-card-nombre">{normativa.nombre}</h3>
                   <p className="normativa-card-desc">{normativa.descripcion}</p>

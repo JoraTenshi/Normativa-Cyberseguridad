@@ -112,7 +112,7 @@ const Resultado = () => {
       </div>
 
       <div className="recomendaciones">
-        <h2 className="recomendaciones-titulo">📋 Recomendaciones</h2>
+        <h2 className="recomendaciones-titulo">Recomendaciones</h2>
         <ul className="recomendaciones-lista">
           {recomendaciones.map((rec, idx) => (
             <li key={idx} className="recomendacion-item">
@@ -128,23 +128,23 @@ const Resultado = () => {
           className="btn-secondary"
           onClick={() => navigate(`/cuestionario/${normativaId}`)}
         >
-          🔄 Repetir evaluación
+          Repetir evaluación
         </button>
         {user && resultado?.id && (
           <button
             className="btn-secondary"
             onClick={() => navigate(`/historial/${resultado.id}`)}
           >
-            📋 Ver detalle
+            Ver detalle
           </button>
         )}
         {user ? (
           <button className="btn-primary" onClick={() => navigate('/historial')}>
-            📊 Mi historial
+            Mi historial
           </button>
         ) : (
           <button className="btn-primary" onClick={() => navigate('/')}>
-            🏠 Inicio
+            Inicio
           </button>
         )}
       </div>

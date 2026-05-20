@@ -47,7 +47,6 @@ const Historial = () => {
 
       {!error && historial.length === 0 && (
         <div className="historial-empty">
-          <span className="historial-empty-icon">📋</span>
           <p>Aún no has realizado ninguna evaluación.</p>
           <p className="historial-empty-hint">
             Completa un cuestionario con sesión iniciada y aparecerá aquí.

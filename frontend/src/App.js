@@ -8,42 +8,96 @@ import Auth             from './pages/Auth';
 import Historial        from './pages/Historial';
 import HistorialDetalle from './pages/HistorialDetalle';
 import Settings         from './pages/Settings';
+import cyberlaw from './images/cyber.png';
 import './App.css';
 
 function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [open, setOpen] = React.useState(false);
+
+  const close = () => setOpen(false);
 
   const handleLogout = () => {
     logout();
     navigate('/');
+    close();
   };
 
   return (
-    <nav className="navbar">
-      <div className="navbar-inner">
-        <Link to="/" className="navbar-brand">
-          <span className="navbar-icon">🛡️</span>
-          <span className="navbar-name">CyberAudit</span>
-        </Link>
+    <>
+      <nav className="navbar">
+        <div className="navbar-left">
+            <button
+              className={`hamburger-btn${open ? ' open' : ''}`}
+              onClick={() => setOpen(v => !v)}
+              aria-label="Menú"
+            >
+              <span className="ham-line" />
+              <span className="ham-line" />
+              <span className="ham-line" />
+            </button>
+          </div>
+        <div className="navbar-inner">
+          <Link to="/" className="navbar-brand" onClick={close}>
+            <img src={cyberlaw} alt="" className="navbar-icon" style={{ width: 26, height: 26 }} />
+            <span className="navbar-name">CyberLaw</span>
+            <span className="navbar-tagline">Audit</span>
+          </Link>
 
-        <div className="navbar-right">
+          <div className="navbar-right-placeholder" />
+        </div>
+      </nav>
+
+      {/* Overlay */}
+      <div
+        className={`drawer-overlay${open ? ' visible' : ''}`}
+        onClick={close}
+      />
+
+      {/* Drawer */}
+      <div className={`drawer${open ? ' open' : ''}`}>
+        <div className="drawer-header">
+          <div className="drawer-logo">
+            <img src={cyberlaw} alt="" style={{ width: 16, height: 16 }} />
+          </div>
+          <span className="drawer-logo-name">CyberLaw</span>
+        </div>
+
+        <div className="drawer-body">
           {user ? (
             <>
-              <Link to="/historial" className="navbar-link">Historial</Link>
-              <Link to="/settings" className="navbar-link">Ajustes</Link>
-              <span className="navbar-user">{user.nombre}</span>
-              <button className="navbar-logout" onClick={handleLogout}>Salir</button>
+              <span className="drawer-section-label">Cuenta</span>
+              <div className="drawer-item user-item">{user.nombre}</div>
+              <div className="drawer-divider" />
+              <span className="drawer-section-label">Navegación</span>
+              <Link to="/" className="drawer-item" onClick={close}>Inicio</Link>
+              <Link to="/historial" className="drawer-item" onClick={close}>Historial</Link>
+              <Link to="/settings" className="drawer-item" onClick={close}>Ajustes</Link>
             </>
           ) : (
-            <Link to="/auth" className="btn-primary navbar-login-btn">Iniciar sesión</Link>
+            <>
+              <span className="drawer-section-label">Navegación</span>
+              <Link to="/" className="drawer-item" onClick={close}>Inicio</Link>
+            </>
+          )}
+        </div>
+
+        <div className="drawer-footer">
+          {user ? (
+            <button className="drawer-item danger" onClick={handleLogout}>
+              Cerrar sesión
+            </button>
+          ) : (
+            <Link to="/auth" className="drawer-item login-item" onClick={close}>
+              Iniciar sesión
+            </Link>
           )}
         </div>
       </div>
-    </nav>
+    </>
   );
 }
-
 function ProtectedRoute({ children }) {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -77,7 +131,7 @@ function App() {
             </Routes>
           </main>
           <footer className="footer">
-            <p>CyberAudit · Herramienta de Autoevaluación de Ciberseguridad · ISO 27001 · ENS</p>
+            <p>CyberLaw · Herramienta de Autoevaluación de Ciberseguridad · ISO 27001 · ENS</p>
           </footer>
         </div>
       </Router>

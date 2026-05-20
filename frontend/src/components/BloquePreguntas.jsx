@@ -10,7 +10,6 @@ const BloquePreguntas = ({ bloque, respuestas, onRespuesta }) => {
   return (
     <div className="bloque">
       <div className="bloque-header">
-        <span className="bloque-icono">🔐</span>
         <h3 className="bloque-nombre">{bloque.nombre}</h3>
         <span className="bloque-count">{bloque.preguntas.length} preguntas</span>
       </div>
