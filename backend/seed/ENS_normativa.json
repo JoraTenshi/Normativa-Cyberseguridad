@@ -1,0 +1,1389 @@
+{
+  "id": "ens",
+  "nombre": "ENS — Esquema Nacional de Seguridad",
+  "referencia_oficial": "Real Decreto 311/2022, de 3 de mayo, por el que se regula el Esquema Nacional de Seguridad",
+  "descripcion": "Marco normativo español que establece la política de seguridad en la utilización de medios electrónicos en el ámbito de la Ley 40/2015 (sector público), siendo de aplicación obligatoria a las Administraciones Públicas y a las entidades del sector privado que les presten servicios o soluciones tecnológicas. Su Anexo II define 73 medidas de seguridad agrupadas en tres marcos (organizativo, operacional y medidas de protección), con tres niveles de exigencia según la categoría del sistema: Básica, Media o Alta. Las medidas se complementan con principios básicos y requisitos mínimos definidos en el propio Real Decreto.",
+  "sectores_aplicables": [
+    "administracion_publica"
+  ],
+  "bloques": [
+    {
+      "id": "ENS-ORG",
+      "nombre": "Marco organizativo: política y procedimientos",
+      "descripcion": "Cláusulas org.1 a org.4 del Anexo II del RD 311/2022. Política de seguridad de la información, normativa, procedimientos de seguridad y proceso de autorización de elementos del sistema.",
+      "temas": [
+        "security_policy"
+      ],
+      "peso_bloque": 7,
+      "preguntas": [
+        {
+          "id": "ENS-ORG-001",
+          "texto": "¿La organización dispone de una Política de Seguridad de la Información (PSI) aprobada por el órgano competente, publicada y revisada periódicamente?",
+          "ayuda": "La medida org.1 exige una Política de Seguridad de la Información (PSI) que defina misión y objetivos, marco legal, roles y responsabilidades (incluido el Comité de Seguridad), estructura documental y revisión periódica. Debe ser aprobada por el órgano superior en el sector público o por la dirección general en el privado, y darse a conocer a empleados y colaboradores. Aplica a todas las categorías de sistema (básica, media y alta).",
+          "requisito_original": "La política de seguridad será aprobada por el órgano superior competente que corresponda. Su contenido será accesible para todo el personal de la organización y se publicará en el portal de internet. La política de seguridad incluirá los objetivos o misión de la organización, el marco legal y regulatorio en el que se desarrollarán las actividades, los roles o funciones de seguridad, la estructura del Comité o los Comités para la gestión y coordinación de la seguridad, las directrices para la estructuración de la documentación de seguridad del sistema y los criterios de revisión.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 3,
+          "remediacion": "Elaborar y aprobar formalmente la PSI por el órgano superior competente. Incluir los seis contenidos exigidos por la medida org.1: misión, marco legal, roles y responsabilidades, Comité de Seguridad, estructura documental y criterios de revisión. Publicar en el portal de internet (sector público) o en intranet (sector privado). Revisarla al menos anualmente y ante cambios significativos.",
+          "referencia_articulo": "Anexo II, medida org.1 RD 311/2022"
+        },
+        {
+          "id": "ENS-ORG-002",
+          "texto": "¿Existe una normativa de seguridad documentada que describa el uso correcto y las responsabilidades del personal frente a los sistemas de información?",
+          "ayuda": "La medida org.2 exige documentar una normativa de seguridad: qué se entiende como uso correcto, qué constituye un uso indebido, las responsabilidades del personal y las consecuencias del incumplimiento. Es la operacionalización de la PSI hacia el uso diario.",
+          "requisito_original": "Se dispondrá de una serie de documentos que describan el uso correcto de equipos, servicios e instalaciones, indicando lo que se considerará uso indebido, la responsabilidad del personal con respecto al cumplimiento o violación de estas normas (derechos, deberes y medidas disciplinarias de acuerdo con la legislación vigente).",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Redactar una normativa de seguridad complementaria a la PSI: uso aceptable de equipos, correo electrónico, navegación, dispositivos extraíbles, teletrabajo, redes sociales. Definir qué es uso indebido. Recoger acuse de recibo del personal. Publicarla en el portal del empleado y revisarla al menos anualmente.",
+          "referencia_articulo": "Anexo II, medida org.2 RD 311/2022"
+        },
+        {
+          "id": "ENS-ORG-003",
+          "texto": "¿La organización dispone de procedimientos de seguridad documentados que describan cómo realizar las tareas habituales, quién es responsable y cómo se reportan incidencias?",
+          "ayuda": "La medida org.3 exige procedimientos operativos documentados que describan paso a paso cómo realizar las tareas habituales, quién debe hacerlas, qué hacer ante anomalías y cómo reportar problemas. La diferencia con la normativa (org.2) es que aquí se describe el cómo operar, no el qué se permite.",
+          "requisito_original": "Se dispondrá de procedimientos de seguridad documentados que indiquen cómo llevar a cabo las tareas habituales, quién debe hacer cada tarea y cómo identificar y reportar comportamientos anómalos.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Documentar los procedimientos operativos clave: gestión de altas/bajas, gestión de incidentes, copias de seguridad, control de cambios, gestión de soportes, atención de derechos, comunicación con CCN-CERT. Asignar responsable a cada procedimiento. Revisarlos al menos anualmente y tras incidentes relevantes.",
+          "referencia_articulo": "Anexo II, medida org.3 RD 311/2022"
+        },
+        {
+          "id": "ENS-ORG-004",
+          "texto": "¿Existe un proceso formal de autorización que controle todas las altas de elementos en el sistema (locales, equipos, software, soportes, comunicaciones e información)?",
+          "ayuda": "La medida org.4 exige un proceso formal de autorización para cualquier nuevo elemento que entre a formar parte del sistema: locales, puestos de trabajo, equipos y servidores, software, soportes, redes y comunicaciones, e información. Sin proceso formal de autorización, se introducen elementos sin verificar requisitos de seguridad.",
+          "requisito_original": "Se establecerá un proceso formal de autorizaciones que cubra todos los elementos del sistema de información: utilización de instalaciones, entrada en servicio de equipos y aplicaciones, utilización de medios de comunicación, utilización de soportes de información, utilización de equipos móviles, utilización de servicios de terceros y entrada y salida de información.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Implantar un workflow de autorización formal para altas de cualquier elemento al sistema (típicamente integrado en una herramienta ITSM). Definir niveles de aprobación por tipo de elemento y categoría. Mantener trazabilidad documental de cada autorización. Auditar el cumplimiento periódicamente.",
+          "referencia_articulo": "Anexo II, medida org.4 RD 311/2022"
+        }
+      ]
+    },
+    {
+      "id": "ENS-PLA",
+      "nombre": "Planificación y arquitectura de seguridad",
+      "descripcion": "Familia op.pl del Anexo II del RD 311/2022. Análisis de riesgos, arquitectura de seguridad, adquisición de nuevos componentes, dimensionamiento y uso de componentes certificados.",
+      "temas": [
+        "risk_management",
+        "security_policy"
+      ],
+      "peso_bloque": 7,
+      "preguntas": [
+        {
+          "id": "ENS-OPE-001",
+          "texto": "¿Se ha realizado y se mantiene actualizado un análisis de riesgos formal del sistema de información, alineado con la categorización ENS?",
+          "ayuda": "La medida op.pl.1 exige realizar un análisis de riesgos siguiendo una metodología reconocida (MAGERIT u otra). El análisis debe identificar activos, dependencias, amenazas, salvaguardas y riesgos residuales. Es la base para justificar la selección de medidas y su nivel de exigencia. Aplica a todas las categorías.",
+          "requisito_original": "Se realizará un análisis de riesgos que incluirá los siguientes pasos: identificación de los activos más valiosos del sistema; identificación de las amenazas más probables; identificación de las salvaguardas que protegen de dichas amenazas; identificación de los principales riesgos residuales.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 2,
+          "remediacion": "Adoptar la metodología MAGERIT v3 o equivalente. Realizar análisis de riesgos formal documentado: inventario de activos, valoración, identificación de amenazas, evaluación de salvaguardas, cálculo de riesgo residual. Revisar al menos anualmente y ante cambios significativos. Usar herramientas como PILAR del CCN.",
+          "referencia_articulo": "Anexo II, medida op.pl.1 RD 311/2022"
+        },
+        {
+          "id": "ENS-OPE-002",
+          "texto": "¿La arquitectura de seguridad del sistema está documentada, incluyendo zonas, perímetros, identificación, autenticación, autorizaciones y registro de actividad?",
+          "ayuda": "La medida op.pl.2 exige documentar la arquitectura de seguridad: zonas y perímetros, mecanismos de identificación y autenticación, sistemas de autorización y control de acceso, gestión de los privilegios y registro de la actividad. Es el plano oficial sobre el que se hace la auditoría técnica.",
+          "requisito_original": "La seguridad del sistema será objeto de un planteamiento integral, prestando la debida atención a los siguientes aspectos: documentación de las premisas de seguridad; documentación del sistema; identificación, autenticación y control de acceso; protección, segregación de las funciones y tareas; gestión de las identidades; gestión de los derechos de acceso; registro de la actividad y de los eventos relevantes; defensa en profundidad.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Documentar la arquitectura de seguridad integral del sistema: diagrama de zonas y perímetros, mecanismos de identificación y autenticación (IAM), modelo de autorización y RBAC, sistema de gestión de logs y SIEM. Incluir defensa en profundidad. Mantener actualizada y revisarla en cada cambio arquitectural.",
+          "referencia_articulo": "Anexo II, medida op.pl.2 RD 311/2022"
+        },
+        {
+          "id": "ENS-OPE-003",
+          "texto": "¿Existe un proceso formal de adquisición de nuevos componentes que asegure el cumplimiento de los requisitos del ENS desde el origen?",
+          "ayuda": "La medida op.pl.3 exige planificar la adquisición de nuevos componentes (hardware, software, servicios) considerando los requisitos de seguridad del ENS y de la PSI desde la propia especificación. Evita comprar primero y blindar después.",
+          "requisito_original": "Se establecerá un proceso formal para planificar la adquisición de nuevos componentes del sistema que tenga en cuenta las conclusiones del análisis de riesgos, sea acorde a la arquitectura de seguridad escogida, sea acorde a la política y normativa de seguridad de la organización, y se realice por la persona o personas previstas en el proceso de autorización.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Incorporar requisitos de seguridad del ENS y la PSI en los pliegos y procesos de adquisición. Solicitar evidencia de cumplimiento (certificaciones, declaraciones, pruebas) antes de aceptar el suministro. Validar cada nueva incorporación contra el análisis de riesgos y la arquitectura de seguridad.",
+          "referencia_articulo": "Anexo II, medida op.pl.3 RD 311/2022"
+        },
+        {
+          "id": "ENS-OPE-004",
+          "texto": "¿Se realiza una gestión de la capacidad y dimensionamiento del sistema previa a la entrada en producción y de forma continua?",
+          "ayuda": "La medida op.pl.4 exige dimensionar y gestionar la capacidad antes de la puesta en producción (procesamiento, almacenamiento, ancho de banda, personal). Aplica a categoría media y alta. Sin gestión de capacidad, los servicios caen ante picos de carga.",
+          "requisito_original": "Con carácter previo a la puesta en producción se hará un estudio que aborde necesidades de procesamiento, necesidades de almacenamiento, necesidades de comunicación, necesidades de personal: cantidad y cualificación profesional, necesidades de instalaciones y medios auxiliares.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "media",
+            "alta"
+          ],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 4,
+          "remediacion": "Realizar estudios de dimensionamiento antes de cada puesta en producción que cubran cómputo, almacenamiento, comunicaciones, personal e instalaciones. Implantar monitorización continua de capacidad con umbrales y alertas. Planificar ampliaciones al menos trimestralmente.",
+          "referencia_articulo": "Anexo II, medida op.pl.4 RD 311/2022"
+        },
+        {
+          "id": "ENS-OPE-005",
+          "texto": "Si el sistema es categoría ALTA, ¿se utilizan productos y servicios certificados conforme al ENS, ITSEC, Common Criteria, FIPS u otros esquemas reconocidos?",
+          "ayuda": "La medida op.pl.5 aplica solo a categoría ALTA y exige usar componentes certificados (ENS, Common Criteria, FIPS 140-2/3, ITSEC) cuando estén disponibles, o realizar análisis de riesgos específico que justifique su uso en caso contrario. El CCN mantiene un Catálogo de Productos y Servicios STIC con esta información.",
+          "requisito_original": "Para los componentes del sistema correspondientes a categoría ALTA se utilizarán, en los productos del sistema o que tengan relación directa con la seguridad del mismo, productos certificados conforme al ENS o, en su caso, productos certificados conforme a normas europeas o internacionales reconocidas.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "alta"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Identificar los componentes del sistema clasificados en categoría ALTA y verificar su certificación en el Catálogo de Productos y Servicios STIC del CCN (CPSTIC). Cuando no exista alternativa certificada, documentar formalmente el análisis de riesgos que justifica su uso y las salvaguardas compensatorias.",
+          "referencia_articulo": "Anexo II, medida op.pl.5 RD 311/2022"
+        }
+      ]
+    },
+    {
+      "id": "ENS-ACC",
+      "nombre": "Control de acceso y autenticación",
+      "descripcion": "Familia op.acc del Anexo II del RD 311/2022. Identificación, requisitos de acceso, segregación de funciones, gestión de derechos de acceso y mecanismos de autenticación de usuarios internos y externos.",
+      "temas": [
+        "access_control",
+        "authentication",
+        "identity_management"
+      ],
+      "peso_bloque": 8,
+      "preguntas": [
+        {
+          "id": "ENS-OPE-006",
+          "texto": "¿Cada usuario del sistema dispone de un identificador único y nominal que permite trazar todas sus actividades?",
+          "ayuda": "La medida op.acc.1 exige un identificador único para cada usuario, sin cuentas genéricas compartidas. Es la base para que el registro de actividad (op.exp.8) tenga sentido jurídico y forense.",
+          "requisito_original": "Se podrá identificar a cada usuario que accede al sistema. La identificación deberá ser singular, prohibiéndose la utilización de identificadores genéricos. Las cuentas se inhabilitarán cuando el usuario deje la organización, cuando el usuario cese en su función o cuando la persona que la autorizó dé orden en sentido contrario.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 4,
+          "remediacion": "Eliminar cuentas genéricas compartidas; cada usuario debe tener identificador único nominal. Integrar el ciclo de vida de identidades con el de RR.HH. para inhabilitaciones inmediatas en bajas y cambios de función. Auditar trimestralmente las cuentas activas frente al directorio de empleados.",
+          "referencia_articulo": "Anexo II, medida op.acc.1 RD 311/2022"
+        },
+        {
+          "id": "ENS-OPE-007",
+          "texto": "¿Los derechos de acceso de cada usuario están limitados según el principio de mínimo privilegio y atendiendo a la política de seguridad?",
+          "ayuda": "La medida op.acc.2 exige aplicar el principio de mínimo privilegio: los derechos de acceso deben restringirse a lo necesario para desempeñar las funciones asignadas. Aplica a todas las categorías.",
+          "requisito_original": "Los recursos del sistema se protegerán con algún mecanismo que impida su utilización, salvo a las entidades que disfruten de derechos de acceso suficientes. Los derechos de acceso de cada recurso se establecerán según la política y normativa de seguridad de la organización.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 4,
+          "remediacion": "Implementar control de acceso basado en roles (RBAC) con principio de mínimo privilegio y necesidad de saber. Documentar la matriz de roles/permisos y mantenerla actualizada. Revisar accesos trimestralmente. Aplicar revocación inmediata ante cambios de puesto.",
+          "referencia_articulo": "Anexo II, medida op.acc.2 RD 311/2022"
+        },
+        {
+          "id": "ENS-OPE-008",
+          "texto": "Si el sistema es categoría MEDIA o ALTA, ¿se aplica segregación efectiva de funciones y tareas conflictivas para evitar concentración de privilegios?",
+          "ayuda": "La medida op.acc.3 aplica a categoría media y alta. Exige separar funciones conflictivas (desarrollo vs. producción, aprobación vs. ejecución, administración vs. auditoría) para evitar abusos o errores.",
+          "requisito_original": "El sistema operativo se configurará para que sea necesaria la cooperación entre dos o más usuarios para ciertas tareas críticas, especialmente la administración del propio sistema operativo.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "media",
+            "alta"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Identificar tareas críticas (administración de bases de datos, despliegues a producción, modificación de logs) y configurar autenticación de dos personas o aprobaciones cruzadas. Separar entornos. Cuando la segregación no sea posible, implantar controles compensatorios (registro reforzado, revisión).",
+          "referencia_articulo": "Anexo II, medida op.acc.3 RD 311/2022"
+        },
+        {
+          "id": "ENS-OPE-009",
+          "texto": "¿Existe un proceso formal de gestión de derechos de acceso (altas, modificaciones y bajas) con autorización del responsable funcional?",
+          "ayuda": "La medida op.acc.4 exige un proceso formal de altas, modificaciones y bajas de derechos de acceso, autorizado por el responsable funcional del recurso, no por TI. La cadena de autorización debe estar trazada.",
+          "requisito_original": "Los derechos de acceso de cada usuario se limitarán atendiendo a los principios de mínimo privilegio y necesidad de conocer. Sólo el órgano competente, a tenor de las funciones del usuario, podrá conceder, alterar o anular la autorización de acceso a los recursos.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Implantar workflow en herramienta ITSM con responsable funcional como aprobador. Documentar cada alta, modificación y baja. Realizar reaprovisionamiento periódico (recertificación trimestral o semestral) para verificar que los accesos siguen siendo necesarios.",
+          "referencia_articulo": "Anexo II, medida op.acc.4 RD 311/2022"
+        },
+        {
+          "id": "ENS-OPE-010",
+          "texto": "¿Los mecanismos de autenticación para usuarios externos cumplen los requisitos del ENS según la categoría del sistema (uso de identificación electrónica reconocida en media/alta)?",
+          "ayuda": "La medida op.acc.5 regula la autenticación de usuarios externos (ciudadanos, otras AA.PP., terceros). En categoría básica admite credenciales propias; en media y alta, identificación electrónica reconocida (DNIe, certificado electrónico, Cl@ve), con MFA en alta.",
+          "requisito_original": "Los mecanismos de autenticación para usuarios externos al sistema deberán garantizar la identidad. Cuando se trate de sistemas de categoría media o alta se emplearán sistemas de identificación electrónica reconocida, como el DNI electrónico, los certificados electrónicos cualificados o Cl@ve.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "En categoría media y alta, integrar la autenticación con Cl@ve y aceptar certificados electrónicos cualificados (DNIe, FNMT, ACCV). En categoría alta, exigir MFA. Documentar el mapa de autenticación por servicio y usuario externo.",
+          "referencia_articulo": "Anexo II, medida op.acc.5 RD 311/2022"
+        },
+        {
+          "id": "ENS-OPE-011",
+          "texto": "¿Los mecanismos de autenticación para usuarios internos cumplen los requisitos del ENS, incluida la autenticación reforzada (MFA) en categoría alta?",
+          "ayuda": "La medida op.acc.6 regula la autenticación de usuarios de la organización. En categoría básica admite contraseña con política robusta; en media exige doble factor para accesos remotos y privilegiados; en alta exige MFA generalizado y elementos físicos o biométricos.",
+          "requisito_original": "Los mecanismos de autenticación frente al sistema serán de la calidad acorde a la categoría del sistema. En categoría media se autenticará mediante factor doble para los accesos remotos. En categoría alta se exigirán mecanismos basados en, al menos, dos factores.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 4,
+          "remediacion": "Implantar política de contraseñas robusta (NIST SP 800-63B). En categoría media, MFA obligatorio para acceso remoto, VPN y cuentas privilegiadas. En categoría alta, MFA generalizado para todos los usuarios (TOTP, FIDO2, certificado en tarjeta). Prohibir SMS como segundo factor en alta.",
+          "referencia_articulo": "Anexo II, medida op.acc.6 RD 311/2022"
+        }
+      ]
+    },
+    {
+      "id": "ENS-EXP",
+      "nombre": "Explotación y configuración de sistemas",
+      "descripcion": "Cláusulas op.exp.1 a op.exp.5 del Anexo II del RD 311/2022. Inventario de activos, configuración de seguridad, gestión de la configuración, mantenimiento y actualizaciones y gestión de cambios.",
+      "temas": [
+        "asset_management",
+        "vulnerability_management",
+        "change_management"
+      ],
+      "peso_bloque": 7,
+      "preguntas": [
+        {
+          "id": "ENS-OPE-012",
+          "texto": "¿Existe un inventario de activos del sistema completo y actualizado, con responsable identificado para cada activo?",
+          "ayuda": "La medida op.exp.1 exige un inventario de activos exhaustivo (hardware, software, servicios, información, comunicaciones) con su responsable. Sin inventario, no hay manera de aplicar el resto de medidas técnicas.",
+          "requisito_original": "Se mantendrá un inventario actualizado de todos los elementos del sistema, detallando su naturaleza, identificando a su responsable y los recursos donde se almacena la información o se presta el servicio.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 1,
+          "remediacion": "Implantar un CMDB o herramienta de gestión de inventario que cubra hardware, software, servicios, información, comunicaciones e instalaciones. Asignar responsable a cada activo. Automatizar el descubrimiento donde sea posible. Revisar al menos semestralmente.",
+          "referencia_articulo": "Anexo II, medida op.exp.1 RD 311/2022"
+        },
+        {
+          "id": "ENS-OPE-013",
+          "texto": "¿Los componentes del sistema se configuran de forma segura (bastionado) siguiendo guías documentadas y eliminando funciones innecesarias?",
+          "ayuda": "La medida op.exp.2 exige configuración de seguridad: desinstalar funciones innecesarias, aplicar guías de bastionado (CCN-STIC 5xx, CIS Benchmarks), denegar por defecto. Aplica a todas las categorías.",
+          "requisito_original": "Los componentes del sistema se configurarán de forma segura, eliminándose las cuentas y contraseñas estándar, aplicando la regla de mínima funcionalidad y aplicando la regla de seguridad por defecto.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Adoptar guías de bastionado del CCN-CERT (serie CCN-STIC 5xx) y CIS Benchmarks. Eliminar cuentas y contraseñas por defecto. Aplicar mínima funcionalidad. Automatizar configuraciones con Ansible, Puppet o GPO. Revisar al menos anualmente y tras incidentes.",
+          "referencia_articulo": "Anexo II, medida op.exp.2 RD 311/2022"
+        },
+        {
+          "id": "ENS-OPE-014",
+          "texto": "Si el sistema es categoría MEDIA o ALTA, ¿existe gestión continua de la configuración de seguridad con detección automática de desviaciones?",
+          "ayuda": "La medida op.exp.3 aplica a categoría media y alta. Exige mantener vivas las configuraciones de seguridad: detectar cambios no autorizados, garantizar la consistencia, mantener la línea base actualizada.",
+          "requisito_original": "Se gestionará de forma continua la configuración de los componentes del sistema, manteniéndolas en una situación coherente con las necesidades, las amenazas y los riesgos.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "media",
+            "alta"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 5,
+          "remediacion": "Implantar herramientas de gestión de configuración (Ansible, Puppet, SCCM) con líneas base versionadas. Detectar desviaciones automáticamente mediante herramientas tipo CIS-CAT, OpenSCAP o Tenable. Revertir o documentar cada cambio no autorizado.",
+          "referencia_articulo": "Anexo II, medida op.exp.3 RD 311/2022"
+        },
+        {
+          "id": "ENS-OPE-015",
+          "texto": "¿Se realizan mantenimiento y actualizaciones de seguridad de forma planificada, con gestión de vulnerabilidades y priorización por criticidad?",
+          "ayuda": "La medida op.exp.4 exige aplicar actualizaciones de seguridad oportunamente, gestionar vulnerabilidades publicadas y mantener un control documentado. Es la medida más sancionada en auditorías por sistemas sin parchear.",
+          "requisito_original": "Para mantener el equipamiento físico y lógico que constituye el sistema, se aplicará la siguiente: se atenderá a las especificaciones de los fabricantes; se efectuará un seguimiento continuo de los anuncios de defectos y vulnerabilidades; se dispondrá de un procedimiento para analizar, priorizar y determinar cuándo aplicar las actualizaciones de seguridad, parches, mejoras y nuevas versiones.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 4,
+          "remediacion": "Suscribirse a alertas del CCN-CERT, INCIBE-CERT y proveedores. Implantar escaneo de vulnerabilidades semanal (Tenable, Qualys, OpenVAS). Definir plazos de parcheo por criticidad: críticas 7 días, altas 30 días, medias 90 días. Documentar excepciones y compensaciones.",
+          "referencia_articulo": "Anexo II, medida op.exp.4 RD 311/2022"
+        },
+        {
+          "id": "ENS-OPE-016",
+          "texto": "Si el sistema es categoría MEDIA o ALTA, ¿se aplica un proceso formal de gestión de cambios con análisis previo de impacto en la seguridad?",
+          "ayuda": "La medida op.exp.5 aplica a media y alta. Exige proceso formal de cambios: registro, análisis de impacto, autorización, plan de pruebas, plan de retroceso. Un cambio mal gestionado puede ser tan peligroso como un ataque.",
+          "requisito_original": "Se mantendrá un control continuo de cambios realizados en el sistema, de forma que se atienda a la valoración del cambio, a los posibles efectos sobre los componentes que existen y a los aspectos de seguridad implicados.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "media",
+            "alta"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Adoptar un proceso ITIL de gestión de cambios. Clasificar cambios (normal, estándar, urgente). Requerir análisis de impacto y aprobación del CAB para cambios normales. Incluir plan de rollback. Registrar todos los cambios y revisar incidentes derivados.",
+          "referencia_articulo": "Anexo II, medida op.exp.5 RD 311/2022"
+        }
+      ]
+    },
+    {
+      "id": "ENS-PROT",
+      "nombre": "Protección frente a código dañino y registro de actividad",
+      "descripcion": "Cláusulas op.exp.6 y op.exp.8 del Anexo II del RD 311/2022. Protección frente a código dañino y registro de la actividad de los usuarios y eventos relevantes del sistema.",
+      "temas": [
+        "endpoint_security",
+        "logging_audit_trail"
+      ],
+      "peso_bloque": 5,
+      "preguntas": [
+        {
+          "id": "ENS-OPE-017",
+          "texto": "¿Se dispone de protección frente a código dañino (antimalware, EDR) en todos los sistemas con actualización continua y mecanismos de detección y respuesta?",
+          "ayuda": "La medida op.exp.6 exige protección frente a código dañino actualizada y operativa, incluyendo prevención, detección y reacción. Hoy se exige más que un antivirus tradicional: EDR/XDR con respuesta automatizada.",
+          "requisito_original": "Se dispondrá de mecanismos de prevención y reacción frente a código dañino que cubrirán: prevención mediante el análisis previo; detección mediante el control en el procesamiento; reacción para neutralizar el código dañino y recuperar la información.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 4,
+          "remediacion": "Desplegar EDR/XDR (CrowdStrike, Microsoft Defender for Endpoint, SentinelOne) en endpoints y servidores con motores y firmas actualizados automáticamente. Configurar análisis en tiempo real y bajo demanda. Activar respuesta automatizada (aislamiento). Integrar con SIEM.",
+          "referencia_articulo": "Anexo II, medida op.exp.6 RD 311/2022"
+        },
+        {
+          "id": "ENS-OPE-019",
+          "texto": "¿Se registra la actividad de los usuarios y eventos relevantes del sistema con retención adecuada, protección de los logs y revisión periódica?",
+          "ayuda": "La medida op.exp.8 exige registro de actividad: identificar quién, qué, cuándo y desde dónde, con protección de los registros frente a alteración. En categoría alta se exige correlación automatizada (SIEM).",
+          "requisito_original": "Se registrarán las actividades de los usuarios, reteniendo la información necesaria para monitorizar, analizar, investigar y documentar actividades indebidas o no autorizadas, permitiendo identificar en cada momento a la persona que actúa.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Centralizar los logs en un SIEM. Cubrir endpoints, servidores, identidades, redes y aplicaciones. Sincronizar todos los relojes (NTP). Proteger los logs contra alteración (almacenamiento WORM, hash o blockchain). Conservar mínimo 24 meses. Revisar reglas y alertas periódicamente.",
+          "referencia_articulo": "Anexo II, medida op.exp.8 RD 311/2022"
+        }
+      ]
+    },
+    {
+      "id": "ENS-INC",
+      "nombre": "Gestión de incidentes",
+      "descripcion": "Cláusulas op.exp.7 y op.exp.9 del Anexo II del RD 311/2022. Procedimiento de gestión de incidentes de seguridad y su registro, con notificación al CCN-CERT.",
+      "temas": [
+        "incident_response",
+        "legal_compliance"
+      ],
+      "peso_bloque": 5,
+      "preguntas": [
+        {
+          "id": "ENS-OPE-018",
+          "texto": "¿Existe un procedimiento de gestión de incidentes de seguridad con notificación al CCN-CERT y trazabilidad documental completa?",
+          "ayuda": "Las medidas op.exp.7 y op.exp.9 cubren la gestión de incidentes y su registro: procedimiento documentado, equipo de respuesta, comunicación al CCN-CERT (obligatoria para AA.PP.), recogida de evidencias, lecciones aprendidas.",
+          "requisito_original": "Se dispondrá de un proceso integral para hacer frente a los incidentes que puedan tener un impacto en la seguridad del sistema. Se registrarán todos los incidentes de seguridad, así como las acciones realizadas para su resolución, manteniendo trazabilidad de las decisiones tomadas.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 3,
+          "remediacion": "Adoptar el procedimiento de notificación al CCN-CERT (LUCIA, MISP) en plazos exigidos. Diseñar fases preparación-detección-contención-erradicación-recuperación-lecciones aprendidas. Mantener registro centralizado de incidentes con causa raíz y acciones correctivas. Realizar simulacros anuales.",
+          "referencia_articulo": "Anexo II, medidas op.exp.7 y op.exp.9 RD 311/2022"
+        }
+      ]
+    },
+    {
+      "id": "ENS-CRIP",
+      "nombre": "Gestión de claves criptográficas",
+      "descripcion": "Cláusula op.exp.10 del Anexo II del RD 311/2022. Gestión del ciclo de vida de las claves criptográficas: generación, distribución, custodia, archivado y destrucción.",
+      "temas": [
+        "cryptography"
+      ],
+      "peso_bloque": 3,
+      "preguntas": [
+        {
+          "id": "ENS-OPE-020",
+          "texto": "¿Se gestionan las claves criptográficas (generación, distribución, almacenamiento, rotación y destrucción) conforme a una política documentada?",
+          "ayuda": "La medida op.exp.10 exige una gestión completa del ciclo de vida de las claves criptográficas. Sin gestión de claves, la mejor criptografía es inútil.",
+          "requisito_original": "Las claves criptográficas se gestionarán durante todo su ciclo de vida: generación, transporte al punto de explotación, custodia durante la explotación, archivo posterior a su retirada de explotación activa y destrucción final.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Centralizar la gestión de claves en un KMS o HSM (AWS KMS, Azure Key Vault, Thales). Definir política con algoritmos permitidos, longitudes y periodos de rotación. Documentar el ciclo de vida: generación, distribución, custodia, archivado, destrucción. Auditar el uso.",
+          "referencia_articulo": "Anexo II, medida op.exp.10 RD 311/2022"
+        }
+      ]
+    },
+    {
+      "id": "ENS-EXT",
+      "nombre": "Servicios externos y cadena de suministro",
+      "descripcion": "Cláusulas op.ext.1 a op.ext.3 del Anexo II del RD 311/2022. Contratación y acuerdos de nivel de servicio, gestión diaria de los servicios externos y protección de la cadena de suministro.",
+      "temas": [
+        "supplier_risk",
+        "supply_chain_security"
+      ],
+      "peso_bloque": 5,
+      "preguntas": [
+        {
+          "id": "ENS-OPE-021",
+          "texto": "¿Los contratos con prestadores externos incluyen requisitos de seguridad del ENS y niveles de servicio (SLA) documentados?",
+          "ayuda": "La medida op.ext.1 exige que la contratación de servicios externos incluya cláusulas de seguridad, niveles de servicio, derecho a auditoría, notificación de incidentes y obligaciones del proveedor en el ENS. La conformidad del proveedor con el ENS es exigible.",
+          "requisito_original": "Cuando se utilicen recursos externos al sistema, ya sean servicios, equipos, instalaciones o personal, se establecerán contractualmente las características del servicio prestado y las responsabilidades de las partes, así como los procedimientos de resolución de incidencias y los niveles de servicio.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Incluir en todos los contratos con proveedores cláusulas específicas de cumplimiento del ENS, SLAs cuantificados, derecho a auditoría, notificación de incidentes en plazos y obligaciones de retorno de información. Exigir certificación ENS al proveedor cuando aplique.",
+          "referencia_articulo": "Anexo II, medida op.ext.1 RD 311/2022"
+        },
+        {
+          "id": "ENS-OPE-022",
+          "texto": "Si el sistema es categoría MEDIA o ALTA, ¿existe seguimiento operativo diario de los servicios prestados por terceros con indicadores y revisión documentada?",
+          "ayuda": "La medida op.ext.2 aplica a media y alta. Exige seguimiento operativo de los servicios externos: cumplimiento de SLAs, gestión diaria, comunicación de incidentes, mecanismos de coordinación.",
+          "requisito_original": "Se establecerá un sistema regular y rutinario para medir y vigilar el cumplimiento del servicio. Se establecerán los mecanismos para responder a las anomalías y reclamaciones que se detecten.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "media",
+            "alta"
+          ],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 5,
+          "remediacion": "Establecer reuniones de seguimiento periódicas (mínimo mensuales) con cada proveedor crítico. Definir KPIs medibles de cumplimiento. Registrar incidencias y reclamaciones. Validar SLAs mediante herramientas de monitorización propias.",
+          "referencia_articulo": "Anexo II, medida op.ext.2 RD 311/2022"
+        },
+        {
+          "id": "ENS-OPE-023",
+          "texto": "Si el sistema es categoría MEDIA o ALTA, ¿se aplican controles específicos de seguridad sobre la cadena de suministro tecnológica?",
+          "ayuda": "La medida op.ext.3 aplica a media y alta. Exige proteger la cadena de suministro: identificar dependencias, valorar riesgos, exigir cláusulas de seguridad a subcontratistas. Es una respuesta a ataques tipo SolarWinds.",
+          "requisito_original": "Cuando se proporcionen productos o servicios a través de una cadena de suministro, se requerirá información para conocer la cadena de suministro de los servicios o productos, los componentes implicados y los actores involucrados.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "media",
+            "alta"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Mapear la cadena de suministro de cada proveedor crítico (subcontratistas, componentes, países). Exigir contractualmente transparencia sobre cambios en la cadena. Requerir SBOM (Software Bill of Materials) para componentes software. Evaluar riesgos geopolíticos.",
+          "referencia_articulo": "Anexo II, medida op.ext.3 RD 311/2022"
+        }
+      ]
+    },
+    {
+      "id": "ENS-RED",
+      "nombre": "Interconexión de sistemas",
+      "descripcion": "Cláusula op.ext.4 del Anexo II del RD 311/2022. Aprobación, documentación y protección de las interconexiones de sistemas con redes externas o de terceros.",
+      "temas": [
+        "network_security"
+      ],
+      "peso_bloque": 2,
+      "preguntas": [
+        {
+          "id": "ENS-OPE-024",
+          "texto": "¿Las interconexiones de sistemas con redes externas o de terceros están aprobadas, documentadas y protegidas con mecanismos de seguridad apropiados?",
+          "ayuda": "La medida op.ext.4 exige autorizar y proteger las interconexiones con sistemas externos: documentar arquitectura, controlar flujos, aplicar mecanismos de protección (firewall, VPN, gateways).",
+          "requisito_original": "Cuando los sistemas se conecten a otros sistemas o redes externas, se identificarán los riesgos derivados y se aprobarán las interconexiones, estableciéndose mecanismos para detectar y reaccionar ante intentos de explotación.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Inventariar y documentar todas las interconexiones con sistemas externos. Aplicar firewalls con denegación por defecto. Establecer VPN site-to-site cifrada con socios. Monitorizar tráfico con NDR/IDS. Revisar reglas periódicamente.",
+          "referencia_articulo": "Anexo II, medida op.ext.4 RD 311/2022"
+        }
+      ]
+    },
+    {
+      "id": "ENS-NUB",
+      "nombre": "Servicios en la nube",
+      "descripcion": "Cláusula op.nub.1 del Anexo II del RD 311/2022. Requisitos específicos de seguridad para la prestación de servicios en la nube.",
+      "temas": [
+        "cloud_security"
+      ],
+      "peso_bloque": 3,
+      "preguntas": [
+        {
+          "id": "ENS-OPE-025",
+          "texto": "Si se utilizan servicios en la nube, ¿se aplican los requisitos específicos del ENS para nube (op.nub.1) con análisis de riesgos y certificación del proveedor?",
+          "ayuda": "La medida op.nub.1 es nueva en el RD 311/2022. Exige análisis específico de riesgos cloud, certificación ENS del proveedor cloud (o equivalente), ubicación de los datos en EEE, control de claves y derecho a auditoría.",
+          "requisito_original": "La prestación de servicios en la nube, en cualquiera de sus modalidades, se realizará observando las particularidades inherentes y los preceptos contenidos en los Esquemas Nacionales de Seguridad o, en su defecto, aquellos que la normativa vigente exija.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Exigir al proveedor cloud certificación ENS en la categoría requerida (la AGE mantiene un catálogo). Verificar ubicación geográfica de los datos en EEE. Configurar control de claves (BYOK/HYOK). Documentar el modelo de responsabilidad compartida. Activar logs y derechos de auditoría.",
+          "referencia_articulo": "Anexo II, medida op.nub.1 RD 311/2022"
+        }
+      ]
+    },
+    {
+      "id": "ENS-CONT",
+      "nombre": "Continuidad del servicio",
+      "descripcion": "Familia op.cont del Anexo II del RD 311/2022. Análisis de impacto, plan de continuidad, pruebas periódicas y medios alternativos.",
+      "temas": [
+        "business_continuity"
+      ],
+      "peso_bloque": 5,
+      "preguntas": [
+        {
+          "id": "ENS-OPE-026",
+          "texto": "Si el sistema es categoría MEDIA o ALTA, ¿se ha realizado un análisis de impacto en el negocio (BIA) que identifique servicios críticos, RTO y RPO?",
+          "ayuda": "La medida op.cont.1 aplica a media y alta. Exige un análisis de impacto en el negocio (BIA): identificación de procesos críticos, tiempos máximos tolerables, dependencias, RTO y RPO por servicio.",
+          "requisito_original": "Se realizará un análisis de impacto que permita determinar los requisitos de disponibilidad de cada servicio.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "media",
+            "alta"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 2,
+          "remediacion": "Realizar un BIA formal de los servicios del sistema. Identificar dependencias (sistemas, proveedores, personal). Definir tiempos objetivos de recuperación (RTO) y puntos objetivos de recuperación (RPO) por servicio. Documentar el análisis y revisarlo anualmente.",
+          "referencia_articulo": "Anexo II, medida op.cont.1 RD 311/2022"
+        },
+        {
+          "id": "ENS-OPE-027",
+          "texto": "Si el sistema es categoría MEDIA o ALTA, ¿se dispone de un plan de continuidad documentado y se realizan pruebas periódicas?",
+          "ayuda": "Las medidas op.cont.2 y op.cont.3 aplican a media y alta. Exigen plan de continuidad documentado y pruebas periódicas que verifiquen la capacidad de restauración. Un plan sin pruebas es papel mojado.",
+          "requisito_original": "Se desarrollará un plan de continuidad que establezca las acciones a ejecutar en caso de interrupción de los servicios prestados con los medios habituales. Se realizarán pruebas periódicas para localizar y corregir, en su caso, los errores o deficiencias que puedan existir en el plan de continuidad.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "media",
+            "alta"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Elaborar planes de continuidad con criterios de activación, roles, procedimientos de recuperación y comunicación. Probar al menos anualmente (simulacro de mesa o pruebas reales en función de criticidad). Documentar resultados y aplicar lecciones aprendidas. Actualizar el plan tras cada prueba.",
+          "referencia_articulo": "Anexo II, medidas op.cont.2 y op.cont.3 RD 311/2022"
+        },
+        {
+          "id": "ENS-OPE-028",
+          "texto": "Si el sistema es categoría ALTA, ¿se dispone de medios alternativos (instalaciones, equipos, personal) que garanticen la continuidad ante desastres?",
+          "ayuda": "La medida op.cont.4 aplica solo a categoría alta. Exige medios alternativos: instalaciones, equipos, comunicaciones y personal que permitan continuar la prestación del servicio aun ante un desastre mayor.",
+          "requisito_original": "Se preverán medios alternativos para llevar a cabo el servicio en caso de fallo de los medios habituales. Estos medios alternativos estarán sujetos a las mismas garantías de protección que los medios habituales.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "alta"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Establecer un Centro de Respaldo (DRP) geográficamente alejado. Garantizar redundancia de equipos críticos y comunicaciones. Mantener acuerdos de respaldo de personal. Probar al menos anualmente el failover completo. Asegurar las mismas garantías de seguridad que en el sitio principal.",
+          "referencia_articulo": "Anexo II, medida op.cont.4 RD 311/2022"
+        }
+      ]
+    },
+    {
+      "id": "ENS-MON",
+      "nombre": "Monitorización y vigilancia",
+      "descripcion": "Familia op.mon del Anexo II del RD 311/2022. Detección de intrusión, sistema de métricas de seguridad y servicio de vigilancia.",
+      "temas": [
+        "security_monitoring",
+        "compliance_assessment"
+      ],
+      "peso_bloque": 5,
+      "preguntas": [
+        {
+          "id": "ENS-OPE-029",
+          "texto": "Si el sistema es categoría MEDIA o ALTA, ¿se dispone de mecanismos de detección de intrusión (IDS/IPS, NDR) operativos y monitorizados?",
+          "ayuda": "La medida op.mon.1 aplica a media y alta. Exige mecanismos para detectar intrusiones a nivel de red y sistemas: IDS/IPS, NDR, sondas de tráfico. La detección debe complementarse con respuesta (op.exp.7).",
+          "requisito_original": "Se dispondrá de herramientas de detección o de prevención de intrusión.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "media",
+            "alta"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Desplegar IDS/IPS perimetral e interno y NDR (Network Detection and Response) para detectar anomalías. Integrar con el SIEM para correlación. Configurar reglas alineadas con MITRE ATT&CK. Suscribir feeds de threat intelligence del CCN-CERT.",
+          "referencia_articulo": "Anexo II, medida op.mon.1 RD 311/2022"
+        },
+        {
+          "id": "ENS-OPE-030",
+          "texto": "¿Existe un sistema de métricas de seguridad operativo, con indicadores cuantitativos y reporte periódico a la dirección?",
+          "ayuda": "La medida op.mon.2 exige un sistema de métricas de seguridad: indicadores cuantitativos que permitan evaluar el estado del sistema y la eficacia de las medidas. Aplica a todas las categorías y es la base del informe INES.",
+          "requisito_original": "Se establecerá un sistema de métricas y de información para evaluar la implantación del Esquema Nacional de Seguridad, así como la eficacia de las medidas.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 5,
+          "remediacion": "Definir un cuadro de mando de seguridad con indicadores alineados con la CCN-STIC 815: nivel de implantación de medidas, número de incidentes, tiempos de respuesta, cobertura de parcheo, formación, etc. Reportar trimestralmente al Comité de Seguridad y elaborar el informe anual INES.",
+          "referencia_articulo": "Anexo II, medida op.mon.2 RD 311/2022"
+        },
+        {
+          "id": "ENS-OPE-031",
+          "texto": "Si el sistema es categoría MEDIA o ALTA, ¿se ha establecido un servicio de vigilancia (SOC propio o externalizado) con monitorización 24/7 cuando proceda?",
+          "ayuda": "La medida op.mon.3 aplica a media y alta. Exige vigilancia continua: SOC propio o servicio gestionado, escalado de alertas, integración con CCN-CERT y respuesta proporcional al riesgo.",
+          "requisito_original": "Se implantará un servicio de vigilancia que detecte actividades anómalas o malintencionadas en el sistema de información, supervise el correcto funcionamiento de los componentes y reaccione ante los eventos.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "media",
+            "alta"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 5,
+          "remediacion": "Implantar un SOC propio o contratar un MSSP con capacidades 24/7 según criticidad. Integrar SIEM, EDR, NDR y feeds de threat intelligence (CCN-CERT). Establecer playbooks de respuesta. Notificar incidentes al CCN-CERT mediante LUCIA en plazo.",
+          "referencia_articulo": "Anexo II, medida op.mon.3 RD 311/2022"
+        }
+      ]
+    },
+    {
+      "id": "ENS-FIS",
+      "nombre": "Protección de las instalaciones",
+      "descripcion": "Familia mp.if del Anexo II del RD 311/2022. Áreas separadas con control de acceso, identificación de personas, acondicionamiento de locales, energía eléctrica, protección frente a incendios e inundaciones y registro de entrada y salida de equipamiento.",
+      "temas": [
+        "physical_security"
+      ],
+      "peso_bloque": 9,
+      "preguntas": [
+        {
+          "id": "ENS-MPP-001",
+          "texto": "¿Las instalaciones que albergan el sistema están separadas por áreas con control de acceso físico apropiado al nivel de seguridad?",
+          "ayuda": "La medida mp.if.1 exige separar las instalaciones en áreas con control de acceso físico proporcional a la criticidad. La sala de servidores debe tener mayor control que las oficinas; los puestos de visitantes deben estar segregados.",
+          "requisito_original": "El equipamiento se instalará en áreas separadas específicas para su función. El acceso físico a las áreas se controlará identificando a las personas y registrando dichos accesos, y limitando el acceso a las personas autorizadas.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Definir zonas físicas con control diferenciado (pública, restringida, segura). Implantar control de acceso por tarjeta o biometría. Registrar entradas y salidas. Las salas de servidores deben tener doble factor y videovigilancia. Auditar el control de acceso periódicamente.",
+          "referencia_articulo": "Anexo II, medida mp.if.1 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-002",
+          "texto": "¿Se identifica a todas las personas que acceden a las instalaciones y se controla a las visitas (acompañamiento, registro, identificación)?",
+          "ayuda": "La medida mp.if.2 exige identificar a todas las personas que acceden a las instalaciones, distinguiendo entre personal autorizado y visitantes. Las visitas requieren acompañamiento permanente en zonas restringidas.",
+          "requisito_original": "Se identificará a las personas que accedan a los locales donde haya equipamiento que forme parte del sistema de información.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 4,
+          "remediacion": "Disponer en recepción de un sistema de registro de visitas con identificación previa y acompañamiento. Entregar tarjetas distintivas. Limitar el acceso de visitantes a zonas autorizadas. Registrar entrada y salida con timestamp.",
+          "referencia_articulo": "Anexo II, medida mp.if.2 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-003",
+          "texto": "¿Los locales que albergan el sistema están adecuadamente acondicionados (temperatura, humedad, polvo, ruido) a las especificaciones de los equipos?",
+          "ayuda": "La medida mp.if.3 exige acondicionar los locales: climatización, control de humedad, protección frente a polvo. Las salas técnicas requieren condiciones específicas para garantizar el funcionamiento del equipamiento.",
+          "requisito_original": "Los locales donde se ubique el sistema de información dispondrán de elementos adecuados para el eficaz funcionamiento del equipamiento allí instalado.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 4,
+          "remediacion": "Mantener climatización adecuada en CPD (temperatura 18-27°C, humedad 40-60%). Instalar sensores con alarmas remotas. Garantizar limpieza periódica. Mantener registros de mantenimiento. Considerar redundancia de climatización en CPD críticos.",
+          "referencia_articulo": "Anexo II, medida mp.if.3 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-004",
+          "texto": "¿El suministro de energía eléctrica está garantizado mediante SAI y, cuando proceda, generadores con pruebas periódicas?",
+          "ayuda": "La medida mp.if.4 exige garantizar el suministro eléctrico: SAI para cortes breves, generadores para cortes prolongados (en función de criticidad), pruebas periódicas. Sin suministro eléctrico continuo, no hay servicio.",
+          "requisito_original": "El equipamiento tendrá garantizado el suministro de energía, así como protección frente a cortes y otras perturbaciones que pudieran afectarle.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Instalar SAI con autonomía mínima de 15-30 minutos en zonas críticas. En categoría media y alta, generadores eléctricos con pruebas mensuales documentadas. Garantizar dos acometidas eléctricas independientes cuando sea posible. Monitorizar el estado de SAI/generadores.",
+          "referencia_articulo": "Anexo II, medida mp.if.4 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-005",
+          "texto": "¿Las instalaciones disponen de medidas de protección frente a incendios (detección, extinción, compartimentación) conforme a la normativa?",
+          "ayuda": "La medida mp.if.5 exige protección frente a incendios: detección automática, extinción adecuada (preferiblemente gas inerte en CPD para evitar daños a equipos), compartimentación cortafuegos, pruebas periódicas y evacuación.",
+          "requisito_original": "El equipamiento estará protegido frente a incidentes fortuitos o deliberados causados por el agua.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Instalar sistemas de detección temprana en CPD (detectores VESDA o equivalentes). En salas técnicas, sistemas de extinción por gas inerte (FM-200, NOVEC, IG-541). Mantener compartimentación cortafuegos. Realizar revisiones reglamentarias por OCA. Hacer simulacros de evacuación.",
+          "referencia_articulo": "Anexo II, medida mp.if.5 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-006",
+          "texto": "Si el sistema es categoría MEDIA o ALTA, ¿las instalaciones disponen de medidas específicas frente a inundaciones?",
+          "ayuda": "La medida mp.if.6 aplica a media y alta. Exige proteger las instalaciones frente a inundaciones: detección de fugas, ubicación no en planta baja sin protección, evitar paso de canalizaciones de agua por zonas críticas.",
+          "requisito_original": "El equipamiento estará protegido frente a incidentes fortuitos o deliberados causados por el fuego.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "media",
+            "alta"
+          ],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 4,
+          "remediacion": "Ubicar los CPD por encima de plantas inundables. Instalar detectores de fugas de agua con alarma temprana. Evitar canalizaciones de agua sobre racks. Disponer de bombas de achique. Documentar el plan de actuación frente a inundación.",
+          "referencia_articulo": "Anexo II, medida mp.if.6 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-007",
+          "texto": "¿Se controla y registra la entrada y salida de equipamiento informático de las instalaciones (préstamos, retiradas, devoluciones)?",
+          "ayuda": "La medida mp.if.7 exige controlar el movimiento físico del equipamiento: entradas y salidas con autorización y registro. Sin control, se pierden activos sin trazabilidad o entran dispositivos no autorizados.",
+          "requisito_original": "Se llevará un registro de entrada y salida del equipamiento de las instalaciones, manteniendo trazabilidad sobre la operación.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 6,
+          "nivel": "medio",
+          "fase_pds": 4,
+          "remediacion": "Establecer un punto único de control para entradas y salidas de equipamiento con registro digital. Requerir autorización previa documentada. Cotejar con el inventario (op.exp.1). Auditar trimestralmente las discrepancias.",
+          "referencia_articulo": "Anexo II, medida mp.if.7 RD 311/2022"
+        }
+      ]
+    },
+    {
+      "id": "ENS-PER",
+      "nombre": "Seguridad del personal",
+      "descripcion": "Familia mp.per del Anexo II del RD 311/2022. Caracterización del puesto de trabajo, deberes y obligaciones, concienciación y formación del personal.",
+      "temas": [
+        "human_resources_security",
+        "awareness_training"
+      ],
+      "peso_bloque": 6,
+      "preguntas": [
+        {
+          "id": "ENS-MPP-008",
+          "texto": "Si el sistema es categoría MEDIA o ALTA, ¿están caracterizados los puestos de trabajo con requisitos de seguridad y formación específicos?",
+          "ayuda": "La medida mp.per.1 aplica a media y alta. Exige caracterizar los puestos: definir las responsabilidades de seguridad, los requisitos de habilitación necesarios y las verificaciones previas al desempeño.",
+          "requisito_original": "Para cada puesto de trabajo relacionado con la seguridad del sistema, se definirán las responsabilidades en materia de seguridad, los requisitos de capacitación y formación necesarios.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "media",
+            "alta"
+          ],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 3,
+          "remediacion": "Documentar para cada puesto sensible: responsabilidades de seguridad, requisitos de habilitación (titulación, certificaciones, verificaciones), plan de formación específico. Integrar con descripciones de puesto de RR.HH. Revisar al cambiar funciones.",
+          "referencia_articulo": "Anexo II, medida mp.per.1 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-009",
+          "texto": "¿El personal conoce y firma sus deberes y obligaciones en materia de seguridad, incluido el compromiso de confidencialidad?",
+          "ayuda": "La medida mp.per.2 exige documentar y comunicar al personal sus deberes y obligaciones en seguridad: confidencialidad, uso aceptable, consecuencias del incumplimiento. Aplica a todas las categorías.",
+          "requisito_original": "Se informará al personal sobre sus deberes y obligaciones en materia de seguridad, así como sobre las medidas disciplinarias que correspondan en caso de incumplimiento. Se mantendrá constancia documental.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Incluir en el contrato laboral o anexo de seguridad las obligaciones específicas: confidencialidad, uso aceptable, propiedad intelectual, cumplimiento de PSI. Recoger firma de aceptación. Renovar tras cambios significativos. Mantener archivo accesible.",
+          "referencia_articulo": "Anexo II, medida mp.per.2 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-010",
+          "texto": "¿Existe un programa continuo de concienciación en seguridad para todo el personal, con materiales y campañas periódicas?",
+          "ayuda": "La medida mp.per.3 exige concienciación continua: comunicaciones, campañas, recordatorios, alertas. La concienciación se diferencia de la formación (mp.per.4) en que es más amplia y de menor profundidad pero mayor frecuencia.",
+          "requisito_original": "Se recordará regularmente al personal su deber de aplicar las normas, riesgos y amenazas más comunes, las buenas prácticas más relevantes y los procedimientos de notificación de incidentes.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 5,
+          "remediacion": "Diseñar un programa anual de concienciación: comunicaciones mensuales (boletines, intranet), campañas temáticas (phishing simulado, escritorio limpio, contraseñas), recordatorios sobre nuevas amenazas. Medir alcance y eficacia mediante encuestas y simulacros.",
+          "referencia_articulo": "Anexo II, medida mp.per.3 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-011",
+          "texto": "¿El personal con responsabilidades de seguridad recibe formación específica acorde a sus funciones y a la evolución de las amenazas?",
+          "ayuda": "La medida mp.per.4 exige formación específica al personal con responsabilidades de seguridad: técnicos de seguridad, administradores, gestores de incidentes. Debe actualizarse con la evolución de amenazas y tecnologías.",
+          "requisito_original": "Se formará regularmente al personal en aquellas materias que requieran para el desempeño de sus funciones.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 5,
+          "remediacion": "Establecer un plan de formación específico por perfil: administradores, desarrolladores, equipo de respuesta, auditores, dirección. Incluir certificaciones reconocidas (CCN-STIC, CISSP, CISA, CEH). Renovar conocimientos al menos anualmente. Documentar asistencia y evaluación.",
+          "referencia_articulo": "Anexo II, medida mp.per.4 RD 311/2022"
+        }
+      ]
+    },
+    {
+      "id": "ENS-EQ",
+      "nombre": "Protección de equipos y comunicaciones",
+      "descripcion": "Familias mp.eq y mp.com del Anexo II del RD 311/2022. Protección del puesto de trabajo y de los equipos, perímetro de red, confidencialidad, integridad y autenticidad de las comunicaciones y separación de flujos de información.",
+      "temas": [
+        "endpoint_security",
+        "network_security",
+        "communications_security"
+      ],
+      "peso_bloque": 7,
+      "preguntas": [
+        {
+          "id": "ENS-MPP-012",
+          "texto": "¿Se aplica política de puesto de trabajo despejado y bloqueo automático de sesión, evitando exposición de información sensible?",
+          "ayuda": "Las medidas mp.eq.1 y mp.eq.2 cubren la protección del puesto de trabajo: escritorio despejado (mp.eq.1, todas las categorías) y bloqueo automático de sesión por inactividad (mp.eq.2, media y alta).",
+          "requisito_original": "Las áreas de trabajo deben permanecer despejadas, sin más material encima de la mesa que el requerido para la actividad que se está realizando en cada momento. El puesto de trabajo se bloqueará al cabo de un tiempo prudencial de inactividad.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 4,
+          "remediacion": "Publicar política de puesto limpio y bloqueo de sesión. Configurar bloqueo automático centralizado por GPO/MDM tras 5-10 minutos. Realizar revisiones aleatorias del cumplimiento. Implantar gestión documental electrónica para reducir papel.",
+          "referencia_articulo": "Anexo II, medidas mp.eq.1 y mp.eq.2 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-013",
+          "texto": "¿Los dispositivos portátiles disponen de protección reforzada (cifrado de disco, EDR, MFA, control de inventario y borrado remoto)?",
+          "ayuda": "La medida mp.eq.3 exige protección reforzada para portátiles: cifrado completo, EDR, MFA, control centralizado (MDM/UEM), capacidad de borrado remoto en caso de pérdida.",
+          "requisito_original": "Los equipos portátiles llevarán protección reforzada que permita: inventariar los equipos, identificar al usuario, restringir el acceso a la información, garantizar la confidencialidad mediante el cifrado y dar respuesta ante incidentes.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Cifrar todos los portátiles con BitLocker, FileVault o equivalente, custodiando claves de recuperación. Desplegar EDR centralizado. Aplicar MFA en el inicio de sesión. Gestionar con MDM/UEM (Intune, Jamf, MaaS360). Habilitar borrado remoto en caso de pérdida.",
+          "referencia_articulo": "Anexo II, medida mp.eq.3 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-014",
+          "texto": "¿Otros equipos conectados a la red (impresoras, IoT, periféricos) están inventariados, segmentados y protegidos con configuraciones seguras?",
+          "ayuda": "La medida mp.eq.4 exige tratar los demás equipos conectados (impresoras multifunción, IoT, periféricos de red) como activos: inventariarlos, segmentar su red, configurarlos de forma segura, cambiar contraseñas por defecto.",
+          "requisito_original": "Los equipos conectados a la red, distintos de los puestos de trabajo y los servidores, se configurarán de forma que aporten un nivel de seguridad acorde al sistema.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 4,
+          "remediacion": "Inventariar impresoras, equipos IoT y otros dispositivos de red. Aislarlos en VLAN dedicada. Cambiar contraseñas por defecto. Aplicar actualizaciones de firmware. Deshabilitar protocolos innecesarios. Monitorizar tráfico anómalo.",
+          "referencia_articulo": "Anexo II, medida mp.eq.4 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-015",
+          "texto": "¿El perímetro de red está definido y protegido con firewalls, segmentación y políticas de filtrado proporcionales a la categoría del sistema?",
+          "ayuda": "La medida mp.com.1 exige un perímetro seguro: firewalls, segmentación, gestión de reglas. En categoría alta se exige red segmentada con DMZ y elementos de seguridad redundantes.",
+          "requisito_original": "Las redes propias tendrán un sistema de perímetro de seguridad. Se establecerán mecanismos de control de los flujos de información.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Implantar firewalls perimetrales con denegación por defecto. Segmentar la red en VLANs (DMZ, internas, gestión, OT, invitados). Documentar y revisar reglas trimestralmente. En categoría alta, garantizar redundancia activa-activa de los firewalls.",
+          "referencia_articulo": "Anexo II, medida mp.com.1 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-016",
+          "texto": "Si el sistema es categoría MEDIA o ALTA, ¿se protege la confidencialidad de las comunicaciones mediante cifrado (TLS, VPN, IPsec) en todos los canales relevantes?",
+          "ayuda": "La medida mp.com.2 aplica a media y alta. Exige cifrar las comunicaciones que transporten información sensible: TLS 1.2+, VPN IPsec, SSH. En categoría alta se exige criptografía aprobada por CCN-CERT.",
+          "requisito_original": "Se utilizarán productos certificados para preservar la confidencialidad de las comunicaciones cuando trasieguen información susceptible de ser interceptada.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "media",
+            "alta"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 4,
+          "remediacion": "Aplicar TLS 1.2 mínimo (1.3 preferible) en todos los servicios. VPN IPsec/AnyConnect para acceso remoto. Cifrar comunicaciones entre sitios. Deshabilitar protocolos inseguros (SSL, TLS 1.0/1.1). En categoría alta, usar productos del catálogo CPSTIC del CCN.",
+          "referencia_articulo": "Anexo II, medida mp.com.2 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-017",
+          "texto": "¿Las comunicaciones críticas garantizan integridad y autenticidad mediante mecanismos criptográficos (firma, MAC, certificados)?",
+          "ayuda": "La medida mp.com.3 exige proteger integridad y autenticidad de comunicaciones: certificados, firma electrónica, HMAC. Aplica a todas las categorías y es base para confianza entre sistemas.",
+          "requisito_original": "Se utilizarán mecanismos que garanticen la autenticidad y la integridad de la información transmitida.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Implantar certificados X.509 de servidor y cliente. Usar TLS mutuo entre sistemas críticos. Firmar mensajes en interfaces de integración. Implementar HMAC o firma para integridad de mensajes. Renovar certificados antes del vencimiento.",
+          "referencia_articulo": "Anexo II, medida mp.com.3 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-018",
+          "texto": "Si el sistema es categoría MEDIA o ALTA, ¿se separan los flujos de información en la red en función de su sensibilidad y propósito?",
+          "ayuda": "La medida mp.com.4 aplica a media y alta. Exige separar flujos: red de producción, gestión, OT, servicios públicos, invitados, etc. Implementa el principio de defensa en profundidad.",
+          "requisito_original": "Se segregarán las redes de comunicaciones para que cada conjunto de equipos y servicios que persiguen un mismo fin se ubiquen en una red diferenciada.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "media",
+            "alta"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Diseñar segmentación de red con VLANs separadas por propósito (datos, gestión, OT, IoT, invitados). Aplicar firewall interno entre segmentos con denegación por defecto. Documentar diagramas de flujos autorizados. Revisar reglas trimestralmente.",
+          "referencia_articulo": "Anexo II, medida mp.com.4 RD 311/2022"
+        }
+      ]
+    },
+    {
+      "id": "ENS-SOP",
+      "nombre": "Protección de soportes de información",
+      "descripcion": "Familia mp.si del Anexo II del RD 311/2022. Marcado, criptografía, custodia, transporte y borrado y destrucción de los soportes de información.",
+      "temas": [
+        "data_protection",
+        "cryptography"
+      ],
+      "peso_bloque": 5,
+      "preguntas": [
+        {
+          "id": "ENS-MPP-019",
+          "texto": "Si el sistema es categoría MEDIA o ALTA, ¿se marcan los soportes de información indicando el nivel de clasificación y restricciones de manejo?",
+          "ayuda": "La medida mp.si.1 aplica a media y alta. Exige marcar los soportes (físicos y lógicos) según el nivel de clasificación de la información que contienen, alineado con mp.info.2.",
+          "requisito_original": "Los soportes de información se etiquetarán de forma que, sin revelar su contenido, se indique el nivel de seguridad de la información contenida.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "media",
+            "alta"
+          ],
+          "peso": 6,
+          "nivel": "medio",
+          "fase_pds": 4,
+          "remediacion": "Definir un esquema de marcado físico para soportes (etiquetas, colores, códigos) y digital (metadatos, watermarks). Marcar según el nivel de clasificación. Formar al personal en el esquema. Auditar el marcado periódicamente.",
+          "referencia_articulo": "Anexo II, medida mp.si.1 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-020",
+          "texto": "Si el sistema es categoría MEDIA o ALTA, ¿se utilizan mecanismos criptográficos para proteger la información en los soportes (cifrado de discos, ficheros, backups)?",
+          "ayuda": "La medida mp.si.2 aplica a media y alta. Exige cifrar la información almacenada en soportes: discos, USB, backups, cintas. En categoría alta, los algoritmos deben ser aprobados por el CCN.",
+          "requisito_original": "Se aplicarán mecanismos criptográficos que garanticen la confidencialidad y la integridad de la información contenida.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "media",
+            "alta"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 4,
+          "remediacion": "Aplicar cifrado completo de disco en endpoints (BitLocker, FileVault). Cifrar backups (AES-256). Cifrar USB y soportes extraíbles autorizados. Centralizar la gestión de claves (op.exp.10). En categoría alta, usar productos del catálogo CPSTIC.",
+          "referencia_articulo": "Anexo II, medida mp.si.2 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-021",
+          "texto": "¿Los soportes de información se custodian en condiciones seguras (armarios, cajas fuertes, ubicaciones controladas) durante su vida útil?",
+          "ayuda": "La medida mp.si.3 exige custodia de soportes: armarios cerrados, cajas fuertes para soportes sensibles, control de acceso a los lugares de almacenamiento. Aplica a todas las categorías.",
+          "requisito_original": "Se aplicarán los siguientes controles a los soportes de información: garantizando el control de acceso con medidas físicas o lógicas; garantizando que se respetan las exigencias de mantenimiento del fabricante.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 4,
+          "remediacion": "Disponer de armarios con cerradura para soportes físicos. Soportes con información sensible en caja fuerte ignífuga. Mantener registro de ubicación. Respetar condiciones ambientales del fabricante. Auditar inventario periódicamente.",
+          "referencia_articulo": "Anexo II, medida mp.si.3 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-022",
+          "texto": "¿El transporte de soportes de información se realiza con medidas de protección apropiadas (cifrado, traslados acompañados, registro)?",
+          "ayuda": "La medida mp.si.4 exige proteger los soportes durante su transporte fuera de las instalaciones: cifrado, embalaje seguro, registro de salida y entrega, mensajería de confianza.",
+          "requisito_original": "Cuando los soportes de información deban transportarse fuera de las instalaciones, se garantizará que el transporte sea seguro y que se mantenga la cadena de custodia.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 4,
+          "remediacion": "Cifrar la información antes del transporte. Embalar de forma manipulable evidenciable. Usar mensajería certificada con seguimiento. Registrar fecha y firma de salida y entrega. Procedimientos específicos para soportes de alta clasificación.",
+          "referencia_articulo": "Anexo II, medida mp.si.4 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-023",
+          "texto": "¿Existe un procedimiento documentado de borrado seguro y destrucción de soportes al final de su vida útil, con certificación de la destrucción?",
+          "ayuda": "La medida mp.si.5 exige borrado seguro (NIST SP 800-88 o equivalente) o destrucción física certificada de los soportes al final de su vida útil. Sin destrucción adecuada, se pueden recuperar datos sensibles.",
+          "requisito_original": "Los soportes serán objeto de borrado seguro o destrucción física antes de su retirada definitiva o reutilización por terceros.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Adoptar el estándar NIST SP 800-88 Rev. 1 para borrado seguro. Contratar destrucción física certificada para soportes que no admitan borrado. Recoger certificados de destrucción. Documentar el proceso completo (cadena de custodia hasta destrucción).",
+          "referencia_articulo": "Anexo II, medida mp.si.5 RD 311/2022"
+        }
+      ]
+    },
+    {
+      "id": "ENS-SW",
+      "nombre": "Desarrollo y protección de aplicaciones y servicios",
+      "descripcion": "Familias mp.sw y mp.s del Anexo II del RD 311/2022. Desarrollo seguro y aceptación de aplicaciones, y protección del correo electrónico, los servicios y aplicaciones web, la navegación y frente a la denegación de servicio.",
+      "temas": [
+        "secure_development",
+        "network_security"
+      ],
+      "peso_bloque": 5,
+      "preguntas": [
+        {
+          "id": "ENS-MPP-024",
+          "texto": "Si el sistema es categoría MEDIA o ALTA, ¿el desarrollo de aplicaciones sigue una metodología de desarrollo seguro (SSDLC) con pruebas de seguridad?",
+          "ayuda": "La medida mp.sw.1 aplica a media y alta. Exige metodología de desarrollo seguro: análisis de requisitos de seguridad, codificación segura, revisión de código, pruebas de seguridad, entornos separados.",
+          "requisito_original": "El desarrollo de aplicaciones se realizará sobre un sistema diferente y separado del de producción, no debiendo existir herramientas o datos de desarrollo en el entorno de producción.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "media",
+            "alta"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Adoptar metodología SSDLC (OWASP SAMM, BSIMM). Integrar SAST, DAST, SCA en CI/CD. Aplicar guías de codificación segura (OWASP Top 10). Revisar código por pares. Separar entornos desarrollo/pre/producción. Realizar pentest antes de despliegues mayores.",
+          "referencia_articulo": "Anexo II, medida mp.sw.1 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-025",
+          "texto": "¿Las aplicaciones se someten a un proceso de aceptación y puesta en servicio con verificación de seguridad antes del despliegue en producción?",
+          "ayuda": "La medida mp.sw.2 exige un proceso formal de aceptación antes del paso a producción: análisis de seguridad, pruebas funcionales y de seguridad, conformidad con los requisitos del ENS. Aplica a todas las categorías.",
+          "requisito_original": "Antes de su paso a producción se comprobará el correcto funcionamiento de la aplicación. Se realizarán pruebas previas en un entorno aislado, sin acceso al entorno de producción.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Definir un proceso formal de aceptación (UAT + análisis de seguridad). Ejecutar SAST/DAST y pentest antes del despliegue mayor. Documentar conformidad con requisitos de seguridad. Mantener línea base de configuración aprobada. Aprobación documentada antes del go-live.",
+          "referencia_articulo": "Anexo II, medida mp.sw.2 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-032",
+          "texto": "¿Se protege el correo electrónico institucional con mecanismos antispam, antimalware, antiphishing y autenticación de dominios (SPF, DKIM, DMARC)?",
+          "ayuda": "La medida mp.s.1 exige proteger el correo electrónico: filtrado antispam y antimalware, sandboxing de adjuntos, autenticación de dominios (SPF, DKIM, DMARC) para evitar suplantaciones. El correo es el principal vector de phishing.",
+          "requisito_original": "El servicio de correo electrónico estará protegido frente a las amenazas a la seguridad: detección y eliminación de software dañino, detección y eliminación de mensajes no solicitados.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Implantar pasarela de correo con antispam, antimalware y antiphishing (Proofpoint, Mimecast, Microsoft Defender for O365). Configurar SPF, DKIM y DMARC (modo reject). Sandboxing de adjuntos. Filtrado de URLs en tiempo real. Formación específica anti-phishing.",
+          "referencia_articulo": "Anexo II, medida mp.s.1 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-033",
+          "texto": "¿Las aplicaciones y servicios web están protegidos con WAF, autenticación robusta, gestión de sesiones y protección frente a OWASP Top 10?",
+          "ayuda": "La medida mp.s.2 exige proteger los servicios y aplicaciones web: WAF, autenticación robusta, protección frente a OWASP Top 10, gestión segura de sesiones, validación de entradas, cifrado en tránsito. Aplica a todas las categorías.",
+          "requisito_original": "Los servicios y aplicaciones web se protegerán siguiendo las orientaciones del OWASP. Las comunicaciones se cifrarán cuando trasieguen información que necesite ser confidencial.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 4,
+          "remediacion": "Desplegar WAF (Cloudflare, AWS WAF, F5) frente a OWASP Top 10. Implantar TLS 1.2+ obligatorio. Gestión segura de sesiones (cookies HttpOnly, Secure, SameSite). MFA en accesos privilegiados. Cabeceras de seguridad (CSP, HSTS, X-Frame-Options). Auditar con DAST regularmente.",
+          "referencia_articulo": "Anexo II, medida mp.s.2 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-034",
+          "texto": "Si el sistema es categoría MEDIA o ALTA, ¿se protege la navegación web del personal mediante filtrado web, DNS seguro y control de aplicaciones?",
+          "ayuda": "La medida mp.s.3 aplica a media y alta. Exige proteger la navegación: filtrado web (SWG), DNS seguro, control de aplicaciones, bloqueo de sitios maliciosos, prevención de descargas peligrosas.",
+          "requisito_original": "Se establecerán los mecanismos necesarios para garantizar la seguridad en la navegación web por parte de los usuarios.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "media",
+            "alta"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Implantar SWG (Secure Web Gateway) con filtrado de categorías y reputación. Activar DNS seguro (Quad9, Cloudflare for Teams, CCN-CERT). Bloquear descargas de tipos peligrosos. Aplicar control de aplicaciones SaaS (CASB). Monitorizar tráfico anómalo.",
+          "referencia_articulo": "Anexo II, medida mp.s.3 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-035",
+          "texto": "Si el sistema es categoría MEDIA o ALTA, ¿existe protección frente a ataques de denegación de servicio (DDoS) con capacidades de mitigación adecuadas?",
+          "ayuda": "La medida mp.s.4 aplica a media y alta. Exige protección frente a DDoS: contratación de servicios de mitigación (anti-DDoS perimetral o cloud), capacidad de absorción, plan de respuesta ante saturación.",
+          "requisito_original": "Se establecerán medidas técnicas para garantizar el funcionamiento del sistema frente a ataques de denegación de servicio.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "media",
+            "alta"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Contratar servicio de mitigación anti-DDoS (Cloudflare, Akamai, operador). Dimensionar capacidad de absorción. Implantar autoescalado de los servicios críticos. Definir umbrales y procedimientos de activación. Realizar simulacros periódicos.",
+          "referencia_articulo": "Anexo II, medida mp.s.4 RD 311/2022"
+        }
+      ]
+    },
+    {
+      "id": "ENS-INFO",
+      "nombre": "Protección de la información",
+      "descripcion": "Familia mp.info del Anexo II del RD 311/2022. Datos personales, calificación de la información, firma electrónica, sellos de tiempo, limpieza de documentos y copias de seguridad.",
+      "temas": [
+        "personal_data_protection",
+        "data_protection",
+        "backup_recovery"
+      ],
+      "peso_bloque": 6,
+      "preguntas": [
+        {
+          "id": "ENS-MPP-026",
+          "texto": "Si el sistema trata datos personales, ¿se aplican las medidas adicionales requeridas por la LOPDPyGDD y los principios del RGPD?",
+          "ayuda": "La medida mp.info.1 obliga a aplicar la normativa de protección de datos cuando el sistema trate datos personales: registro de actividades, EIPD, medidas técnicas y organizativas del RGPD/LOPDPyGDD. Es la bisagra con el bloque RGPD.",
+          "requisito_original": "Cuando el sistema trate datos personales, las medidas de seguridad establecidas se complementarán con las exigencias derivadas de la normativa de protección de datos de carácter personal.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 3,
+          "remediacion": "Integrar el cumplimiento RGPD/LOPDPyGDD con el ENS: registro de actividades, EIPD para tratamientos de alto riesgo, base legal documentada, designación de DPO si procede. Coordinar PSI con el cumplimiento del responsable o encargado. Atender derechos en plazos.",
+          "referencia_articulo": "Anexo II, medida mp.info.1 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-027",
+          "texto": "Si el sistema es categoría MEDIA o ALTA, ¿la información está calificada en niveles y se aplican controles diferenciados según su clasificación?",
+          "ayuda": "La medida mp.info.2 aplica a media y alta. Exige clasificar la información en niveles (público, restringido, confidencial) y aplicar controles diferenciados de tratamiento, etiquetado y conservación.",
+          "requisito_original": "Para calificar la información se atenderá a la naturaleza intrínseca de la misma, así como a los compromisos adquiridos con los interesados sobre la difusión de la información.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "media",
+            "alta"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Definir esquema de clasificación con 3-4 niveles. Establecer reglas de tratamiento por nivel (acceso, cifrado, conservación, destrucción). Etiquetar documentos y bases de datos. Formar al personal. Realizar revisiones periódicas de clasificación.",
+          "referencia_articulo": "Anexo II, medida mp.info.2 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-028",
+          "texto": "Cuando se utilice firma electrónica, ¿se emplean certificados electrónicos cualificados conforme a eIDAS y la normativa española aplicable?",
+          "ayuda": "La medida mp.info.3 regula el uso de firma electrónica: en general firma electrónica avanzada, en categoría alta firma cualificada con certificado cualificado. Debe ser conforme al Reglamento eIDAS y la Ley 6/2020.",
+          "requisito_original": "Se emplearán mecanismos de firma electrónica para garantizar la autenticidad e integridad de la información firmada.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Utilizar certificados electrónicos cualificados emitidos por prestadores cualificados (FNMT, ACCV, EADTrust, etc.). En categoría alta, dispositivo de creación cualificado (QSCD). Aplicar formatos estándar (XAdES, PAdES, CAdES). Validar firmas con tiempos de respuesta admisibles.",
+          "referencia_articulo": "Anexo II, medida mp.info.3 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-029",
+          "texto": "Si el sistema es categoría ALTA, ¿se utilizan sellos de tiempo cualificados conforme a eIDAS para garantizar la integridad temporal de la información?",
+          "ayuda": "La medida mp.info.4 aplica solo a categoría ALTA. Exige sellos de tiempo cualificados (TSA) conforme a eIDAS para acreditar el momento exacto de creación o firma de la información.",
+          "requisito_original": "Se aplicarán sellos de tiempo a aquella información que sea susceptible de ser utilizada como evidencia electrónica en el futuro.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "alta"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Contratar un servicio de sellado de tiempo cualificado (TSA) conforme a eIDAS. Integrar TSA en los procesos donde se requiera evidencia temporal (firmas, logs, transacciones). Documentar las TSA utilizadas y conservar las pruebas de sellado.",
+          "referencia_articulo": "Anexo II, medida mp.info.4 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-030",
+          "texto": "¿Se aplica limpieza de metadatos y revisión de los documentos antes de su publicación o intercambio externo?",
+          "ayuda": "La medida mp.info.5 exige limpiar los metadatos y eventuales datos ocultos de los documentos antes de su intercambio. Los metadatos pueden filtrar autores, comentarios, versiones, rutas internas. Aplica a todas las categorías.",
+          "requisito_original": "En el proceso de limpieza de documentos, se retirará de éstos toda la información adicional contenida en campos ocultos, metadatos, comentarios o revisiones anteriores.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 4,
+          "remediacion": "Implantar herramientas automáticas de limpieza de metadatos en pasarelas de correo y portales de intercambio. Formar al personal en limpieza manual (Word, Excel, PDF). Definir un proceso obligatorio de revisión antes de publicaciones externas.",
+          "referencia_articulo": "Anexo II, medida mp.info.5 RD 311/2022"
+        },
+        {
+          "id": "ENS-MPP-031",
+          "texto": "¿Se realizan copias de seguridad de la información y los sistemas con periodicidad adecuada, verificación de integridad y pruebas de restauración?",
+          "ayuda": "La medida mp.info.6 exige copias de seguridad regulares con verificación de integridad y pruebas periódicas de restauración. Aplica a todas las categorías. La regla 3-2-1 y copias inmutables son el estándar de facto frente a ransomware.",
+          "requisito_original": "Se mantendrán copias de seguridad de la información, comprobaciones de su integridad y de su capacidad de utilización. Se aplicarán las medidas que aseguren la confidencialidad y la integridad de las copias.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "basica",
+            "media",
+            "alta"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 4,
+          "remediacion": "Aplicar regla 3-2-1 (3 copias, 2 soportes, 1 offsite). Cifrar las copias. Considerar copias inmutables u offline frente a ransomware. Verificar integridad mensualmente. Realizar pruebas de restauración trimestrales documentadas. Custodiar copias en ubicación geográficamente alejada.",
+          "referencia_articulo": "Anexo II, medida mp.info.6 RD 311/2022"
+        }
+      ]
+    }
+  ]
+}
