@@ -130,6 +130,7 @@ const Resultado = () => {
         >
           Repetir evaluación
         </button>
+
         {user && resultado?.id && (
           <button
             className="btn-secondary"
@@ -138,13 +139,26 @@ const Resultado = () => {
             Ver detalle
           </button>
         )}
-        {user ? (
-          <button className="btn-primary" onClick={() => navigate('/historial')}>
-            Mi historial
+
+        {/* ── Botón Plan Director: solo para usuarios autenticados con resultado guardado ── */}
+        {user && resultado?.id && (
+          <button
+            className="btn-primary"
+            onClick={() => navigate(`/pds/${resultado.id}`)}
+          >
+            Ver Plan Director
           </button>
-        ) : (
+        )}
+
+        {/* Si no hay sesión, botón de inicio; si hay sesión y no mostramos PDS, historial */}
+        {!user && (
           <button className="btn-primary" onClick={() => navigate('/')}>
             Inicio
+          </button>
+        )}
+        {user && !resultado?.id && (
+          <button className="btn-primary" onClick={() => navigate('/historial')}>
+            Mi historial
           </button>
         )}
       </div>
