@@ -138,11 +138,17 @@ const Resultado = () => {
             Ver detalle
           </button>
         )}
-        {user ? (
+        {user && resultado?.id && (
+          <button className="btn-primary" onClick={() => navigate(`/pds/${resultado.id}`)}>
+            Ver Plan Director
+          </button>
+        )}
+        {user && !resultado?.id && (
           <button className="btn-primary" onClick={() => navigate('/historial')}>
             Mi historial
           </button>
-        ) : (
+        )}
+        {!user && (
           <button className="btn-primary" onClick={() => navigate('/')}>
             Inicio
           </button>

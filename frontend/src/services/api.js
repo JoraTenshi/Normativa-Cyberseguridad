@@ -77,3 +77,8 @@ export const getHistorialDetalle = async (id) => {
   const { data } = await api.get(`/me/historial/${id}`);
   return data.data;
 };
+
+export const getPlanDirector = async (resultadoId) => {
+  const { data } = await api.get(`/me/pds/${resultadoId}`);
+  return data.data;
+};

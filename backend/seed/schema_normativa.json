@@ -36,6 +36,11 @@
       "items": { "type": "string" },
       "description": "Lista de sectores o tipos de entidad a los que aplica. Puede estar vacía (universal)."
     },
+    "fecha_aplicabilidad_general": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+      "description": "Opcional. Fecha (YYYY-MM-DD) de aplicabilidad general de la normativa. Algunas normativas (p. ej. CRA) tienen fechas de aplicación distintas por bloque; este campo fija la fecha por defecto a nivel raíz. No interviene en el scoring."
+    },
     "bloques": {
       "type": "array",
       "minItems": 1,
@@ -63,6 +68,11 @@
           "maximum": 100,
           "description": "Peso del bloque dentro de la normativa. La SUMA de pesos de todos los bloques debe ser EXACTAMENTE 100 (regla validada en el script de Python)."
         },
+        "fecha_aplicabilidad": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+          "description": "Opcional. Fecha (YYYY-MM-DD) de aplicabilidad de este bloque cuando difiere de la general (p. ej. Art. 14 CRA: obligaciones de notificación aplicables desde 2026-09-11, antes que el resto). No interviene en el scoring."
+        },
         "temas": {
           "type": "array",
           "items": {
@@ -80,26 +90,41 @@
               "communications_security",
               "compliance_assessment",
               "cryptography",
+              "data_governance",
               "data_protection",
+              "ecommerce_compliance",
               "endpoint_security",
+              "governance",
               "human_resources_security",
               "identity_management",
               "incident_response",
+              "interoperability",
               "legal_compliance",
               "logging_audit_trail",
               "network_security",
               "personal_data_protection",
               "physical_security",
+              "product_cybersecurity",
+              "quality_management",
               "risk_management",
               "secure_development",
               "security_monitoring",
               "security_policy",
               "supplier_risk",
               "supply_chain_security",
+              "technology_standards",
+              "transparency",
               "vulnerability_management"
             ]
           },
           "description": "Temas transversales del bloque (vocabulario cerrado para cross-mapping multinormativa). Opcional. Si se omite, el bloque no contribuye a la estimación cruzada. Mantener sincronizado con backend/constants/temas.js."
+        },
+        "seccion_normativa": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+$",
+          "minLength": 2,
+          "maxLength": 40,
+          "description": "Opcional. Sub-agrupación oficial dentro de la normativa cuando ésta tiene una jerarquía nativa (p. ej. cláusulas de ISO/IEC 27002: '5_organizational', '6_people', '7_physical', '8_technological'). No se restringe a un enum cerrado porque los valores válidos varían según la normativa. Permite al frontend agrupar visualmente los bloques sin alterar el cálculo de pesos."
         },
         "preguntas": {
           "type": "array",
@@ -140,7 +165,7 @@
         },
         "tipo": {
           "type": "string",
-          "enum": ["obligatorio", "recomendado"]
+          "enum": ["obligatorio", "recomendado", "condicional"]
         },
         "aplicabilidad": {
           "type": "array",

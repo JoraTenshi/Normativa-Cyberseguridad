@@ -8,6 +8,7 @@ import Auth             from './pages/Auth';
 import Historial        from './pages/Historial';
 import HistorialDetalle from './pages/HistorialDetalle';
 import Settings         from './pages/Settings';
+import PlanDirector     from './pages/PlanDirector';
 import cyberlaw from './images/cyber.png';
 import './App.css';
 
@@ -120,6 +121,7 @@ function App() {
               <Route path="/historial" element={<ProtectedRoute><Historial /></ProtectedRoute>} />
               <Route path="/historial/:id" element={<ProtectedRoute><HistorialDetalle /></ProtectedRoute>} />
               <Route path="/settings"     element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+              <Route path="/pds/:resultadoId" element={<ProtectedRoute><PlanDirector /></ProtectedRoute>} />
               <Route path="*" element={
                 <div className="page error-page">
                   <h2>404 — Página no encontrada</h2>

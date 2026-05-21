@@ -10,7 +10,7 @@ const PreguntaSchema = new mongoose.Schema({
   fase_pds:            { type: Number, min: 1, max: 5, default: null },
   ayuda:               { type: String, default: null },
   requisito_original:  { type: String, default: null },
-  tipo:                { type: String, enum: ['obligatorio', 'recomendado'], default: null },
+  tipo:                { type: String, enum: ['obligatorio', 'recomendado', 'condicional'], default: null },
   aplicabilidad:       { type: [String], default: [] },
   referencia_articulo: { type: String, default: null }
 }, { _id: false });
@@ -18,19 +18,22 @@ const PreguntaSchema = new mongoose.Schema({
 const BloqueSchema = new mongoose.Schema({
   id:          { type: String, required: true },
   nombre:      { type: String, required: true },
-  descripcion: { type: String, default: null },
-  peso_bloque: { type: Number, min: 0, max: 100, default: null },
-  temas:       { type: [String], enum: TEMAS_VALIDOS, default: [] },
-  preguntas:   [PreguntaSchema]
+  descripcion:         { type: String, default: null },
+  peso_bloque:         { type: Number, min: 0, max: 100, default: null },
+  fecha_aplicabilidad: { type: String, default: null },
+  temas:               { type: [String], enum: TEMAS_VALIDOS, default: [] },
+  seccion_normativa:   { type: String, default: null },
+  preguntas:           [PreguntaSchema]
 }, { _id: false });
 
 const NormativaSchema = new mongoose.Schema({
   id:                  { type: String, required: true, unique: true },
   nombre:              { type: String, required: true },
-  descripcion:         { type: String },
-  referencia_oficial:  { type: String, default: null },
-  sectores_aplicables: { type: [String], default: [] },
-  bloques:             [BloqueSchema]
+  descripcion:                 { type: String },
+  referencia_oficial:          { type: String, default: null },
+  sectores_aplicables:         { type: [String], default: [] },
+  fecha_aplicabilidad_general: { type: String, default: null },
+  bloques:                     [BloqueSchema]
 }, {
   timestamps: true
 });

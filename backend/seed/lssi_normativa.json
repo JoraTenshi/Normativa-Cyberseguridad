@@ -1,0 +1,239 @@
+{
+  "id": "lssi_ce",
+  "nombre": "LSSI-CE — Ley de Servicios de la Sociedad de la Información y de Comercio Electrónico",
+  "referencia_oficial": "Ley 34/2002, de 11 de julio, de servicios de la sociedad de la información y de comercio electrónico",
+  "descripcion": "Norma española que regula las obligaciones de los prestadores de servicios de la sociedad de la información: empresas con presencia web, tiendas en línea, plataformas digitales y prestadores de servicios de intermediación. Establece las obligaciones de información general que debe poner a disposición todo prestador (aviso legal), el régimen del consentimiento para el uso de cookies y dispositivos de almacenamiento, las reglas de las comunicaciones comerciales electrónicas (prohibición del spam, identificación de la publicidad y derecho de oposición), las obligaciones de la contratación electrónica (información previa y posterior, confirmación de la aceptación) y los deberes de colaboración y retención de los prestadores de servicios de intermediación. Las preguntas evalúan el cumplimiento de las obligaciones legales de las empresas que operan en internet o realizan comercio electrónico.",
+  "sectores_aplicables": [
+    "prestador_servicios",
+    "prestador_intermediacion"
+  ],
+  "bloques": [
+    {
+      "id": "LSSI-INF",
+      "nombre": "Información general obligatoria del prestador",
+      "descripcion": "Datos identificativos que todo prestador de servicios de la sociedad de la información debe poner a disposición del público de forma permanente, fácil, directa y gratuita, conforme al Art. 10 de la LSSI-CE (aviso legal).",
+      "temas": [
+        "transparency",
+        "ecommerce_compliance"
+      ],
+      "peso_bloque": 18,
+      "preguntas": [
+        {
+          "id": "LSSI-INF-001",
+          "texto": "¿La web o aplicación dispone de un aviso legal accesible de forma permanente, fácil, directa y gratuita, con todos los datos identificativos exigidos por el Art. 10 (denominación, NIF, domicilio, datos de contacto, registro mercantil, autorizaciones y, en su caso, colegio profesional)?",
+          "ayuda": "El Art. 10 de la LSSI-CE obliga a todo prestador de servicios de la sociedad de la información a poner a disposición del público, de forma permanente, fácil, directa y gratuita, una serie de datos identificativos: su nombre o denominación social, su NIF, su domicilio o dirección de un establecimiento permanente en España, su dirección de correo electrónico y cualquier otro dato que permita una comunicación directa y efectiva, los datos de inscripción en el Registro Mercantil u otro registro público, los datos de la autorización administrativa cuando la actividad esté sujeta a ella, y en el caso de profesiones reguladas los datos del colegio profesional y título académico. La ausencia o insuficiencia del aviso legal es una de las infracciones más sancionadas por la autoridad competente.",
+          "requisito_original": "El prestador de servicios de la sociedad de la información estará obligado a disponer de los medios que permitan, tanto a los destinatarios del servicio como a los órganos competentes, acceder por medios electrónicos, de forma permanente, fácil, directa y gratuita, a la siguiente información: su nombre o denominación social; su residencia o domicilio o, en su defecto, la dirección de uno de sus establecimientos permanentes en España; su dirección de correo electrónico y cualquier otro dato que permita establecer con él una comunicación directa y efectiva; los datos de su inscripción en el Registro Mercantil u otro registro público en el que estuviera inscrito; cuando su actividad estuviese sujeta a un régimen de autorización administrativa previa, los datos relativos a dicha autorización; el número de identificación fiscal que le corresponda.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "prestador_servicios"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 3,
+          "remediacion": "Publicar un aviso legal accesible desde todas las páginas del sitio web o de la aplicación (habitualmente en el pie de página), que recoja la totalidad de los datos exigidos por el Art. 10: denominación social, NIF, domicilio o establecimiento permanente, correo electrónico y medios de contacto directo, datos del Registro Mercantil u otro registro público, datos de la autorización administrativa si la actividad la requiere, y datos del colegio profesional y título cuando se trate de una profesión regulada. Mantener el aviso legal actualizado y validarlo jurídicamente.",
+          "referencia_articulo": "Art. 10 Ley 34/2002 LSSI-CE"
+        },
+        {
+          "id": "LSSI-INF-002",
+          "texto": "¿Cuando el servicio hace referencia a precios, se facilita información clara y exacta sobre el precio del producto o servicio, indicando si incluye o no los impuestos aplicables y los gastos de envío?",
+          "ayuda": "El Art. 10.1.f de la LSSI-CE exige que, cuando el prestador haga referencia a precios en su web o aplicación, facilite información clara y exacta sobre el precio del producto o servicio, indicando si incluye o no los impuestos aplicables y, en su caso, los gastos de envío. Esta obligación es especialmente relevante en el comercio electrónico, donde el precio mostrado debe coincidir con el precio final que el usuario abona en la pasarela de pago. La falta de transparencia en el precio puede dar lugar tanto a sanciones por la LSSI-CE como a reclamaciones de consumidores.",
+          "requisito_original": "Cuando el prestador de servicios emplee información referente al precio, ésta deberá facilitarse de manera clara y exacta e indicar si incluye o no los impuestos aplicables y, en su caso, los gastos de envío o, en otro caso, ofrecer información exacta sobre dichos conceptos.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "prestador_servicios"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Mostrar en cada producto o servicio el precio total de forma clara, indicando expresamente si los impuestos están incluidos y detallando los gastos de envío antes de finalizar el pedido. Garantizar la coherencia entre el precio publicado, el del proceso de compra y el de la pasarela de pago. Revisar periódicamente la información de precios para evitar discrepancias.",
+          "referencia_articulo": "Art. 10.1.f Ley 34/2002 LSSI-CE"
+        }
+      ]
+    },
+    {
+      "id": "LSSI-COO",
+      "nombre": "Cookies y dispositivos de almacenamiento y recuperación de datos",
+      "descripcion": "Régimen del consentimiento para la utilización de cookies y tecnologías de almacenamiento equivalentes en los equipos terminales de los usuarios, conforme al Art. 22.2 de la LSSI-CE, en coordinación con el RGPD y la Guía sobre cookies de la AEPD.",
+      "temas": [
+        "personal_data_protection",
+        "transparency",
+        "ecommerce_compliance"
+      ],
+      "peso_bloque": 20,
+      "preguntas": [
+        {
+          "id": "LSSI-COO-001",
+          "texto": "¿El sitio web o la aplicación dispone de un sistema de gestión del consentimiento de cookies que solicita el consentimiento previo del usuario antes de instalar cookies no exentas y ofrece opciones de aceptar, rechazar y configurar en condiciones equivalentes?",
+          "ayuda": "El Art. 22.2 de la LSSI-CE permite el uso de cookies y dispositivos de almacenamiento y recuperación de datos en los equipos de los usuarios solo si estos han dado su consentimiento tras recibir información clara y completa, salvo las cookies técnicas estrictamente necesarias, que están exentas. La Guía sobre el uso de cookies de la AEPD desarrolla este requisito y exige un consentimiento inequívoco: las opciones de aceptar, rechazar y configurar deben presentarse en el mismo nivel de visibilidad, sin patrones oscuros, sin aceptación por scroll o navegación, y debe existir un registro auditable del consentimiento. Las cookies no exentas no pueden instalarse antes de obtener el consentimiento.",
+          "requisito_original": "Los prestadores de servicios podrán utilizar dispositivos de almacenamiento y recuperación de datos en equipos terminales de los destinatarios, a condición de que los mismos hayan dado su consentimiento después de que se les haya facilitado información clara y completa sobre su utilización, en particular, sobre los fines del tratamiento de los datos. Lo anterior no impedirá el posible almacenamiento o acceso de índole técnica al solo fin de efectuar la transmisión de una comunicación por una red de comunicaciones electrónicas o, en la medida que resulte estrictamente necesario, para la prestación de un servicio de la sociedad de la información expresamente solicitado por el destinatario.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "prestador_servicios"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 3,
+          "remediacion": "Implantar una plataforma de gestión del consentimiento (CMP) que muestre un banner de cookies conforme a la Guía de la AEPD: botones de aceptar, rechazar y configurar en el mismo nivel y con el mismo formato, sin patrones oscuros ni aceptación implícita por scroll o navegación. Bloquear la carga de cookies no exentas hasta obtener el consentimiento. Conservar un registro auditable del consentimiento (fecha, opción elegida) y habilitar un mecanismo de revocación tan sencillo como la concesión.",
+          "referencia_articulo": "Art. 22.2 Ley 34/2002 LSSI-CE y Guía sobre el uso de cookies de la AEPD"
+        },
+        {
+          "id": "LSSI-COO-002",
+          "texto": "¿Existe una política de cookies detallada y accesible que informe, con carácter previo al consentimiento, del tipo de cookies utilizadas, su finalidad, su plazo de conservación y los terceros que las gestionan?",
+          "ayuda": "El Art. 22.2 exige que el consentimiento se obtenga tras facilitar información clara y completa sobre el uso de los dispositivos de almacenamiento, en particular sobre las finalidades del tratamiento. La Guía de la AEPD concreta que esta información debe ofrecerse de forma estratificada (información por capas): una primera capa resumida en el banner y una segunda capa con una política de cookies detallada que incluya una tabla con el nombre de cada cookie, su tipo (técnica, de preferencias, de análisis, de publicidad), su finalidad, si es propia o de tercero, el plazo de conservación y los enlaces a las políticas de los terceros, así como el mecanismo de revocación.",
+          "requisito_original": "Antes de obtener el consentimiento, el prestador deberá facilitar a los destinatarios información clara y completa sobre la utilización de los dispositivos de almacenamiento y recuperación de datos, en particular sobre los fines del tratamiento de los datos, con arreglo a lo dispuesto en el Reglamento (UE) 2016/679.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "prestador_servicios"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Publicar una política de cookies como segunda capa informativa, accesible desde el banner y desde el pie de página, que contenga una tabla detallada de cada cookie (nombre, tipo, finalidad, titularidad propia o de tercero, plazo de conservación), los enlaces a las políticas de privacidad de los terceros y el procedimiento para revocar o modificar el consentimiento. Mantener la política actualizada ante cualquier cambio en las cookies utilizadas.",
+          "referencia_articulo": "Art. 22.2 Ley 34/2002 LSSI-CE y Guía sobre el uso de cookies de la AEPD"
+        }
+      ]
+    },
+    {
+      "id": "LSSI-COM",
+      "nombre": "Comunicaciones comerciales por vía electrónica",
+      "descripcion": "Reglas para el envío de comunicaciones comerciales y publicitarias por correo electrónico y medios electrónicos equivalentes, conforme a los Arts. 19 a 22 de la LSSI-CE: prohibición del envío no consentido, identificación de la publicidad y derecho de oposición de los destinatarios.",
+      "temas": [
+        "ecommerce_compliance",
+        "personal_data_protection",
+        "transparency"
+      ],
+      "peso_bloque": 26,
+      "preguntas": [
+        {
+          "id": "LSSI-COM-001",
+          "texto": "¿Las comunicaciones comerciales por correo electrónico o medios electrónicos equivalentes se envían únicamente cuando han sido previamente solicitadas o expresamente autorizadas, o cuando existe una relación contractual previa lícita sobre productos o servicios similares?",
+          "ayuda": "El Art. 21 de la LSSI-CE prohíbe el envío de comunicaciones publicitarias o promocionales por correo electrónico u otro medio de comunicación electrónica equivalente (SMS, mensajería instantánea) que no hubieran sido previamente solicitadas o expresamente autorizadas por los destinatarios. La única excepción es la existencia de una relación contractual previa: el prestador puede enviar comunicaciones comerciales si obtuvo los datos de contacto de forma lícita en el marco de una contratación anterior y la comunicación se refiere a productos o servicios propios similares a los contratados. Fuera de esos supuestos, el envío constituye spam sancionable.",
+          "requisito_original": "Queda prohibido el envío de comunicaciones publicitarias o promocionales por correo electrónico u otro medio de comunicación electrónica equivalente que previamente no hubieran sido solicitadas o expresamente autorizadas por los destinatarios de las mismas. Lo dispuesto en el apartado anterior no será de aplicación cuando exista una relación contractual previa, siempre que el prestador hubiera obtenido de forma lícita los datos de contacto del destinatario y los empleara para el envío de comunicaciones comerciales referentes a productos o servicios de su propia empresa que sean similares a los que inicialmente fueron objeto de contratación con el cliente.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "prestador_servicios"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 4,
+          "remediacion": "Implantar un sistema de obtención y registro del consentimiento expreso (opt-in) para el envío de comunicaciones comerciales electrónicas, conservando evidencia de la fecha y el modo de obtención. Cuando se invoque la excepción de relación contractual previa, verificar que los datos se obtuvieron de forma lícita y que la comunicación se refiere a productos o servicios propios similares a los contratados. Depurar las bases de datos de marketing para excluir contactos sin base legal válida.",
+          "referencia_articulo": "Art. 21 Ley 34/2002 LSSI-CE"
+        },
+        {
+          "id": "LSSI-COM-002",
+          "texto": "¿Cada comunicación comercial electrónica incluye un procedimiento sencillo y gratuito para que el destinatario pueda oponerse al tratamiento de sus datos con fines promocionales y revocar el consentimiento?",
+          "ayuda": "El Art. 21.2 de la LSSI-CE exige que, en todo caso, el prestador ofrezca al destinatario la posibilidad de oponerse al tratamiento de sus datos con fines promocionales mediante un procedimiento sencillo y gratuito, tanto en el momento de la recogida de los datos como en cada una de las comunicaciones comerciales que le dirija. En la práctica, esto se traduce en la obligación de incluir un enlace o mecanismo de baja claro y funcional en cada correo o mensaje comercial, y de tramitar la oposición de forma inmediata y sin coste alguno para el destinatario.",
+          "requisito_original": "En todo caso, el prestador deberá ofrecer al destinatario la posibilidad de oponerse al tratamiento de sus datos con fines promocionales mediante un procedimiento sencillo y gratuito, tanto en el momento de recogida de los datos como en cada una de las comunicaciones comerciales que le dirija. Cuando las comunicaciones hubieran sido remitidas por correo electrónico, dicho medio deberá consistir necesariamente en la inclusión de una dirección de correo electrónico u otra dirección electrónica válida donde pueda ejercitarse este derecho, quedando prohibido el envío de comunicaciones que no incluyan dicha dirección.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "prestador_servicios"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Incluir en cada comunicación comercial electrónica un mecanismo de baja sencillo y gratuito (enlace de cancelación de suscripción o dirección electrónica válida de oposición). Garantizar que la solicitud de baja se procesa de forma inmediata y sin coste. Registrar las oposiciones y sincronizarlas con todas las herramientas de envío para evitar comunicaciones posteriores a quien ha ejercido su derecho.",
+          "referencia_articulo": "Art. 21.2 Ley 34/2002 LSSI-CE"
+        },
+        {
+          "id": "LSSI-COM-003",
+          "texto": "¿Las comunicaciones comerciales electrónicas son claramente identificables como tales, identifican a la persona física o jurídica anunciante e incluyen las condiciones de acceso de las ofertas promocionales y concursos?",
+          "ayuda": "El Art. 20 de la LSSI-CE exige que las comunicaciones comerciales realizadas por vía electrónica sean claramente identificables como tales y que la persona física o jurídica en cuyo nombre se realizan también sea claramente identificable. Cuando la comunicación incluya ofertas promocionales (descuentos, premios, regalos) o concursos o juegos promocionales, debe quedar claramente identificada su condición de tales y deben facilitarse de forma clara e inequívoca las condiciones de acceso y participación. Queda además prohibido el envío de comunicaciones que disimulen u oculten la identidad del remitente.",
+          "requisito_original": "Las comunicaciones comerciales realizadas por vía electrónica deberán ser claramente identificables como tales, y la persona física o jurídica en nombre de la cual se realizan también deberá ser claramente identificable. En los supuestos de ofertas promocionales, como las que incluyan descuentos, premios y regalos, y de concursos o juegos promocionales, previa la correspondiente autorización, se deberá asegurar, además del cumplimiento de los requisitos establecidos en el apartado anterior y en las normas de ordenación del comercio, que queden claramente identificados como tales y que las condiciones de acceso y, en su caso, de participación se expresen de forma clara e inequívoca.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "prestador_servicios"
+          ],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 4,
+          "remediacion": "Identificar de forma expresa el carácter publicitario de cada comunicación comercial (por ejemplo, mediante la indicación \u201cpublicidad\u201d o \u201cpubli\u201d) e incluir la identificación clara del anunciante. En ofertas promocionales y concursos, especificar de forma clara e inequívoca las condiciones de acceso y participación. Prohibir el envío de comunicaciones que oculten o disimulen la identidad del remitente.",
+          "referencia_articulo": "Art. 20 Ley 34/2002 LSSI-CE"
+        }
+      ]
+    },
+    {
+      "id": "LSSI-CON",
+      "nombre": "Contratación por vía electrónica",
+      "descripcion": "Obligaciones de información previa y posterior a la celebración de contratos por vía electrónica, conforme a los Arts. 23 a 29 de la LSSI-CE: información sobre el proceso de contratación, confirmación de la aceptación y archivo del contrato.",
+      "temas": [
+        "ecommerce_compliance",
+        "transparency"
+      ],
+      "peso_bloque": 20,
+      "preguntas": [
+        {
+          "id": "LSSI-CON-001",
+          "texto": "¿Antes de iniciar el proceso de contratación electrónica, el prestador pone a disposición del destinatario información clara sobre los trámites, el archivo del documento electrónico, los medios para corregir errores y la lengua de formalización del contrato?",
+          "ayuda": "El Art. 27 de la LSSI-CE obliga al prestador que realice actividades de contratación electrónica a poner a disposición del destinatario, antes de iniciar el procedimiento de contratación y de forma permanente, fácil y gratuita, información clara y comprensible sobre: los distintos trámites que deben seguirse para celebrar el contrato; si el prestador va a archivar el documento electrónico en que se formalice el contrato y si éste será accesible; los medios técnicos que se ponen a disposición para identificar y corregir errores en la introducción de los datos; y la lengua o lenguas en que podrá formalizarse el contrato. Esta obligación puede atenuarse en contratos celebrados exclusivamente mediante correo electrónico o cuando ambas partes lo acuerden y ninguna sea consumidor.",
+          "requisito_original": "El prestador de servicios de la sociedad de la información que realice actividades de contratación electrónica tendrá la obligación de poner a disposición del destinatario, antes de iniciar el procedimiento de contratación y mediante técnicas adecuadas al medio de comunicación utilizado, de forma permanente, fácil y gratuita, información clara, comprensible e inequívoca sobre los siguientes extremos: los distintos trámites que deben seguirse para celebrar el contrato; si el prestador va a archivar el documento electrónico en que se formalice el contrato y si éste va a ser accesible; los medios técnicos que pone a su disposición para identificar y corregir errores en la introducción de los datos; y la lengua o lenguas en que podrá formalizarse el contrato.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "prestador_servicios"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Publicar, de forma accesible antes de iniciar el proceso de compra, información clara sobre los trámites de contratación, el archivo y la accesibilidad del documento contractual, los medios para identificar y corregir errores en la introducción de datos, y la lengua de formalización del contrato. Habitualmente esta información se integra en las condiciones generales de contratación y se enlaza desde el proceso de compra.",
+          "referencia_articulo": "Art. 27 Ley 34/2002 LSSI-CE"
+        },
+        {
+          "id": "LSSI-CON-002",
+          "texto": "¿El prestador pone a disposición del destinatario las condiciones generales de contratación de modo que pueda almacenarlas y reproducirlas, y confirma la recepción de la aceptación tras la celebración del contrato?",
+          "ayuda": "El Art. 27.4 exige que, con carácter previo a iniciar el procedimiento de contratación, el prestador ponga a disposición del destinatario las condiciones generales a que, en su caso, deba sujetarse el contrato, de manera que puedan ser almacenadas y reproducidas por éste. El Art. 28 establece, además, la obligación de confirmar al destinatario la recepción de su aceptación: bien mediante el envío de un acuse de recibo por correo electrónico u otro medio equivalente a la dirección señalada en un plazo de veinticuatro horas, bien mediante la confirmación por un medio equivalente al utilizado en el procedimiento de contratación, en cuanto el destinatario haya completado dicho procedimiento.",
+          "requisito_original": "Con carácter previo al inicio del procedimiento de contratación, el prestador de servicios deberá poner a disposición del destinatario las condiciones generales a que, en su caso, deba sujetarse el contrato, de manera que éstas puedan ser almacenadas y reproducidas por el destinatario. El oferente está obligado a confirmar la recepción de la aceptación al que la hizo por alguno de los siguientes medios: el envío de un acuse de recibo por correo electrónico u otro medio de comunicación electrónica equivalente a la dirección que el aceptante haya señalado, en el plazo de las veinticuatro horas siguientes a la recepción de la aceptación, o la confirmación, por un medio equivalente al utilizado en el procedimiento de contratación, de la aceptación recibida, tan pronto como el aceptante haya completado dicho procedimiento.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "prestador_servicios"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Mostrar las condiciones generales de contratación antes de iniciar el proceso de compra, en un formato que el usuario pueda almacenar y reproducir (descarga o impresión). Configurar el envío automático de un acuse de recibo de la aceptación por correo electrónico dentro de las veinticuatro horas siguientes, o una confirmación equivalente al finalizar el proceso de contratación. Conservar evidencia de la confirmación enviada.",
+          "referencia_articulo": "Arts. 27.4 y 28 Ley 34/2002 LSSI-CE"
+        }
+      ]
+    },
+    {
+      "id": "LSSI-INT",
+      "nombre": "Obligaciones de los prestadores de servicios de intermediación",
+      "descripcion": "Deberes específicos de los prestadores de servicios de intermediación (acceso a internet, transmisión, copia temporal, alojamiento y enlaces), conforme a los Arts. 11, 12 y 16 de la LSSI-CE: deber de colaboración, retención de datos de tráfico y régimen de responsabilidad por contenidos alojados.",
+      "temas": [
+        "ecommerce_compliance",
+        "incident_response"
+      ],
+      "peso_bloque": 16,
+      "preguntas": [
+        {
+          "id": "LSSI-INT-001",
+          "texto": "Si la organización presta servicios de intermediación, ¿cumple el deber de colaboración suspendiendo o retirando los contenidos o servicios ilícitos cuando un órgano competente lo ordena, y retiene los datos de tráfico durante el plazo legalmente establecido?",
+          "ayuda": "Los Arts. 11 y 12 de la LSSI-CE imponen a los prestadores de servicios de intermediación (acceso a internet, transmisión, copia temporal, alojamiento de datos y enlaces) un deber de colaboración: cuando un órgano competente, en ejercicio de sus competencias, ordene la interrupción de un servicio o la retirada de determinados contenidos ilícitos, el prestador está obligado a ejecutar la orden. El Art. 12 establece además el deber de retener los datos de tráfico relativos a las comunicaciones electrónicas durante el periodo que fije la normativa de conservación de datos, para su cesión a las autoridades competentes que lo requieran.",
+          "requisito_original": "Cuando un órgano competente hubiera ordenado, en ejercicio de las competencias que legalmente tenga atribuidas, que se interrumpa la prestación de un servicio de la sociedad de la información o la retirada de determinados contenidos provenientes de prestadores establecidos en España, y para ello fuera necesaria la colaboración de los prestadores de servicios de intermediación, dicho órgano podrá ordenar a los citados prestadores que suspendan el correspondiente servicio de intermediación utilizado para la provisión del servicio de la sociedad de la información o de los contenidos cuya interrupción o retirada hayan sido ordenados respectivamente.",
+          "tipo": "condicional",
+          "aplicabilidad": [
+            "prestador_intermediacion"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Establecer un procedimiento interno para atender con la diligencia debida las órdenes de los órganos competentes de suspensión de servicios o retirada de contenidos ilícitos, designando responsables y plazos de ejecución. Implantar mecanismos de retención de los datos de tráfico conforme a la normativa de conservación de datos y procedimientos seguros para su cesión a las autoridades que los requieran legalmente.",
+          "referencia_articulo": "Arts. 11 y 12 Ley 34/2002 LSSI-CE"
+        },
+        {
+          "id": "LSSI-INT-002",
+          "texto": "Si la organización aloja datos, aplicaciones o contenidos suministrados por terceros, ¿dispone de un procedimiento para retirar o impedir el acceso a contenidos ilícitos en cuanto tenga conocimiento efectivo de su ilicitud?",
+          "ayuda": "El Art. 16 de la LSSI-CE regula la responsabilidad de los prestadores de servicios de alojamiento o almacenamiento de datos. Estos prestadores no son responsables de la información almacenada a petición del destinatario siempre que no tengan conocimiento efectivo de que la actividad o la información es ilícita o de que lesiona bienes o derechos de un tercero susceptibles de indemnización, o que, si lo tienen, actúen con diligencia para retirar los datos o hacer imposible el acceso a ellos. Disponer de un procedimiento de retirada (notice and take down) es la medida que permite mantener la exención de responsabilidad.",
+          "requisito_original": "Los prestadores de un servicio de intermediación consistente en albergar datos proporcionados por el destinatario de este servicio no serán responsables por la información almacenada a petición del destinatario, siempre que no tengan conocimiento efectivo de que la actividad o la información almacenada es ilícita o de que lesiona bienes o derechos de un tercero susceptibles de indemnización, o si lo tienen, actúen con diligencia para retirar los datos o hacer imposible el acceso a ellos.",
+          "tipo": "condicional",
+          "aplicabilidad": [
+            "prestador_intermediacion"
+          ],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 4,
+          "remediacion": "Implantar un procedimiento de notificación y retirada de contenidos ilícitos (notice and take down) con un canal de comunicación accesible para la recepción de avisos, criterios de evaluación de la ilicitud, plazos de actuación y registro de las retiradas o bloqueos efectuados. Actuar con diligencia en cuanto se tenga conocimiento efectivo de la ilicitud para preservar la exención de responsabilidad del Art. 16.",
+          "referencia_articulo": "Art. 16 Ley 34/2002 LSSI-CE"
+        }
+      ]
+    }
+  ]
+}

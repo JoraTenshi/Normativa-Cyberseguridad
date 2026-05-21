@@ -1,0 +1,432 @@
+{
+  "id": "cra",
+  "nombre": "CRA — Reglamento de Ciberresiliencia para los productos con elementos digitales",
+  "referencia_oficial": "Reglamento (UE) 2024/2847 del Parlamento Europeo y del Consejo, de 23 de octubre de 2024, relativo a los requisitos horizontales de ciberseguridad para los productos con elementos digitales (Reglamento de Ciberresiliencia)",
+  "descripcion": "Reglamento europeo que establece, por primera vez de forma horizontal, requisitos obligatorios de ciberseguridad para todos los productos con elementos digitales (software, hardware con componentes digitales y dispositivos IoT) comercializados en la Unión Europea. Obliga a los fabricantes a incorporar la seguridad desde el diseño y por defecto, a gestionar las vulnerabilidades durante todo el periodo de soporte del producto, a documentar la conformidad mediante documentación técnica y declaración UE de conformidad, a colocar el marcado CE y a notificar a ENISA y al CSIRT coordinador las vulnerabilidades aprovechadas activamente y los incidentes graves. Las preguntas se centran en las obligaciones de los operadores económicos (especialmente fabricantes) y en los requisitos esenciales de ciberseguridad del Anexo I. El Reglamento es plenamente aplicable desde el 11 de diciembre de 2027, si bien las obligaciones de notificación del Art. 14 aplican desde el 11 de septiembre de 2026.",
+  "sectores_aplicables": [
+    "fabricante",
+    "importador",
+    "distribuidor",
+    "representante_autorizado"
+  ],
+  "fecha_aplicabilidad_general": "2027-12-11",
+  "bloques": [
+    {
+      "id": "CRA-AMB",
+      "nombre": "Ámbito de aplicación y clasificación del producto",
+      "descripcion": "Determinación de la aplicabilidad del Reglamento al producto con elementos digitales, identificación del rol del operador económico y clasificación del producto según su criticidad (producto ordinario, importante de clase I, importante de clase II o producto crítico), de la que depende el procedimiento de evaluación de la conformidad aplicable.",
+      "temas": [
+        "product_cybersecurity",
+        "compliance_assessment"
+      ],
+      "peso_bloque": 14,
+      "fecha_aplicabilidad": "2027-12-11",
+      "preguntas": [
+        {
+          "id": "CRA-AMB-001",
+          "texto": "¿Se ha verificado y documentado que el producto entra en el ámbito de aplicación del CRA por ser un producto con elementos digitales cuya finalidad prevista o uso razonablemente previsible incluye una conexión de datos directa o indirecta a un dispositivo o red, y se han comprobado las exclusiones del Art. 2?",
+          "ayuda": "El Art. 2 del CRA fija un ámbito de aplicación muy amplio: cualquier producto consistente en software o hardware, y sus soluciones de tratamiento de datos a distancia, cuya finalidad prevista o uso razonablemente previsible incluya una conexión a un dispositivo o red. El Reglamento excluye expresamente determinados productos ya regulados por normativa sectorial: productos sanitarios (Reglamentos UE 2017/745 y 2017/746), vehículos de motor (Reglamento UE 2019/2144), aeronaves (Reglamento UE 2018/1139), equipos marinos, las piezas de recambio idénticas y los productos desarrollados exclusivamente con fines de seguridad nacional, defensa o tratamiento de información clasificada. Si no se delimita correctamente el ámbito, el fabricante puede aplicar un régimen equivocado o quedar fuera de cobertura sin justificación documental.",
+          "requisito_original": "El presente Reglamento es aplicable a los productos con elementos digitales comercializados cuya finalidad prevista o uso razonablemente previsible incluya una conexión de datos directa o indirecta, lógica o física, a un dispositivo o red. El presente Reglamento no es aplicable a los productos con elementos digitales a los que sean aplicables los Reglamentos (UE) 2017/745, (UE) 2017/746 y (UE) 2019/2144, ni a los certificados de conformidad con el Reglamento (UE) 2018/1139, ni a los equipos que entran en el ámbito de la Directiva 2014/90/UE, ni a las piezas de recambio idénticas, ni a los productos desarrollados o modificados exclusivamente con fines de seguridad nacional o defensa o diseñados específicamente para el tratamiento de información clasificada.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "fabricante",
+            "importador",
+            "distribuidor"
+          ],
+          "peso": 9,
+          "nivel": "critico",
+          "fase_pds": 1,
+          "remediacion": "Elaborar y documentar un análisis de aplicabilidad que identifique el carácter del producto como producto con elementos digitales, su finalidad prevista, el uso razonablemente previsible, las soluciones de tratamiento de datos a distancia asociadas y la capacidad de conexión a dispositivos o redes. Verificar de forma expresa la concurrencia o no de las exclusiones del Art. 2. Conservar el análisis como parte de la documentación técnica y revisarlo ante cambios en el producto o en la normativa sectorial.",
+          "referencia_articulo": "Arts. 1 y 2 Reglamento (UE) 2024/2847"
+        },
+        {
+          "id": "CRA-AMB-002",
+          "texto": "¿Se ha determinado y documentado el rol que asume la organización en la cadena de suministro (fabricante, representante autorizado, importador o distribuidor) y las obligaciones específicas que de él se derivan?",
+          "ayuda": "El CRA distribuye obligaciones distintas según el operador económico. El fabricante soporta la carga principal (diseño seguro, documentación técnica, evaluación de la conformidad, gestión de vulnerabilidades y notificación). El importador y el distribuidor tienen obligaciones de verificación. Es crítico tener en cuenta el Art. 21: un importador o distribuidor que comercialice un producto con su propio nombre o marca, o que realice una modificación sustancial de un producto ya comercializado, asume todas las obligaciones del fabricante. Una identificación incorrecta del rol lleva a incumplir obligaciones esenciales.",
+          "requisito_original": "Se entenderá por operador económico el fabricante, el representante autorizado, el importador, el distribuidor o cualquier otra persona física o jurídica sujeta a obligaciones en relación con la fabricación de productos con elementos digitales o con la comercialización de productos con elementos digitales de conformidad con el presente Reglamento. Se considerará fabricante a un importador o distribuidor, a quien por consiguiente se le aplicará lo dispuesto en los artículos 13 y 14, cuando dicho importador o distribuidor introduzca en el mercado un producto con elementos digitales con su nombre o marca o lleve a cabo una modificación sustancial de un producto con elementos digitales que ya se haya introducido en el mercado.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "fabricante",
+            "importador",
+            "distribuidor",
+            "representante_autorizado"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 1,
+          "remediacion": "Identificar y formalizar documentalmente el rol que la organización asume respecto a cada producto. Evaluar si por uso de marca propia o por modificaciones sustanciales se asumen obligaciones de fabricante. Mapear las obligaciones aplicables a ese rol (Arts. 13-14 para fabricantes, Art. 19 para importadores, Art. 20 para distribuidores, Art. 18 para representantes autorizados) y asignar responsables internos para cada una.",
+          "referencia_articulo": "Arts. 3, 18, 19, 20, 21 y 22 Reglamento (UE) 2024/2847"
+        },
+        {
+          "id": "CRA-AMB-003",
+          "texto": "¿Se ha clasificado formalmente el producto como producto ordinario, producto importante de clase I, producto importante de clase II o producto crítico, conforme a los Anexos III y IV?",
+          "ayuda": "La clasificación del producto determina el procedimiento de evaluación de la conformidad exigible (Art. 32). Los productos ordinarios pueden autoevaluarse mediante control interno (módulo A). Los productos importantes de clase I (Anexo III: gestores de contraseñas, navegadores, VPN, sistemas operativos, enrutadores, asistentes virtuales para hogares inteligentes, juguetes conectados, etc.) requieren aplicar normas armonizadas o evaluación por tercero. Los de clase II (cortafuegos, sistemas de detección de intrusiones, hipervisores, microprocesadores resistentes a manipulaciones) exigen siempre evaluación por tercero. Los productos críticos del Anexo IV (dispositivos con cajas de seguridad, pasarelas de contadores inteligentes, tarjetas inteligentes con elementos seguros) pueden quedar sujetos a certificación europea obligatoria.",
+          "requisito_original": "Los productos con elementos digitales cuya funcionalidad principal sea la de una categoría de productos establecida en el anexo III se considerarán productos importantes con elementos digitales y estarán sujetos a los procedimientos de evaluación de la conformidad a que se refiere el artículo 32, apartados 2 y 3. Los productos con elementos digitales cuya funcionalidad básica es la de una categoría de productos establecida en el anexo IV se considerarán productos críticos. Las categorías de productos importantes se dividen en las clases I y II establecidas en el anexo III en función del nivel de riesgo de ciberseguridad.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "fabricante"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 1,
+          "remediacion": "Comparar la funcionalidad principal del producto con las categorías de los Anexos III (clases I y II) y IV. Documentar la clasificación resultante y el procedimiento de evaluación de la conformidad que de ella se deriva (Art. 32). Establecer un mecanismo de revisión de la clasificación ante modificaciones sustanciales del producto y ante la publicación de actos delegados o de ejecución de la Comisión que modifiquen las listas de los Anexos III y IV.",
+          "referencia_articulo": "Arts. 7 y 8 y Anexos III y IV Reglamento (UE) 2024/2847"
+        },
+        {
+          "id": "CRA-AMB-004",
+          "texto": "Si el producto se considera software libre y de código abierto comercializado, o si la organización actúa como administrador de comunidad de software de código abierto, ¿se han identificado las obligaciones específicas y atenuadas que le corresponden?",
+          "ayuda": "El CRA aplica al software libre y de código abierto únicamente cuando se suministra en el transcurso de una actividad comercial (monetización). Para los administradores de comunidad de software de código abierto, el Reglamento establece un régimen regulador flexible y adaptado: deben establecer y documentar una política de ciberseguridad (Art. 24) y cooperar con las autoridades de vigilancia del mercado, pero no asumen todas las obligaciones de un fabricante ni colocan el marcado CE. Las personas físicas que contribuyen con código a proyectos abiertos que no están bajo su responsabilidad quedan fuera del ámbito.",
+          "requisito_original": "Los administradores de comunidad de programas informáticos de código abierto establecerán y documentarán de manera verificable una política de ciberseguridad para fomentar el desarrollo de un producto con elementos digitales seguro, así como una gestión eficaz de las vulnerabilidades por parte de los desarrolladores de dicho producto. Las obligaciones establecidas en el artículo 14, apartado 1, se aplicarán a los administradores de comunidad de programas informáticos de código abierto en la medida en que participen en el desarrollo de los productos con elementos digitales.",
+          "tipo": "condicional",
+          "aplicabilidad": [
+            "fabricante"
+          ],
+          "peso": 6,
+          "nivel": "medio",
+          "fase_pds": 2,
+          "remediacion": "Determinar si el software se comercializa en el marco de una actividad comercial y si la organización actúa como administrador de comunidad de código abierto. En tal caso, redactar y publicar de forma verificable una política de ciberseguridad que fomente el desarrollo seguro, la gestión de vulnerabilidades y la notificación voluntaria. Documentar la naturaleza del modelo de desarrollo y mantener disponible la política a disposición de las autoridades de vigilancia del mercado.",
+          "referencia_articulo": "Arts. 3, 13.5 y 24 Reglamento (UE) 2024/2847"
+        }
+      ]
+    },
+    {
+      "id": "CRA-DIS",
+      "nombre": "Seguridad desde el diseño y evaluación de riesgos",
+      "descripcion": "Requisitos relativos a las propiedades de ciberseguridad del producto (Anexo I, parte I) y obligación del fabricante de realizar una evaluación de los riesgos de ciberseguridad que oriente el diseño, desarrollo, producción y mantenimiento del producto con elementos digitales.",
+      "temas": [
+        "product_cybersecurity",
+        "secure_development",
+        "risk_management"
+      ],
+      "peso_bloque": 22,
+      "fecha_aplicabilidad": "2027-12-11",
+      "preguntas": [
+        {
+          "id": "CRA-DIS-001",
+          "texto": "¿El fabricante realiza, documenta y mantiene actualizada una evaluación de los riesgos de ciberseguridad del producto que se tiene en cuenta en las fases de planificación, diseño, desarrollo, producción, entrega y mantenimiento?",
+          "ayuda": "El Art. 13 del CRA exige que el fabricante lleve a cabo una evaluación de riesgos de ciberseguridad y tenga en cuenta su resultado a lo largo de todo el ciclo de vida del producto. La evaluación debe incluir, como mínimo, un análisis basado en la finalidad prevista, el uso razonablemente previsible y las condiciones de uso (entorno operativo, activos a proteger), y debe indicar qué requisitos del Anexo I, parte I, punto 2, son aplicables y cómo se aplican en la práctica. Esta evaluación se incorpora obligatoriamente a la documentación técnica. Cuando un requisito esencial no sea aplicable, debe justificarse de forma clara.",
+          "requisito_original": "A efectos del cumplimiento, los fabricantes llevarán a cabo una evaluación de los riesgos de ciberseguridad asociados a un producto con elementos digitales y tendrán en cuenta el resultado de dicha evaluación durante las fases de planificación, diseño, desarrollo, producción, entrega y mantenimiento del producto con elementos digitales, con el objetivo de minimizar los riesgos de ciberseguridad, prevenir incidentes y reducir al mínimo sus repercusiones. La evaluación de los riesgos de ciberseguridad se documentará y actualizará según proceda durante un período de soporte. La evaluación de los riesgos de ciberseguridad indicará si los requisitos de seguridad establecidos en el anexo I, parte I, punto 2, son aplicables al producto con elementos digitales en cuestión, y en caso afirmativo de qué manera.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "fabricante"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 2,
+          "remediacion": "Implantar una metodología de evaluación de riesgos de ciberseguridad del producto que cubra finalidad prevista, uso razonablemente previsible, uso indebido previsible, entorno operativo y activos a proteger. Documentar la evaluación, integrarla en la documentación técnica del Anexo VII y mantenerla actualizada durante todo el periodo de soporte. Justificar de forma expresa los requisitos del Anexo I que no resulten aplicables. Asignar la evaluación a perfiles con competencia en seguridad de producto.",
+          "referencia_articulo": "Art. 13.2 a 13.4 y Anexo I parte I Reglamento (UE) 2024/2847"
+        },
+        {
+          "id": "CRA-DIS-002",
+          "texto": "¿El producto se comercializa sin vulnerabilidades aprovechables conocidas y con una configuración segura por defecto, incluyendo la posibilidad de restablecerlo a su estado original?",
+          "ayuda": "El Anexo I, parte I, punto 2, letras a) y b), exige que el producto se introduzca en el mercado sin vulnerabilidades aprovechables conocidas y con una configuración segura por defecto (security by default). El fabricante solo puede apartarse de la configuración segura por defecto en productos a medida cuando el usuario profesional lo acuerde explícitamente. El producto debe permitir además el restablecimiento a su estado original. Comercializar un producto con vulnerabilidades conocidas no corregidas o con configuraciones inseguras de fábrica (contraseñas por defecto, servicios innecesarios activados) es uno de los incumplimientos materiales más graves.",
+          "requisito_original": "Sobre la base de la evaluación de riesgos de ciberseguridad y cuando proceda, los productos con elementos digitales se comercializarán sin vulnerabilidades aprovechables conocidas; se comercializarán con una configuración segura por defecto, a menos que el fabricante y el usuario profesional acuerden otra cosa en relación con un producto a medida, incluida la posibilidad de restablecer el producto a su estado original.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "fabricante"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 2,
+          "remediacion": "Establecer un proceso de detección y corrección de vulnerabilidades previo a la comercialización (análisis de dependencias, pruebas de seguridad, escaneo de vulnerabilidades conocidas). Definir una configuración de fábrica segura: desactivar servicios y puertos innecesarios, forzar el cambio de credenciales por defecto en el primer arranque, aplicar el principio de mínimo privilegio. Implementar y documentar una función de restablecimiento a estado original seguro.",
+          "referencia_articulo": "Anexo I parte I punto 2 letras a) y b) Reglamento (UE) 2024/2847"
+        },
+        {
+          "id": "CRA-DIS-003",
+          "texto": "¿El producto incorpora mecanismos de control de acceso, protección de la confidencialidad e integridad de los datos, y minimización de datos conforme al Anexo I?",
+          "ayuda": "El Anexo I, parte I, punto 2, letras d) a g), exige que el producto proteja frente al acceso no autorizado mediante mecanismos de autenticación, identidad o gestión de accesos, e informe de accesos no autorizados; proteja la confidencialidad de los datos (por ejemplo, mediante cifrado en reposo y en tránsito con mecanismos de última tecnología); proteja la integridad de datos, comandos, programas y configuración frente a manipulación no autorizada; y trate únicamente datos adecuados, pertinentes y limitados a lo necesario para la finalidad prevista (principio de minimización de datos). Estos requisitos refuerzan y complementan la protección de datos personales del RGPD.",
+          "requisito_original": "Los productos con elementos digitales garantizarán la protección contra el acceso no autorizado mediante mecanismos de control adecuados, incluidos sistemas de gestión de la autenticación, la identidad o el acceso, e informarán de posibles accesos no autorizados; protegerán la confidencialidad de los datos personales o de otro tipo almacenados, transmitidos o tratados de otro modo, mediante, por ejemplo, el cifrado de los datos en reposo o en tránsito por medio de mecanismos de última tecnología; protegerán la integridad de los datos, los comandos, los programas y la configuración frente a toda manipulación o modificación no autorizada; tratarán únicamente los datos adecuados, pertinentes y limitados a lo necesario para la finalidad prevista del producto.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "fabricante"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 2,
+          "remediacion": "Diseñar el producto con mecanismos de autenticación y gestión de identidades y accesos, registro y alerta de accesos no autorizados, cifrado de datos en reposo y en tránsito con algoritmos actualizados, y controles de integridad de datos, firmware y configuración (firma de código, sumas de verificación). Aplicar minimización de datos: tratar solo la información estrictamente necesaria para la finalidad prevista. Documentar estas decisiones de diseño en la documentación técnica.",
+          "referencia_articulo": "Anexo I parte I punto 2 letras d), e), f) y g) Reglamento (UE) 2024/2847"
+        },
+        {
+          "id": "CRA-DIS-004",
+          "texto": "¿El producto está diseñado para limitar las superficies de ataque, reducir el impacto de los incidentes, proteger la disponibilidad de sus funciones esenciales y permitir el borrado seguro de los datos del usuario?",
+          "ayuda": "El Anexo I, parte I, punto 2, letras h) a m), exige que el producto proteja la disponibilidad de funciones esenciales (incluyendo medidas de resiliencia frente a ataques de denegación de servicio), minimice las repercusiones negativas sobre otros dispositivos o redes, esté diseñado para limitar las superficies de ataque (incluidas las interfaces externas), incorpore mecanismos para reducir el impacto de un incidente, proporcione información de seguridad mediante registro o seguimiento de la actividad interna, y ofrezca a los usuarios la posibilidad de eliminar de forma segura y permanente todos sus datos y parámetros. Estos requisitos abordan la resiliencia operativa del producto a lo largo de su uso.",
+          "requisito_original": "Los productos con elementos digitales protegerán la disponibilidad de funciones esenciales y básicas, también tras un incidente, también mediante medidas de resiliencia frente a ataques de denegación de servicio; minimizarán las repercusiones negativas de los propios productos o de los dispositivos conectados en la disponibilidad de servicios prestados por otros dispositivos o redes; estarán diseñados, desarrollados y producidos para limitar las superficies de ataque, incluidas las interfaces externas; estarán diseñados para reducir el impacto de un incidente; proporcionarán información relacionada con la seguridad mediante el registro o el seguimiento de la actividad interna pertinente; ofrecerán a los usuarios la posibilidad de eliminar de manera segura y fácil, de forma permanente, todos los datos y parámetros.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "fabricante"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 2,
+          "remediacion": "Aplicar principios de diseño de minimización de la superficie de ataque (desactivar interfaces y servicios no necesarios, segmentación de funciones). Implementar medidas de resiliencia frente a denegación de servicio y mecanismos de contención del impacto de incidentes. Habilitar registros de seguridad de la actividad interna con opción de exclusión voluntaria del usuario. Proporcionar una función de borrado seguro y permanente de datos y parámetros del usuario. Documentar estas capacidades en la documentación técnica.",
+          "referencia_articulo": "Anexo I parte I punto 2 letras h), i), j), k), l) y m) Reglamento (UE) 2024/2847"
+        },
+        {
+          "id": "CRA-DIS-005",
+          "texto": "¿El fabricante ejerce la diligencia debida sobre los componentes de terceros integrados en el producto, incluidos los componentes de software libre y de código abierto?",
+          "ayuda": "El Art. 13.5 exige al fabricante ejercer la diligencia debida al integrar componentes de terceros para que no comprometan la seguridad del producto, también cuando se trate de componentes de software libre y de código abierto no comercializados. El nivel de diligencia depende del riesgo del componente e incluye verificar si lleva el marcado CE, si recibe actualizaciones de seguridad periódicas, si está libre de vulnerabilidades registradas en bases de datos públicas, o realizar pruebas de seguridad adicionales. Cuando el fabricante detecte una vulnerabilidad en un componente, debe notificarla a quien lo fabrica o mantiene, subsanarla y compartir las correcciones desarrolladas.",
+          "requisito_original": "A efectos del cumplimiento, los fabricantes ejercerán la diligencia debida al integrar componentes procedentes de terceros de modo que estos componentes no comprometan la seguridad del producto con elementos digitales, también cuando se integren componentes de programas informáticos libres y de código abierto que no se hayan comercializado en el transcurso de una actividad comercial. Cuando los fabricantes detecten una vulnerabilidad en un componente, también de código abierto, integrado en el producto con elementos digitales, notificarán la vulnerabilidad a la persona o entidad que fabrica o mantiene el componente y abordarán y subsanarán la vulnerabilidad.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "fabricante"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 2,
+          "remediacion": "Establecer un proceso de diligencia debida sobre componentes de terceros proporcional a su riesgo: verificación del marcado CE, comprobación del historial de actualizaciones de seguridad, consulta de bases de datos de vulnerabilidades públicas y pruebas de seguridad adicionales cuando proceda. Definir un procedimiento para notificar a los mantenedores de componentes las vulnerabilidades detectadas, subsanarlas en el producto y compartir las correcciones en formato legible por máquina cuando corresponda.",
+          "referencia_articulo": "Art. 13.5 y 13.6 Reglamento (UE) 2024/2847"
+        }
+      ]
+    },
+    {
+      "id": "CRA-VUL",
+      "nombre": "Gestión de vulnerabilidades y periodo de soporte",
+      "descripcion": "Requisitos de gestión de las vulnerabilidades del Anexo I, parte II: identificación de vulnerabilidades y componentes (SBOM), provisión de actualizaciones de seguridad, política de divulgación coordinada de vulnerabilidades, pruebas periódicas de seguridad y determinación de un periodo de soporte adecuado.",
+      "temas": [
+        "vulnerability_management",
+        "product_cybersecurity"
+      ],
+      "peso_bloque": 24,
+      "fecha_aplicabilidad": "2027-12-11",
+      "preguntas": [
+        {
+          "id": "CRA-VUL-001",
+          "texto": "¿El fabricante identifica y documenta las vulnerabilidades y los componentes del producto, elaborando una nomenclatura de materiales del software (SBOM) en formato legible por máquina que incluya, al menos, las dependencias de máximo nivel?",
+          "ayuda": "El Anexo I, parte II, punto 1, obliga al fabricante a identificar y documentar las vulnerabilidades y los componentes presentes en el producto, incluyendo la elaboración de una nomenclatura de materiales del software (SBOM, Software Bill of Materials) en un formato comúnmente utilizado y legible por máquina que cubra como mínimo las dependencias de máximo nivel. La SBOM permite rastrear vulnerabilidades en la cadena de suministro de software. No es obligatorio hacerla pública, pero las autoridades de vigilancia del mercado pueden solicitarla. La Comisión podrá especificar mediante acto de ejecución su formato y elementos.",
+          "requisito_original": "Los fabricantes de los productos con elementos digitales identificarán y documentarán las vulnerabilidades y los componentes presentes en el producto con elementos digitales, también mediante la elaboración de una nomenclatura de materiales de los programas informáticos en un formato comúnmente utilizado y legible por máquina, que incluya, como mínimo, las dependencias de máximo nivel del producto.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "fabricante"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 2,
+          "remediacion": "Implantar herramientas y procesos para generar y mantener actualizada una SBOM en formato estándar legible por máquina (por ejemplo, SPDX o CycloneDX), cubriendo como mínimo las dependencias de máximo nivel. Integrar la generación de la SBOM en el ciclo de desarrollo y compilación. Conservar la SBOM dentro de la documentación técnica y mantener un proceso para entregarla a las autoridades de vigilancia del mercado previa solicitud motivada.",
+          "referencia_articulo": "Anexo I parte II punto 1 y Art. 13.24 Reglamento (UE) 2024/2847"
+        },
+        {
+          "id": "CRA-VUL-002",
+          "texto": "¿El fabricante aborda y subsana las vulnerabilidades sin demora mediante actualizaciones de seguridad, proporcionando las nuevas actualizaciones de seguridad separadas de las actualizaciones de funcionalidad cuando sea técnicamente viable?",
+          "ayuda": "El Anexo I, parte II, puntos 2, 7 y 8, exige que el fabricante aborde y subsane las vulnerabilidades sin demora, mediante la provisión de actualizaciones de seguridad; que disponga de mecanismos para distribuir las actualizaciones de forma segura; y que, cuando existan actualizaciones de seguridad para problemas detectados, se difundan sin demora y de forma gratuita (salvo acuerdo distinto para productos a medida), acompañadas de mensajes de aviso. Cuando sea técnicamente viable, las actualizaciones de seguridad deben facilitarse por separado de las de funcionalidad, para que el usuario no se vea obligado a aceptar cambios funcionales para recibir parches.",
+          "requisito_original": "Los fabricantes de los productos con elementos digitales, por lo que respecta a los riesgos para los productos con elementos digitales, abordarán y subsanarán las vulnerabilidades sin demora, también mediante la provisión de actualizaciones de seguridad; cuando sea técnicamente viable, las nuevas actualizaciones de seguridad se facilitarán por separado con respecto a las actualizaciones de funcionalidad. Garantizarán que, cuando se disponga de actualizaciones de seguridad para hacer frente a los problemas de seguridad detectados, estos se difundan sin demora y, de forma gratuita, acompañados de mensajes de aviso que proporcionen a los usuarios la información pertinente.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "fabricante"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 4,
+          "remediacion": "Establecer un proceso de gestión de parches que permita abordar y subsanar las vulnerabilidades sin demora indebida. Implantar un canal de distribución segura de actualizaciones (firma de actualizaciones, canales cifrados). Separar técnicamente las actualizaciones de seguridad de las de funcionalidad siempre que sea viable. Difundir las actualizaciones de seguridad de forma gratuita y acompañadas de avisos claros con la información relevante para el usuario.",
+          "referencia_articulo": "Anexo I parte II puntos 2, 7 y 8 Reglamento (UE) 2024/2847"
+        },
+        {
+          "id": "CRA-VUL-003",
+          "texto": "¿El fabricante ha establecido y aplica una política de divulgación coordinada de vulnerabilidades, con una dirección de contacto para la notificación de las vulnerabilidades descubiertas en el producto?",
+          "ayuda": "El Anexo I, parte II, puntos 5 y 6, obliga al fabricante a poner en marcha y aplicar una política de divulgación coordinada de vulnerabilidades (CVD) y a adoptar medidas para facilitar el intercambio de información sobre posibles vulnerabilidades, incluyendo una dirección de contacto para la notificación. La política CVD debe definir un proceso estructurado por el que las vulnerabilidades se notifican al fabricante de modo que pueda diagnosticarlas y subsanarlas antes de su divulgación pública. El fabricante también puede establecer programas de recompensa por detección de errores (bug bounty).",
+          "requisito_original": "Los fabricantes de los productos con elementos digitales pondrán en marcha y aplicarán una política de divulgación coordinada de vulnerabilidades; adoptarán medidas para facilitar el intercambio de información sobre posibles vulnerabilidades de su producto con elementos digitales, así como de los componentes de terceros presentes en el producto, también proporcionando una dirección de contacto para la notificación de las vulnerabilidades descubiertas en el producto con elementos digitales.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "fabricante"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Redactar y publicar una política de divulgación coordinada de vulnerabilidades que defina el proceso de recepción, diagnóstico y subsanación de vulnerabilidades antes de su divulgación pública. Habilitar una dirección de contacto específica y accesible para la notificación de vulnerabilidades. Considerar la publicación de la política en formato legible por máquina y la creación de un programa de recompensa por detección de errores. Documentar el proceso dentro de las políticas de gestión de vulnerabilidades.",
+          "referencia_articulo": "Anexo I parte II puntos 5 y 6 y Art. 13.8 Reglamento (UE) 2024/2847"
+        },
+        {
+          "id": "CRA-VUL-004",
+          "texto": "¿El fabricante realiza exámenes y pruebas de seguridad eficaces y periódicas del producto y, una vez disponible una actualización de seguridad, divulga públicamente información sobre las vulnerabilidades solucionadas?",
+          "ayuda": "El Anexo I, parte II, puntos 3 y 4, exige llevar a cabo exámenes y pruebas de seguridad eficaces y periódicas del producto, y que, una vez esté disponible una actualización de seguridad, se comparta y divulgue públicamente información sobre las vulnerabilidades solucionadas: descripción, información que permita identificar el producto afectado, repercusiones, gravedad e información clara que ayude a los usuarios a corregirlas. En casos justificados, el fabricante puede retrasar la publicación cuando los riesgos de divulgación superen los beneficios de seguridad, hasta que los usuarios hayan podido aplicar el parche.",
+          "requisito_original": "Los fabricantes de los productos con elementos digitales llevarán a cabo exámenes y pruebas eficaces y periódicos de la seguridad del producto con elementos digitales; una vez esté disponible una actualización de seguridad, compartirán y divulgarán públicamente información sobre las vulnerabilidades solucionadas, incluidas una descripción de las vulnerabilidades, información que permita a los usuarios identificar el producto afectado, las repercusiones y la gravedad de las vulnerabilidades e información clara y accesible que ayude a los usuarios a corregir las vulnerabilidades.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "fabricante"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Programar exámenes y pruebas de seguridad periódicas del producto (análisis estático y dinámico, pruebas de penetración, escaneo de vulnerabilidades) e integrarlas en el ciclo de vida. Establecer un proceso de publicación de avisos de seguridad (security advisories) con descripción de la vulnerabilidad, identificación del producto afectado, gravedad e instrucciones de corrección. Documentar los criterios para retrasar de forma justificada la publicación cuando proceda.",
+          "referencia_articulo": "Anexo I parte II puntos 3 y 4 Reglamento (UE) 2024/2847"
+        },
+        {
+          "id": "CRA-VUL-005",
+          "texto": "¿El fabricante ha determinado y documentado un periodo de soporte adecuado (mínimo cinco años salvo vida útil inferior) y garantiza la disponibilidad de las actualizaciones de seguridad durante al menos diez años tras su publicación?",
+          "ayuda": "El Art. 13.8 obliga al fabricante a determinar un periodo de soporte que refleje el tiempo durante el cual se prevé que se use el producto, teniendo en cuenta las expectativas razonables de los usuarios, la naturaleza del producto y la normativa aplicable. El periodo de soporte será de al menos cinco años, salvo que se prevea un uso inferior, en cuyo caso corresponderá al tiempo de uso previsto. Además, el Art. 13.9 exige que cada actualización de seguridad publicada siga estando disponible durante al menos diez años tras su publicación, o durante el resto del periodo de soporte si este es más largo. La fecha de fin del periodo de soporte debe comunicarse claramente al comprador.",
+          "requisito_original": "Los fabricantes determinarán el período de soporte de manera que refleje el período de tiempo durante el cual se prevé que vaya a utilizarse el producto, teniendo en cuenta, en particular, las expectativas razonables de los usuarios, la naturaleza del producto y el Derecho pertinente de la Unión. El período de soporte será de al menos cinco años. Cuando se prevea que el producto con elementos digitales vaya a utilizarse durante menos de cinco años, el período de soporte corresponderá al tiempo de utilización previsto. Los fabricantes se asegurarán de que cada una de las actualizaciones de seguridad que se haya puesto a disposición de los usuarios durante el período de soporte siga estando disponible tras su publicación durante un período mínimo de diez años o durante el resto del período de soporte si este plazo fuera más largo.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "fabricante"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Determinar y documentar el periodo de soporte de cada producto, justificando su duración (mínimo cinco años salvo vida útil prevista inferior) en función de las expectativas de los usuarios y la naturaleza del producto. Incluir la información considerada en la documentación técnica. Garantizar que cada actualización de seguridad permanece disponible al menos diez años tras su publicación. Especificar de forma clara y accesible la fecha de fin del periodo de soporte en el momento de la compra y, cuando sea viable, mostrar un aviso al usuario al alcanzarse dicha fecha.",
+          "referencia_articulo": "Art. 13.8, 13.9 y 13.19 Reglamento (UE) 2024/2847"
+        }
+      ]
+    },
+    {
+      "id": "CRA-NOT",
+      "nombre": "Obligaciones de notificación de vulnerabilidades e incidentes",
+      "descripcion": "Régimen de notificación del Art. 14: comunicación simultánea a ENISA y al CSIRT designado como coordinador de las vulnerabilidades aprovechadas activamente y de los incidentes graves que repercutan en la seguridad del producto, con plazos de 24 horas, 72 horas y un informe final, así como la información a los usuarios afectados.",
+      "temas": [
+        "incident_response",
+        "vulnerability_management",
+        "product_cybersecurity"
+      ],
+      "peso_bloque": 18,
+      "fecha_aplicabilidad": "2026-09-11",
+      "preguntas": [
+        {
+          "id": "CRA-NOT-001",
+          "texto": "¿El fabricante dispone de un procedimiento para notificar simultáneamente a ENISA y al CSIRT designado como coordinador las vulnerabilidades aprovechadas activamente, mediante alerta temprana en 24 horas y notificación detallada en 72 horas?",
+          "ayuda": "El Art. 14 del CRA establece que el fabricante debe notificar, a través de la plataforma única de notificación de ENISA, toda vulnerabilidad aprovechada activamente de la que tenga conocimiento. La notificación tiene tres hitos: una alerta temprana en un plazo máximo de 24 horas desde que el fabricante tiene conocimiento; una notificación de la vulnerabilidad en un plazo máximo de 72 horas con información general sobre el producto, la naturaleza de la vulnerabilidad y las medidas correctoras; y un informe final a más tardar 14 días después de que esté disponible una medida correctora. Esta obligación es aplicable desde el 11 de septiembre de 2026, antes que el resto del Reglamento.",
+          "requisito_original": "Los fabricantes notificarán simultáneamente al CSIRT designado como coordinador y a la ENISA cualquier vulnerabilidad aprovechada activamente presente en el producto con elementos digitales de la que tengan conocimiento. El fabricante presentará una notificación de alerta temprana de la vulnerabilidad aprovechada activamente, sin demora indebida y, en todo caso, en un plazo de veinticuatro horas desde que el fabricante haya tenido conocimiento de ella; una notificación de la vulnerabilidad, en todo caso en un plazo de setenta y dos horas; y un informe final, a más tardar catorce días después de que se disponga de una medida correctora o paliativa.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "fabricante"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 4,
+          "remediacion": "Definir e implantar un procedimiento de notificación de vulnerabilidades aprovechadas activamente con responsables y plazos claros (alerta temprana en 24 h, notificación en 72 h, informe final en 14 días tras la medida correctora). Registrar el establecimiento principal del fabricante en la UE para identificar el CSIRT coordinador competente. Familiarizarse con la plataforma única de notificación de ENISA. Integrar este procedimiento con el proceso de gestión de incidentes y vulnerabilidades de la organización.",
+          "referencia_articulo": "Art. 14.1, 14.2 y 14.7 Reglamento (UE) 2024/2847"
+        },
+        {
+          "id": "CRA-NOT-002",
+          "texto": "¿El fabricante dispone de un procedimiento para notificar a ENISA y al CSIRT coordinador los incidentes graves que repercutan en la seguridad del producto, con alerta temprana en 24 horas, notificación en 72 horas e informe final en un mes?",
+          "ayuda": "El Art. 14.3 y 14.4 obliga al fabricante a notificar también cualquier incidente grave que repercuta en la seguridad de un producto con elementos digitales. Se considera grave cuando afecta negativamente a la capacidad del producto para proteger la disponibilidad, autenticidad, integridad o confidencialidad de datos o funciones sensibles o importantes, o cuando puede llevar a la introducción o ejecución de código malicioso. Los plazos son: alerta temprana en 24 horas (indicando si se sospecha origen ilícito o malintencionado), notificación en 72 horas e informe final en el plazo de un mes desde la notificación.",
+          "requisito_original": "Los fabricantes notificarán simultáneamente al CSIRT designado como coordinador y a la ENISA cualquier incidente grave que repercuta en la seguridad de un producto con elementos digitales del que tengan conocimiento. Un incidente que repercuta en la seguridad de un producto con elementos digitales se considerará grave cuando afecte o pueda afectar negativamente a la capacidad de un producto con elementos digitales para proteger la disponibilidad, autenticidad, integridad o confidencialidad de datos o funciones sensibles o importantes, o haya llevado o pueda llevar a la introducción o ejecución de código malicioso.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "fabricante"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Establecer un procedimiento de notificación de incidentes graves con los criterios de gravedad del Art. 14.5 y los plazos correspondientes (alerta temprana en 24 h, notificación en 72 h, informe final en un mes). Definir criterios internos de clasificación de incidentes y un equipo de respuesta. Integrar la notificación a ENISA y al CSIRT coordinador dentro del plan de respuesta a incidentes de la organización y formar al personal implicado.",
+          "referencia_articulo": "Art. 14.3, 14.4 y 14.5 Reglamento (UE) 2024/2847"
+        },
+        {
+          "id": "CRA-NOT-003",
+          "texto": "¿El fabricante informa a los usuarios afectados, sin demora indebida, de las vulnerabilidades aprovechadas activamente y de los incidentes graves, así como de las medidas correctoras que pueden adoptar?",
+          "ayuda": "El Art. 14.8 obliga al fabricante a informar a los usuarios afectados del producto (y cuando proceda a todos los usuarios) sobre la vulnerabilidad aprovechada activamente o el incidente grave, una vez tenga conocimiento de él, y sobre cualquier reducción de riesgos y medidas correctoras que los usuarios puedan adoptar para mitigar las repercusiones, cuando sea posible en un formato legible por máquina estructurado. Si el fabricante no informa a tiempo, los CSIRT coordinadores podrán facilitar esa información a los usuarios cuando se considere proporcionado y necesario.",
+          "requisito_original": "Una vez tenga conocimiento de una vulnerabilidad aprovechada activamente o de un incidente grave con repercusiones en la seguridad de un producto con elementos digitales, el fabricante informará a los usuarios afectados del producto con elementos digitales —y, cuando proceda, a todos los usuarios— sobre dicha vulnerabilidad o incidente y, cuando así se requiera, sobre cualquier reducción de riesgos y las medidas correctoras que los usuarios puedan adoptar para atenuar las repercusiones, en su caso en un formato legible por máquina estructurado que sea fácilmente susceptible de tratamiento automatizado.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "fabricante"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Definir un procedimiento de comunicación a los usuarios afectados que se active al conocer una vulnerabilidad aprovechada activamente o un incidente grave. Establecer canales de comunicación efectivos (avisos en el sitio web, comunicación directa cuando sea posible) y, cuando sea viable, facilitar la información en formato legible por máquina estructurado. Incluir en la comunicación las medidas correctoras o paliativas que el usuario puede aplicar.",
+          "referencia_articulo": "Art. 14.8 Reglamento (UE) 2024/2847"
+        }
+      ]
+    },
+    {
+      "id": "CRA-CON",
+      "nombre": "Evaluación de la conformidad, marcado CE y documentación técnica",
+      "descripcion": "Procedimientos de evaluación de la conformidad del Art. 32, elaboración de la documentación técnica del Anexo VII, declaración UE de conformidad y colocación del marcado CE como condición para la introducción del producto en el mercado de la Unión.",
+      "temas": [
+        "compliance_assessment",
+        "product_cybersecurity"
+      ],
+      "peso_bloque": 14,
+      "fecha_aplicabilidad": "2027-12-11",
+      "preguntas": [
+        {
+          "id": "CRA-CON-001",
+          "texto": "¿El fabricante ha llevado a cabo el procedimiento de evaluación de la conformidad adecuado a la clasificación del producto antes de su comercialización?",
+          "ayuda": "El Art. 32 establece los procedimientos de evaluación de la conformidad según la clasificación del producto. Los productos ordinarios pueden seguir el control interno (módulo A). Los productos importantes de clase I que no apliquen total o parcialmente normas armonizadas, especificaciones comunes o esquemas europeos de certificación deben someterse a examen de tipo UE (módulo B) más conformidad de tipo (módulo C), o a aseguramiento de calidad total (módulo H). Los de clase II requieren siempre la intervención de un tercero. Los productos críticos del Anexo IV pueden requerir certificación europea de ciberseguridad. La evaluación verifica los requisitos del producto y de los procesos a lo largo de todo el ciclo de vida.",
+          "requisito_original": "El fabricante llevará a cabo una evaluación de la conformidad del producto con elementos digitales y de los procesos establecidos por el fabricante para determinar si se cumplen los requisitos esenciales de ciberseguridad establecidos en el anexo I. El fabricante demostrará la conformidad mediante el procedimiento de control interno (basado en el módulo A), el procedimiento de examen de tipo UE (basado en el módulo B) seguido de la conformidad de tipo UE (basada en el módulo C), la evaluación de la conformidad basada en el aseguramiento de calidad total (basada en el módulo H), o un esquema europeo de certificación de la ciberseguridad cuando exista y sea aplicable.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "fabricante"
+          ],
+          "peso": 9,
+          "nivel": "critico",
+          "fase_pds": 3,
+          "remediacion": "Identificar, a partir de la clasificación del producto, el procedimiento de evaluación de la conformidad aplicable (Art. 32). Para productos importantes de clase I, valorar la aplicación de normas armonizadas para poder optar al control interno; en su defecto, planificar una evaluación por organismo notificado. Para clase II y productos críticos, contratar con antelación a un organismo notificado o, en su caso, obtener la certificación europea. Documentar el procedimiento seguido y sus resultados.",
+          "referencia_articulo": "Art. 32 y Anexo VIII Reglamento (UE) 2024/2847"
+        },
+        {
+          "id": "CRA-CON-002",
+          "texto": "¿El fabricante ha elaborado la documentación técnica del Anexo VII antes de comercializar el producto y la mantiene actualizada y a disposición de las autoridades durante al menos diez años?",
+          "ayuda": "El Art. 31 y el Anexo VII exigen que el fabricante elabore, antes de la comercialización, una documentación técnica que contenga todos los datos sobre los medios empleados para garantizar la conformidad: descripción general del producto y su finalidad prevista, descripción del diseño, desarrollo y producción y de los procesos de gestión de vulnerabilidades, la evaluación de riesgos de ciberseguridad, la información considerada para determinar el periodo de soporte, la lista de normas armonizadas aplicadas, los informes de pruebas, la copia de la declaración UE de conformidad y, cuando proceda, la SBOM. La documentación debe mantenerse actualizada durante el periodo de soporte y conservarse a disposición de las autoridades de vigilancia del mercado un mínimo de diez años. Las microempresas y pequeñas empresas pueden usar un formulario simplificado.",
+          "requisito_original": "La documentación técnica contendrá todos los datos o detalles pertinentes relativos a los medios utilizados por el fabricante para garantizar que el producto con elementos digitales y los procesos establecidos por el fabricante cumplen los requisitos esenciales de ciberseguridad establecidos en el anexo I. Incluirá, como mínimo, los elementos establecidos en el anexo VII. La documentación técnica se elaborará antes de que el producto con elementos digitales se introduzca en el mercado y, en su caso, se mantendrá permanentemente actualizada al menos durante el período de soporte.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "fabricante"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Elaborar la documentación técnica con todos los elementos del Anexo VII antes de comercializar el producto: descripción general, descripción del diseño y desarrollo, procesos de gestión de vulnerabilidades, evaluación de riesgos, justificación del periodo de soporte, normas aplicadas, informes de pruebas, declaración UE de conformidad y SBOM cuando proceda. Establecer un control de versiones y mantenerla actualizada durante el periodo de soporte. Conservarla a disposición de las autoridades un mínimo de diez años. Las microempresas y pequeñas empresas pueden emplear el formulario simplificado.",
+          "referencia_articulo": "Art. 31 y Anexo VII Reglamento (UE) 2024/2847"
+        },
+        {
+          "id": "CRA-CON-003",
+          "texto": "¿El fabricante ha elaborado la declaración UE de conformidad y ha colocado el marcado CE en el producto, su embalaje o la documentación, según corresponda?",
+          "ayuda": "Los Arts. 28, 29 y 30 exigen que, una vez demostrada la conformidad, el fabricante elabore la declaración UE de conformidad (conforme a la estructura del Anexo V, o la versión simplificada del Anexo VI) en la que asume la responsabilidad de la conformidad del producto, y coloque el marcado CE de manera visible, legible e indeleble. En productos en forma de software, el marcado CE puede colocarse en la declaración UE de conformidad o en el sitio web que acompañe al producto. El marcado CE es el único marcado que garantiza la conformidad con el CRA y debe colocarse antes de la introducción en el mercado; cuando interviene un organismo notificado bajo el módulo H, va seguido de su número de identificación.",
+          "requisito_original": "La declaración UE de conformidad será elaborada por los fabricantes y hará constar que se ha demostrado el cumplimiento de los requisitos esenciales de ciberseguridad aplicables establecidos en el anexo I. El marcado CE se colocará en el producto con elementos digitales de manera visible, legible e indeleble. Cuando ello no sea posible o no se justifique dada la naturaleza del producto, se colocará en el embalaje y en la declaración UE de conformidad. En el caso de los productos con elementos digitales en forma de programas informáticos, el marcado CE se colocará en la declaración UE de conformidad o el sitio web que acompañen al producto.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "fabricante"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Elaborar la declaración UE de conformidad conforme a la estructura del Anexo V (o la simplificada del Anexo VI), identificando el producto y los actos jurídicos aplicables, y firmarla asumiendo la responsabilidad de la conformidad. Colocar el marcado CE de forma visible, legible e indeleble en el producto, embalaje, declaración o sitio web según su naturaleza, antes de la introducción en el mercado. Cuando intervenga un organismo notificado bajo módulo H, añadir su número de identificación. Facilitar copia de la declaración junto con el producto.",
+          "referencia_articulo": "Arts. 28, 29 y 30 y Anexos V y VI Reglamento (UE) 2024/2847"
+        }
+      ]
+    },
+    {
+      "id": "CRA-INF",
+      "nombre": "Información a los usuarios y obligaciones de importadores y distribuidores",
+      "descripcion": "Información e instrucciones para el usuario del Anexo II, designación del punto de contacto único, identificación del fabricante y obligaciones de verificación y cooperación de importadores y distribuidores.",
+      "temas": [
+        "compliance_assessment",
+        "product_cybersecurity",
+        "supply_chain_security"
+      ],
+      "peso_bloque": 8,
+      "fecha_aplicabilidad": "2027-12-11",
+      "preguntas": [
+        {
+          "id": "CRA-INF-001",
+          "texto": "¿El producto se acompaña de la información e instrucciones para el usuario del Anexo II y el fabricante ha designado un punto de contacto único para la notificación de vulnerabilidades?",
+          "ayuda": "El Art. 13.16, 13.17 y 13.18 y el Anexo II exigen que el producto vaya acompañado de información e instrucciones claras y comprensibles para el usuario: identificación y datos de contacto del fabricante, punto de contacto único para notificar y recibir información sobre vulnerabilidades y ubicación de la política de divulgación coordinada, identificación del producto, finalidad prevista y propiedades de seguridad, riesgos de ciberseguridad significativos, fecha de fin del periodo de soporte, e instrucciones de uso seguro, actualización y retirada segura del servicio. El punto de contacto único debe permitir al usuario elegir el medio de comunicación y no limitarse a herramientas automatizadas. Esta información debe conservarse disponible un mínimo de diez años.",
+          "requisito_original": "Los fabricantes designarán un punto de contacto único que permita a los usuarios comunicarse directa y rápidamente con ellos, también para facilitar la notificación de vulnerabilidades del producto con elementos digitales. El punto de contacto único permitirá a los usuarios elegir los medios de comunicación que prefieran y no limitará dichos medios a herramientas automatizadas. Los fabricantes se asegurarán de que los productos con elementos digitales vayan acompañados de la información y las instrucciones para el usuario especificadas en el anexo II, en papel o en formato electrónico.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "fabricante"
+          ],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 3,
+          "remediacion": "Elaborar la información e instrucciones para el usuario con todos los elementos del Anexo II, en lenguaje claro y comprensible. Designar un punto de contacto único accesible para la notificación de vulnerabilidades, que ofrezca varios medios de comunicación y no se base solo en herramientas automatizadas. Indicar de forma clara el fabricante, sus datos de contacto, la finalidad prevista, los riesgos de ciberseguridad y la fecha de fin del periodo de soporte. Mantener la información disponible un mínimo de diez años.",
+          "referencia_articulo": "Art. 13.16 a 13.18 y Anexo II Reglamento (UE) 2024/2847"
+        },
+        {
+          "id": "CRA-INF-002",
+          "texto": "Si la organización actúa como importador o distribuidor, ¿verifica antes de comercializar el producto que lleva el marcado CE, dispone de declaración UE de conformidad e instrucciones, y que el fabricante ha cumplido sus obligaciones de identificación?",
+          "ayuda": "Los Arts. 19 y 20 imponen obligaciones de verificación a importadores y distribuidores. El importador debe asegurarse, antes de comercializar, de que el fabricante ha realizado la evaluación de la conformidad, ha elaborado la documentación técnica, el producto lleva el marcado CE y va acompañado de la declaración UE de conformidad y de las instrucciones del Anexo II, y de que el fabricante ha cumplido sus obligaciones de identificación. El distribuidor debe comprobar que el producto lleva el marcado CE y que fabricante e importador han cumplido sus obligaciones. Si tienen motivos para creer que el producto no es conforme o presenta un riesgo significativo, no deben comercializarlo e informar a las autoridades.",
+          "requisito_original": "Antes de introducir en el mercado un producto con elementos digitales, los importadores se asegurarán de que el fabricante ha llevado a cabo los procedimientos de evaluación de la conformidad adecuados, de que el fabricante ha redactado la documentación técnica, de que el producto lleva el marcado CE y va acompañado de la declaración UE de conformidad y de la información y las instrucciones para el usuario, y de que el fabricante ha cumplido los requisitos de identificación. Antes de comercializar un producto con elementos digitales, los distribuidores comprobarán que el producto lleva el marcado CE y que el fabricante y el importador han cumplido sus obligaciones.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "importador",
+            "distribuidor"
+          ],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 3,
+          "remediacion": "Establecer un procedimiento de verificación previa a la comercialización: comprobar la presencia del marcado CE, la declaración UE de conformidad, las instrucciones del Anexo II y el cumplimiento de las obligaciones de identificación del fabricante. Para importadores, conservar copia de la declaración UE de conformidad y mantener disponible la documentación técnica un mínimo de diez años. Definir un protocolo de actuación para no comercializar productos no conformes e informar a las autoridades de vigilancia del mercado cuando exista un riesgo de ciberseguridad significativo.",
+          "referencia_articulo": "Arts. 19 y 20 Reglamento (UE) 2024/2847"
+        }
+      ]
+    }
+  ]
+}

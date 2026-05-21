@@ -10,6 +10,7 @@
       "nombre": "Controles organizacionales",
       "descripcion": "37 controles de gobernanza y gestión: políticas de seguridad, roles y responsabilidades, gestión de activos, control de acceso, relaciones con proveedores, gestión de incidentes, continuidad y cumplimiento legal. Constituyen el armazón organizativo del SGSI.",
       "peso_bloque": 38,
+      "seccion_normativa": "5_organizational",
       "preguntas": [
         {
           "id": "ISO27002-ORG-001",
@@ -213,6 +214,7 @@
       "nombre": "Controles de personas",
       "descripcion": "8 controles que cubren todo el ciclo de vida del empleado y otros recursos humanos: verificación previa, formación, disciplina, teletrabajo y comunicación de eventos de seguridad.",
       "peso_bloque": 14,
+      "seccion_normativa": "6_people",
       "preguntas": [
         {
           "id": "ISO27002-PER-001",
@@ -312,6 +314,7 @@
       "nombre": "Controles físicos",
       "descripcion": "14 controles relativos a la seguridad física: perímetros seguros, controles de entrada, protección frente a amenazas, áreas seguras, equipamiento, cableado, mantenimiento y borrado seguro de soportes.",
       "peso_bloque": 14,
+      "seccion_normativa": "7_physical",
       "preguntas": [
         {
           "id": "ISO27002-FIS-001",
@@ -398,6 +401,7 @@
       "nombre": "Controles tecnológicos",
       "descripcion": "34 controles técnicos sobre dispositivos de usuario, gestión de privilegios, autenticación, criptografía, gestión de vulnerabilidades, configuración, copias de seguridad, registro y monitorización, redes, software y desarrollo seguro.",
       "peso_bloque": 34,
+      "seccion_normativa": "8_technological",
       "preguntas": [
         {
           "id": "ISO27002-TEC-001",

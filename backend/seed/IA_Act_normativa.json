@@ -1,0 +1,511 @@
+{
+  "id": "ia_act",
+  "nombre": "Reglamento de Inteligencia Artificial (IA Act)",
+  "referencia_oficial": "Reglamento (UE) 2024/1689 del Parlamento Europeo y del Consejo, de 13 de junio de 2024, por el que se establecen normas armonizadas en materia de inteligencia artificial",
+  "descripcion": "El Reglamento de Inteligencia Artificial es el primer marco jurídico horizontal de la UE sobre IA. Clasifica los sistemas de IA en cuatro niveles de riesgo: riesgo inaceptable (prácticas prohibidas), alto riesgo (requisitos obligatorios antes de la puesta en servicio), riesgo limitado (obligaciones de transparencia) y riesgo mínimo (sin obligaciones específicas). Aplica a proveedores que introducen sistemas de IA en el mercado de la UE, responsables del despliegue establecidos en la UE, y proveedores e importadores de terceros países cuando el resultado del sistema se usa en la UE. Incluye además un régimen específico para modelos de IA de uso general (GPAI). Las sanciones oscilan entre 7,5 M€/1% de facturación y 35 M€/7% de facturación global según la infracción.",
+  "sectores_aplicables": [
+    "tecnologia",
+    "administracion_publica",
+    "sanidad",
+    "educacion",
+    "servicios_financieros",
+    "infraestructuras_criticas",
+    "sector_privado"
+  ],
+  "bloques": [
+    {
+      "id": "IAACT-CLAS",
+      "nombre": "Clasificación y ámbito de aplicación",
+      "descripcion": "Artículos 2, 3, 5, 6 y Anexo III del Reglamento (UE) 2024/1689. Determinación del nivel de riesgo del sistema de IA (inaceptable, alto riesgo, riesgo limitado, riesgo mínimo), verificación de prácticas prohibidas y clasificación como sistema de IA de alto riesgo.",
+      "temas": [
+        "ai_governance",
+        "risk_management",
+        "legal_compliance"
+      ],
+      "peso_bloque": 16,
+      "preguntas": [
+        {
+          "id": "IAACT-CLAS-001",
+          "texto": "¿Se ha determinado y documentado formalmente si el sistema desarrollado o desplegado entra en el ámbito de aplicación del Reglamento (UE) 2024/1689, identificando el rol de la organización (proveedor, responsable del despliegue, importador o distribuidor)?",
+          "ayuda": "El artículo 2 define el ámbito de aplicación y el artículo 3 los roles. El rol determina las obligaciones: el proveedor (quien desarrolla o pone en el mercado el sistema) tiene las obligaciones más extensas; el responsable del despliegue (quien lo usa en su actividad profesional) tiene obligaciones propias. Una misma organización puede ser ambos. Es el punto de partida obligatorio de cualquier análisis de conformidad con el IA Act.",
+          "requisito_original": "El presente Reglamento se aplicará a los proveedores que introduzcan en el mercado o pongan en servicio sistemas de IA o modelos de IA de uso general en la Unión, independientemente de si están establecidos o se encuentran en la Unión o en un tercer país; a los responsables del despliegue de sistemas de IA que estén establecidos o se encuentren en la Unión; a los proveedores e importadores de sistemas de IA establecidos en un tercer país cuando el resultado producido por el sistema se utilice en la Unión.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "proveedor",
+            "responsable_despliegue",
+            "importador",
+            "distribuidor"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 1,
+          "remediacion": "Realizar un análisis jurídico-técnico de aplicabilidad del IA Act que identifique: (1) si el sistema es un 'sistema de IA' según el artículo 3.1, (2) el rol de la organización según el artículo 3, (3) si el sistema entra en el ámbito de aplicación del artículo 2. Documentarlo formalmente y revisarlo ante cambios en el sistema o en el uso previsto.",
+          "referencia_articulo": "Arts. 2 y 3 Reglamento (UE) 2024/1689 — Ámbito de aplicación y definiciones"
+        },
+        {
+          "id": "IAACT-CLAS-002",
+          "texto": "¿Se ha verificado que el sistema de IA no incurre en ninguna de las prácticas de IA prohibidas del artículo 5 (manipulación subliminal, explotación de vulnerabilidades, puntuación social, identificación biométrica en tiempo real en espacios públicos sin excepción, etc.)?",
+          "ayuda": "El artículo 5 enumera las prácticas de IA cuyo riesgo es considerado inaceptable y que están absolutamente prohibidas. Incluye: técnicas subliminales o manipuladoras que alteren el comportamiento causando perjuicio, explotación de vulnerabilidades de grupos (edad, discapacidad, situación socioeconómica), sistemas de puntuación social por autoridades públicas, identificación biométrica remota en tiempo real en espacios públicos (salvo excepciones tasadas), inferencia de emociones en entornos laborales/educativos, y categorización biométrica por características sensibles. El incumplimiento conlleva la sanción más alta: hasta 35 M€ o 7% de la facturación global.",
+          "requisito_original": "Quedan prohibidas las prácticas de IA consistentes en: introducción de técnicas subliminales o manipuladoras con efecto perjudicial; explotación de vulnerabilidades de personas o colectivos; sistemas de puntuación social por autoridades públicas; sistemas de identificación biométrica remota en tiempo real en espacios de acceso público con fines de aplicación de la ley salvo excepciones; inferencia de emociones en entornos laborales o educativos salvo por razones médicas o de seguridad; categorización biométrica individual que deduzca características sensibles; creación de bases de datos de reconocimiento facial mediante raspado no selectivo.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "proveedor",
+            "responsable_despliegue",
+            "importador",
+            "distribuidor"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 1,
+          "remediacion": "Realizar una revisión exhaustiva del sistema frente a cada una de las prácticas prohibidas del artículo 5. Documentar el análisis con conclusión motivada para cada prohibición. Si existe duda sobre alguna categoría (especialmente identificación biométrica o inferencia de emociones), consultar asesoría jurídica especializada. Cualquier funcionalidad que se aproxime a las prohibiciones debe ser eliminada o rediseñada.",
+          "referencia_articulo": "Art. 5 Reglamento (UE) 2024/1689 — Prácticas de IA prohibidas"
+        },
+        {
+          "id": "IAACT-CLAS-003",
+          "texto": "¿Se ha realizado y documentado la clasificación del sistema de IA como de alto riesgo conforme al artículo 6 y al Anexo III, verificando si entra en alguna de las ocho categorías de uso de alto riesgo (infraestructuras críticas, educación, empleo, servicios esenciales, aplicación de la ley, migración, justicia, procesos democráticos)?",
+          "ayuda": "El artículo 6 y el Anexo III definen los sistemas de IA de alto riesgo. La clasificación como alto riesgo es determinante porque activa el conjunto completo de obligaciones del Capítulo III (artículos 8 a 49). El Anexo III enumera ocho áreas: biometría, infraestructuras críticas, educación y formación profesional, empleo y gestión de trabajadores, acceso a servicios privados esenciales y servicios públicos, aplicación de la ley, gestión de la migración, administración de justicia y procesos democráticos. También se es de alto riesgo si el sistema es componente de seguridad de un producto del Anexo I y requiere evaluación de terceros.",
+          "requisito_original": "Un sistema de IA se considerará de alto riesgo cuando reúna las condiciones del artículo 6.1 (componente de seguridad de producto del Anexo I que requiere evaluación de terceros) o figure entre los sistemas del Anexo III. No obstante, un sistema del Anexo III no se considerará de alto riesgo si no plantea un riesgo importante de causar perjuicio a la salud, la seguridad o los derechos fundamentales de las personas físicas.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "proveedor",
+            "responsable_despliegue"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 1,
+          "remediacion": "Realizar un análisis de clasificación frente al artículo 6 y cada categoría del Anexo III. Si el sistema entra en alguna categoría del Anexo III, verificar si es aplicable la excepción de ausencia de riesgo importante del artículo 6.3 y documentar la justificación. Clasificar el resultado formalmente. Revisarlo ante cambios en la finalidad prevista o en las funcionalidades del sistema.",
+          "referencia_articulo": "Art. 6 y Anexo III Reglamento (UE) 2024/1689 — Clasificación de alto riesgo"
+        }
+      ]
+    },
+    {
+      "id": "IAACT-AR",
+      "nombre": "Requisitos para sistemas de IA de alto riesgo",
+      "descripcion": "Artículos 8 a 15 del Reglamento (UE) 2024/1689. Requisitos obligatorios aplicables a los sistemas de IA de alto riesgo: gestión de riesgos, gobernanza de datos, documentación técnica, conservación de registros, transparencia, supervisión humana, y precisión, solidez y ciberseguridad.",
+      "temas": [
+        "ai_governance",
+        "risk_management",
+        "data_governance"
+      ],
+      "peso_bloque": 16,
+      "preguntas": [
+        {
+          "id": "IAACT-AR-001",
+          "texto": "¿Se ha establecido, implantado, documentado y se mantiene un sistema de gestión de riesgos iterativo y continuo durante todo el ciclo de vida del sistema de IA de alto riesgo, que identifique, evalúe y mitigue los riesgos para la salud, la seguridad y los derechos fundamentales?",
+          "ayuda": "El artículo 9 exige un sistema de gestión de riesgos que sea un proceso iterativo continuo, no una evaluación puntual. Debe cubrir: identificación y análisis de riesgos conocidos y previsibles en uso conforme y en uso indebido razonablemente previsible; estimación y evaluación de riesgos; análisis de datos de vigilancia poscomercialización; y adopción de medidas de gestión de riesgos adecuadas. Las medidas deben ser proporcionales a los riesgos residuales y al estado de la técnica.",
+          "requisito_original": "Se establecerá, implantará, documentará y mantendrá un sistema de gestión de riesgos en relación con los sistemas de IA de alto riesgo. El sistema de gestión de riesgos se entenderá como un proceso iterativo continuo planificado y ejecutado durante todo el ciclo de vida de un sistema de IA de alto riesgo, que requerirá revisiones y actualizaciones sistemáticas periódicas.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "proveedor"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 2,
+          "remediacion": "Implementar un proceso formal de gestión de riesgos de IA que cubra las cuatro etapas del artículo 9.2: identificación, estimación, evaluación poscomercialización y adopción de medidas. Documentar el proceso, sus resultados y las revisiones periódicas. Integrarlo con el sistema de vigilancia poscomercialización del artículo 72. Revisar ante cambios en el sistema o cuando los datos de vigilancia detecten nuevos riesgos.",
+          "referencia_articulo": "Art. 9 Reglamento (UE) 2024/1689 — Sistema de gestión de riesgos"
+        },
+        {
+          "id": "IAACT-AR-002",
+          "texto": "¿Los conjuntos de datos de entrenamiento, validación y prueba del sistema de IA de alto riesgo cumplen los criterios de calidad del artículo 10 (gobernanza, pertinencia, representatividad, ausencia de errores, completitud y examen frente a sesgos)?",
+          "ayuda": "El artículo 10 establece requisitos de calidad y gobernanza de datos para los sistemas que usan técnicas de entrenamiento. Los conjuntos de datos deben cumplir prácticas adecuadas de gobernanza, ser pertinentes, representativos, libres de errores y completos en la medida de lo posible. Es especialmente importante el examen frente a sesgos que puedan afectar a derechos fundamentales o dar lugar a discriminación. Se permiten datos especiales para detectar y corregir sesgos, con salvaguardas.",
+          "requisito_original": "Los sistemas de IA de alto riesgo que utilizan técnicas que implican el entrenamiento de modelos de IA se desarrollarán a partir de conjuntos de datos de entrenamiento, validación y prueba que cumplan los criterios de calidad establecidos. Los conjuntos de datos se someterán a prácticas de gobernanza y gestión de datos adecuadas, serán pertinentes, representativos, libres de errores y completos, y se examinarán atendiendo a posibles sesgos que puedan afectar a derechos fundamentales o dar lugar a discriminación.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "proveedor"
+          ],
+          "peso": 9,
+          "nivel": "critico",
+          "fase_pds": 2,
+          "remediacion": "Documentar la gobernanza de datos del sistema: origen de los datos, proceso de recogida, operaciones de preparación, supuestos asumidos, evaluación de disponibilidad y adecuación, y análisis de sesgos. Establecer procedimientos de revisión y corrección de sesgos antes del entrenamiento y de forma continua. Documentar los resultados del examen de sesgos y las medidas adoptadas.",
+          "referencia_articulo": "Art. 10 Reglamento (UE) 2024/1689 — Datos y gobernanza de datos"
+        },
+        {
+          "id": "IAACT-AR-003",
+          "texto": "¿Se ha elaborado y se mantiene actualizada la documentación técnica del sistema de IA de alto riesgo con el contenido mínimo del Anexo IV, antes de su introducción en el mercado o puesta en servicio?",
+          "ayuda": "El artículo 11 exige documentación técnica previa a la puesta en servicio y su mantenimiento actualizado. El Anexo IV define el contenido mínimo: descripción del sistema y su finalidad prevista, descripción de los elementos del sistema y su proceso de desarrollo, información sobre la monitorización, funcionamiento y control, descripción de los datos de entrenamiento, validación y prueba, descripción de los cambios a lo largo del ciclo de vida, evaluación de riesgos, descripción de las medidas de supervisión humana, especificaciones técnicas de diseño y de ciberseguridad, y resultados de las pruebas de conformidad.",
+          "requisito_original": "La documentación técnica de un sistema de IA de alto riesgo se elaborará antes de su introducción en el mercado o puesta en servicio, y se mantendrá actualizada. La documentación técnica contendrá, como mínimo, los elementos contemplados en el Anexo IV y demostrará que el sistema cumple los requisitos del Capítulo III Sección 2.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "proveedor"
+          ],
+          "peso": 9,
+          "nivel": "critico",
+          "fase_pds": 3,
+          "remediacion": "Elaborar la documentación técnica conforme al Anexo IV antes de cualquier puesta en servicio. Establecer un proceso de mantenimiento que garantice su actualización ante cada cambio sustancial del sistema. Designar un responsable de la documentación técnica. Asegurarse de que está disponible para las autoridades competentes y, en su caso, para los organismos notificados.",
+          "referencia_articulo": "Art. 11 y Anexo IV Reglamento (UE) 2024/1689 — Documentación técnica"
+        },
+        {
+          "id": "IAACT-AR-004",
+          "texto": "¿El sistema de IA de alto riesgo permite el registro automático de archivos de registro (logs) a lo largo de su ciclo de vida, con las capacidades mínimas requeridas por el artículo 12 para garantizar la trazabilidad del funcionamiento?",
+          "ayuda": "El artículo 12 exige que los sistemas de IA de alto riesgo permitan técnicamente el registro automático de logs durante todo su ciclo de vida. Las capacidades de registro deben permitir detectar situaciones de riesgo y modificaciones sustanciales, facilitar la vigilancia poscomercialización y el control operativo. Para sistemas de identificación biométrica (Anexo III punto 1.a), se requieren registros mínimos específicos: período de uso, base de datos de referencia, datos de entrada con coincidencia e identificación de verificadores.",
+          "requisito_original": "Los sistemas de IA de alto riesgo permitirán técnicamente el registro automático de acontecimientos (archivos de registro) a lo largo de todo el ciclo de vida del sistema. Las capacidades de registro permitirán detectar situaciones que puedan dar lugar a riesgos, facilitar la vigilancia poscomercialización y la vigilancia del funcionamiento.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "proveedor"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Implementar en el sistema capacidades de logging automático que cubran los eventos requeridos por el artículo 12: detección de situaciones de riesgo, modificaciones sustanciales y eventos de vigilancia operativa. Definir el período de retención de logs. Para sistemas biométricos, implementar los registros mínimos específicos del artículo 12.3. Garantizar la integridad e inviolabilidad de los registros.",
+          "referencia_articulo": "Art. 12 Reglamento (UE) 2024/1689 — Conservación de registros (logs)"
+        },
+        {
+          "id": "IAACT-AR-005",
+          "texto": "¿El sistema de IA de alto riesgo está diseñado con un nivel de transparencia suficiente para que los responsables del despliegue interpreten y usen correctamente sus resultados, e incluye instrucciones de uso con el contenido mínimo del artículo 13?",
+          "ayuda": "El artículo 13 exige transparencia activa: el sistema debe diseñarse para que sus resultados sean interpretables por los responsables del despliegue. Las instrucciones de uso deben incluir, como mínimo: identidad del proveedor, características y limitaciones (finalidad, precisión, solidez, ciberseguridad, circunstancias que puedan afectar al rendimiento), cambios del ciclo de vida, nivel de supervisión humana necesario, características técnicas y de rendimiento, datos de entrenamiento relevantes si aplica, instrucciones de instalación y mantenimiento.",
+          "requisito_original": "Los sistemas de IA de alto riesgo se diseñarán y desarrollarán de un modo que garantice que funcionan con un nivel de transparencia suficiente para que los responsables del despliegue interpreten y usen correctamente sus resultados de salida. Los sistemas irán acompañados de instrucciones de uso correspondientes que incluirán: identidad del proveedor, características y limitaciones del sistema, nivel de precisión y ciberseguridad, supervisión humana necesaria, y características técnicas de rendimiento.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "proveedor"
+          ],
+          "peso": 8,
+          "nivel": "critico",
+          "fase_pds": 3,
+          "remediacion": "Diseñar el sistema con mecanismos de explicabilidad adecuados a su complejidad. Elaborar instrucciones de uso que cubran todos los elementos del artículo 13.3. Redactar las instrucciones en el idioma del Estado miembro donde se despliega el sistema y en formato accesible para los responsables del despliegue. Actualizar las instrucciones ante cambios en el sistema.",
+          "referencia_articulo": "Art. 13 Reglamento (UE) 2024/1689 — Transparencia e instrucciones de uso"
+        },
+        {
+          "id": "IAACT-AR-006",
+          "texto": "¿El sistema de IA de alto riesgo incorpora herramientas de interfaz humano-máquina adecuadas para que personas físicas puedan supervisarlo efectivamente durante su uso, y permite la interrupción del sistema por parte del responsable del despliegue?",
+          "ayuda": "El artículo 14 exige que los sistemas de alto riesgo se diseñen para permitir supervisión humana efectiva. Las medidas deben ser proporcionales al riesgo, nivel de autonomía y contexto de uso. El sistema debe permitir al responsable del despliegue: entender las capacidades y limitaciones del sistema, detectar anomalías y disfunciones, no confiar exclusivamente en los resultados cuando sea necesario, e interrumpir el sistema mediante 'parada inmediata'. No basta con diseñar supervisión: debe ser técnicamente implementable por personas concretas con competencias y autoridad.",
+          "requisito_original": "Los sistemas de IA de alto riesgo se diseñarán y desarrollarán de modo que puedan ser vigilados de manera efectiva por personas físicas durante el período que estén en uso. El sistema de IA de alto riesgo se ofrecerá al responsable del despliegue con medidas que le permitan: comprender las capacidades del sistema, detectar anomalías, no confiar exclusivamente en sus resultados cuando proceda, e interrumpirlo mediante botón de parada inmediata.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "proveedor",
+            "responsable_despliegue"
+          ],
+          "peso": 9,
+          "nivel": "critico",
+          "fase_pds": 3,
+          "remediacion": "Implementar en el sistema las herramientas de supervisión humana requeridas por el artículo 14.4: indicadores de confianza, métricas de rendimiento en tiempo real, alertas de anomalías, modo de interpretación de resultados y mecanismo de interrupción inmediata. El responsable del despliegue debe designar personas físicas con competencia, formación y autoridad para ejercer la supervisión (art. 26.2).",
+          "referencia_articulo": "Art. 14 Reglamento (UE) 2024/1689 — Supervisión humana"
+        },
+        {
+          "id": "IAACT-AR-007",
+          "texto": "¿El sistema de IA de alto riesgo está diseñado para alcanzar los niveles adecuados de precisión, solidez y ciberseguridad requeridos por el artículo 15, con mecanismos de resiliencia frente a errores, fallos y ataques adversariales?",
+          "ayuda": "El artículo 15 exige que los sistemas de alto riesgo sean precisos, sólidos y ciberseguros durante todo su ciclo de vida. La solidez incluye resistencia frente a errores, fallos, incoherencias y manipulaciones, incluyendo ataques adversariales específicos de la IA (envenenamiento de datos, evasión de modelos). Los sistemas que siguen aprendiendo tras la puesta en servicio deben tener mecanismos para evitar retroalimentación sesgada. Los niveles de precisión deben declararse en las instrucciones de uso.",
+          "requisito_original": "Los sistemas de IA de alto riesgo se diseñarán y desarrollarán de modo que alcancen un nivel adecuado de precisión, solidez y ciberseguridad y funcionen de manera uniforme durante todo su ciclo de vida. La solidez de los sistemas puede lograrse mediante soluciones de redundancia técnica, copias de seguridad o planes de prevención contra fallos. Los sistemas que siguen aprendiendo tras su introducción dispondrán de medidas para garantizar que posibles sesgos no afecten a sus resultados.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "proveedor"
+          ],
+          "peso": 9,
+          "nivel": "critico",
+          "fase_pds": 3,
+          "remediacion": "Definir y documentar los niveles objetivo de precisión, solidez y ciberseguridad del sistema. Implementar pruebas de rendimiento que incluyan escenarios adversariales y de uso indebido. Establecer mecanismos de redundancia y fallback. Para sistemas que aprenden continuamente, implementar controles contra sesgos de retroalimentación. Declarar los niveles de precisión y los parámetros de medición en las instrucciones de uso.",
+          "referencia_articulo": "Art. 15 Reglamento (UE) 2024/1689 — Precisión, solidez y ciberseguridad"
+        }
+      ]
+    },
+    {
+      "id": "IAACT-OBLPROV",
+      "nombre": "Obligaciones del proveedor de sistemas de IA de alto riesgo",
+      "descripcion": "Artículos 16, 17, 18, 19 y 47-49 del Reglamento (UE) 2024/1689. Obligaciones operativas del proveedor: sistema de gestión de calidad, conservación de documentación y logs, evaluación de la conformidad, declaración UE de conformidad, marcado CE y registro.",
+      "temas": [
+        "ai_governance",
+        "legal_compliance",
+        "quality_management"
+      ],
+      "peso_bloque": 15,
+      "preguntas": [
+        {
+          "id": "IAACT-OBLPROV-001",
+          "texto": "¿El proveedor ha establecido un sistema de gestión de calidad (SGC) documentado que garantice el cumplimiento del Reglamento y cubra todos los elementos del artículo 17 (estrategia de cumplimiento, técnicas de diseño y control, procedimientos de prueba, gestión de cambios, gestión de no conformidades y vigilancia poscomercialización)?",
+          "ayuda": "El artículo 17 exige un SGC completo documentado con al menos: estrategia de cumplimiento normativo; técnicas de diseño, control y verificación del diseño; técnicas de desarrollo y aseguramiento de la calidad; procedimientos de examen, prueba y validación; especificaciones técnicas incluyendo normas; sistemas de gestión de datos; sistema de gestión de riesgos del artículo 9; política de transparencia; procedimientos de vigilancia poscomercialización y de gestión de cambios; mecanismo de reporte de incidentes graves. Las microempresas pueden cumplirlo de forma simplificada (art. 63).",
+          "requisito_original": "Los proveedores de sistemas de IA de alto riesgo establecerán un sistema de gestión de la calidad que garantice el cumplimiento del presente Reglamento. El SGC incluirá al menos: estrategia de cumplimiento normativo; técnicas de diseño y control; técnicas de desarrollo y aseguramiento de calidad; procedimientos de examen, prueba y validación; especificaciones técnicas; gestión de datos; gestión de riesgos; política de transparencia; procedimientos de vigilancia poscomercialización; sistema de comunicación con autoridades competentes, organismos notificados y otros operadores.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "proveedor"
+          ],
+          "peso": 9,
+          "nivel": "critico",
+          "fase_pds": 3,
+          "remediacion": "Implementar el SGC del artículo 17 con todos sus elementos, documentado sistemáticamente. Puede integrarse con sistemas de gestión de calidad existentes (ISO 9001, ISO/IEC 27001). Designar responsable del SGC. Establecer ciclos de revisión periódicos y ante cambios sustanciales. Las microempresas deben consultar las directrices simplificadas de la Comisión cuando estén disponibles.",
+          "referencia_articulo": "Art. 17 Reglamento (UE) 2024/1689 — Sistema de gestión de la calidad"
+        },
+        {
+          "id": "IAACT-OBLPROV-002",
+          "texto": "¿El proveedor conserva la documentación técnica (art. 18) y los archivos de registro (art. 19) durante al menos 10 años desde la puesta en servicio del sistema, y los tiene disponibles para las autoridades competentes?",
+          "ayuda": "El artículo 18 obliga a conservar la documentación técnica del Anexo IV durante el período de vida del sistema y al menos 10 años desde su puesta en servicio. El artículo 19 obliga a conservar los archivos de registro generados automáticamente bajo el control del proveedor, también durante 10 años. Ambos deben estar disponibles para las autoridades de vigilancia del mercado. La documentación debe ser accesible, no solo archivada.",
+          "requisito_original": "Los proveedores conservarán la documentación técnica a que se refiere el artículo 11 durante un período de tiempo que finalizará diez años después de que el sistema de IA de alto riesgo haya sido introducido en el mercado o puesto en servicio. Los proveedores conservarán los archivos de registro generados automáticamente por sus sistemas de IA de alto riesgo cuando estén bajo su control, durante un período de diez años.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "proveedor"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 5,
+          "remediacion": "Establecer un sistema de archivo seguro para la documentación técnica y los logs del sistema de IA con retención mínima de 10 años. Garantizar la integridad, autenticidad y disponibilidad de los archivos. Definir el proceso de acceso para autoridades competentes. Incluir la gestión de retención en el SGC del artículo 17.",
+          "referencia_articulo": "Arts. 18 y 19 Reglamento (UE) 2024/1689 — Conservación de documentación y logs"
+        },
+        {
+          "id": "IAACT-OBLPROV-003",
+          "texto": "¿El sistema de IA de alto riesgo ha sido sometido al procedimiento de evaluación de la conformidad aplicable (art. 43) antes de su introducción en el mercado o puesta en servicio, y se ha elaborado la declaración UE de conformidad (art. 47)?",
+          "ayuda": "El artículo 43 exige que los sistemas de alto riesgo superen una evaluación de conformidad antes de ser puestos en servicio. Para la mayoría de sistemas del Anexo III, el proveedor puede optar por el control interno (Anexo VI) si ha aplicado normas armonizadas, o por la evaluación con organismo notificado (Anexo VII). Para sistemas de identificación biométrica y para sistemas de infraestructuras críticas del Anexo III punto 1, se requiere siempre organismo notificado. El artículo 47 exige la declaración UE de conformidad que certifica el cumplimiento de todos los requisitos aplicables.",
+          "requisito_original": "Antes de la introducción en el mercado o puesta en servicio, los sistemas de IA de alto riesgo se someterán al procedimiento pertinente de evaluación de la conformidad. Los proveedores elaborarán una declaración UE de conformidad para cada sistema de IA de alto riesgo e indicarán el marcado CE.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "proveedor"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 4,
+          "remediacion": "Determinar el procedimiento de evaluación de conformidad aplicable conforme al artículo 43. Si procede, seleccionar y contratar un organismo notificado acreditado. Completar la evaluación documentando el cumplimiento de todos los requisitos. Elaborar la declaración UE de conformidad. Colocar el marcado CE y conservar la declaración durante 10 años.",
+          "referencia_articulo": "Arts. 43 y 47 Reglamento (UE) 2024/1689 — Evaluación de conformidad y declaración UE"
+        },
+        {
+          "id": "IAACT-OBLPROV-004",
+          "texto": "¿El sistema de IA de alto riesgo está registrado en la base de datos de la UE de sistemas de IA de alto riesgo (art. 49) antes de su introducción en el mercado o puesta en servicio, en los casos en que se requiere registro?",
+          "ayuda": "El artículo 49 exige que los proveedores de sistemas de IA de alto riesgo registren el sistema en la base de datos de la UE gestionada por la Comisión antes de su introducción en el mercado. Para sistemas destinados a ser usados por autoridades de aplicación de la ley, migración o asilo, el registro lo realiza el responsable del despliegue que sea autoridad pública. El registro incluye la información del Anexo VIII. Los sistemas destinados al sector público listados en el Anexo III puntos 1, 6 y 7 siempre requieren registro.",
+          "requisito_original": "Antes de introducir en el mercado o poner en servicio un sistema de IA de alto riesgo, el proveedor o, en su caso, el representante autorizado registrará dicho sistema en la base de datos de la UE de sistemas de IA de alto riesgo establecida de conformidad con el artículo 71. La información de registro incluirá como mínimo la información establecida en el Anexo VIII.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "proveedor"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Registrar el sistema en la base de datos de la UE antes de su puesta en servicio, con la información del Anexo VIII. Mantener el registro actualizado ante cambios sustanciales o nuevas versiones del sistema. Incluir el número de registro en la documentación comercial del sistema.",
+          "referencia_articulo": "Art. 49 Reglamento (UE) 2024/1689 — Registro de sistemas de IA de alto riesgo"
+        }
+      ]
+    },
+    {
+      "id": "IAACT-OBLDESP",
+      "nombre": "Obligaciones del responsable del despliegue",
+      "descripcion": "Artículo 26 del Reglamento (UE) 2024/1689. Obligaciones del responsable del despliegue de sistemas de IA de alto riesgo: uso conforme a instrucciones, supervisión humana, representatividad de datos de entrada, vigilancia del funcionamiento, y comunicación de incidentes y riesgos.",
+      "temas": [
+        "ai_governance",
+        "risk_management",
+        "legal_compliance"
+      ],
+      "peso_bloque": 15,
+      "preguntas": [
+        {
+          "id": "IAACT-OBLDESP-001",
+          "texto": "¿El responsable del despliegue utiliza el sistema de IA de alto riesgo conforme a las instrucciones de uso del proveedor y ha adoptado las medidas técnicas y organizativas adecuadas para garantizarlo?",
+          "ayuda": "El artículo 26.1 obliga al responsable del despliegue a seguir las instrucciones de uso del proveedor. El artículo 26.2 exige que la supervisión humana sea encomendada a personas con la competencia, formación y autoridad necesarias. El artículo 26.4 obliga a garantizar que los datos de entrada sean pertinentes y representativos en la medida en que el responsable ejerza control sobre ellos. No basta con conocer las instrucciones; deben implementarse medidas organizativas y técnicas para garantizar su cumplimiento.",
+          "requisito_original": "Los responsables del despliegue de sistemas de IA de alto riesgo adoptarán medidas técnicas y organizativas adecuadas para garantizar que utilizan dichos sistemas con arreglo a las instrucciones de uso. Los responsables del despliegue encomendarán la supervisión humana a personas físicas que tengan la competencia, la formación y la autoridad necesarias. Se asegurarán de que los datos de entrada sean pertinentes y suficientemente representativos.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "responsable_despliegue"
+          ],
+          "peso": 9,
+          "nivel": "critico",
+          "fase_pds": 4,
+          "remediacion": "Implementar un procedimiento de uso del sistema de IA que incluya: lectura y comprensión de las instrucciones de uso del proveedor; designación formal de personas responsables de la supervisión humana con la formación requerida; controles de calidad de los datos de entrada; y proceso de escalada ante comportamientos anómalos del sistema.",
+          "referencia_articulo": "Art. 26 Reglamento (UE) 2024/1689 — Obligaciones del responsable del despliegue"
+        },
+        {
+          "id": "IAACT-OBLDESP-002",
+          "texto": "¿El responsable del despliegue vigila el funcionamiento del sistema de IA de alto riesgo y, cuando detecta riesgos o comportamientos anómalos, informa al proveedor y a la autoridad de vigilancia del mercado y, si procede, suspende el uso del sistema?",
+          "ayuda": "El artículo 26.5 obliga al responsable del despliegue a vigilar activamente el funcionamiento del sistema. Si detecta que el sistema presenta un riesgo en el sentido del artículo 79.1 (riesgo para la salud, seguridad o derechos fundamentales), debe informar sin demora indebida al proveedor o distribuidor y a la autoridad de vigilancia del mercado, y suspender el uso del sistema. El artículo 26.5 también conecta con las obligaciones de reporte de incidentes graves del artículo 73.",
+          "requisito_original": "Los responsables del despliegue vigilarán el funcionamiento del sistema de IA de alto riesgo basándose en las instrucciones de uso y, cuando proceda, informarán a los proveedores. Cuando tengan motivos para considerar que utilizar el sistema puede dar lugar a un riesgo del artículo 79.1, informarán sin demora indebida al proveedor o distribuidor y a la autoridad de vigilancia del mercado pertinente y suspenderán el uso de ese sistema.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "responsable_despliegue"
+          ],
+          "peso": 9,
+          "nivel": "critico",
+          "fase_pds": 5,
+          "remediacion": "Establecer un proceso formal de vigilancia del funcionamiento del sistema de IA que incluya: indicadores de rendimiento, umbrales de alerta, procedimiento de escalada ante anomalías, proceso de comunicación al proveedor y a la autoridad de vigilancia del mercado, y criterios de suspensión del uso. Documentar todas las incidencias y las acciones adoptadas.",
+          "referencia_articulo": "Art. 26.5 Reglamento (UE) 2024/1689 — Vigilancia y comunicación de riesgos"
+        },
+        {
+          "id": "IAACT-OBLDESP-003",
+          "texto": "¿Cuando el responsable del despliegue es una autoridad pública o entidad privada que toma decisiones con efectos jurídicos o que afectan significativamente a personas físicas, informa a esas personas de que están sujetas a la decisión de un sistema de IA de alto riesgo?",
+          "ayuda": "El artículo 26.6 establece una obligación de transparencia activa del responsable del despliegue hacia las personas afectadas por sistemas de IA de alto riesgo del Anexo III que toman decisiones con efectos jurídicos o significativos. Las personas físicas deben ser informadas de que la decisión ha sido adoptada o apoyada por un sistema de IA de alto riesgo, con la excepción de sistemas usados para detectar delitos o en contextos de seguridad nacional.",
+          "requisito_original": "Sin perjuicio de lo dispuesto en el artículo 13, en la medida en que el responsable del despliegue ejerza control sobre los datos de entrada, este se asegurará, en los casos en que el sistema de IA de alto riesgo tome decisiones o apoye la toma de decisiones relacionadas con personas físicas, de que las personas físicas de que se trate sean informadas de que están sujetas al uso de un sistema de IA de alto riesgo.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "responsable_despliegue"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Implementar mecanismos de información hacia las personas afectadas por decisiones de sistemas de IA de alto riesgo: aviso en el proceso de toma de decisiones, mención en resoluciones o comunicaciones administrativas, o canal específico de información. Documentar el procedimiento de información y los supuestos de excepción aplicables.",
+          "referencia_articulo": "Art. 26.6 Reglamento (UE) 2024/1689 — Información a personas afectadas"
+        }
+      ]
+    },
+    {
+      "id": "IAACT-TRANS",
+      "nombre": "Obligaciones de transparencia para sistemas de riesgo limitado",
+      "descripcion": "Artículo 50 del Reglamento (UE) 2024/1689. Obligaciones de transparencia aplicables a sistemas de IA de riesgo limitado: información sobre interacción con IA, marcado de contenido sintético (deepfakes), e información sobre sistemas de emoción e IA generativa.",
+      "temas": [
+        "ai_governance",
+        "transparency",
+        "legal_compliance"
+      ],
+      "peso_bloque": 12,
+      "preguntas": [
+        {
+          "id": "IAACT-TRANS-001",
+          "texto": "¿Los sistemas de IA diseñados para interactuar directamente con personas físicas (chatbots, asistentes virtuales, etc.) informan a las personas de que están interactuando con un sistema de IA, salvo cuando sea evidente para una persona razonablemente informada?",
+          "ayuda": "El artículo 50.1 obliga a los proveedores de sistemas de IA que interactúan con personas a diseñarlos para que informen sobre la naturaleza artificial de la interacción. La excepción se aplica cuando sea manifiestamente evidente para una persona razonablemente informada. Esta obligación no aplica a sistemas autorizados por ley para fines de aplicación de la ley. Aplica a todos los niveles de riesgo, no solo al alto riesgo.",
+          "requisito_original": "Los proveedores garantizarán que los sistemas de IA destinados a interactuar directamente con personas físicas se diseñen y desarrollen de forma que las personas físicas de que se trate estén informadas de que están interactuando con un sistema de IA, excepto cuando resulte evidente desde el punto de vista de una persona física razonablemente informada.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "proveedor"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Implementar en el sistema un aviso claro, visible y comprensible al inicio de cada interacción que informe al usuario de que está interactuando con un sistema de IA. El aviso debe ser en el idioma del usuario, no ocultarse en términos y condiciones, y renovarse si la conversación tiene descansos prolongados. Documentar el diseño del aviso y los supuestos de excepción.",
+          "referencia_articulo": "Art. 50.1 Reglamento (UE) 2024/1689 — Transparencia en interacción con IA"
+        },
+        {
+          "id": "IAACT-TRANS-002",
+          "texto": "¿Los sistemas de IA que generan contenido sintético de audio, imagen, vídeo o texto (IA generativa) marcan sus resultados en un formato legible por máquina que permita detectar que han sido generados o manipulados artificialmente?",
+          "ayuda": "El artículo 50.2 obliga a los proveedores de sistemas de IA que generan contenido sintético (incluyendo IA generativa de texto, imagen, audio o vídeo) a garantizar que los resultados estén marcados en formato legible por máquina que permita la detección técnica. La solución técnica debe ser eficaz, interoperable, sólida y fiable en la medida en que sea técnicamente viable. Afecta a tecnologías como DALL-E, Stable Diffusion, GPT, etc.",
+          "requisito_original": "Los proveedores de sistemas de IA, entre los que se incluyen los sistemas de IA de uso general, que generen contenido sintético de audio, imagen, vídeo o texto, velarán por que los resultados de salida del sistema de IA estén marcados en un formato legible por máquina y que sea posible detectar que han sido generados o manipulados de manera artificial.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "proveedor"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Implementar mecanismos de marcado de contenido generado por IA (watermarking, metadatos C2PA, u otros estándares técnicos reconocidos). Las soluciones deben ser interoperables con los estándares emergentes a nivel europeo e internacional. Documentar la solución técnica adoptada, sus limitaciones y el proceso de actualización ante nuevos estándares.",
+          "referencia_articulo": "Art. 50.2 Reglamento (UE) 2024/1689 — Marcado de contenido sintético"
+        },
+        {
+          "id": "IAACT-TRANS-003",
+          "texto": "¿Los responsables del despliegue de sistemas de IA que generan o manipulan imágenes, audio o vídeo que constituyen deepfakes informan a las personas de que el contenido ha sido generado o manipulado artificialmente?",
+          "ayuda": "El artículo 50.4 obliga a los responsables del despliegue (no solo a los proveedores) que usan sistemas de IA para generar o manipular contenido de imagen, audio o vídeo que puede confundirse con personas, lugares o hechos reales (deepfakes) a divulgar de forma clara y visible que el contenido ha sido generado artificialmente. Se exceptúan los casos en que el contenido forma parte de una obra artística, satírica o ficticia con divulgación apropiada, y los sistemas autorizados por ley para aplicación de la ley.",
+          "requisito_original": "Los responsables del despliegue de un sistema de IA que genere o manipule imágenes, contenido de audio o de vídeo que constituya un 'deepfake' divulgarán de manera adecuada que el contenido ha sido generado o manipulado de manera artificial.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "responsable_despliegue"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Implementar un aviso claro, visible y comprensible en todo contenido deepfake generado o difundido: indicación expresa de que el contenido ha sido generado o manipulado artificialmente, visible sin necesidad de buscarla. Definir el proceso de aprobación y control de contenido antes de su publicación o distribución. Revisar las excepciones aplicables (contenido artístico/satírico).",
+          "referencia_articulo": "Art. 50.4 Reglamento (UE) 2024/1689 — Divulgación de deepfakes"
+        }
+      ]
+    },
+    {
+      "id": "IAACT-GPAI",
+      "nombre": "Modelos de IA de uso general (GPAI)",
+      "descripcion": "Artículos 51 a 56 del Reglamento (UE) 2024/1689. Obligaciones de los proveedores de modelos de IA de uso general: documentación técnica, información para integradores, política de derechos de autor, y régimen reforzado para modelos con riesgo sistémico.",
+      "temas": [
+        "ai_governance",
+        "legal_compliance",
+        "data_governance"
+      ],
+      "peso_bloque": 13,
+      "preguntas": [
+        {
+          "id": "IAACT-GPAI-001",
+          "texto": "¿El proveedor de un modelo de IA de uso general (GPAI) elabora y mantiene actualizada la documentación técnica del modelo (Anexo XI) y la pone a disposición de la Oficina de IA y las autoridades competentes previa solicitud?",
+          "ayuda": "El artículo 53.1.a obliga a los proveedores de modelos GPAI (modelos de IA entrenados con gran cantidad de datos y con capacidades generales, como los grandes modelos de lenguaje) a mantener documentación técnica del Anexo XI que cubra el proceso de entrenamiento, las pruebas realizadas y sus resultados. Esta documentación debe facilitarse previa solicitud a la Oficina de IA y a las autoridades nacionales competentes.",
+          "requisito_original": "Los proveedores de modelos de IA de uso general elaborarán y mantendrán actualizada la documentación técnica del modelo, incluida la información relativa al proceso de entrenamiento y realización de pruebas y los resultados de su evaluación, que contendrá, como mínimo, la información establecida en el Anexo XI, con el fin de facilitarla, previa solicitud, a la Oficina de IA y a las autoridades nacionales competentes.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "proveedor"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Elaborar y mantener la documentación técnica del modelo GPAI conforme al Anexo XI: arquitectura, datos de entrenamiento (incluyendo origen y proceso de preparación), resultados de evaluación, capacidades y limitaciones, y medidas de mitigación de riesgos. Establecer un proceso de actualización ante cada nueva versión significativa del modelo y un canal de comunicación con la Oficina de IA.",
+          "referencia_articulo": "Art. 53.1.a y Anexo XI Reglamento (UE) 2024/1689 — Documentación técnica GPAI"
+        },
+        {
+          "id": "IAACT-GPAI-002",
+          "texto": "¿El proveedor de un modelo GPAI establece y publica una política de cumplimiento del Derecho de la UE en materia de derechos de autor, con mecanismos para respetar reservas de derechos expresadas por los titulares de derechos?",
+          "ayuda": "El artículo 53.1.c obliga a los proveedores de modelos GPAI a establecer directrices para cumplir la normativa de derechos de autor de la UE, en particular para detectar y cumplir las reservas de derechos expresadas conforme al artículo 4.3 de la Directiva 2019/790 (opt-out del text and data mining). En la práctica, los proveedores deben implementar mecanismos técnicos para reconocer y respetar el opt-out de los titulares de contenidos usados en el entrenamiento.",
+          "requisito_original": "Los proveedores de modelos de IA de uso general establecerán directrices para cumplir el Derecho de la Unión en materia de derechos de autor y derechos afines, y en particular para detectar y cumplir, por ejemplo a través de tecnologías punta, una reserva de derechos expresada de conformidad con el artículo 4.3 de la Directiva (UE) 2019/790.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "proveedor"
+          ],
+          "peso": 7,
+          "nivel": "alto",
+          "fase_pds": 2,
+          "remediacion": "Elaborar y publicar una política de derechos de autor que incluya: procedimiento de detección de opt-out (robots.txt, metadatos, cabeceras HTTP), mecanismo de exclusión de contenido con opt-out del proceso de entrenamiento, y canal de notificación para titulares de derechos. Mantener un registro de las fuentes de datos utilizadas y su estado de opt-out.",
+          "referencia_articulo": "Art. 53.1.c Reglamento (UE) 2024/1689 — Política de derechos de autor GPAI"
+        },
+        {
+          "id": "IAACT-GPAI-003",
+          "texto": "¿Los proveedores de modelos GPAI con riesgo sistémico (capacidad de cómputo de entrenamiento superior a 10^25 FLOPs o designados por la Comisión) realizan evaluaciones de modelos adversariales, notifican incidentes graves a la Oficina de IA y aplican medidas de ciberseguridad reforzadas?",
+          "ayuda": "El artículo 51 define los modelos GPAI con riesgo sistémico (actualmente, los entrenados con más de 10^25 FLOPs de cómputo, como los grandes LLMs de última generación). El artículo 55 les impone obligaciones adicionales: realizar evaluaciones de modelos incluyendo pruebas adversariales, evaluar y mitigar los riesgos sistémicos, notificar los incidentes graves y las correcciones a la Oficina de IA, garantizar un nivel adecuado de ciberseguridad, y comunicar a la Oficina de IA la identidad de modelos que alcancen el umbral.",
+          "requisito_original": "Los proveedores de modelos de IA de uso general con riesgo sistémico, además de las obligaciones del artículo 53, realizarán evaluaciones de los modelos, incluida la realización de pruebas adversariales del modelo; evaluarán y mitigarán los posibles riesgos sistémicos; seguirán, documentarán y notificarán, sin demora indebida, los incidentes graves y las posibles medidas correctoras a la Oficina de IA; garantizarán un nivel adecuado de protección de la ciberseguridad.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "proveedor"
+          ],
+          "peso": 9,
+          "nivel": "critico",
+          "fase_pds": 4,
+          "remediacion": "Evaluar si el modelo supera el umbral de 10^25 FLOPs de cómputo de entrenamiento. Si es así, o si es designado por la Comisión, implementar: evaluaciones adversariales del modelo (red-teaming), análisis de riesgos sistémicos, canal de notificación a la Oficina de IA para incidentes graves, y medidas reforzadas de ciberseguridad. Notificar a la Oficina de IA cuando se supere el umbral.",
+          "referencia_articulo": "Arts. 51 y 55 Reglamento (UE) 2024/1689 — GPAI con riesgo sistémico"
+        }
+      ]
+    },
+    {
+      "id": "IAACT-VIG",
+      "nombre": "Vigilancia poscomercialización, incidentes y sanciones",
+      "descripcion": "Artículos 72, 73 y 99 del Reglamento (UE) 2024/1689. Sistema de vigilancia poscomercialización, notificación de incidentes graves a las autoridades, y régimen sancionador aplicable a las infracciones del Reglamento.",
+      "temas": [
+        "ai_governance",
+        "risk_management",
+        "legal_compliance",
+        "incident_response"
+      ],
+      "peso_bloque": 13,
+      "preguntas": [
+        {
+          "id": "IAACT-VIG-001",
+          "texto": "¿El proveedor ha establecido y documentado un sistema de vigilancia poscomercialización para los sistemas de IA de alto riesgo que recopila, analiza y actúa sobre los datos relevantes sobre su funcionamiento durante toda su vida útil?",
+          "ayuda": "El artículo 72 exige un sistema de vigilancia poscomercialización proporcional a la naturaleza del sistema de IA y sus riesgos. Debe recopilar, documentar y analizar activa y sistemáticamente los datos relevantes sobre el funcionamiento (incluyendo datos de responsables del despliegue u otras fuentes), evaluar el cumplimiento permanente de los requisitos del Capítulo III Sección 2, y, cuando proceda, analizar la interacción con otros sistemas. El plan de vigilancia poscomercialización forma parte de la documentación técnica.",
+          "requisito_original": "Los proveedores establecerán y documentarán un sistema de vigilancia poscomercialización de forma proporcionada a la naturaleza de las tecnologías de IA y a los riesgos de los sistemas de IA de alto riesgo. El sistema recopilará, documentará y analizará de manera activa y sistemática los datos pertinentes sobre el funcionamiento de los sistemas de IA de alto riesgo durante toda su vida útil.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "proveedor"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 5,
+          "remediacion": "Elaborar el plan de vigilancia poscomercialización conforme al modelo que establezca la Comisión mediante acto de ejecución (art. 72.3). Incluirlo en la documentación técnica. Implementar los mecanismos de recopilación de datos (feedback de responsables del despliegue, métricas de rendimiento, análisis de casos de uso). Establecer ciclos de revisión periódicos y procesos de actuación ante datos que indiquen incumplimientos o nuevos riesgos.",
+          "referencia_articulo": "Art. 72 Reglamento (UE) 2024/1689 — Vigilancia poscomercialización"
+        },
+        {
+          "id": "IAACT-VIG-002",
+          "texto": "¿El proveedor notifica sin demora indebida (máximo 15 días para incidentes graves, 3 días para riesgos para la salud y seguridad pública) los incidentes graves o malfuncionamientos de sistemas de IA de alto riesgo a las autoridades de vigilancia del mercado del Estado miembro?",
+          "ayuda": "El artículo 73 establece la obligación de los proveedores de notificar incidentes graves o malfuncionamientos de sistemas de IA de alto riesgo que constituyan infracción de derechos fundamentales o provoquen daños graves. Los plazos son: 15 días naturales para incidentes graves que no supongan riesgo inmediato para salud/seguridad, y 3 días si suponen ese riesgo. Los responsables del despliegue que sean autoridades públicas tienen obligaciones paralelas de notificación.",
+          "requisito_original": "Los proveedores de sistemas de IA de alto riesgo notificarán todo incidente grave o malfuncionamiento que constituya infracción de las obligaciones establecidas en el Derecho de la Unión o de los Estados miembros destinado a proteger los derechos fundamentales, o que provoque daños graves a la salud y a la seguridad de las personas a las autoridades de vigilancia del mercado de los Estados miembros. La notificación se realizará inmediatamente y, en cualquier caso, en un plazo de quince días naturales tras el momento en que el proveedor haya tenido conocimiento del incidente.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "proveedor",
+            "responsable_despliegue"
+          ],
+          "peso": 9,
+          "nivel": "critico",
+          "fase_pds": 5,
+          "remediacion": "Establecer un proceso formal de gestión de incidentes graves de IA que incluya: definición y criterios de clasificación de incidente grave, canal de recepción de incidentes (desde responsables del despliegue y usuarios), proceso de análisis y clasificación, procedimiento de notificación a la autoridad de vigilancia del mercado con los plazos del artículo 73, y registro de incidentes. Designar un responsable de la notificación.",
+          "referencia_articulo": "Art. 73 Reglamento (UE) 2024/1689 — Notificación de incidentes graves"
+        },
+        {
+          "id": "IAACT-VIG-003",
+          "texto": "¿La organización conoce y ha analizado el régimen sancionador del artículo 99 y ha adoptado medidas para evitar las infracciones con mayor impacto económico (prácticas prohibidas: hasta 35 M€ o 7% de facturación; incumplimiento de requisitos: hasta 15 M€ o 3%; información falsa a organismos notificados: hasta 7,5 M€ o 1%)?",
+          "ayuda": "El artículo 99 establece tres niveles de sanciones según la gravedad: (1) hasta 35 M€ o 7% de facturación global por prácticas prohibidas del artículo 5; (2) hasta 15 M€ o 3% por incumplimiento de obligaciones del Reglamento; (3) hasta 7,5 M€ o 1% por facilitar información incorrecta o engañosa a organismos notificados o autoridades. Para las autoridades públicas se puede establecer un límite máximo diferente. El régimen se complementa con los regímenes nacionales de los Estados miembros.",
+          "requisito_original": "El no respeto de la prohibición de las prácticas de IA del artículo 5 estará sujeto a multas de hasta 35 000 000 EUR o, si el infractor es una empresa, hasta el 7 % de su volumen de negocios mundial total. El incumplimiento de cualquier otra disposición del Reglamento estará sujeto a multas de hasta 15 000 000 EUR o el 3 %. El suministro de información incorrecta estará sujeto a multas de hasta 7 500 000 EUR o el 1 %.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "proveedor",
+            "responsable_despliegue",
+            "importador",
+            "distribuidor"
+          ],
+          "peso": 8,
+          "nivel": "critico",
+          "fase_pds": 1,
+          "remediacion": "Realizar un análisis de riesgo regulatorio completo frente al régimen sancionador del artículo 99. Mapear cada obligación del Reglamento con el nivel sancionador aplicable. Implementar controles internos de cumplimiento prioritizados por nivel de riesgo sancionador. Incluir el IA Act en el programa de compliance de la organización.",
+          "referencia_articulo": "Art. 99 Reglamento (UE) 2024/1689 — Régimen sancionador"
+        }
+      ]
+    }
+  ]
+}
