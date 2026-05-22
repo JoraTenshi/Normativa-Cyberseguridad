@@ -41,9 +41,17 @@ function Navbar() {
           </div>
         <div className="navbar-inner">
           <Link to="/" className="navbar-brand" onClick={close}>
-            <img src={cyberlaw} alt="" className="navbar-icon" style={{ width: 26, height: 26 }} />
-            <span className="navbar-name">CyberLaw</span>
-            <span className="navbar-tagline">Audit</span>
+            <img src={cyberlaw} alt="" className="navbar-icon" />
+            <span className="navbar-name">
+              <span class="letter">C</span>
+              <span class="letter">Y</span>
+              <span class="letter">B</span>
+              <span class="letter">E</span>
+              <span class="letter">R</span>
+              <span class="letter">L</span>
+              <span class="letter">A</span>
+              <span class="letter">W</span>
+            </span>
           </Link>
 
           <div className="navbar-right-placeholder" />
@@ -59,10 +67,10 @@ function Navbar() {
       {/* Drawer */}
       <div className={`drawer${open ? ' open' : ''}`}>
         <div className="drawer-header">
-          <div className="drawer-logo">
-            <img src={cyberlaw} alt="" style={{ width: 16, height: 16 }} />
-          </div>
           <span className="drawer-logo-name">CyberLaw</span>
+          <button className="drawer-close-btn" onClick={close} aria-label="Cerrar menú">
+            {'<<<'}
+          </button>
         </div>
 
         <div className="drawer-body">
