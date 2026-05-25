@@ -1,6 +1,6 @@
 # CyberAudit — Herramienta de Autoevaluación de Ciberseguridad
 
-Aplicación web para evaluar el nivel de cumplimiento de una organización respecto a normativas de ciberseguridad. Actualmente incluye **NIS2**, **ISO/IEC 27001:2022**, **ISO/IEC 27002:2022**, **RGPD**, **LOPDPyGDD** y el **Esquema Nacional de Seguridad (ENS)**.
+Aplicación web para evaluar el nivel de cumplimiento de una organización respecto a normativas de ciberseguridad. Actualmente incluye **11 normativas**: **NIS2**, **ISO/IEC 27001:2022**, **ISO/IEC 27002:2022**, **RGPD**, **LOPDPyGDD**, **ENS** (Esquema Nacional de Seguridad), **ENI** (Esquema Nacional de Interoperabilidad), **CRA** (Reglamento de Ciberresiliencia), **LSSI-CE**, el **Reglamento de IA (IA Act)** y el **Cybersecurity Act**.
 
 Los usuarios responden un cuestionario por bloques temáticos y obtienen un informe de cumplimiento con puntuación y nivel de riesgo. Las cuentas registradas conservan el historial de evaluaciones.
 
@@ -54,8 +54,8 @@ make recert && sudo docker restart cybersec_nginx
 ```
 ├── backend/
 │   ├── middleware/        # Autenticación JWT, manejo de errores
-│   ├── models/            # Normativa, Resultado, Usuario, RevokedToken
-│   ├── routes/            # auth, me, normativas, resultados, twoFactor
+│   ├── models/            # Normativa, Resultado, Usuario, RevokedToken, Licitacion
+│   ├── routes/            # auth, me, normativas, resultados, twoFactor, pds, licitaciones
 │   ├── seed/              # Datos iniciales de normativas
 │   ├── utils/             # Generación automática de JWT_SECRET
 │   └── server.js
@@ -63,7 +63,7 @@ make recert && sudo docker restart cybersec_nginx
 ├── frontend/
 │   └── src/
 │       ├── context/       # Estado de sesión global
-│       ├── pages/         # Home, Auth, Cuestionario, Resultado, Historial, Settings
+│       ├── pages/         # Home, Auth, Cuestionario, Resultado, Historial, HistorialDetalle, PlanDirector, Settings
 │       └── services/      # Cliente HTTP (Axios)
 │
 ├── nginx/                 # Reverse proxy HTTPS, TLS 1.2/1.3
@@ -103,7 +103,7 @@ Porcentaje = (Σ puntuaciones_obtenidas / puntuación_máxima) × 100
 
 ### Cobertura estimada multinormativa
 
-Al contestar una normativa, la respuesta de `POST /resultado` (y de `GET /me/historial/:id`) incluye además el campo `cobertura_estimada`: una estimación aproximada del cumplimiento del usuario en el resto de normativas, calculada por proyección temática. Cada bloque puede declarar un array `temas` (vocabulario cerrado de 29 valores en `backend/constants/temas.js`); el motor construye un perfil temático ponderado a partir de las respuestas y lo proyecta sobre los bloques de las normativas no contestadas. Las entradas se marcan con `tipo: 'estimado'` para que el frontend las diferencie del cumplimiento medido. Los bloques sin temas comunes con el perfil aparecen como `porcentaje_estimado: null`.
+Al contestar una normativa, la respuesta de `POST /resultado` (y de `GET /me/historial/:id`) incluye además el campo `cobertura_estimada`: una estimación aproximada del cumplimiento del usuario en el resto de normativas, calculada por proyección temática. Cada bloque puede declarar un array `temas` (vocabulario cerrado de 37 valores en `backend/constants/temas.js`); el motor construye un perfil temático ponderado a partir de las respuestas y lo proyecta sobre los bloques de las normativas no contestadas. Las entradas se marcan con `tipo: 'estimado'` para que el frontend las diferencie del cumplimiento medido. Los bloques sin temas comunes con el perfil aparecen como `porcentaje_estimado: null`.
 
 ---
 

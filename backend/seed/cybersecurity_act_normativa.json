@@ -1,0 +1,399 @@
+{
+  "id": "cybersecurity_act",
+  "nombre": "Cybersecurity Act — Reglamento de Ciberseguridad de la UE",
+  "referencia_oficial": "Reglamento (UE) 2019/881 del Parlamento Europeo y del Consejo, de 17 de abril de 2019",
+  "descripcion": "Reglamento europeo que otorga mandato permanente a la Agencia de la Unión Europea para la Ciberseguridad (ENISA) y establece un marco europeo de certificación de ciberseguridad para productos, servicios y procesos TIC. Aplica a fabricantes, proveedores de servicios TIC y organismos que participen en los esquemas europeos de certificación.",
+  "fecha_aplicabilidad_general": "2019-06-27",
+  "sectores_aplicables": [
+    "fabricante_tic",
+    "proveedor_servicios_tic",
+    "organismo_certificacion"
+  ],
+  "bloques": [
+    {
+      "id": "CSACT-MARCO",
+      "nombre": "Marco europeo de certificación y rol de ENISA",
+      "descripcion": "Conocimiento del marco europeo de certificación de la ciberseguridad, del papel de ENISA como centro de referencia y de los canales de participación de las partes interesadas en el desarrollo de esquemas.",
+      "temas": [
+        "governance",
+        "technology_standards"
+      ],
+      "peso_bloque": 15,
+      "preguntas": [
+        {
+          "id": "CSACT-MARCO-001",
+          "texto": "¿La organización conoce el marco europeo de certificación de la ciberseguridad y ha identificado si alguno de sus productos, servicios o procesos TIC puede quedar cubierto por un esquema europeo?",
+          "ayuda": "El Cybersecurity Act crea un marco unificado de certificación para productos, servicios y procesos TIC en toda la UE. El primer paso es diagnosticar qué elementos del catálogo de la organización podrían beneficiarse de un esquema europeo de certificación, consultando el listado y la información publicada por ENISA.",
+          "requisito_original": "Se crea el marco europeo de certificación de la ciberseguridad con el fin de mejorar las condiciones de funcionamiento del mercado interior incrementando el nivel de ciberseguridad dentro de la Unión.",
+          "tipo": "recomendado",
+          "aplicabilidad": [
+            "fabricante_tic",
+            "proveedor_servicios_tic",
+            "organismo_certificacion"
+          ],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 1,
+          "remediacion": "Elaborar un inventario de los productos, servicios y procesos TIC de la organización y contrastarlo con los esquemas europeos de certificación adoptados o en preparación. Consultar el sitio web de esquemas de certificación mantenido por ENISA para identificar aplicabilidad.",
+          "referencia_articulo": "Art. 46 Reglamento (UE) 2019/881"
+        },
+        {
+          "id": "CSACT-MARCO-002",
+          "texto": "¿La organización hace seguimiento del programa de trabajo evolutivo de la Unión para anticipar los futuros esquemas europeos de certificación de la ciberseguridad que le afectarán?",
+          "ayuda": "La Comisión publica un programa de trabajo evolutivo que define las prioridades estratégicas y la lista de productos, servicios y procesos TIC que podrían incluirse en futuros esquemas. Monitorizarlo permite a la organización prepararse con antelación a que un esquema se adopte.",
+          "requisito_original": "La Comisión publicará un programa de trabajo evolutivo para los esquemas europeos de certificación de la ciberseguridad que definirá las prioridades estratégicas para los futuros esquemas europeos de certificación de la ciberseguridad.",
+          "tipo": "recomendado",
+          "aplicabilidad": [
+            "fabricante_tic",
+            "proveedor_servicios_tic"
+          ],
+          "peso": 5,
+          "nivel": "bajo",
+          "fase_pds": 1,
+          "remediacion": "Asignar a un responsable la revisión periódica del programa de trabajo evolutivo de la Unión y de sus actualizaciones (al menos cada tres años). Incorporar los esquemas previstos al plan de cumplimiento de la organización.",
+          "referencia_articulo": "Art. 47 Reglamento (UE) 2019/881"
+        },
+        {
+          "id": "CSACT-MARCO-003",
+          "texto": "¿La organización participa o ha valorado participar en los grupos de partes interesadas y procesos de consulta vinculados a la preparación de esquemas europeos de certificación?",
+          "ayuda": "ENISA prepara las propuestas de esquema mediante un proceso de consulta oficial transparente e inclusivo, y existe un Grupo de las Partes Interesadas sobre Certificación de la Ciberseguridad. Participar permite a la organización influir en los criterios que después le serán exigibles.",
+          "requisito_original": "A la hora de preparar las propuestas de esquema ENISA consultará a todas las partes interesadas mediante un proceso de consulta oficial transparente e inclusivo.",
+          "tipo": "recomendado",
+          "aplicabilidad": [
+            "fabricante_tic",
+            "proveedor_servicios_tic",
+            "organismo_certificacion"
+          ],
+          "peso": 4,
+          "nivel": "bajo",
+          "fase_pds": 1,
+          "remediacion": "Identificar las convocatorias de consulta pública de ENISA y las vías de acceso al Grupo de las Partes Interesadas sobre Certificación de la Ciberseguridad. Designar un interlocutor que canalice las aportaciones de la organización.",
+          "referencia_articulo": "Art. 22 Reglamento (UE) 2019/881"
+        }
+      ]
+    },
+    {
+      "id": "CSACT-ESQUEMAS",
+      "nombre": "Esquemas europeos de certificación y evaluación de la conformidad",
+      "descripcion": "Comprensión de qué es un esquema europeo de certificación, de los elementos que lo componen, del proceso de solicitud de certificación y del recurso a organismos de evaluación de la conformidad acreditados.",
+      "temas": [
+        "compliance_assessment",
+        "product_cybersecurity",
+        "technology_standards"
+      ],
+      "peso_bloque": 25,
+      "preguntas": [
+        {
+          "id": "CSACT-ESQUEMAS-001",
+          "texto": "¿La organización ha determinado el esquema europeo de certificación de la ciberseguridad aplicable a sus productos o servicios TIC y los elementos que dicho esquema le exige cumplir?",
+          "ayuda": "Cada esquema europeo de certificación incluye un conjunto mínimo de elementos: objeto y alcance, normas de referencia, niveles de garantía, criterios y métodos de evaluación. Conocerlos en detalle es imprescindible para planificar la certificación.",
+          "requisito_original": "Un esquema europeo de certificación de la ciberseguridad incluirá al menos los siguientes elementos: el objeto y alcance del esquema de certificación, incluido el tipo o categoría de productos, servicios y procesos de TIC cubiertos.",
+          "tipo": "condicional",
+          "aplicabilidad": [
+            "fabricante_tic",
+            "proveedor_servicios_tic"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 1,
+          "remediacion": "Obtener el acto de ejecución que adopta el esquema europeo de certificación aplicable y elaborar una matriz de requisitos: objeto, alcance, normas, niveles de garantía, criterios y métodos de evaluación. Esta condición aplica solo si existe un esquema que cubra el producto o servicio.",
+          "referencia_articulo": "Art. 54 Reglamento (UE) 2019/881"
+        },
+        {
+          "id": "CSACT-ESQUEMAS-002",
+          "texto": "¿La organización ha analizado los objetivos de seguridad que el esquema europeo de certificación exige a sus productos, servicios o procesos TIC?",
+          "ayuda": "Los esquemas europeos se diseñan para cumplir objetivos de seguridad concretos: protección de datos frente a accesos no autorizados, disponibilidad, trazabilidad de accesos, ausencia de vulnerabilidades conocidas y seguridad por defecto y desde el diseño. La organización debe evaluar su grado de cumplimiento de cada objetivo.",
+          "requisito_original": "Los esquemas europeos de certificación de la ciberseguridad deberán diseñarse para cumplir, según proceda, al menos los siguientes objetivos de seguridad: proteger los datos almacenados, transmitidos o tratados de otro modo frente al acceso o revelación no autorizados durante todo el ciclo de vida del producto, servicio o proceso de TIC.",
+          "tipo": "condicional",
+          "aplicabilidad": [
+            "fabricante_tic",
+            "proveedor_servicios_tic"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 2,
+          "remediacion": "Realizar un análisis de brecha entre el estado de seguridad actual del producto o servicio y los objetivos de seguridad del Art. 51 (protección de datos, control de acceso, trazabilidad, ausencia de vulnerabilidades, seguridad por defecto y desde el diseño). Documentar las desviaciones detectadas.",
+          "referencia_articulo": "Art. 51 Reglamento (UE) 2019/881"
+        },
+        {
+          "id": "CSACT-ESQUEMAS-003",
+          "texto": "¿Los productos, servicios y procesos TIC de la organización se diseñan y entregan aplicando los principios de seguridad por defecto y seguridad desde el diseño?",
+          "ayuda": "El Reglamento promueve que la seguridad se incorpore desde las primeras fases del diseño y que el producto llegue al usuario con la configuración más segura posible, sin necesidad de conocimientos técnicos avanzados. Es uno de los objetivos de seguridad de los esquemas y refuerza la posición de la organización ante cualquier certificación.",
+          "requisito_original": "Los esquemas europeos de certificación de la ciberseguridad deberán diseñarse para cumplir, según proceda, el objetivo de que los productos, servicios y procesos de TIC sean seguros por defecto y desde el diseño.",
+          "tipo": "recomendado",
+          "aplicabilidad": [
+            "fabricante_tic",
+            "proveedor_servicios_tic"
+          ],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 4,
+          "remediacion": "Incorporar al ciclo de vida de desarrollo prácticas de seguridad desde el diseño: análisis de riesgos temprano, configuración por defecto más segura y minimización de la carga de configuración del usuario. Documentar estas prácticas como evidencia para futuras evaluaciones.",
+          "referencia_articulo": "Art. 51 Reglamento (UE) 2019/881"
+        },
+        {
+          "id": "CSACT-ESQUEMAS-004",
+          "texto": "¿La organización ha identificado un organismo de evaluación de la conformidad acreditado al que dirigir, en su caso, la solicitud de certificación de sus productos o servicios TIC?",
+          "ayuda": "Una vez adoptado un esquema europeo, el fabricante o proveedor puede presentar la solicitud de certificación al organismo de evaluación de la conformidad que prefiera en cualquier parte de la Unión. Estos organismos deben estar acreditados por un organismo nacional de acreditación.",
+          "requisito_original": "Una vez que se adopte un esquema europeo de certificación de la ciberseguridad, los fabricantes o proveedores de productos, servicios o procesos de TIC deben tener la posibilidad de presentar una solicitud de certificación de sus productos o servicios de TIC al organismo de evaluación de la conformidad que prefieran en cualquier parte de la Unión.",
+          "tipo": "condicional",
+          "aplicabilidad": [
+            "fabricante_tic",
+            "proveedor_servicios_tic"
+          ],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 3,
+          "remediacion": "Consultar la lista de organismos de evaluación de la conformidad notificados publicada en el Diario Oficial para el esquema aplicable. Seleccionar uno acreditado conforme al Reglamento (CE) 765/2008 y planificar la presentación de la solicitud. Aplica solo si la organización decide certificar.",
+          "referencia_articulo": "Art. 56 Reglamento (UE) 2019/881"
+        },
+        {
+          "id": "CSACT-ESQUEMAS-005",
+          "texto": "¿La organización dispone de la documentación técnica y de la información necesaria para acreditar la conformidad de sus productos o servicios TIC ante el organismo de evaluación de la conformidad?",
+          "ayuda": "La persona que presenta un producto, servicio o proceso TIC a certificación debe poner a disposición del organismo evaluador toda la información necesaria para llevar a cabo el procedimiento. Sin documentación técnica completa y estructurada, la evaluación no puede completarse.",
+          "requisito_original": "La persona física o jurídica que presenta los productos, servicios o procesos de TIC para la certificación pondrá a disposición de la autoridad nacional de certificación de la ciberseguridad o del organismo de evaluación de la conformidad toda la información necesaria para llevar a cabo el procedimiento de certificación.",
+          "tipo": "condicional",
+          "aplicabilidad": [
+            "fabricante_tic",
+            "proveedor_servicios_tic"
+          ],
+          "peso": 6,
+          "nivel": "medio",
+          "fase_pds": 4,
+          "remediacion": "Recopilar y estructurar la documentación técnica del producto o servicio (diseño, fabricación, funcionamiento) de forma que permita la evaluación de la conformidad. Mantenerla actualizada durante todo el procedimiento de certificación.",
+          "referencia_articulo": "Art. 56 Reglamento (UE) 2019/881"
+        }
+      ]
+    },
+    {
+      "id": "CSACT-NIVELES",
+      "nombre": "Niveles de garantía, autoevaluación y obligaciones de los titulares",
+      "descripcion": "Selección del nivel de garantía adecuado (básico, sustancial o elevado), uso de la autoevaluación de la conformidad y la declaración UE de conformidad, y obligaciones derivadas de ser titular de un certificado europeo de ciberseguridad.",
+      "temas": [
+        "compliance_assessment",
+        "product_cybersecurity",
+        "risk_management"
+      ],
+      "peso_bloque": 25,
+      "preguntas": [
+        {
+          "id": "CSACT-NIVELES-001",
+          "texto": "¿La organización ha evaluado, en función del riesgo asociado al uso previsto de sus productos o servicios TIC, qué nivel de garantía (básico, sustancial o elevado) necesita?",
+          "ayuda": "El Cybersecurity Act define tres niveles de garantía. La elección debe basarse en un análisis del riesgo del uso previsto del producto o servicio, en términos de probabilidad e impacto de un incidente. Un nivel insuficiente no aporta confianza; uno excesivo encarece la evaluación.",
+          "requisito_original": "El nivel de garantía deberá reflejar el nivel de riesgo asociado al uso previsto de un producto, servicio o proceso de TIC, en términos de probabilidad y repercusiones de un incidente.",
+          "tipo": "condicional",
+          "aplicabilidad": [
+            "fabricante_tic",
+            "proveedor_servicios_tic"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 2,
+          "remediacion": "Realizar un análisis de riesgos del uso previsto de cada producto o servicio TIC y, a partir de la probabilidad e impacto de un incidente, justificar documentalmente el nivel de garantía (básico, sustancial o elevado) que se perseguirá en la certificación.",
+          "referencia_articulo": "Art. 52 Reglamento (UE) 2019/881"
+        },
+        {
+          "id": "CSACT-NIVELES-002",
+          "texto": "¿La organización conoce las actividades de evaluación que conlleva cada nivel de garantía y ha verificado que su producto o servicio puede superarlas?",
+          "ayuda": "Cada nivel implica un rigor distinto: el básico exige al menos una revisión de la documentación técnica; el sustancial añade la comprobación de la ausencia de vulnerabilidades públicas y la correcta aplicación de funcionalidades de seguridad; el elevado incorpora pruebas de penetración frente a atacantes expertos.",
+          "requisito_original": "Un certificado europeo de ciberseguridad que se refiere a un nivel de garantía «elevado» ofrece garantías de que los productos, servicios y procesos de TIC se han evaluado hasta un nivel que pretende minimizar el riesgo de ciberataques sofisticados cometidos por agentes con capacidades y recursos considerables.",
+          "tipo": "condicional",
+          "aplicabilidad": [
+            "fabricante_tic",
+            "proveedor_servicios_tic"
+          ],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 2,
+          "remediacion": "Documentar las actividades de evaluación asociadas al nivel de garantía elegido (revisión documental, comprobación de funcionalidades, pruebas de penetración) y realizar pruebas internas previas para anticipar el resultado de la evaluación formal.",
+          "referencia_articulo": "Art. 52 Reglamento (UE) 2019/881"
+        },
+        {
+          "id": "CSACT-NIVELES-003",
+          "texto": "Si la organización opta por la autoevaluación de la conformidad, ¿se limita a productos, servicios o procesos TIC de bajo riesgo correspondientes al nivel de garantía básico?",
+          "ayuda": "La autoevaluación de la conformidad solo está permitida para productos, servicios y procesos TIC de bajo riesgo que correspondan al nivel de garantía básico. Para niveles sustancial o elevado se requiere la intervención de un tercero evaluador.",
+          "requisito_original": "La autoevaluación de la conformidad únicamente se permitirá en relación con productos, servicios y procesos de TIC que presenten un bajo riesgo correspondientes al nivel de garantía «básico».",
+          "tipo": "condicional",
+          "aplicabilidad": [
+            "fabricante_tic",
+            "proveedor_servicios_tic"
+          ],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 3,
+          "remediacion": "Verificar que el producto o servicio sobre el que se plantea la autoevaluación es de bajo riesgo y corresponde al nivel básico. Si el riesgo es superior, descartar la autoevaluación y planificar la certificación por un organismo de evaluación de la conformidad.",
+          "referencia_articulo": "Art. 53 Reglamento (UE) 2019/881"
+        },
+        {
+          "id": "CSACT-NIVELES-004",
+          "texto": "Si la organización emite una declaración UE de conformidad, ¿asume formalmente la responsabilidad del cumplimiento y la pone a disposición de la autoridad nacional de certificación y de ENISA?",
+          "ayuda": "Al expedir y firmar la declaración UE de conformidad, el fabricante o proveedor asume la responsabilidad de que el producto, servicio o proceso TIC cumple los requisitos del esquema. Debe entregar una copia a la autoridad nacional de certificación de la ciberseguridad y a ENISA.",
+          "requisito_original": "Deberá presentarse a la autoridad nacional de certificación de la ciberseguridad y a ENISA una copia de la declaración de conformidad de la UE.",
+          "tipo": "condicional",
+          "aplicabilidad": [
+            "fabricante_tic",
+            "proveedor_servicios_tic"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Redactar y firmar la declaración UE de conformidad asumiendo formalmente la responsabilidad del cumplimiento. Conservar la documentación técnica y remitir copia de la declaración a la autoridad nacional de certificación de la ciberseguridad y a ENISA.",
+          "referencia_articulo": "Art. 53 Reglamento (UE) 2019/881"
+        },
+        {
+          "id": "CSACT-NIVELES-005",
+          "texto": "¿La organización mantiene las condiciones de validez del certificado europeo de ciberseguridad y planifica su renovación antes de la fecha de caducidad?",
+          "ayuda": "Los certificados europeos de ciberseguridad se expiden por un período determinado por el esquema y pueden renovarse siempre que se sigan cumpliendo los requisitos. Perder la vigencia del certificado puede suponer la pérdida de acceso a mercados o a la contratación pública.",
+          "requisito_original": "Los certificados europeos de ciberseguridad se expedirán por el período previsto en el esquema europeo de certificación de la ciberseguridad y podrán renovarse siempre y cuando sigan cumpliéndose los requisitos correspondientes.",
+          "tipo": "condicional",
+          "aplicabilidad": [
+            "fabricante_tic",
+            "proveedor_servicios_tic"
+          ],
+          "peso": 6,
+          "nivel": "medio",
+          "fase_pds": 5,
+          "remediacion": "Registrar la fecha de caducidad de cada certificado europeo de ciberseguridad y establecer recordatorios para iniciar la renovación con antelación. Mantener evidencias del cumplimiento continuado de los requisitos del esquema.",
+          "referencia_articulo": "Art. 56 Reglamento (UE) 2019/881"
+        }
+      ]
+    },
+    {
+      "id": "CSACT-VIG",
+      "nombre": "Vigilancia, no conformidad y notificación de vulnerabilidades",
+      "descripcion": "Obligaciones de cooperación con las autoridades nacionales de certificación, comunicación de vulnerabilidades e irregularidades detectadas en productos certificados y gestión de las consecuencias de la no conformidad.",
+      "temas": [
+        "vulnerability_management",
+        "compliance_assessment"
+      ],
+      "peso_bloque": 20,
+      "preguntas": [
+        {
+          "id": "CSACT-VIG-001",
+          "texto": "¿La organización dispone de un canal y un procedimiento para informar a la autoridad u organismo emisor de cualquier vulnerabilidad o irregularidad detectada en un producto, servicio o proceso TIC certificado?",
+          "ayuda": "El titular de un certificado europeo de ciberseguridad está obligado a comunicar cualquier vulnerabilidad o irregularidad descubierta posteriormente que pueda afectar al cumplimiento de los requisitos de certificación. Es una obligación, no una opción.",
+          "requisito_original": "El titular de un certificado europeo de ciberseguridad informará a la autoridad o al organismo de cualquier vulnerabilidad o irregularidad que se detecte posteriormente, relativa a la seguridad del producto, servicio o proceso de TIC certificado, que pueda afectar al cumplimiento de los requisitos de certificación.",
+          "tipo": "condicional",
+          "aplicabilidad": [
+            "fabricante_tic",
+            "proveedor_servicios_tic"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 5,
+          "remediacion": "Definir un procedimiento interno que active la comunicación a la autoridad u organismo emisor cuando se detecte una vulnerabilidad o irregularidad en un producto certificado. Designar un responsable y conservar registro de las notificaciones realizadas.",
+          "referencia_articulo": "Art. 56 Reglamento (UE) 2019/881"
+        },
+        {
+          "id": "CSACT-VIG-002",
+          "texto": "¿La organización aplica reglas y mecanismos para notificar y tramitar las vulnerabilidades de ciberseguridad previamente no detectadas en sus productos, servicios o procesos TIC?",
+          "ayuda": "Los esquemas europeos incluyen normas sobre cómo deben notificarse y tramitarse las vulnerabilidades no detectadas previamente. La organización debe contar con un proceso de gestión y divulgación coordinada de vulnerabilidades alineado con esas normas.",
+          "requisito_original": "Un esquema europeo de certificación de la ciberseguridad incluirá las normas sobre cómo deben notificarse y tramitarse las vulnerabilidades de ciberseguridad previamente no detectadas en productos, servicios y procesos de TIC.",
+          "tipo": "recomendado",
+          "aplicabilidad": [
+            "fabricante_tic",
+            "proveedor_servicios_tic"
+          ],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 5,
+          "remediacion": "Implantar una política de gestión y divulgación coordinada de vulnerabilidades: canal de recepción, plazos de tratamiento, evaluación de impacto y comunicación. Alinearla con las normas de notificación de vulnerabilidades del esquema europeo aplicable.",
+          "referencia_articulo": "Art. 54 Reglamento (UE) 2019/881"
+        },
+        {
+          "id": "CSACT-VIG-003",
+          "texto": "¿La organización coopera con la autoridad nacional de certificación de la ciberseguridad en sus actividades de supervisión, facilitando la información y el acceso que requiera?",
+          "ayuda": "Las autoridades nacionales de certificación pueden solicitar información, realizar auditorías y acceder a los locales de titulares de certificados y responsables de declaraciones UE de conformidad. La organización debe estar preparada para colaborar con estas actuaciones de supervisión.",
+          "requisito_original": "Cada autoridad nacional de certificación de la ciberseguridad tendrá la competencia de solicitar a los organismos de evaluación de la conformidad, a los titulares de certificados europeos de ciberseguridad y a los responsables de expedir declaraciones de conformidad de la UE que faciliten cualquier información que requiera para el desempeño de sus cometidos.",
+          "tipo": "condicional",
+          "aplicabilidad": [
+            "fabricante_tic",
+            "proveedor_servicios_tic",
+            "organismo_certificacion"
+          ],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 5,
+          "remediacion": "Designar un punto de contacto con la autoridad nacional de certificación de la ciberseguridad y mantener accesible la documentación de cumplimiento. Preparar a la organización para atender solicitudes de información y auditorías de supervisión.",
+          "referencia_articulo": "Art. 58 Reglamento (UE) 2019/881"
+        },
+        {
+          "id": "CSACT-VIG-004",
+          "texto": "¿La organización conoce las consecuencias previstas para los productos, servicios y procesos TIC certificados que dejen de cumplir los requisitos del esquema, incluida la posible retirada del certificado?",
+          "ayuda": "Los esquemas europeos definen las consecuencias de la no conformidad y las autoridades nacionales pueden retirar certificados que ya no se ajusten al Reglamento o al esquema. Anticipar estos escenarios permite reaccionar antes de perder la certificación o ser sancionado.",
+          "requisito_original": "Un esquema europeo de certificación de la ciberseguridad incluirá las normas relativas a las consecuencias para los productos, servicios y procesos de TIC que han sido certificados o para los que se ha expedido una declaración de conformidad de la UE, pero que no cumplen con los requisitos del esquema.",
+          "tipo": "recomendado",
+          "aplicabilidad": [
+            "fabricante_tic",
+            "proveedor_servicios_tic"
+          ],
+          "peso": 6,
+          "nivel": "medio",
+          "fase_pds": 5,
+          "remediacion": "Documentar las consecuencias de la no conformidad previstas en el esquema aplicable y definir un plan de respuesta para casos de incumplimiento sobrevenido, incluyendo acciones correctoras y comunicación con la autoridad u organismo emisor.",
+          "referencia_articulo": "Art. 54 Reglamento (UE) 2019/881"
+        }
+      ]
+    },
+    {
+      "id": "CSACT-TRANS",
+      "nombre": "Transparencia e información complementaria al usuario",
+      "descripcion": "Información sobre ciberseguridad que debe acompañar a los productos, servicios y procesos TIC certificados o autoevaluados, incluyendo guías de configuración segura, política de soporte y datos de contacto para la comunicación de vulnerabilidades.",
+      "temas": [
+        "transparency",
+        "product_cybersecurity"
+      ],
+      "peso_bloque": 15,
+      "preguntas": [
+        {
+          "id": "CSACT-TRANS-001",
+          "texto": "¿La organización proporciona a los usuarios finales orientaciones y recomendaciones para la configuración, instalación, despliegue, funcionamiento y mantenimiento seguros de sus productos o servicios TIC certificados?",
+          "ayuda": "El Reglamento exige que el fabricante o proveedor de un producto certificado o autoevaluado entregue información complementaria de ciberseguridad, empezando por guías de uso seguro accesibles para el usuario final. Esto reduce los errores de configuración que generan incidentes.",
+          "requisito_original": "El fabricante o proveedor de productos, servicios y procesos de TIC certificados o autoevaluados proporcionará orientaciones y recomendaciones para ayudar a los usuarios finales con la configuración, la instalación, el despliegue, el funcionamiento y el mantenimiento seguros de los productos o servicios de TIC.",
+          "tipo": "condicional",
+          "aplicabilidad": [
+            "fabricante_tic",
+            "proveedor_servicios_tic"
+          ],
+          "peso": 8,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Elaborar guías de configuración y uso seguro dirigidas al usuario final y publicarlas en formato electrónico junto con el producto o servicio certificado. Mantenerlas actualizadas mientras el certificado o la declaración UE de conformidad estén vigentes.",
+          "referencia_articulo": "Art. 55 Reglamento (UE) 2019/881"
+        },
+        {
+          "id": "CSACT-TRANS-002",
+          "texto": "¿La organización informa del período durante el cual ofrecerá soporte de seguridad y actualizaciones relacionadas con la ciberseguridad de sus productos o servicios TIC certificados?",
+          "ayuda": "El usuario final debe saber durante cuánto tiempo recibirá actualizaciones y correcciones de ciberseguridad. Publicar la política de soporte es una obligación de la información complementaria y permite al usuario tomar decisiones informadas sobre el ciclo de vida del producto.",
+          "requisito_original": "El fabricante o proveedor de productos, servicios y procesos de TIC certificados o autoevaluados proporcionará el período durante el cual se ofrecerá a los usuarios finales apoyo en materia de seguridad, en particular en lo que se refiere a la disponibilidad de actualizaciones relacionadas con la ciberseguridad.",
+          "tipo": "condicional",
+          "aplicabilidad": [
+            "fabricante_tic",
+            "proveedor_servicios_tic"
+          ],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 4,
+          "remediacion": "Definir y publicar de forma clara la política de soporte de seguridad de cada producto o servicio certificado: período de soporte, frecuencia de actualizaciones y canal de distribución de correcciones de ciberseguridad.",
+          "referencia_articulo": "Art. 55 Reglamento (UE) 2019/881"
+        },
+        {
+          "id": "CSACT-TRANS-003",
+          "texto": "¿La organización publica datos de contacto y métodos aceptados para que usuarios finales o investigadores comuniquen vulnerabilidades, junto con referencias a registros de vulnerabilidades conocidas?",
+          "ayuda": "La información complementaria de ciberseguridad debe incluir los datos de contacto del fabricante o proveedor, los métodos aceptados para recibir información sobre vulnerabilidades y referencias a registros en línea de vulnerabilidades públicamente conocidas del producto.",
+          "requisito_original": "El fabricante o proveedor proporcionará datos de contacto del fabricante o proveedor y métodos aceptados para recibir información sobre vulnerabilidad de usuarios finales o investigadores en materia de seguridad.",
+          "tipo": "condicional",
+          "aplicabilidad": [
+            "fabricante_tic",
+            "proveedor_servicios_tic"
+          ],
+          "peso": 6,
+          "nivel": "medio",
+          "fase_pds": 4,
+          "remediacion": "Publicar en formato electrónico los datos de contacto de seguridad y el método aceptado de comunicación de vulnerabilidades (por ejemplo, una política de divulgación responsable), e incluir referencias a los registros en línea de vulnerabilidades conocidas del producto.",
+          "referencia_articulo": "Art. 55 Reglamento (UE) 2019/881"
+        }
+      ]
+    }
+  ]
+}

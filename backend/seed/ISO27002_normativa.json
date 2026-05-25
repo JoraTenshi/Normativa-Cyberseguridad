@@ -3,22 +3,30 @@
   "nombre": "ISO/IEC 27002:2022 — Controles de Seguridad de la Información",
   "referencia_oficial": "ISO/IEC 27002:2022 — Information security, cybersecurity and privacy protection — Information security controls",
   "descripcion": "Estándar internacional que recoge un conjunto de referencia de 93 controles de seguridad de la información organizados en cuatro temas (organizacionales, de personas, físicos y tecnológicos). Sirve de guía de implementación para los controles del Anexo A de la ISO/IEC 27001 y es el catálogo de referencia que permite materializar un Sistema de Gestión de Seguridad de la Información (SGSI). Aplica a cualquier organización, independientemente de su tamaño, sector o naturaleza.",
-  "sectores_aplicables": ["organizacion"],
+  "sectores_aplicables": [
+    "organizacion"
+  ],
   "bloques": [
     {
-      "id": "ISO27002-ORG",
-      "nombre": "Controles organizacionales",
-      "descripcion": "37 controles de gobernanza y gestión: políticas de seguridad, roles y responsabilidades, gestión de activos, control de acceso, relaciones con proveedores, gestión de incidentes, continuidad y cumplimiento legal. Constituyen el armazón organizativo del SGSI.",
-      "peso_bloque": 38,
+      "id": "ISO27002-GOV",
+      "nombre": "Gobierno y política de seguridad",
+      "descripcion": "Política de seguridad de la información, roles y responsabilidades, segregación de funciones, compromiso de la dirección y seguridad en la gestión de proyectos. Cubre los controles organizacionales 5.1, 5.2, 5.3, 5.4 y 5.8 de ISO/IEC 27002:2022.",
+      "peso_bloque": 11,
       "seccion_normativa": "5_organizational",
+      "temas": [
+        "security_policy",
+        "risk_management"
+      ],
       "preguntas": [
         {
-          "id": "ISO27002-ORG-001",
+          "id": "ISO27002-GOV-001",
           "texto": "¿La organización tiene aprobada por la dirección una política de seguridad de la información comunicada al personal y a las partes interesadas relevantes?",
           "ayuda": "El Control 5.1 exige una política de seguridad de la información de alto nivel, aprobada por la dirección, publicada, comunicada y revisada periódicamente. Es la piedra angular del SGSI: sin política, no hay marco normativo interno al que referirse en el resto de controles.",
           "requisito_original": "La política de seguridad de la información y las políticas específicas por tema deben ser definidas, aprobadas por la dirección, publicadas, comunicadas y reconocidas por el personal relevante y las partes interesadas pertinentes, y revisadas a intervalos planificados y cuando se produzcan cambios significativos.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 10,
           "nivel": "critico",
           "fase_pds": 3,
@@ -26,12 +34,14 @@
           "referencia_articulo": "Control 5.1 ISO/IEC 27002:2022"
         },
         {
-          "id": "ISO27002-ORG-002",
+          "id": "ISO27002-GOV-002",
           "texto": "¿Están definidos, asignados y documentados los roles y responsabilidades en materia de seguridad de la información?",
           "ayuda": "El Control 5.2 obliga a definir y asignar todos los roles y responsabilidades de seguridad. Cada función (CISO, propietarios de activos, gestor de incidentes, etc.) debe tener un titular identificado. Sin asignación clara no hay rendición de cuentas.",
           "requisito_original": "Las responsabilidades y los roles de seguridad de la información deben definirse y asignarse de acuerdo con las necesidades de la organización.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 9,
           "nivel": "alto",
           "fase_pds": 3,
@@ -39,12 +49,14 @@
           "referencia_articulo": "Control 5.2 ISO/IEC 27002:2022"
         },
         {
-          "id": "ISO27002-ORG-003",
+          "id": "ISO27002-GOV-003",
           "texto": "¿Se aplica la segregación de funciones para evitar concentración de privilegios y conflictos de interés en tareas sensibles?",
           "ayuda": "El Control 5.3 exige separar las funciones y áreas de responsabilidad conflictivas para reducir el riesgo de fraude, error o uso indebido. Por ejemplo, quien aprueba un pago no debe poder ejecutarlo; quien desarrolla un sistema no debe ser el único que lo despliega en producción.",
           "requisito_original": "Las funciones y áreas de responsabilidad conflictivas deben segregarse.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 8,
           "nivel": "alto",
           "fase_pds": 4,
@@ -52,12 +64,14 @@
           "referencia_articulo": "Control 5.3 ISO/IEC 27002:2022"
         },
         {
-          "id": "ISO27002-ORG-004",
+          "id": "ISO27002-GOV-004",
           "texto": "¿La dirección participa activamente en la seguridad de la información y exige su cumplimiento conforme a las políticas establecidas?",
           "ayuda": "El Control 5.4 requiere que la dirección demuestre compromiso y exija al personal el cumplimiento de las políticas. Sin liderazgo visible, la seguridad se percibe como un trámite y los controles se erosionan.",
           "requisito_original": "La dirección debe exigir a todo el personal que aplique la seguridad de la información de acuerdo con la política de seguridad establecida, las políticas específicas por tema y los procedimientos de la organización.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 8,
           "nivel": "alto",
           "fase_pds": 3,
@@ -65,12 +79,42 @@
           "referencia_articulo": "Control 5.4 ISO/IEC 27002:2022"
         },
         {
-          "id": "ISO27002-ORG-005",
+          "id": "ISO27002-GOV-005",
+          "texto": "¿La seguridad de la información está integrada en la gestión de proyectos desde su fase inicial?",
+          "ayuda": "El Control 5.8 exige integrar la seguridad en todos los proyectos, no como un añadido final sino desde la planificación. Implica análisis de riesgos por proyecto, requisitos de seguridad documentados y validación previa al despliegue.",
+          "requisito_original": "La seguridad de la información debe integrarse en la gestión de proyectos.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "organizacion"
+          ],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 3,
+          "remediacion": "Incorporar checkpoints de seguridad en la metodología de gestión de proyectos: análisis de riesgos al inicio, definición de requisitos de seguridad, revisión previa al despliegue. Designar un punto de contacto de seguridad por proyecto. Formar a los gestores de proyecto en aspectos básicos de seguridad.",
+          "referencia_articulo": "Control 5.8 ISO/IEC 27002:2022"
+        }
+      ]
+    },
+    {
+      "id": "ISO27002-AMENAZAS",
+      "nombre": "Inteligencia de amenazas y enlace con autoridades",
+      "descripcion": "Contactos con autoridades y grupos de interés especializados, y recopilación y análisis de inteligencia sobre amenazas. Cubre los controles 5.5, 5.6 y 5.7 de ISO/IEC 27002:2022.",
+      "peso_bloque": 3,
+      "seccion_normativa": "5_organizational",
+      "temas": [
+        "incident_response",
+        "security_monitoring"
+      ],
+      "preguntas": [
+        {
+          "id": "ISO27002-AMENAZAS-001",
           "texto": "¿Se mantienen contactos formales con las autoridades pertinentes (CERT, autoridades de protección de datos, fuerzas de seguridad) y con grupos de interés especializados?",
           "ayuda": "Los Controles 5.5 y 5.6 obligan a mantener canales con autoridades (CCN-CERT, INCIBE-CERT, AEPD, fuerzas y cuerpos de seguridad) y a participar en grupos de interés especializados. Esto agiliza la respuesta ante incidentes y mantiene a la organización al día sobre amenazas.",
           "requisito_original": "La organización debe establecer y mantener contactos con las autoridades pertinentes. La organización debe establecer y mantener contactos con grupos de interés especializados u otros foros especializados en seguridad y asociaciones profesionales.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 6,
           "nivel": "medio",
           "fase_pds": 5,
@@ -78,38 +122,42 @@
           "referencia_articulo": "Controles 5.5 y 5.6 ISO/IEC 27002:2022"
         },
         {
-          "id": "ISO27002-ORG-006",
+          "id": "ISO27002-AMENAZAS-002",
           "texto": "¿Se recopila y analiza información de inteligencia de amenazas (threat intelligence) para anticipar y responder a riesgos emergentes?",
           "ayuda": "El Control 5.7 (nuevo en la versión 2022) exige recopilar y analizar inteligencia sobre amenazas: tácticas, técnicas y procedimientos de atacantes, vulnerabilidades explotadas activamente, indicadores de compromiso. Convierte la defensa de reactiva en proactiva.",
           "requisito_original": "La información relativa a las amenazas de seguridad de la información debe recopilarse y analizarse para producir inteligencia sobre amenazas.",
           "tipo": "recomendado",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 7,
           "nivel": "medio",
           "fase_pds": 5,
           "remediacion": "Suscribirse a feeds de threat intelligence (CCN-CERT, INCIBE-CERT, MISP, AlienVault OTX). Definir un proceso de revisión periódica (al menos semanal) de las amenazas relevantes para el sector. Integrar IoCs en herramientas defensivas (SIEM, EDR, firewalls). Reportar tendencias relevantes a la dirección.",
           "referencia_articulo": "Control 5.7 ISO/IEC 27002:2022"
-        },
+        }
+      ]
+    },
+    {
+      "id": "ISO27002-ACTIVOS",
+      "nombre": "Gestión y clasificación de activos",
+      "descripcion": "Inventario de activos de información, propietarios, uso aceptable, clasificación y etiquetado. Cubre los controles 5.9, 5.10, 5.12 y 5.13 de ISO/IEC 27002:2022.",
+      "peso_bloque": 5,
+      "seccion_normativa": "5_organizational",
+      "temas": [
+        "asset_management",
+        "data_protection"
+      ],
+      "preguntas": [
         {
-          "id": "ISO27002-ORG-007",
-          "texto": "¿La seguridad de la información está integrada en la gestión de proyectos desde su fase inicial?",
-          "ayuda": "El Control 5.8 exige integrar la seguridad en todos los proyectos, no como un añadido final sino desde la planificación. Implica análisis de riesgos por proyecto, requisitos de seguridad documentados y validación previa al despliegue.",
-          "requisito_original": "La seguridad de la información debe integrarse en la gestión de proyectos.",
-          "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
-          "peso": 7,
-          "nivel": "medio",
-          "fase_pds": 3,
-          "remediacion": "Incorporar checkpoints de seguridad en la metodología de gestión de proyectos: análisis de riesgos al inicio, definición de requisitos de seguridad, revisión previa al despliegue. Designar un punto de contacto de seguridad por proyecto. Formar a los gestores de proyecto en aspectos básicos de seguridad.",
-          "referencia_articulo": "Control 5.8 ISO/IEC 27002:2022"
-        },
-        {
-          "id": "ISO27002-ORG-008",
+          "id": "ISO27002-ACTIVOS-001",
           "texto": "¿Existe un inventario actualizado de activos de información con responsables (propietarios) asignados a cada activo?",
           "ayuda": "Los Controles 5.9 y 5.10 exigen un inventario de activos de información, con un propietario identificado para cada activo, y reglas claras para su uso aceptable. Sin inventario no se puede proteger lo que no se conoce.",
           "requisito_original": "Debe desarrollarse y mantenerse un inventario de la información y de otros activos asociados, incluidos los propietarios. Las reglas para el uso aceptable y los procedimientos para el manejo de la información y otros activos asociados deben identificarse, documentarse e implementarse.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 9,
           "nivel": "alto",
           "fase_pds": 1,
@@ -117,25 +165,42 @@
           "referencia_articulo": "Controles 5.9 y 5.10 ISO/IEC 27002:2022"
         },
         {
-          "id": "ISO27002-ORG-009",
+          "id": "ISO27002-ACTIVOS-002",
           "texto": "¿Se aplica un esquema de clasificación y etiquetado de la información en función de su sensibilidad y los requisitos del negocio?",
           "ayuda": "Los Controles 5.12 y 5.13 exigen clasificar la información (pública, interna, confidencial, restringida) y etiquetarla en consecuencia, para que cada usuario sepa cómo tratarla y se apliquen medidas de protección proporcionales.",
           "requisito_original": "La información debe clasificarse según las necesidades de seguridad de la información de la organización en función de la confidencialidad, integridad, disponibilidad y los requisitos pertinentes de las partes interesadas. Debe desarrollarse e implementarse un conjunto adecuado de procedimientos para el etiquetado de la información.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 8,
           "nivel": "alto",
           "fase_pds": 3,
           "remediacion": "Definir un esquema de clasificación con 3-4 niveles (p.ej. Público, Interno, Confidencial, Restringido). Asociar a cada nivel medidas técnicas concretas (cifrado, control de acceso, marcas de agua). Etiquetar documentos y soportes. Formar al personal en el esquema.",
           "referencia_articulo": "Controles 5.12 y 5.13 ISO/IEC 27002:2022"
-        },
+        }
+      ]
+    },
+    {
+      "id": "ISO27002-ACCESO",
+      "nombre": "Control de acceso lógico y autenticación",
+      "descripcion": "Política de control de acceso, gestión de identidades y derechos, autenticación segura (incluida MFA), gestión de privilegios y restricción de acceso a la información. Cubre los controles 5.15 a 5.18 (políticas) y 8.2, 8.3 y 8.5 (técnicos) de ISO/IEC 27002:2022.",
+      "peso_bloque": 11,
+      "temas": [
+        "access_control",
+        "authentication",
+        "identity_management"
+      ],
+      "preguntas": [
         {
-          "id": "ISO27002-ORG-010",
+          "id": "ISO27002-ACCESO-001",
           "texto": "¿Existe una política y procedimientos formales de control de acceso lógico basada en el principio de mínimo privilegio?",
           "ayuda": "Los Controles 5.15, 5.16, 5.17 y 5.18 cubren la gestión del ciclo completo de acceso: política de control de acceso, gestión de identidades, gestión de información de autenticación y gestión de derechos. Todo basado en el principio de mínimo privilegio.",
           "requisito_original": "Deben establecerse e implementarse normas para el control del acceso físico y lógico a la información y otros activos asociados con base en los requisitos del negocio y de la seguridad de la información. Los derechos de acceso a la información y otros activos asociados deben aprovisionarse, revisarse, modificarse y eliminarse de acuerdo con la política específica.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 10,
           "nivel": "critico",
           "fase_pds": 4,
@@ -143,12 +208,73 @@
           "referencia_articulo": "Controles 5.15 a 5.18 ISO/IEC 27002:2022"
         },
         {
-          "id": "ISO27002-ORG-011",
+          "id": "ISO27002-ACCESO-002",
+          "texto": "¿Se restringen y gestionan formalmente los derechos de acceso privilegiado, con autenticación reforzada y registro de uso?",
+          "ayuda": "El Control 8.2 exige restringir y monitorizar los privilegios elevados (administradores). Las cuentas privilegiadas son el principal vector explotado en ataques: requieren MFA obligatoria, registro de cada acción y revisión periódica.",
+          "requisito_original": "La asignación y el uso de derechos de acceso privilegiados deben restringirse y gestionarse.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "organizacion"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 4,
+          "remediacion": "Implementar una solución PAM (Privileged Access Management) o, como mínimo, cuentas privilegiadas separadas con MFA obligatoria. Registrar todas las acciones de cuentas privilegiadas. Revisar trimestralmente los privilegios y aplicar revocación inmediata cuando ya no sean necesarios.",
+          "referencia_articulo": "Control 8.2 ISO/IEC 27002:2022"
+        },
+        {
+          "id": "ISO27002-ACCESO-003",
+          "texto": "¿Se restringe el acceso a la información en función de la política de control de acceso y el principio de necesidad de saber?",
+          "ayuda": "El Control 8.3 exige restringir el acceso a la información, las funciones del sistema y el código de aplicaciones conforme a la política de control de acceso. Combina políticas (RBAC), tecnologías (DLP, ABAC) y revisión continua.",
+          "requisito_original": "El acceso a la información y otros activos asociados debe restringirse de acuerdo con la política específica establecida sobre el tema de control de acceso.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "organizacion"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 4,
+          "remediacion": "Implantar RBAC con roles bien definidos. Activar permisos a nivel de fichero/carpeta y aplicación. Considerar soluciones DLP para información sensible. Revisar los permisos al menos semestralmente y tras cambios de puesto.",
+          "referencia_articulo": "Control 8.3 ISO/IEC 27002:2022"
+        },
+        {
+          "id": "ISO27002-ACCESO-004",
+          "texto": "¿Se aplica autenticación segura y multifactor (MFA) en accesos remotos, cuentas privilegiadas y sistemas críticos?",
+          "ayuda": "El Control 8.5 exige tecnologías y procedimientos de autenticación segura. MFA es obligatorio de facto para acceso remoto, cuentas privilegiadas y sistemas con información sensible. SMS está desaconsejado; mejor TOTP, push o FIDO2.",
+          "requisito_original": "Deben implementarse tecnologías y procedimientos de autenticación segura basados en restricciones de acceso a la información y la política específica de control de acceso.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "organizacion"
+          ],
+          "peso": 10,
+          "nivel": "critico",
+          "fase_pds": 4,
+          "remediacion": "Implementar MFA obligatorio en: VPN, correo corporativo, panel de administración, accesos privilegiados, aplicaciones SaaS críticas. Priorizar TOTP o llaves FIDO2 sobre SMS. Configurar políticas de contraseña conforme a NIST SP 800-63B.",
+          "referencia_articulo": "Control 8.5 ISO/IEC 27002:2022"
+        }
+      ]
+    },
+    {
+      "id": "ISO27002-PROVEEDORES",
+      "nombre": "Cadena de suministro y servicios cloud",
+      "descripcion": "Gestión de la seguridad en las relaciones con proveedores, cláusulas contractuales, monitorización del cumplimiento y proceso específico de seguridad para servicios en la nube. Cubre los controles 5.19 a 5.23 de ISO/IEC 27002:2022.",
+      "peso_bloque": 5,
+      "seccion_normativa": "5_organizational",
+      "temas": [
+        "supplier_risk",
+        "supply_chain_security",
+        "cloud_security"
+      ],
+      "preguntas": [
+        {
+          "id": "ISO27002-PROVEEDORES-001",
           "texto": "¿Existe un proceso formal de gestión de la seguridad de la información en las relaciones con proveedores, incluyendo cláusulas contractuales y monitorización?",
           "ayuda": "Los Controles 5.19 a 5.22 exigen gestionar los riesgos de la cadena de suministro: identificar requisitos en la contratación, incluir cláusulas de seguridad en los contratos, monitorizar el cumplimiento y gestionar cambios en los servicios. Especial atención a servicios cloud (Control 5.23, nuevo en 2022).",
           "requisito_original": "Deben definirse procesos y procedimientos para gestionar los riesgos de seguridad de la información asociados con el uso de productos o servicios de los proveedores. Los requisitos pertinentes de seguridad deben establecerse y acordarse con cada proveedor.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 9,
           "nivel": "alto",
           "fase_pds": 3,
@@ -156,12 +282,42 @@
           "referencia_articulo": "Controles 5.19 a 5.23 ISO/IEC 27002:2022"
         },
         {
-          "id": "ISO27002-ORG-012",
+          "id": "ISO27002-PROVEEDORES-002",
+          "texto": "¿Se gestiona la seguridad de los servicios en la nube mediante un proceso específico que cubra adquisición, uso, gestión y salida del proveedor?",
+          "ayuda": "El Control 5.23 (nuevo en 2022) exige establecer un proceso específico para la seguridad en servicios cloud: criterios de selección del proveedor, modelo de responsabilidad compartida, monitorización del cumplimiento y planes de salida (exit plan).",
+          "requisito_original": "Los procesos para la adquisición, uso, gestión y salida de servicios en la nube deben establecerse de acuerdo con los requisitos de seguridad de la información de la organización.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "organizacion"
+          ],
+          "peso": 9,
+          "nivel": "alto",
+          "fase_pds": 3,
+          "remediacion": "Aprobar una política de uso de servicios cloud con criterios mínimos: certificaciones del proveedor (ISO 27001, ISO 27017, ENS), localización de datos, modelo de responsabilidad compartida documentado, derecho de auditoría. Mantener un inventario de servicios cloud en uso. Definir y mantener actualizado un plan de salida para evitar el bloqueo del proveedor.",
+          "referencia_articulo": "Control 5.23 ISO/IEC 27002:2022"
+        }
+      ]
+    },
+    {
+      "id": "ISO27002-IRP",
+      "nombre": "Gestión de incidentes y continuidad TIC",
+      "descripcion": "Ciclo completo de gestión de incidentes (preparación, detección, respuesta, evidencias, aprendizaje) y continuidad de las TIC dentro del marco de continuidad de negocio. Cubre los controles 5.24 a 5.30 de ISO/IEC 27002:2022.",
+      "peso_bloque": 6,
+      "seccion_normativa": "5_organizational",
+      "temas": [
+        "incident_response",
+        "business_continuity"
+      ],
+      "preguntas": [
+        {
+          "id": "ISO27002-IRP-001",
           "texto": "¿Existe un procedimiento de gestión de incidentes de seguridad que cubra la planificación, detección, respuesta, recogida de evidencias y aprendizaje?",
           "ayuda": "Los Controles 5.24 a 5.28 cubren todo el ciclo de gestión de incidentes: planificación y preparación, evaluación y decisión, respuesta, recogida de evidencias forenses y aprendizaje. Un incidente mal gestionado puede multiplicar su impacto y comprometer la trazabilidad legal.",
           "requisito_original": "La organización debe planificar y prepararse para gestionar incidentes de seguridad de la información definiendo, estableciendo y comunicando los procesos, roles y responsabilidades de gestión de incidentes. La organización debe establecer y aplicar procedimientos para la identificación, recopilación, adquisición y preservación de evidencias relacionadas con eventos de seguridad de la información.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 10,
           "nivel": "critico",
           "fase_pds": 3,
@@ -169,25 +325,42 @@
           "referencia_articulo": "Controles 5.24 a 5.28 ISO/IEC 27002:2022"
         },
         {
-          "id": "ISO27002-ORG-013",
+          "id": "ISO27002-IRP-002",
           "texto": "¿Existen planes de continuidad de las TIC dentro del marco de continuidad de negocio, con pruebas periódicas?",
           "ayuda": "Los Controles 5.29 y 5.30 exigen planificar, implementar y probar la continuidad de la seguridad de la información durante una disrupción y, específicamente, la preparación TIC para la continuidad de negocio (RTO/RPO, redundancia, recuperación). El Control 5.30 es nuevo en la versión 2022.",
           "requisito_original": "La organización debe planificar cómo mantener la seguridad de la información en un nivel apropiado durante una disrupción. La preparación TIC debe planificarse, implementarse, mantenerse y probarse en función de los objetivos de continuidad de negocio y los requisitos de continuidad TIC.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 9,
           "nivel": "alto",
           "fase_pds": 3,
           "remediacion": "Elaborar un Plan de Continuidad de las TIC alineado con el BCP corporativo. Definir RTO y RPO por servicio crítico. Implementar mecanismos de redundancia y backup conforme a esos objetivos. Realizar pruebas al menos anuales documentando los resultados.",
           "referencia_articulo": "Controles 5.29 y 5.30 ISO/IEC 27002:2022"
-        },
+        }
+      ]
+    },
+    {
+      "id": "ISO27002-CUMPL",
+      "nombre": "Cumplimiento legal y auditoría",
+      "descripcion": "Identificación de requisitos legales, reglamentarios y contractuales, y revisiones independientes del SGSI. Cubre los controles 5.31 a 5.36 de ISO/IEC 27002:2022.",
+      "peso_bloque": 5,
+      "seccion_normativa": "5_organizational",
+      "temas": [
+        "legal_compliance",
+        "compliance_assessment"
+      ],
+      "preguntas": [
         {
-          "id": "ISO27002-ORG-014",
+          "id": "ISO27002-CUMPL-001",
           "texto": "¿La organización ha identificado y documenta el cumplimiento de los requisitos legales, reglamentarios y contractuales de seguridad de la información aplicables?",
           "ayuda": "Los Controles 5.31 a 5.34 cierran el bloque organizacional con cumplimiento legal, derechos de propiedad intelectual, protección de registros y protección de datos personales. Sin un inventario de obligaciones legales aplicables, el cumplimiento es ciego.",
           "requisito_original": "Los requisitos legales, estatutarios, reglamentarios y contractuales pertinentes para la seguridad de la información, y el enfoque de la organización para cumplirlos, deben identificarse, documentarse y mantenerse actualizados.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 9,
           "nivel": "alto",
           "fase_pds": 1,
@@ -195,12 +368,14 @@
           "referencia_articulo": "Controles 5.31 a 5.34 ISO/IEC 27002:2022"
         },
         {
-          "id": "ISO27002-ORG-015",
+          "id": "ISO27002-CUMPL-002",
           "texto": "¿Se realizan revisiones independientes (auditorías internas o externas) de la seguridad de la información a intervalos planificados?",
           "ayuda": "Los Controles 5.35 y 5.36 exigen revisiones independientes (auditorías internas, externas o por una segunda línea) y verificación periódica del cumplimiento de las políticas, normas y estándares aplicables. Es la rendición de cuentas del SGSI.",
           "requisito_original": "El enfoque de la organización para gestionar la seguridad de la información y su implementación debe revisarse de forma independiente a intervalos planificados o cuando se produzcan cambios significativos. El cumplimiento con la política de seguridad de la información, las políticas específicas por tema, las normas y los estándares de la organización debe revisarse periódicamente.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 8,
           "nivel": "alto",
           "fase_pds": 5,
@@ -211,10 +386,14 @@
     },
     {
       "id": "ISO27002-PER",
-      "nombre": "Controles de personas",
-      "descripcion": "8 controles que cubren todo el ciclo de vida del empleado y otros recursos humanos: verificación previa, formación, disciplina, teletrabajo y comunicación de eventos de seguridad.",
-      "peso_bloque": 14,
+      "nombre": "Seguridad de las personas (recursos humanos)",
+      "descripcion": "Ciclo de vida del personal y otras partes interesadas: verificación de antecedentes, cláusulas contractuales, formación y concienciación, régimen disciplinario, finalización del empleo, teletrabajo y canal de reporte de eventos de seguridad. Cubre los controles 6.1 a 6.8 de ISO/IEC 27002:2022.",
+      "peso_bloque": 13,
       "seccion_normativa": "6_people",
+      "temas": [
+        "human_resources_security",
+        "awareness_training"
+      ],
       "preguntas": [
         {
           "id": "ISO27002-PER-001",
@@ -222,7 +401,9 @@
           "ayuda": "El Control 6.1 exige verificaciones previas a la contratación (referencias, titulación, antecedentes) proporcionales a la sensibilidad del puesto. En España, las verificaciones de antecedentes penales requieren consentimiento y solo proceden en puestos específicos legalmente justificados.",
           "requisito_original": "Las verificaciones de antecedentes de todos los candidatos a empleo deben llevarse a cabo antes de incorporarse a la organización y de forma continua, teniendo en cuenta las leyes, regulaciones y la ética aplicables, y deben ser proporcionales a los requisitos del negocio, la clasificación de la información a la que se accederá y los riesgos percibidos.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 7,
           "nivel": "medio",
           "fase_pds": 3,
@@ -235,7 +416,9 @@
           "ayuda": "Los Controles 6.2 y 6.6 exigen incluir responsabilidades de seguridad en los términos del contrato y firmar acuerdos de confidencialidad (NDA) cuando proceda, identificándolos formalmente y revisándolos periódicamente.",
           "requisito_original": "Los acuerdos contractuales de empleo deben establecer las responsabilidades del personal y de la organización en materia de seguridad de la información. Los acuerdos de confidencialidad o no divulgación que reflejen las necesidades de protección de la información de la organización deben identificarse, documentarse, revisarse periódicamente y firmarse por el personal y otras partes interesadas pertinentes.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 8,
           "nivel": "alto",
           "fase_pds": 3,
@@ -248,7 +431,9 @@
           "ayuda": "El Control 6.3 obliga a impartir formación y concienciación apropiada en seguridad. No vale una formación genérica única en el alta: debe ser periódica, adaptada por rol y reforzada con campañas de concienciación (phishing simulado, comunicaciones internas).",
           "requisito_original": "El personal de la organización y las partes interesadas pertinentes deben recibir formación, educación y concienciación apropiadas en materia de seguridad de la información, y actualizaciones periódicas de la política de seguridad de la información, las políticas específicas por tema y los procedimientos de la organización, según resulte pertinente para su función laboral.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 8,
           "nivel": "alto",
           "fase_pds": 5,
@@ -261,7 +446,9 @@
           "ayuda": "El Control 6.4 exige un proceso disciplinario formal y comunicado para emprender acciones contra los empleados que cometan una infracción de seguridad. El conocimiento previo de las consecuencias es esencial para que el proceso sea legalmente válido.",
           "requisito_original": "Debe formalizarse y comunicarse un proceso disciplinario para emprender acciones contra el personal y otras partes interesadas pertinentes que hayan cometido una violación de la política de seguridad de la información.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 7,
           "nivel": "medio",
           "fase_pds": 3,
@@ -274,7 +461,9 @@
           "ayuda": "El Control 6.5 exige que las responsabilidades de seguridad permanezcan tras la finalización o cambio de empleo: devolución de activos (portátil, móvil, tarjetas), revocación inmediata de accesos, recordatorio de obligaciones de confidencialidad post-contractual.",
           "requisito_original": "Las responsabilidades y obligaciones de seguridad de la información que permanezcan válidas tras la finalización o cambio de empleo deben definirse, aplicarse y comunicarse al personal pertinente y a otras partes interesadas.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 8,
           "nivel": "alto",
           "fase_pds": 4,
@@ -287,7 +476,9 @@
           "ayuda": "El Control 6.7 exige medidas específicas para el teletrabajo: política de uso, equipos corporativos (o BYOD controlado), conexión segura (VPN, MFA), protección física en el domicilio, prohibición de uso de redes no confiables.",
           "requisito_original": "Cuando el personal trabaja a distancia, deben implementarse medidas de seguridad para proteger la información a la que se acceda, procese o almacene fuera de las instalaciones de la organización.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 7,
           "nivel": "medio",
           "fase_pds": 4,
@@ -300,7 +491,9 @@
           "ayuda": "El Control 6.8 exige un canal accesible y confiable para que cualquier persona reporte eventos de seguridad: incidentes, sospechas, errores, vulnerabilidades observadas. Sin canal de reporte, los incidentes pasan desapercibidos y se agravan.",
           "requisito_original": "La organización debe proporcionar un mecanismo para que el personal informe de eventos de seguridad de la información observados o sospechosos a través de canales apropiados de manera oportuna.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 8,
           "nivel": "alto",
           "fase_pds": 4,
@@ -311,10 +504,13 @@
     },
     {
       "id": "ISO27002-FIS",
-      "nombre": "Controles físicos",
-      "descripcion": "14 controles relativos a la seguridad física: perímetros seguros, controles de entrada, protección frente a amenazas, áreas seguras, equipamiento, cableado, mantenimiento y borrado seguro de soportes.",
-      "peso_bloque": 14,
+      "nombre": "Seguridad física y ambiental",
+      "descripcion": "Perímetros físicos, controles de entrada, protección frente a amenazas ambientales, áreas seguras, política de escritorio limpio, protección de equipamiento dentro y fuera de las instalaciones, suministros y cableado. Cubre los controles 7.1 a 7.14 de ISO/IEC 27002:2022.",
+      "peso_bloque": 12,
       "seccion_normativa": "7_physical",
+      "temas": [
+        "physical_security"
+      ],
       "preguntas": [
         {
           "id": "ISO27002-FIS-001",
@@ -322,7 +518,9 @@
           "ayuda": "Los Controles 7.1 y 7.2 exigen definir perímetros físicos (vallas, paredes, recepciones controladas) y controles de entrada (tarjetas, biometría, registro de visitas) proporcionales a la sensibilidad del área. Las salas de servidores requieren controles reforzados.",
           "requisito_original": "Los perímetros de seguridad deben definirse y utilizarse para proteger las áreas que contienen información y otros activos asociados. Las áreas seguras deben protegerse con controles de entrada y puntos de acceso apropiados.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 9,
           "nivel": "alto",
           "fase_pds": 4,
@@ -335,7 +533,9 @@
           "ayuda": "Los Controles 7.3 y 7.5 exigen proteger oficinas e instalaciones, y diseñar protección frente a amenazas físicas y ambientales: incendios, inundaciones, terremotos, vandalismo, sabotaje. Aplica especialmente a centros de datos y almacenes de soportes.",
           "requisito_original": "Debe diseñarse e implementarse seguridad física para las oficinas, salas e instalaciones. Debe diseñarse e implementarse protección contra las amenazas físicas y ambientales, como desastres naturales y otras amenazas físicas intencionales o no intencionales a la infraestructura.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 8,
           "nivel": "alto",
           "fase_pds": 4,
@@ -348,7 +548,9 @@
           "ayuda": "Los Controles 7.4 y 7.6 (este último nuevo en 2022) exigen monitorización de la seguridad física (CCTV, sensores) y procedimientos de trabajo en áreas seguras: registro de entradas, prohibición de fotografía, acompañamiento de personal externo.",
           "requisito_original": "Las áreas seguras deben monitorizarse continuamente para detectar accesos físicos no autorizados. Deben diseñarse e implementarse procedimientos para trabajar en áreas seguras.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 8,
           "nivel": "alto",
           "fase_pds": 4,
@@ -361,7 +563,9 @@
           "ayuda": "Los Controles 7.7 y 7.8 exigen política de escritorio y pantalla limpios (documentos guardados al ausentarse, sesiones bloqueadas) y emplazamiento seguro de equipos (lejos de zonas de paso, fijación antirrobo).",
           "requisito_original": "Deben definirse y aplicarse adecuadamente reglas de escritorio limpio para los papeles y los medios de almacenamiento extraíbles, y reglas de pantalla limpia para las instalaciones de procesamiento de información. El equipo debe colocarse de forma segura y protegido.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 7,
           "nivel": "medio",
           "fase_pds": 4,
@@ -374,7 +578,9 @@
           "ayuda": "Los Controles 7.9, 7.10 y 7.14 cubren los activos fuera de las instalaciones (portátiles, móviles), los soportes extraíbles (USB, discos externos) y la eliminación o reutilización segura, incluyendo borrado criptográfico o destrucción física certificada.",
           "requisito_original": "Los activos fuera de las instalaciones deben protegerse. Los medios de almacenamiento deben gestionarse a lo largo de su ciclo de vida de adquisición, uso, transporte y eliminación de acuerdo con el esquema de clasificación de la organización y los requisitos de manejo. Los elementos del equipo que contengan medios de almacenamiento deben verificarse para asegurar que cualquier información sensible y software con licencia haya sido eliminado o sobrescrito de forma segura antes de su eliminación o reutilización.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 9,
           "nivel": "alto",
           "fase_pds": 4,
@@ -387,7 +593,9 @@
           "ayuda": "Los Controles 7.11, 7.12 y 7.13 cubren la disponibilidad de suministros (SAI, generadores, climatización redundante en CPD), la protección del cableado (canalizaciones, separación de cables de energía y datos) y el mantenimiento del equipo conforme a las especificaciones del fabricante.",
           "requisito_original": "Las instalaciones de procesamiento de información deben protegerse frente a fallos de suministro causados por interrupciones de los servicios de soporte. El cableado eléctrico y de telecomunicaciones que transmite datos o presta soporte a los servicios de información debe protegerse frente a interceptación, interferencia o daño. El equipo debe mantenerse correctamente para garantizar la disponibilidad, integridad y confidencialidad de la información.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 7,
           "nivel": "medio",
           "fase_pds": 4,
@@ -397,19 +605,25 @@
       ]
     },
     {
-      "id": "ISO27002-TEC",
-      "nombre": "Controles tecnológicos",
-      "descripcion": "34 controles técnicos sobre dispositivos de usuario, gestión de privilegios, autenticación, criptografía, gestión de vulnerabilidades, configuración, copias de seguridad, registro y monitorización, redes, software y desarrollo seguro.",
-      "peso_bloque": 34,
+      "id": "ISO27002-DISPOSITIVOS",
+      "nombre": "Protección de dispositivos y operación segura",
+      "descripcion": "Endpoints, gestión de capacidad, protección frente a malware, gestión de vulnerabilidades técnicas, configuración segura (hardening) y gestión de programas con privilegios e instalación de software. Cubre los controles 8.1, 8.6, 8.7, 8.8, 8.9, 8.18 y 8.19 de ISO/IEC 27002:2022.",
+      "peso_bloque": 10,
       "seccion_normativa": "8_technological",
+      "temas": [
+        "endpoint_security",
+        "vulnerability_management"
+      ],
       "preguntas": [
         {
-          "id": "ISO27002-TEC-001",
+          "id": "ISO27002-DISPOSITIVOS-001",
           "texto": "¿Están protegidos los dispositivos de usuario final (endpoints) con medidas como cifrado, antivirus, EDR y configuración segura?",
           "ayuda": "El Control 8.1 exige proteger los dispositivos de usuario final: portátiles, sobremesa, móviles, tablets. Cifrado de disco, EDR/antimalware, configuración bastionada, actualizaciones automáticas, control de aplicaciones permitidas.",
           "requisito_original": "La información almacenada, procesada o accesible a través de dispositivos de usuario final debe protegerse.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 10,
           "nivel": "critico",
           "fase_pds": 4,
@@ -417,64 +631,14 @@
           "referencia_articulo": "Control 8.1 ISO/IEC 27002:2022"
         },
         {
-          "id": "ISO27002-TEC-002",
-          "texto": "¿Se restringen y gestionan formalmente los derechos de acceso privilegiado, con autenticación reforzada y registro de uso?",
-          "ayuda": "El Control 8.2 exige restringir y monitorizar los privilegios elevados (administradores). Las cuentas privilegiadas son el principal vector explotado en ataques: requieren MFA obligatoria, registro de cada acción y revisión periódica.",
-          "requisito_original": "La asignación y el uso de derechos de acceso privilegiados deben restringirse y gestionarse.",
-          "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
-          "peso": 10,
-          "nivel": "critico",
-          "fase_pds": 4,
-          "remediacion": "Implementar una solución PAM (Privileged Access Management) o, como mínimo, cuentas privilegiadas separadas con MFA obligatoria. Registrar todas las acciones de cuentas privilegiadas. Revisar trimestralmente los privilegios y aplicar revocación inmediata cuando ya no sean necesarios.",
-          "referencia_articulo": "Control 8.2 ISO/IEC 27002:2022"
-        },
-        {
-          "id": "ISO27002-TEC-003",
-          "texto": "¿Se restringe el acceso a la información en función de la política de control de acceso y el principio de necesidad de saber?",
-          "ayuda": "El Control 8.3 exige restringir el acceso a la información, las funciones del sistema y el código de aplicaciones conforme a la política de control de acceso. Combina políticas (RBAC), tecnologías (DLP, ABAC) y revisión continua.",
-          "requisito_original": "El acceso a la información y otros activos asociados debe restringirse de acuerdo con la política específica establecida sobre el tema de control de acceso.",
-          "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
-          "peso": 9,
-          "nivel": "alto",
-          "fase_pds": 4,
-          "remediacion": "Implantar RBAC con roles bien definidos. Activar permisos a nivel de fichero/carpeta y aplicación. Considerar soluciones DLP para información sensible. Revisar los permisos al menos semestralmente y tras cambios de puesto.",
-          "referencia_articulo": "Control 8.3 ISO/IEC 27002:2022"
-        },
-        {
-          "id": "ISO27002-TEC-004",
-          "texto": "¿Se gestiona el acceso al código fuente con control de versiones, control de acceso y separación de entornos?",
-          "ayuda": "El Control 8.4 exige restringir el acceso al código fuente, librerías de programas y herramientas de desarrollo. Aplica especialmente a empresas que desarrollan software: control de versiones (Git con permisos), revisión de código, prohibición de commits con secretos.",
-          "requisito_original": "El acceso de lectura y escritura al código fuente, las herramientas de desarrollo y las bibliotecas de software debe gestionarse adecuadamente.",
-          "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
-          "peso": 7,
-          "nivel": "medio",
-          "fase_pds": 4,
-          "remediacion": "Usar un sistema de control de versiones (Git) con permisos por rama. Implementar revisión de código obligatoria antes de fusionar. Escanear automáticamente para detectar secretos en el código (gitleaks, trufflehog). Separar entornos de desarrollo, pre-producción y producción.",
-          "referencia_articulo": "Control 8.4 ISO/IEC 27002:2022"
-        },
-        {
-          "id": "ISO27002-TEC-005",
-          "texto": "¿Se aplica autenticación segura y multifactor (MFA) en accesos remotos, cuentas privilegiadas y sistemas críticos?",
-          "ayuda": "El Control 8.5 exige tecnologías y procedimientos de autenticación segura. MFA es obligatorio de facto para acceso remoto, cuentas privilegiadas y sistemas con información sensible. SMS está desaconsejado; mejor TOTP, push o FIDO2.",
-          "requisito_original": "Deben implementarse tecnologías y procedimientos de autenticación segura basados en restricciones de acceso a la información y la política específica de control de acceso.",
-          "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
-          "peso": 10,
-          "nivel": "critico",
-          "fase_pds": 4,
-          "remediacion": "Implementar MFA obligatorio en: VPN, correo corporativo, panel de administración, accesos privilegiados, aplicaciones SaaS críticas. Priorizar TOTP o llaves FIDO2 sobre SMS. Configurar políticas de contraseña conforme a NIST SP 800-63B.",
-          "referencia_articulo": "Control 8.5 ISO/IEC 27002:2022"
-        },
-        {
-          "id": "ISO27002-TEC-006",
+          "id": "ISO27002-DISPOSITIVOS-002",
           "texto": "¿Se gestiona la capacidad de los sistemas para garantizar el rendimiento y la disponibilidad acordados?",
           "ayuda": "El Control 8.6 exige monitorizar y ajustar el uso de recursos para garantizar el rendimiento del sistema. Sin gestión de capacidad, los picos de carga degradan o caen los servicios críticos.",
           "requisito_original": "El uso de recursos debe monitorizarse y ajustarse de acuerdo con los requisitos actuales y esperados de capacidad.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 6,
           "nivel": "medio",
           "fase_pds": 5,
@@ -482,12 +646,14 @@
           "referencia_articulo": "Control 8.6 ISO/IEC 27002:2022"
         },
         {
-          "id": "ISO27002-TEC-007",
+          "id": "ISO27002-DISPOSITIVOS-003",
           "texto": "¿Se dispone de protección frente a software malicioso (malware) en todos los sistemas, con actualizaciones automáticas y monitorización?",
           "ayuda": "El Control 8.7 exige protección frente a malware mediante combinación de prevención, detección y recuperación. Más allá del antivirus tradicional, hoy se exige EDR/XDR, sandboxing, listas de aplicaciones permitidas y respuesta automatizada.",
           "requisito_original": "Debe implementarse protección contra el malware y respaldarse con concienciación adecuada de los usuarios.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 10,
           "nivel": "critico",
           "fase_pds": 4,
@@ -495,12 +661,14 @@
           "referencia_articulo": "Control 8.7 ISO/IEC 27002:2022"
         },
         {
-          "id": "ISO27002-TEC-008",
+          "id": "ISO27002-DISPOSITIVOS-004",
           "texto": "¿Existe un proceso documentado de gestión de vulnerabilidades técnicas con detección, priorización, parcheo y verificación?",
           "ayuda": "El Control 8.8 exige obtener información oportuna sobre vulnerabilidades, evaluar la exposición y aplicar medidas adecuadas. Implica escaneos periódicos, gestión de parches con prioridad por criticidad y verificación posterior.",
           "requisito_original": "Debe obtenerse información sobre las vulnerabilidades técnicas de los sistemas de información en uso, evaluarse la exposición de la organización a tales vulnerabilidades y tomar las medidas apropiadas.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 10,
           "nivel": "critico",
           "fase_pds": 4,
@@ -508,12 +676,14 @@
           "referencia_articulo": "Control 8.8 ISO/IEC 27002:2022"
         },
         {
-          "id": "ISO27002-TEC-009",
+          "id": "ISO27002-DISPOSITIVOS-005",
           "texto": "¿Existe gestión de la configuración segura (hardening) de los sistemas, con plantillas estandarizadas y revisión periódica?",
           "ayuda": "El Control 8.9 (nuevo en 2022) exige configurar de forma segura los sistemas. Implica usar guías de bastionado (CIS Benchmarks, STIGs), versionar las configuraciones y detectar desviaciones automáticamente.",
           "requisito_original": "Las configuraciones, incluidas las configuraciones de seguridad, del hardware, software, servicios y redes deben establecerse, documentarse, implementarse, monitorizarse y revisarse.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 8,
           "nivel": "alto",
           "fase_pds": 4,
@@ -521,12 +691,41 @@
           "referencia_articulo": "Control 8.9 ISO/IEC 27002:2022"
         },
         {
-          "id": "ISO27002-TEC-010",
+          "id": "ISO27002-DISPOSITIVOS-006",
+          "texto": "¿Se controla el uso de programas con privilegios elevados (utilities) y se gestiona la instalación de software en los sistemas operativos?",
+          "ayuda": "Los Controles 8.18 y 8.19 exigen restringir y controlar utilities con privilegios elevados y gestionar la instalación de software en los sistemas operativos, evitando software no autorizado.",
+          "requisito_original": "El uso de programas de utilidad que pudieran ser capaces de eludir los controles del sistema y de las aplicaciones debe restringirse y controlarse estrictamente. Deben implementarse procedimientos y medidas para gestionar de forma segura la instalación de software en los sistemas operativos.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "organizacion"
+          ],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 4,
+          "remediacion": "Inventariar utilities con privilegios y restringir su uso a personal autorizado. Implementar listas blancas de aplicaciones (AppLocker, WDAC) en entornos críticos. Centralizar la instalación de software mediante MDM/UEM. Prohibir instalaciones por usuarios sin privilegios.",
+          "referencia_articulo": "Controles 8.18 y 8.19 ISO/IEC 27002:2022"
+        }
+      ]
+    },
+    {
+      "id": "ISO27002-DATOS",
+      "nombre": "Protección de datos en uso (borrado y DLP)",
+      "descripcion": "Borrado y enmascaramiento de información, y prevención de fuga de datos (DLP). Cubre los controles 8.10, 8.11 y 8.12 de ISO/IEC 27002:2022.",
+      "peso_bloque": 4,
+      "seccion_normativa": "8_technological",
+      "temas": [
+        "data_protection"
+      ],
+      "preguntas": [
+        {
+          "id": "ISO27002-DATOS-001",
           "texto": "¿Se aplican políticas y procedimientos de borrado y enmascaramiento de información cuando ya no es necesaria o se usa fuera de su contexto original?",
           "ayuda": "Los Controles 8.10 y 8.11 (este nuevo en 2022) exigen el borrado seguro de información que ya no se necesita y el enmascaramiento o seudonimización cuando los datos se usan fuera de producción (pruebas, formación, analítica).",
           "requisito_original": "La información almacenada en sistemas de información, dispositivos o cualquier otro medio de almacenamiento debe eliminarse cuando ya no sea necesaria. Debe utilizarse el enmascaramiento de datos de acuerdo con la política específica del tema de control de acceso de la organización y otras políticas específicas y requisitos del negocio relacionados, teniendo en cuenta la legislación aplicable.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 7,
           "nivel": "medio",
           "fase_pds": 4,
@@ -534,25 +733,42 @@
           "referencia_articulo": "Controles 8.10 y 8.11 ISO/IEC 27002:2022"
         },
         {
-          "id": "ISO27002-TEC-011",
+          "id": "ISO27002-DATOS-002",
           "texto": "¿Existen medidas de prevención de fuga de información (DLP) para los activos sensibles?",
           "ayuda": "El Control 8.12 (nuevo en 2022) exige medidas de prevención de fuga de datos (DLP) en los sistemas, redes y dispositivos que procesan información sensible. Incluye control de canales de salida (correo, USB, web), detección y bloqueo.",
           "requisito_original": "Deben aplicarse medidas de prevención de fuga de datos a los sistemas, redes y otros dispositivos que procesen, almacenen o transmitan información sensible.",
           "tipo": "recomendado",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 7,
           "nivel": "medio",
           "fase_pds": 4,
           "remediacion": "Implantar una solución DLP que cubra correo electrónico, navegación, almacenamiento en la nube y dispositivos extraíbles. Definir reglas basadas en clasificación de la información. Comenzar en modo monitorización y avanzar a bloqueo. Investigar las alertas y refinar las reglas.",
           "referencia_articulo": "Control 8.12 ISO/IEC 27002:2022"
-        },
+        }
+      ]
+    },
+    {
+      "id": "ISO27002-RESPALDO",
+      "nombre": "Copias de seguridad y redundancia",
+      "descripcion": "Copias de seguridad periódicas y verificadas, y redundancia de las instalaciones de procesamiento. Cubre los controles 8.13 y 8.14 de ISO/IEC 27002:2022.",
+      "peso_bloque": 5,
+      "seccion_normativa": "8_technological",
+      "temas": [
+        "backup_recovery",
+        "business_continuity"
+      ],
+      "preguntas": [
         {
-          "id": "ISO27002-TEC-012",
+          "id": "ISO27002-RESPALDO-001",
           "texto": "¿Se realizan copias de seguridad periódicas de la información, software y sistemas, verificando su integridad y capacidad de restauración?",
           "ayuda": "El Control 8.13 exige copias de seguridad regulares, conforme a una política definida, con verificación periódica de la integridad y pruebas de restauración. Aplicar la regla 3-2-1 y proteger las copias frente a ransomware (offline o inmutables).",
           "requisito_original": "Deben mantenerse y probarse regularmente copias de seguridad de la información, el software y los sistemas de acuerdo con la política específica acordada sobre copias de seguridad.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 10,
           "nivel": "critico",
           "fase_pds": 4,
@@ -560,77 +776,140 @@
           "referencia_articulo": "Control 8.13 ISO/IEC 27002:2022"
         },
         {
-          "id": "ISO27002-TEC-013",
+          "id": "ISO27002-RESPALDO-002",
           "texto": "¿Se garantiza la redundancia de las instalaciones de procesamiento de información para cumplir los requisitos de disponibilidad?",
           "ayuda": "El Control 8.14 exige redundancia en sistemas críticos: balanceadores, clusters, sitios DR, multi-AZ en cloud. La redundancia debe probarse mediante failovers planificados.",
           "requisito_original": "Las instalaciones de procesamiento de información deben implementarse con redundancia suficiente para cumplir los requisitos de disponibilidad.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 8,
           "nivel": "alto",
           "fase_pds": 4,
           "remediacion": "Identificar los sistemas críticos por RTO/RPO. Implementar redundancia adecuada (HA local, multi-AZ, sitio DR). Probar failovers al menos anualmente. Documentar los resultados y las mejoras necesarias.",
           "referencia_articulo": "Control 8.14 ISO/IEC 27002:2022"
-        },
+        }
+      ]
+    },
+    {
+      "id": "ISO27002-MONITOR",
+      "nombre": "Registro y monitorización de eventos",
+      "descripcion": "Producción, protección y análisis de registros (logs); monitorización continua de actividades y sincronización de relojes. Cubre los controles 8.15, 8.16 y 8.17 de ISO/IEC 27002:2022.",
+      "peso_bloque": 2,
+      "seccion_normativa": "8_technological",
+      "temas": [
+        "logging_audit_trail",
+        "security_monitoring"
+      ],
+      "preguntas": [
         {
-          "id": "ISO27002-TEC-014",
+          "id": "ISO27002-MONITOR-001",
           "texto": "¿Se registran y monitorizan los eventos de seguridad relevantes en sistemas, redes y aplicaciones, con análisis y correlación centralizada?",
           "ayuda": "Los Controles 8.15, 8.16 y 8.17 exigen producir logs (8.15), monitorizar las actividades (8.16, nuevo) y sincronizar relojes (8.17) para correlación. La centralización en un SIEM es el estándar de facto.",
           "requisito_original": "Deben producirse, almacenarse, protegerse y analizarse registros que recojan actividades, excepciones, fallos y otros eventos relevantes. Las redes, sistemas y aplicaciones deben monitorizarse para detectar comportamientos anómalos y tomar medidas adecuadas para evaluar posibles incidentes. Los relojes de los sistemas de procesamiento de información utilizados por la organización deben sincronizarse con fuentes de tiempo aprobadas.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 9,
           "nivel": "alto",
           "fase_pds": 4,
           "remediacion": "Centralizar los logs en un SIEM. Cubrir endpoints, servidores, redes, identidades y aplicaciones. Definir reglas de correlación para detectar comportamientos anómalos. Sincronizar todos los relojes con NTP de fuente fiable. Conservar logs según política (mínimo 6-12 meses).",
           "referencia_articulo": "Controles 8.15, 8.16 y 8.17 ISO/IEC 27002:2022"
-        },
+        }
+      ]
+    },
+    {
+      "id": "ISO27002-REDES",
+      "nombre": "Seguridad de redes",
+      "descripcion": "Gestión y monitorización de redes, segmentación, filtrado web y seguridad de los servicios de red. Cubre los controles 8.20, 8.21, 8.22 y 8.23 de ISO/IEC 27002:2022.",
+      "peso_bloque": 2,
+      "seccion_normativa": "8_technological",
+      "temas": [
+        "network_security"
+      ],
+      "preguntas": [
         {
-          "id": "ISO27002-TEC-015",
-          "texto": "¿Se controla el uso de programas con privilegios elevados (utilities) y se gestiona la instalación de software en los sistemas operativos?",
-          "ayuda": "Los Controles 8.18 y 8.19 exigen restringir y controlar utilities con privilegios elevados y gestionar la instalación de software en los sistemas operativos, evitando software no autorizado.",
-          "requisito_original": "El uso de programas de utilidad que pudieran ser capaces de eludir los controles del sistema y de las aplicaciones debe restringirse y controlarse estrictamente. Deben implementarse procedimientos y medidas para gestionar de forma segura la instalación de software en los sistemas operativos.",
-          "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
-          "peso": 7,
-          "nivel": "medio",
-          "fase_pds": 4,
-          "remediacion": "Inventariar utilities con privilegios y restringir su uso a personal autorizado. Implementar listas blancas de aplicaciones (AppLocker, WDAC) en entornos críticos. Centralizar la instalación de software mediante MDM/UEM. Prohibir instalaciones por usuarios sin privilegios.",
-          "referencia_articulo": "Controles 8.18 y 8.19 ISO/IEC 27002:2022"
-        },
-        {
-          "id": "ISO27002-TEC-016",
+          "id": "ISO27002-REDES-001",
           "texto": "¿Se protegen las redes y los servicios de red con segmentación, filtrado y controles de seguridad apropiados?",
           "ayuda": "Los Controles 8.20, 8.21, 8.22 y 8.23 cubren la seguridad de redes: gestión y monitorización, seguridad de servicios, segmentación (VLANs, micro-segmentación) y filtrado web. Constituyen las barreras técnicas de la red.",
           "requisito_original": "Las redes y los dispositivos de red deben asegurarse, gestionarse y controlarse para proteger la información en los sistemas y las aplicaciones. Los grupos de servicios de información, usuarios y sistemas de información deben segregarse en las redes de la organización. El acceso a sitios web externos debe gestionarse para reducir la exposición a contenido malicioso.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 9,
           "nivel": "alto",
           "fase_pds": 4,
           "remediacion": "Segmentar la red con VLANs y firewalls internos. Aislar entornos sensibles (CPD, OT). Implementar IDS/IPS y NDR. Aplicar filtrado web (SWG) y DNS seguro. Revisar periódicamente las reglas de firewall.",
           "referencia_articulo": "Controles 8.20 a 8.23 ISO/IEC 27002:2022"
-        },
+        }
+      ]
+    },
+    {
+      "id": "ISO27002-CRIPTO",
+      "nombre": "Criptografía y gestión de claves",
+      "descripcion": "Política de uso de la criptografía y gestión del ciclo de vida de las claves criptográficas. Cubre el control 8.24 de ISO/IEC 27002:2022.",
+      "peso_bloque": 2,
+      "seccion_normativa": "8_technological",
+      "temas": [
+        "cryptography",
+        "communications_security"
+      ],
+      "preguntas": [
         {
-          "id": "ISO27002-TEC-017",
+          "id": "ISO27002-CRIPTO-001",
           "texto": "¿Se usa criptografía adecuada para proteger la información en tránsito y en reposo, con gestión de claves documentada?",
           "ayuda": "El Control 8.24 exige una política de criptografía y una gestión de claves que cubra generación, almacenamiento, distribución, rotación, archivado y destrucción. TLS 1.2+, AES-256, gestión centralizada en KMS o HSM.",
           "requisito_original": "Deben definirse e implementarse normas para el uso eficaz de la criptografía, incluida la gestión de claves criptográficas.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 9,
           "nivel": "alto",
           "fase_pds": 4,
           "remediacion": "Aprobar una política de uso de criptografía: algoritmos permitidos (AES-256, RSA-2048+, TLS 1.2+), longitudes mínimas, escenarios de uso. Centralizar la gestión de claves en un KMS o HSM. Rotar claves periódicamente. Auditar el uso de criptografía.",
           "referencia_articulo": "Control 8.24 ISO/IEC 27002:2022"
+        }
+      ]
+    },
+    {
+      "id": "ISO27002-DESARROLLO",
+      "nombre": "Desarrollo y mantenimiento seguro",
+      "descripcion": "Acceso al código fuente, ciclo de vida de desarrollo seguro (SSDLC), separación de entornos, gestión de cambios, pruebas de seguridad y requisitos específicos de las aplicaciones. Cubre los controles 8.4, 8.25 a 8.34 de ISO/IEC 27002:2022.",
+      "peso_bloque": 4,
+      "seccion_normativa": "8_technological",
+      "temas": [
+        "secure_development",
+        "change_management"
+      ],
+      "preguntas": [
+        {
+          "id": "ISO27002-DESARROLLO-001",
+          "texto": "¿Se gestiona el acceso al código fuente con control de versiones, control de acceso y separación de entornos?",
+          "ayuda": "El Control 8.4 exige restringir el acceso al código fuente, librerías de programas y herramientas de desarrollo. Aplica especialmente a empresas que desarrollan software: control de versiones (Git con permisos), revisión de código, prohibición de commits con secretos.",
+          "requisito_original": "El acceso de lectura y escritura al código fuente, las herramientas de desarrollo y las bibliotecas de software debe gestionarse adecuadamente.",
+          "tipo": "obligatorio",
+          "aplicabilidad": [
+            "organizacion"
+          ],
+          "peso": 7,
+          "nivel": "medio",
+          "fase_pds": 4,
+          "remediacion": "Usar un sistema de control de versiones (Git) con permisos por rama. Implementar revisión de código obligatoria antes de fusionar. Escanear automáticamente para detectar secretos en el código (gitleaks, trufflehog). Separar entornos de desarrollo, pre-producción y producción.",
+          "referencia_articulo": "Control 8.4 ISO/IEC 27002:2022"
         },
         {
-          "id": "ISO27002-TEC-018",
+          "id": "ISO27002-DESARROLLO-002",
           "texto": "¿Se sigue un ciclo de vida de desarrollo seguro (SSDLC) con requisitos de seguridad, revisión de código y pruebas de seguridad?",
           "ayuda": "Los Controles 8.25 a 8.30 cubren todo el ciclo de desarrollo seguro: ciclo de vida, requisitos, principios de ingeniería, codificación segura, pruebas de seguridad y desarrollo externalizado. SAST, DAST, SCA y revisión de código son esenciales.",
           "requisito_original": "Deben establecerse y aplicarse normas para el desarrollo seguro de software y sistemas. Deben identificarse, especificarse y aprobarse los requisitos de seguridad de la información al desarrollar o adquirir aplicaciones. Deben establecerse, documentarse y aplicarse a las actividades de desarrollo de sistemas los principios para la ingeniería de sistemas seguros.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 9,
           "nivel": "alto",
           "fase_pds": 3,
@@ -638,12 +917,14 @@
           "referencia_articulo": "Controles 8.25 a 8.30 ISO/IEC 27002:2022"
         },
         {
-          "id": "ISO27002-TEC-019",
+          "id": "ISO27002-DESARROLLO-003",
           "texto": "¿Se separan los entornos de desarrollo, pruebas y producción, y se controlan los cambios mediante un proceso formal?",
           "ayuda": "Los Controles 8.31, 8.32 y 8.33 exigen separar entornos (desarrollo / pruebas / producción), gestionar formalmente los cambios y proteger la información de prueba (datos seudonimizados, nunca reales sin justificación).",
           "requisito_original": "Los entornos de desarrollo, prueba y producción deben separarse y asegurarse. Los cambios en las instalaciones de procesamiento de información y los sistemas de información deben someterse a procedimientos de gestión del cambio. La información de prueba debe seleccionarse, protegerse y gestionarse adecuadamente.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 8,
           "nivel": "alto",
           "fase_pds": 4,
@@ -651,12 +932,14 @@
           "referencia_articulo": "Controles 8.31, 8.32 y 8.33 ISO/IEC 27002:2022"
         },
         {
-          "id": "ISO27002-TEC-020",
+          "id": "ISO27002-DESARROLLO-004",
           "texto": "¿Se realizan pruebas de seguridad y se protege a los sistemas de producción durante las auditorías técnicas (pentest, escaneos)?",
           "ayuda": "El Control 8.34 exige planificar y acordar las pruebas de auditoría sobre sistemas operativos para minimizar interrupciones. Los pentests, escaneos de vulnerabilidades y auditorías técnicas deben planificarse para no afectar el servicio.",
           "requisito_original": "Las pruebas de auditoría y otras actividades de aseguramiento que impliquen evaluación de sistemas operativos deben planificarse y acordarse entre el evaluador y la dirección apropiada.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 7,
           "nivel": "medio",
           "fase_pds": 5,
@@ -664,30 +947,19 @@
           "referencia_articulo": "Control 8.34 ISO/IEC 27002:2022"
         },
         {
-          "id": "ISO27002-TEC-021",
+          "id": "ISO27002-DESARROLLO-005",
           "texto": "¿Se aplican requisitos específicos de seguridad en los servicios de aplicación que circulan por redes públicas y en sus transacciones?",
           "ayuda": "Los Controles 8.26 y 8.27 (en el grupo de adquisición y desarrollo) cubren los requisitos de seguridad de las aplicaciones y la arquitectura de sistemas seguros. Incluyen autenticación robusta, protección de sesiones, validación de entradas, protección frente a OWASP Top 10 y arquitectura defensiva por capas.",
           "requisito_original": "Los requisitos de seguridad de la información deben identificarse, especificarse y aprobarse al desarrollar o adquirir aplicaciones. Deben establecerse, documentarse, mantenerse y aplicarse principios para la ingeniería de sistemas seguros a cualquier actividad de desarrollo de sistemas de información.",
           "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
+          "aplicabilidad": [
+            "organizacion"
+          ],
           "peso": 8,
           "nivel": "alto",
           "fase_pds": 3,
           "remediacion": "Definir requisitos mínimos de seguridad para todas las aplicaciones: autenticación robusta, gestión de sesiones segura, validación de entradas, protección frente a OWASP Top 10, cifrado de transacciones. Validar el cumplimiento mediante pruebas de seguridad antes de cada despliegue.",
           "referencia_articulo": "Controles 8.26 y 8.27 ISO/IEC 27002:2022"
-        },
-        {
-          "id": "ISO27002-TEC-022",
-          "texto": "¿Se gestiona la seguridad de los servicios en la nube mediante un proceso específico que cubra adquisición, uso, gestión y salida del proveedor?",
-          "ayuda": "El Control 5.23 (nuevo en 2022) exige establecer un proceso específico para la seguridad en servicios cloud: criterios de selección del proveedor, modelo de responsabilidad compartida, monitorización del cumplimiento y planes de salida (exit plan).",
-          "requisito_original": "Los procesos para la adquisición, uso, gestión y salida de servicios en la nube deben establecerse de acuerdo con los requisitos de seguridad de la información de la organización.",
-          "tipo": "obligatorio",
-          "aplicabilidad": ["organizacion"],
-          "peso": 9,
-          "nivel": "alto",
-          "fase_pds": 3,
-          "remediacion": "Aprobar una política de uso de servicios cloud con criterios mínimos: certificaciones del proveedor (ISO 27001, ISO 27017, ENS), localización de datos, modelo de responsabilidad compartida documentado, derecho de auditoría. Mantener un inventario de servicios cloud en uso. Definir y mantener actualizado un plan de salida para evitar el bloqueo del proveedor.",
-          "referencia_articulo": "Control 5.23 ISO/IEC 27002:2022"
         }
       ]
     }

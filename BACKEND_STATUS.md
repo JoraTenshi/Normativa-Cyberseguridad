@@ -44,27 +44,32 @@
 
 Las normativas nuevas (a partir de NIS2) siguen un contrato JSON canónico definido en `backend/seed/schema_normativa.json`. El validador `backend/seed/validate_normativa.py` se ejecuta en `make seed` (en el host) **antes** del seed real y aborta si algún JSON no cumple el contrato (campos obligatorios, enums válidos, suma de `peso_bloque` = 100).
 
-Campos canónicos por pregunta: `id`, `texto`, `peso`, `nivel`, `fase_pds`, `remediacion`, `ayuda` (texto plano para tooltip), `requisito_original` (cita textual del fragmento legal), `tipo` (`obligatorio` / `recomendado`), `aplicabilidad` (perfiles aplicables, p. ej. `["esencial","importante"]`), `referencia_articulo` (cita al artículo o control). Campos canónicos por bloque: `descripcion`, `peso_bloque` (0–100, deben sumar 100). Campo canónico por normativa: `referencia_oficial` (cita legal con fecha).
+Campos canónicos por pregunta: `id`, `texto`, `peso`, `nivel`, `fase_pds`, `remediacion`, `ayuda` (texto plano para tooltip), `requisito_original` (cita textual del fragmento legal), `tipo` (`obligatorio` / `recomendado` / `condicional`), `aplicabilidad` (perfiles aplicables, p. ej. `["esencial","importante"]`), `referencia_articulo` (cita al artículo o control). Campos canónicos por bloque: `descripcion`, `peso_bloque` (0–100, deben sumar 100), `temas` (vocabulario cerrado para cross-mapping), `seccion_normativa` (opcional, agrupación nativa de la normativa, p. ej. cláusulas de ISO 27002) y `fecha_aplicabilidad` (opcional). Campos canónicos por normativa: `referencia_oficial` (cita legal con fecha) y `fecha_aplicabilidad_general` (opcional).
 
-La normativa legacy `ens` tiene `null` / `[]` en estos campos hasta que Cris la regenere en formato canónico.
+Todas las normativas del seed están ya en formato canónico (la antigua `ens` placeholder fue regenerada por Cris).
 
 `backend/seed/seed.js` auto-descubre cualquier `*_normativa.json` que se deje caer en `backend/seed/` (excluyendo `schema_normativa.json`), por lo que añadir una nueva normativa canónica es un *drop-in*: copiar el JSON al directorio, ejecutar `make seed`, y el validador + el seed la procesan automáticamente.
 
-Estado actual del seed (6 normativas, 142 preguntas):
-- `iso27001` — 7 bloques, 15 preguntas (canónico)
-- `iso27002` — 4 bloques, 50 preguntas (canónico)
-- `lopdpygdd` — 6 bloques, 9 preguntas (canónico)
-- `nis2` — 10 bloques, 40 preguntas (canónico)
-- `rgpd` — 8 bloques, 19 preguntas (canónico)
-- `ens` — 4 bloques, 15 preguntas (placeholder, sin campos canónicos)
+Estado actual del seed (11 normativas, 98 bloques, 343 preguntas, todas canónicas):
+- `ens` — 18 bloques, 70 preguntas
+- `nis2` — 10 bloques, 40 preguntas
+- `eni` — 10 bloques, 61 preguntas
+- `rgpd` — 8 bloques, 19 preguntas
+- `ia_act` — 7 bloques, 26 preguntas
+- `iso27001` — 7 bloques, 15 preguntas
+- `iso27002` — 16 bloques, 50 preguntas
+- `cra` — 6 bloques, 22 preguntas
+- `lopdpygdd` — 6 bloques, 9 preguntas
+- `lssi_ce` — 5 bloques, 11 preguntas
+- `cybersecurity_act` — 5 bloques, 20 preguntas
 
 #### Cobertura estimada multinormativa
 
 `POST /resultado` y `GET /historial/:id` devuelven adicionalmente el campo `cobertura_estimada`: una lista con la estimación aproximada del cumplimiento del usuario en cada normativa **distinta** a la que ha contestado, calculada por proyección temática.
 
-El cross-mapping se basa en el campo `temas` (opcional, en cada bloque) que toma valores de un vocabulario cerrado de 29 temas definido en `backend/constants/temas.js` y replicado en el enum del schema canónico. Cada entrada de `cobertura_estimada` incluye `normativa_id`, `normativa_nombre`, `porcentaje_estimado` (entero 0–100 o `null` si ningún bloque pudo estimarse), `cobertura_tematica` (ratio 0–1 de bloques estimables), `bloques_estimados` y `tipo: 'estimado'` como marcador semántico para que el frontend lo diferencie del cumplimiento medido.
+El cross-mapping se basa en el campo `temas` (opcional, en cada bloque) que toma valores de un vocabulario cerrado de 37 temas definido en `backend/constants/temas.js` y replicado en el enum del schema canónico. Cada entrada de `cobertura_estimada` incluye `normativa_id`, `normativa_nombre`, `porcentaje_estimado` (entero 0–100 o `null` si ningún bloque pudo estimarse), `cobertura_tematica` (ratio 0–1 de bloques estimables), `bloques_estimados` y `tipo: 'estimado'` como marcador semántico para que el frontend lo diferencie del cumplimiento medido.
 
-Hoy solo el placeholder `ens` tiene `temas` tagueados (vía seed inline). Las normativas canónicas (`nis2`, `iso27001`, `iso27002`, `lopdpygdd`, `rgpd`) no llevan `temas` todavía, así que `cobertura_estimada` devuelve `null` para ellas hasta que Cris las etiquete en sus JSONs.
+Actualmente las 11 normativas tienen todos sus bloques etiquetados con `temas`, por lo que `cobertura_estimada` produce estimaciones cruzadas entre todas ellas.
 
 ### Evaluaciones — `/resultado`
 | Método | Endpoint | Descripción |
@@ -134,10 +139,10 @@ La página de ajustes sólo gestiona el 2FA. Necesita una sección nueva donde e
 
 `HistorialDetalle.jsx` también recibe `remediaciones` pero no las renderiza.
 
-### 5. Plan Director de Ciberseguridad (PDS)
+### 5. Plan Director de Ciberseguridad (PDS) — ✅ Implementado (mayo 2026)
 **Endpoint:** `GET /me/pds/:resultadoId`
 
-No existe ninguna página en el frontend. Se necesita una página o sección accesible desde el detalle de evaluación o el historial que muestre el plan de acción agrupado. Cuando `usa_fases_incibe` sea `true`, mostrar las acciones agrupadas por fase INCIBE (1–5); en caso contrario, mostrar una lista plana priorizada.
+`frontend/src/pages/PlanDirector.jsx` consume el endpoint en la ruta `/pds/:resultadoId`, accesible desde el botón "Ver Plan Director" de `Resultado.jsx` y "Generar Plan Director" de `HistorialDetalle.jsx`. Agrupa las acciones por fase INCIBE (1–5) cuando `usa_fases_incibe` es `true` y muestra una lista plana priorizada en caso contrario.
 
 ### 6. Licitaciones públicas
 **Endpoints:** `GET /licitaciones`, `GET /licitaciones/status`, `POST /licitaciones/sync`
