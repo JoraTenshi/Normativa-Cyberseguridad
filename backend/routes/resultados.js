@@ -7,7 +7,6 @@ const { construirRemediaciones, getNivel, calcularCoberturaEstimada } = require(
 
 const MAX_RESPUESTAS  = 500;
 const VALORES_VALIDOS = [0, 0.5, 1];
-const ANON_TTL_MS     = 24 * 60 * 60 * 1000;
 
 router.post('/', optionalAuth, async (req, res) => {
   try {
@@ -43,16 +42,19 @@ router.post('/', optionalAuth, async (req, res) => {
 
     const { puntuacion_total, puntuacion_maxima, porcentaje, puntuaciones_bloques } = calcularPorcentaje(normativa, respuestas);
 
-    const resultado = await Resultado.create({
-      usuario:   req.user?.id ?? null,
-      normativa: normativaIdClean,
-      respuestas,
-      puntuacion_total,
-      puntuacion_maxima,
-      porcentaje,
-      puntuaciones_bloques,
-      expiresAt: req.user ? null : new Date(Date.now() + ANON_TTL_MS)
-    });
+    let resultadoId = null;
+    if (req.user) {
+      const resultado = await Resultado.create({
+        usuario:   req.user.id,
+        normativa: normativaIdClean,
+        respuestas,
+        puntuacion_total,
+        puntuacion_maxima,
+        porcentaje,
+        puntuaciones_bloques
+      });
+      resultadoId = resultado._id;
+    }
 
     const remediaciones = construirRemediaciones(normativa, respuestas);
     const cobertura_estimada = calcularCoberturaEstimada(normativa, puntuaciones_bloques, otrasNormativas);
@@ -60,7 +62,7 @@ router.post('/', optionalAuth, async (req, res) => {
     res.status(201).json({
       ok: true,
       data: {
-        id:                  resultado._id,
+        id:                  resultadoId,
         normativa:           normativaIdClean,
         normativa_nombre:    normativa.nombre,
         puntuacion_total,

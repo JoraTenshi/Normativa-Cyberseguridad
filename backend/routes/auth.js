@@ -1,5 +1,6 @@
 const express      = require('express');
 const crypto       = require('crypto');
+const bcrypt       = require('bcryptjs');
 const router       = express.Router();
 const jwt          = require('jsonwebtoken');
 const speakeasy    = require('speakeasy');
@@ -12,6 +13,8 @@ const RESET_TTL_MS = 30 * 60 * 1000;
 const APP_URL = (process.env.APP_URL || process.env.CORS_ORIGIN || 'https://localhost').replace(/\/$/, '');
 
 const hashResetToken = raw => crypto.createHash('sha256').update(raw).digest('hex');
+
+const DUMMY_HASH = bcrypt.hashSync('cyberlaw_timing_equalizer', 12);
 
 const EMAIL_RE    = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PASSWORD_RE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
@@ -52,8 +55,12 @@ router.post('/register', async (req, res) => {
   try {
     const { nombre, email, password } = req.body;
 
-    if (typeof nombre !== 'string' || nombre.trim() === '') {
-      return res.status(400).json({ ok: false, error: 'El nombre es obligatorio' });
+    const nombreTrim = typeof nombre === 'string' ? nombre.trim() : '';
+    if (nombreTrim === '' || nombreTrim.length > 100) {
+      return res.status(400).json({ ok: false, error: 'El nombre es obligatorio y no puede superar los 100 caracteres' });
+    }
+    if (/[<>]/.test(nombreTrim)) {
+      return res.status(400).json({ ok: false, error: 'El nombre contiene caracteres no permitidos' });
     }
     if (typeof email !== 'string' || !EMAIL_RE.test(email)) {
       return res.status(400).json({ ok: false, error: 'Email inválido' });
@@ -67,7 +74,7 @@ router.post('/register', async (req, res) => {
       return res.status(409).json({ ok: false, error: 'El email ya está registrado' });
     }
 
-    const usuario = await Usuario.create({ nombre: nombre.trim(), email, password });
+    const usuario = await Usuario.create({ nombre: nombreTrim, email, password });
     res.cookie(COOKIE_NAME, signToken(usuario), COOKIE_OPTIONS);
     res.status(201).json({ ok: true, data: { usuario: safeUser(usuario) } });
 
@@ -87,6 +94,7 @@ router.post('/login', async (req, res) => {
     const usuario = await Usuario.findOne({ email: email.toLowerCase().trim() });
 
     if (!usuario) {
+      await bcrypt.compare(password, DUMMY_HASH);
       return res.status(401).json({ ok: false, error: 'Credenciales incorrectas' });
     }
 

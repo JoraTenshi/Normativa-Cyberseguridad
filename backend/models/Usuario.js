@@ -19,7 +19,7 @@ const OrganizacionSchema = new mongoose.Schema({
 }, { _id: false });
 
 const UsuarioSchema = new mongoose.Schema({
-  nombre:        { type: String, required: true, trim: true, maxlength: 100 },
+  nombre:        { type: String, required: true, trim: true, maxlength: 100, match: /^[^<>]+$/ },
   email:         { type: String, required: true, unique: true, lowercase: true, trim: true },
   password:      { type: String, required: true },
   organizacion:     { type: OrganizacionSchema, default: () => ({}) },

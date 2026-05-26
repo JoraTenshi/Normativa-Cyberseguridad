@@ -12,7 +12,7 @@ const TAMANOS_VALIDOS  = ['micro', 'pequena', 'mediana', 'grande'];
 
 router.get('/', requireAuth, async (req, res) => {
   try {
-    const usuario = await Usuario.findById(req.user.id, { password: 0, __v: 0 });
+    const usuario = await Usuario.findById(req.user.id, { password: 0, __v: 0, loginAttempts: 0, lockUntil: 0 });
     if (!usuario) return res.status(404).json({ ok: false, error: 'Usuario no encontrado' });
     res.json({ ok: true, data: usuario });
   } catch (err) {
@@ -39,7 +39,7 @@ router.put('/organizacion', requireAuth, async (req, res) => {
     const usuario = await Usuario.findByIdAndUpdate(
       req.user.id,
       { $set: update },
-      { new: true, projection: { password: 0, __v: 0 } }
+      { new: true, projection: { password: 0, __v: 0, loginAttempts: 0, lockUntil: 0 } }
     );
     if (!usuario) return res.status(404).json({ ok: false, error: 'Usuario no encontrado' });
     res.json({ ok: true, data: usuario });
