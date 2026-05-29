@@ -11,6 +11,9 @@ import Settings         from './pages/Settings';
 import PlanDirector from './pages/PlanDirector';
 import cyberlaw from './images/cyber.png';
 import './App.css';
+import CookieBanner from './components/CookieBanner';
+import Footer from './components/Footer';
+
 
 function Navbar() {
   const { user, logout } = useAuth();
@@ -121,6 +124,8 @@ function App() {
     <AuthProvider>
       <Router>
         <div className="app">
+        
+          <CookieBanner />
           <Navbar />
           <main className="main-content">
             <Routes>
@@ -141,7 +146,7 @@ function App() {
             </Routes>
           </main>
           <footer className="footer">
-            <p>CyberLaw · Herramienta de Autoevaluación de Ciberseguridad · ISO 27001 · ENS</p>
+           <Footer />            
           </footer>
         </div>
       </Router>
