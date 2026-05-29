@@ -34,7 +34,7 @@ async function optionalAuth(req, res, next) {
   const token = extractToken(req);
   if (token) {
     try {
-      const payload = jwt.verify(token, JWT_SECRET);
+      const payload = jwt.verify(token, JWT_SECRET, { algorithms: ['HS256'] });
       if (payload.jti) {
         const revoked = await RevokedToken.exists({ jti: payload.jti });
         if (!revoked) { req.user = payload; req.token = token; }
