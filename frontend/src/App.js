@@ -9,6 +9,8 @@ import Historial        from './pages/Historial';
 import HistorialDetalle from './pages/HistorialDetalle';
 import Settings         from './pages/Settings';
 import PlanDirector     from './pages/PlanDirector';
+import CookieBanner     from './components/CookieBanner';
+import Footer           from './components/Footer';
 import cyberlaw from './images/cyber.png';
 import './App.css';
 
@@ -119,6 +121,7 @@ function App() {
     <AuthProvider>
       <Router>
         <div className="app">
+          <CookieBanner />
           <Navbar />
           <main className="main-content">
             <Routes>
@@ -138,9 +141,7 @@ function App() {
               } />
             </Routes>
           </main>
-          <footer className="footer">
-            <p>CyberLaw · Herramienta de Autoevaluación de Ciberseguridad · ISO 27001 · ENS</p>
-          </footer>
+          <Footer />
         </div>
       </Router>
     </AuthProvider>
