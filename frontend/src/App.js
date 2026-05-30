@@ -10,6 +10,7 @@ import HistorialDetalle from './pages/HistorialDetalle';
 import Settings         from './pages/Settings';
 import PlanDirector from './pages/PlanDirector';
 import cyberlaw from './images/cyber.png';
+import DevToolsEasterEgg from './components/useJoseEE';
 import './App.css';
 import CookieBanner from './components/CookieBanner';
 import Footer from './components/Footer';
@@ -124,7 +125,7 @@ function App() {
     <AuthProvider>
       <Router>
         <div className="app">
-        
+          <DevToolsEasterEgg />
           <CookieBanner />
           <Navbar />
           <main className="main-content">
