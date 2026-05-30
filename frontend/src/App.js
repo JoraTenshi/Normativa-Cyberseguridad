@@ -12,6 +12,7 @@ import PlanDirector     from './pages/PlanDirector';
 import CookieBanner     from './components/CookieBanner';
 import Footer           from './components/Footer';
 import cyberlaw from './images/cyber.png';
+import DevToolsEasterEgg from './components/useJoseEE';
 import './App.css';
 
 function Navbar() {
@@ -121,6 +122,7 @@ function App() {
     <AuthProvider>
       <Router>
         <div className="app">
+          <DevToolsEasterEgg />
           <CookieBanner />
           <Navbar />
           <main className="main-content">
