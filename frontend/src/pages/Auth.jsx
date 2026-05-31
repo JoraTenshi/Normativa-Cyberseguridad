@@ -16,6 +16,9 @@ const Auth = () => {
   const location  = useLocation();
   const from      = location.state?.from || '/';
 
+  // Temporary, will be removed.
+  const urlMsg = new URLSearchParams(location.search).get('msg');
+
   // Si ya hay sesión iniciada, no mostrar el formulario: redirigir.
   if (user) return <Navigate to={from} replace />;
 
@@ -121,6 +124,11 @@ const Auth = () => {
         <div className="auth-brand">
           <span className="auth-title">CyberLaw</span>
         </div>
+
+        {/* Temporary, will be removed. */}
+        {urlMsg && (
+          <div className="error-banner" dangerouslySetInnerHTML={{ __html: urlMsg }} />
+        )}
 
         <div className="auth-tabs">
           <button
