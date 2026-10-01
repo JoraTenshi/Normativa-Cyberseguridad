@@ -1,21 +1,15 @@
-const crypto = require('crypto');
-const fs     = require('fs');
-const path   = require('path');
+const jwtSecret = process.env.JWT_SECRET || '';
 
-const envPath = path.join(__dirname, '../.env');
+if (!/^[0-9a-f]{64,}$/i.test(jwtSecret) || jwtSecret.length % 2 !== 0) {
+  throw new Error('JWT_SECRET debe ser hexadecimal y tener al menos 32 bytes');
+}
 
-if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32) {
-  const secret = crypto.randomBytes(64).toString('hex');
+const totpKey = process.env.TOTP_ENCRYPTION_KEY || '';
 
-  try {
-    let content = fs.existsSync(envPath) ? fs.readFileSync(envPath, 'utf8') : '';
-    content = /^JWT_SECRET=/m.test(content)
-      ? content.replace(/^JWT_SECRET=.*$/m, `JWT_SECRET=${secret}`)
-      : content + `\nJWT_SECRET=${secret}\n`;
-    fs.writeFileSync(envPath, content, 'utf8');
-  } catch {
-    console.warn('Could not write to .env; JWT_SECRET valid for this session only');
-  }
+if (!/^[0-9a-f]{64}$/i.test(totpKey)) {
+  throw new Error('TOTP_ENCRYPTION_KEY debe ser hexadecimal y tener 32 bytes');
+}
 
-  process.env.JWT_SECRET = secret;
+if (totpKey.toLowerCase() === jwtSecret.toLowerCase()) {
+  throw new Error('TOTP_ENCRYPTION_KEY debe ser distinta de JWT_SECRET');
 }

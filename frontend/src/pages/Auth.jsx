@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation, Navigate } from 'react-router-dom';
+import { useNavigate, useLocation, Navigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { register, loginApi, verify2fa } from '../services/api';
+import { register, loginApi, verify2fa, resendVerification } from '../services/api';
 
 const Auth = () => {
   const [tab, setTab]         = useState('login');
   const [form, setForm]       = useState({ nombre: '', email: '', password: '' });
   const [error, setError]     = useState(null);
+  const [notice, setNotice]   = useState(null);
+  const [canResend, setCanResend] = useState(false);
   const [loading, setLoading] = useState(false);
   const [needs2fa, setNeeds2fa] = useState(false);
   const [totpCode, setTotpCode] = useState('');
@@ -16,29 +18,37 @@ const Auth = () => {
   const location  = useLocation();
   const from      = location.state?.from || '/';
 
-  // Temporary, will be removed.
-  const urlMsg = new URLSearchParams(location.search).get('msg');
-
   // Si ya hay sesión iniciada, no mostrar el formulario: redirigir.
   if (user) return <Navigate to={from} replace />;
 
   const handleChange = e =>
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const switchTab = t => { setTab(t); setError(null); setNeeds2fa(false); };
+  const switchTab = t => { setTab(t); setError(null); setNotice(null); setCanResend(false); setNeeds2fa(false); };
 
   const handleSubmit = async e => {
     e.preventDefault();
     setError(null);
+    setNotice(null);
     setLoading(true);
+
     try {
-      const data = tab === 'register'
-        ? await register(form.nombre, form.email, form.password)
-        : await loginApi(form.email, form.password);
+      if (tab === 'register') {
+        const result = await register(form.nombre, form.email, form.password);
+
+        setForm(prev => ({ ...prev, password: '' }));
+        setTab('login');
+        setCanResend(true);
+        setNotice(result.emailSent
+          ? 'Cuenta creada. Revisa tu correo para confirmar la dirección antes de iniciar sesión.'
+          : 'Cuenta creada, pero no se pudo enviar el correo. Solicita otro enlace más tarde.');
+        return;
+      }
+
+      const data = await loginApi(form.email, form.password);
 
       if (data.requires2fa) {
         setNeeds2fa(true);
-        setLoading(false);
         return;
       }
 
@@ -46,6 +56,20 @@ const Auth = () => {
       navigate(from, { replace: true });
     } catch (err) {
       setError(err.response?.data?.error || 'Error de conexión con el servidor');
+      setCanResend(err.response?.data?.code === 'EMAIL_NOT_VERIFIED');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResend = async () => {
+    setError(null);
+    setLoading(true);
+    try {
+      const data = await resendVerification(form.email);
+      setNotice(data.message);
+    } catch (err) {
+      setError(err.response?.data?.error || 'No se pudo solicitar otro enlace');
     } finally {
       setLoading(false);
     }
@@ -125,11 +149,6 @@ const Auth = () => {
           <span className="auth-title">CyberLaw</span>
         </div>
 
-        {/* Temporary, will be removed. */}
-        {urlMsg && (
-          <div className="error-banner" dangerouslySetInnerHTML={{ __html: urlMsg }} />
-        )}
-
         <div className="auth-tabs">
           <button
             className={`auth-tab ${tab === 'login' ? 'active' : ''}`}
@@ -146,6 +165,7 @@ const Auth = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="auth-form">
+          {notice && <p role="status">{notice}</p>}
           {tab === 'register' && (
             <div className="form-group">
               <label className="form-label">Nombre</label>
@@ -191,9 +211,15 @@ const Auth = () => {
           </div>
 
           {error && (
-            <div className="error-banner">
+            <div className="error-banner" role="alert">
               <span>⚠️</span> {error}
             </div>
+          )}
+
+          {tab === 'login' && canResend && (
+            <button type="button" className="auth-link" onClick={handleResend} disabled={loading || !form.email}>
+              Reenviar enlace de confirmación
+            </button>
           )}
 
           <button type="submit" className="btn-primary auth-submit" disabled={loading}>
@@ -203,6 +229,10 @@ const Auth = () => {
             }
           </button>
         </form>
+
+        {tab === 'login' && (
+          <p className="auth-switch"><Link to="/forgot-password" className="auth-link">¿Has olvidado tu contraseña?</Link></p>
+        )}
 
         <p className="auth-switch">
           {tab === 'login'

@@ -41,6 +41,26 @@ export const register = async (nombre, email, password) => {
   return data.data;
 };
 
+export const verifyEmail = async (token) => {
+  const { data } = await api.post('/auth/verify-email', { token });
+  return data;
+};
+
+export const resendVerification = async (email) => {
+  const { data } = await api.post('/auth/resend-verification', { email });
+  return data;
+};
+
+export const forgotPassword = async (email) => {
+  const { data } = await api.post('/auth/forgot-password', { email });
+  return data;
+};
+
+export const resetPassword = async (token, password) => {
+  const { data } = await api.post('/auth/reset-password', { token, password });
+  return data;
+};
+
 export const loginApi = async (email, password) => {
   const { data } = await api.post('/auth/login', { email, password });
   return data.data;

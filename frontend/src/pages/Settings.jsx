@@ -96,6 +96,12 @@ const Settings = () => {
             {success}
           </div>
         )}
+{error && (
+  <div className="error-banner" role="alert" style={{ marginTop: '1rem' }}>
+    <span aria-hidden="true">⚠️</span> {error}
+  </div>
+)}
+
 
         {/* ── Setup flow ─── */}
         {step === 'idle' && (
@@ -117,7 +123,10 @@ const Settings = () => {
             <p className="twofa-instruction">
               1. Escanea el código QR con Google Authenticator, Authy u otra app TOTP.<br />
               2. Si no puedes escanear, introduce manualmente la clave secreta.<br />
-              3. Introduce el código de 6 dígitos que genera la app para confirmar.
+              3. Introduce el código de 6 dígitos que genera la app para confirmar.<br />
+              Si ya habías desactivado 2FA, la entrada anterior de Google Authenticator
+              no sirve para esta nueva activación. Escanea este QR y utiliza el código
+              de la entrada nueva.
             </p>
             {qr && <img src={qr} alt="QR 2FA" className="twofa-qr" />}
             <div className="twofa-secret">{secret}</div>
@@ -139,8 +148,6 @@ const Settings = () => {
                 />
               </div>
 
-              {error && <div className="error-banner"><span>⚠️</span> {error}</div>}
-
               <div className="twofa-actions">
                 <button type="submit" className="btn-primary" disabled={loading || totpCode.length !== 6}>
                   {loading ? 'Verificando...' : 'Confirmar y activar'}
@@ -155,6 +162,9 @@ const Settings = () => {
           <div className="twofa-setup">
             <p className="twofa-instruction">
               Introduce el código actual de tu app de autenticación para confirmar la desactivación.
+              <br />
+              Al desactivar 2FA, los códigos de esta entrada dejarán de funcionar.
+              Si vuelves a activarlo, tendrás que escanear el nuevo QR.
             </p>
             <form onSubmit={confirmDisable}>
               <div className="form-group">
@@ -172,8 +182,6 @@ const Settings = () => {
                   autoComplete="one-time-code"
                 />
               </div>
-
-              {error && <div className="error-banner"><span>⚠️</span> {error}</div>}
 
               <div className="twofa-actions">
                 <button type="submit" className="btn-danger" disabled={loading || totpCode.length !== 6}>

@@ -3,19 +3,65 @@ const speakeasy = require('speakeasy');
 const qrcode    = require('qrcode');
 const Usuario   = require('../models/Usuario');
 const { requireAuth } = require('../middleware/auth');
+const { encryptTotpSecret, readTotpSecret } = require('../utils/totpEncryption');
 
 const router = express.Router();
 
 router.get('/setup', requireAuth, async (req, res) => {
   try {
-    const secret = speakeasy.generateSecret({ length: 20, name: `CyberAudit (${req.user.email})` });
-    const qr = await qrcode.toDataURL(secret.otpauth_url);
+    let usuario = await Usuario.findById(req.user.id)
+      .select('+twoFactorSecret');
 
-    await Usuario.findByIdAndUpdate(req.user.id, { twoFactorSecret: secret.base32 });
+    if (!usuario) {
+      return res.status(404).json({ ok: false, error: 'Usuario no encontrado' });
+    }
 
-    res.json({ ok: true, data: { qr, secret: secret.base32 } });
+    if (usuario.twoFactorEnabled) {
+      return res.status(409).json({ ok: false, error: '2FA ya está activado' });
+    }
+
+    if (!usuario.twoFactorSecret) {
+      const generated = speakeasy.generateSecret({ length: 20 });
+
+      const actualizado = await Usuario.findOneAndUpdate(
+        {
+          _id: usuario._id,
+          twoFactorEnabled: false,
+          twoFactorSecret: null
+        },
+        { $set: { twoFactorSecret: encryptTotpSecret(generated.base32, usuario._id) } },
+        { new: true }
+      ).select('+twoFactorSecret');
+
+      usuario = actualizado || await Usuario.findById(req.user.id)
+        .select('+twoFactorSecret');
+
+      if (!usuario || usuario.twoFactorEnabled || !usuario.twoFactorSecret) {
+        return res.status(409).json({
+          ok: false,
+          error: 'No se pudo iniciar la configuración 2FA'
+        });
+      }
+    }
+
+    const secret = readTotpSecret(usuario.twoFactorSecret, usuario._id);
+    const otpauthUrl = speakeasy.otpauthURL({
+      secret,
+      label: `CyberAudit (${req.user.email})`,
+      encoding: 'base32'
+    });
+
+    const qr = await qrcode.toDataURL(otpauthUrl);
+
+    return res.json({
+      ok: true,
+      data: { qr, secret }
+    });
   } catch (err) {
-    res.status(500).json({ ok: false, error: 'Error al generar el secreto 2FA' });
+    return res.status(500).json({
+      ok: false,
+      error: 'Error al generar el secreto 2FA'
+    });
   }
 });
 
@@ -35,7 +81,7 @@ router.post('/enable', requireAuth, async (req, res) => {
     }
 
     const valid = speakeasy.totp.verify({
-      secret:   usuario.twoFactorSecret,
+      secret:   readTotpSecret(usuario.twoFactorSecret, usuario._id),
       encoding: 'base32',
       token,
       window:   1
@@ -64,7 +110,7 @@ router.post('/disable', requireAuth, async (req, res) => {
     }
 
     const valid = speakeasy.totp.verify({
-      secret:   usuario.twoFactorSecret,
+      secret:   readTotpSecret(usuario.twoFactorSecret, usuario._id),
       encoding: 'base32',
       token,
       window:   1

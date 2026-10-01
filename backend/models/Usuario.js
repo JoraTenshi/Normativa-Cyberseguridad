@@ -25,8 +25,32 @@ const UsuarioSchema = new mongoose.Schema({
   organizacion:     { type: OrganizacionSchema, default: () => ({}) },
   loginAttempts:    { type: Number,  default: 0 },
   lockUntil:        { type: Date,    default: null },
+  sessionVersion:   { type: Number,  default: 0 },
   twoFactorSecret:  { type: String,  default: null, select: false },
   twoFactorEnabled: { type: Boolean, default: false },
+
+  emailVerifiedAt: {
+    type: Date,
+    default: null
+  },
+  emailVerificationTokenHash: {
+    type: String,
+    default: null,
+    select: false,
+    index: true
+  },
+  emailVerificationExpiresAt: {
+    type: Date,
+    default: null,
+    select: false
+  },
+
+  emailVerificationLastSentAt: {
+    type: Date,
+    default: null,
+    select: false
+  },
+
   resetPasswordToken:   { type: String, default: null, select: false },
   resetPasswordExpires: { type: Date,   default: null, select: false }
 }, { timestamps: true });

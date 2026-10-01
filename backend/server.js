@@ -50,6 +50,30 @@ const authLimiter = rateLimit({
   message: { ok: false, error: 'Demasiados intentos de autenticación, inténtalo más tarde.' }
 });
 
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  skipSuccessfulRequests: true,
+  message: {
+    ok: false,
+    error: 'Demasiados intentos de inicio de sesión. Inténtalo más tarde.'
+  }
+});
+
+const twoFactorLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  skipSuccessfulRequests: true,
+  message: {
+    ok: false,
+    error: 'Demasiados intentos de verificación en dos pasos. Inténtalo más tarde.'
+  }
+});
+
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/cybersec_audit';
 
 mongoose
@@ -59,11 +83,17 @@ mongoose
     process.exit(1);
   });
 
-app.use('/auth',         authLimiter, authRouter);
+app.use('/auth/register', authLimiter);
+app.use('/auth/resend-verification', authLimiter);
+app.use('/auth/forgot-password', authLimiter);
+app.use('/auth/reset-password', authLimiter);
+app.use('/auth/login', loginLimiter);
+app.use('/auth/2fa/verify', twoFactorLimiter);
+app.use('/auth', authRouter);
 app.use('/normativas',   normativasRouter);
 app.use('/resultado',    resultadosRouter);
 app.use('/me',           meRouter);
-app.use('/me/2fa',       authLimiter, twoFactorRouter);
+app.use('/me/2fa',       twoFactorLimiter, twoFactorRouter);
 app.use('/me/pds',       pdsRouter);
 app.use('/licitaciones', licitacionesRouter);
 
@@ -74,7 +104,11 @@ app.get('/', (req, res) => {
     endpoints: [
       'GET  /health',
       'POST /auth/register',
+      'POST /auth/verify-email',
+      'POST /auth/resend-verification',
       'POST /auth/login',
+      'POST /auth/forgot-password',
+      'POST /auth/reset-password',
       'POST /auth/logout',
       'POST /auth/2fa/verify',
       'GET  /me',

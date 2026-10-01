@@ -17,11 +17,7 @@ const REMITENTE = SMTP_FROM || SMTP_USER || 'no-reply@cyber-law.app';
 
 async function enviarEmail({ to, subject, text, html }) {
   if (!transporter) {
-    console.log('[mailer sin configurar] correo simulado');
-    console.log(`   De:     ${REMITENTE}`);
-    console.log(`   Para:   ${to}`);
-    console.log(`   Asunto: ${subject}`);
-    console.log(`   ----\n${text}\n   ----`);
+    console.warn('[mailer sin configurar] correo no enviado; configure SMTP');
     return { enviado: false, simulado: true };
   }
   await transporter.sendMail({ from: REMITENTE, to, subject, text, html });

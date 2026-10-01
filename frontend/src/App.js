@@ -5,6 +5,9 @@ import Home             from './pages/Home';
 import Cuestionario     from './pages/Cuestionario';
 import Resultado        from './pages/Resultado';
 import Auth             from './pages/Auth';
+import VerifyEmail      from './pages/VerifyEmail';
+import ForgotPassword   from './pages/ForgotPassword';
+import ResetPassword    from './pages/ResetPassword';
 import Historial        from './pages/Historial';
 import HistorialDetalle from './pages/HistorialDetalle';
 import Settings         from './pages/Settings';
@@ -131,6 +134,9 @@ function App() {
               <Route path="/cuestionario/:normativaId" element={<Cuestionario />} />
               <Route path="/resultado" element={<Resultado />} />
               <Route path="/auth"      element={<Auth />} />
+              <Route path="/verify-email" element={<VerifyEmail />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/historial" element={<ProtectedRoute><Historial /></ProtectedRoute>} />
               <Route path="/historial/:id" element={<ProtectedRoute><HistorialDetalle /></ProtectedRoute>} />
               <Route path="/settings"     element={<ProtectedRoute><Settings /></ProtectedRoute>} />

@@ -22,13 +22,14 @@ help:
 	@echo "  make install Install npm dependencies locally (for IDE tooling)"
 	@echo "  make cert    Generate SSL certificate (mkcert if installed, else self-signed)"
 	@echo "  make recert  Force certificate regeneration (run after installing mkcert)"
-	@echo "  make clean   Stop everything and remove containers, volumes, and node_modules"
+	@echo "  make clean   Stop everything and remove local images and node_modules (keep data and .env)"
 
 # ── Root .env bootstrap (generates MONGO_PASSWORD if blank) ──────────────────
 setup:
 	@if [ ! -f .env ]; then \
 		printf 'MONGO_USER=cybersec\nMONGO_PASSWORD=\n' > .env; \
 	fi
+	@chmod 600 .env
 	@if grep -qE '^MONGO_PASSWORD=$$' .env; then \
 		PASS=$$(node -e "process.stdout.write(require('crypto').randomBytes(32).toString('hex'))"); \
 		sed -i "s|^MONGO_PASSWORD=.*|MONGO_PASSWORD=$$PASS|" .env; \
@@ -37,6 +38,7 @@ setup:
 
 # ── Main target ───────────────────────────────────────────────────────────────
 up: setup cert $(BACKEND_DIR)/.env
+	@node scripts/check-backend-secrets.js $(BACKEND_DIR)/.env
 	@echo ">>> [1/4] Building and starting all services..."
 	$(DC) up -d --build
 	@echo ">>> [2/4] Waiting for MongoDB to be healthy..."
@@ -99,6 +101,7 @@ recert:
 $(BACKEND_DIR)/.env:
 	@echo ">>> Creating backend/.env from .env.example..."
 	cp $(BACKEND_DIR)/.env.example $(BACKEND_DIR)/.env
+	@chmod 600 $(BACKEND_DIR)/.env
 	@if [ -f $(CERT_FILE) ]; then \
 		sed -i 's|^CORS_ORIGIN=.*|CORS_ORIGIN=https://localhost|' $(BACKEND_DIR)/.env; \
 		echo ">>> Set CORS_ORIGIN=https://localhost (nginx HTTPS)"; \
@@ -135,8 +138,7 @@ down:
 	$(DC) down
 
 # ── Clean ─────────────────────────────────────────────────────────────────────
-clean: down
-	$(DC) down -v --rmi local 2>/dev/null || true
+clean:
+	$(DC) down --rmi local
 	rm -rf $(BACKEND_DIR)/node_modules $(FRONTEND_DIR)/node_modules
-	rm -f  $(BACKEND_DIR)/.env
-	@echo "Clean complete. (SSL certs kept in $(CERT_DIR) — delete manually to regenerate)"
+	@echo "Clean complete. MongoDB volumes, .env files and SSL certs were kept."
