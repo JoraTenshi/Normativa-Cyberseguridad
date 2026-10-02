@@ -1,36 +1,56 @@
 const fs = require('fs');
 const path = require('path');
-require('dotenv').config({ path: path.join(__dirname, '../.env') });
-const mongoose = require('mongoose');
-const Normativa = require('../models/Normativa');
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/cybersec_audit';
+const SEED_DIR = __dirname;
 
-const normativasCanonicas = fs.readdirSync(__dirname)
-  .filter(f => f.endsWith('_normativa.json') && f !== 'schema_normativa.json')
-  .sort()
-  .map(f => require(`./${f}`));
+class ColeccionNoVaciaError extends Error {
+  constructor(total) {
+    super(
+      `La colección normativas ya contiene ${total} documento(s); el seed no se ejecuta ` +
+      'para no borrar ni duplicar datos. Solo se puede sembrar una base de datos vacía.'
+    );
+    this.name = 'ColeccionNoVaciaError';
+    this.total = total;
+  }
+}
 
-const normativas = [...normativasCanonicas];
+function cargarNormativas(dir = SEED_DIR) {
+  return fs.readdirSync(dir)
+    .filter(f => f.endsWith('_normativa.json') && f !== 'schema_normativa.json')
+    .sort()
+    .map(f => JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')));
+}
 
-async function seed() {
+async function sembrarNormativas(Normativa, normativas) {
+  const total = await Normativa.countDocuments();
+  if (total !== 0) throw new ColeccionNoVaciaError(total);
+
+  await Normativa.insertMany(normativas);
+  return normativas.length;
+}
+
+async function main() {
+  require('dotenv').config({ path: path.join(__dirname, '../.env') });
+  const mongoose = require('mongoose');
+  const Normativa = require('../models/Normativa');
+
+  const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/cybersec_audit';
+
   try {
     await mongoose.connect(MONGODB_URI);
     console.log('Conectado a MongoDB');
 
-    await Normativa.deleteMany({});
-    console.log('Colección normativas limpiada');
-
-    await Normativa.insertMany(normativas);
-    console.log(`${normativas.length} normativas insertadas correctamente`);
-
-    await mongoose.disconnect();
+    const insertadas = await sembrarNormativas(Normativa, cargarNormativas());
+    console.log(`${insertadas} normativas insertadas correctamente`);
     console.log('Seed completado.');
-
   } catch (err) {
     console.error('Error en el seed:', err.message);
-    process.exit(1);
+    process.exitCode = 1;
+  } finally {
+    await mongoose.disconnect();
   }
 }
 
-seed();
+if (require.main === module) main();
+
+module.exports = { sembrarNormativas, cargarNormativas, ColeccionNoVaciaError };

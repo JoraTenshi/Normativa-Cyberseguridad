@@ -18,7 +18,7 @@ help:
 	@echo "  make down    Stop all services"
 	@echo "  make status  Show service status"
 	@echo "  make logs    Tail backend and frontend logs"
-	@echo "  make seed    Re-seed the database (services must be running)"
+	@echo "  make seed    Seed normativas into an EMPTY database (services must be running)"
 	@echo "  make install Install npm dependencies locally (for IDE tooling)"
 	@echo "  make cert    Generate SSL certificate (mkcert if installed, else self-signed)"
 	@echo "  make recert  Force certificate regeneration (run after installing mkcert)"
@@ -39,9 +39,9 @@ setup:
 # ── Main target ───────────────────────────────────────────────────────────────
 up: setup cert $(BACKEND_DIR)/.env
 	@node scripts/check-backend-secrets.js $(BACKEND_DIR)/.env
-	@echo ">>> [1/4] Building and starting all services..."
+	@echo ">>> [1/3] Building and starting all services..."
 	$(DC) up -d --build
-	@echo ">>> [2/4] Waiting for MongoDB to be healthy..."
+	@echo ">>> [2/3] Waiting for MongoDB to be healthy..."
 	@while [ "$$(docker inspect --format='{{.State.Health.Status}}' cybersec_mongo 2>/dev/null)" != "healthy" ]; do \
 		if [ "$$(docker inspect --format='{{.State.Status}}' cybersec_mongo 2>/dev/null)" = "exited" ]; then \
 			echo " MongoDB crashed! Run: docker logs cybersec_mongo"; exit 1; \
@@ -49,7 +49,7 @@ up: setup cert $(BACKEND_DIR)/.env
 		printf '.'; sleep 2; \
 	done
 	@echo " MongoDB ready."
-	@echo ">>> [3/4] Waiting for backend to be healthy..."
+	@echo ">>> [3/3] Waiting for backend to be healthy..."
 	@while [ "$$(docker inspect --format='{{.State.Health.Status}}' cybersec_backend 2>/dev/null)" != "healthy" ]; do \
 		if [ "$$(docker inspect --format='{{.State.Status}}' cybersec_backend 2>/dev/null)" = "exited" ]; then \
 			echo " Backend crashed! Run: docker logs cybersec_backend"; exit 1; \
@@ -57,13 +57,11 @@ up: setup cert $(BACKEND_DIR)/.env
 		printf '.'; sleep 2; \
 	done
 	@echo " Backend ready."
-	@echo ">>> [4/4] Validating normativa JSONs and seeding database..."
-	@cd $(BACKEND_DIR)/seed && for f in *_normativa.json; do [ "$$f" = "schema_normativa.json" ] && continue; python3 validate_normativa.py "$$f" || exit 1; done
-	docker exec cybersec_backend node seed/seed.js
 	@echo ""
 	@echo "CyberAudit is up and running!"
 	@echo "  App (HTTPS) -> https://localhost"
 	@echo ""
+	@echo "  First install on an empty database: make seed"
 	@echo "  make logs    to view logs"
 	@echo "  make status  to check services"
 	@echo "  make down    to stop all services"
@@ -121,7 +119,10 @@ $(FRONTEND_DIR)/node_modules: $(FRONTEND_DIR)/package.json
 	@touch $@
 
 # ── Database seed (validates on host, then runs inside backend container) ────
+# Only seeds an empty normativas collection; seed.js refuses otherwise.
 seed:
+	@python3 -c "import jsonschema" 2>/dev/null || { \
+		echo "jsonschema not installed. Run: pip install -r $(BACKEND_DIR)/seed/requirements.txt"; exit 1; }
 	@cd $(BACKEND_DIR)/seed && for f in *_normativa.json; do [ "$$f" = "schema_normativa.json" ] && continue; python3 validate_normativa.py "$$f" || exit 1; done
 	docker exec cybersec_backend node seed/seed.js
 

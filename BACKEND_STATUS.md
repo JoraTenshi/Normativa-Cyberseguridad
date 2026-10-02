@@ -48,7 +48,7 @@ Campos canónicos por pregunta: `id`, `texto`, `peso`, `nivel`, `fase_pds`, `rem
 
 Todas las normativas del seed están ya en formato canónico (la antigua `ens` placeholder fue regenerada por Cris).
 
-`backend/seed/seed.js` auto-descubre cualquier `*_normativa.json` que se deje caer en `backend/seed/` (excluyendo `schema_normativa.json`), por lo que añadir una nueva normativa canónica es un *drop-in*: copiar el JSON al directorio, ejecutar `make seed`, y el validador + el seed la procesan automáticamente.
+`backend/seed/seed.js` auto-descubre cualquier `*_normativa.json` que se deje caer en `backend/seed/` (excluyendo `schema_normativa.json`), por lo que añadir una nueva normativa canónica es un *drop-in* en una instalación nueva: copiar el JSON al directorio, ejecutar `make seed`, y el validador + el seed la procesan automáticamente. El seed solo actúa sobre una colección `normativas` vacía (ya no hace `deleteMany`); `make up` no lo ejecuta.
 
 Estado actual del seed (11 normativas, 98 bloques, 343 preguntas, todas canónicas):
 - `ens` — 18 bloques, 70 preguntas
