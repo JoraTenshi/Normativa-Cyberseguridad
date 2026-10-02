@@ -1,3 +1,80 @@
+'use strict';
+
+// Cálculo del índice de autoevaluación (algoritmo v2, ver docs/contrato-evaluacion.md),
+// remediaciones y cobertura estimada. Funciones puras: sin Express ni Mongo.
+// calcularIndice supone respuestas ya validadas con validarRespuestas().
+
+const ALGORITMO_VERSION = '2';
+
+// Umbrales sobre el valor EXACTO (sin redondear).
+const NIVELES = [
+  { min: 85, nivel: 'Alto' },
+  { min: 60, nivel: 'Medio' },
+  { min: 30, nivel: 'Bajo' },
+  { min: 0,  nivel: 'Crítico' },
+];
+
+function getNivel(porcentajeExacto) {
+  return NIVELES.find((n) => porcentajeExacto >= n.min).nivel;
+}
+
+function comprobarCatalogo(normativa) {
+  for (const b of normativa.bloques) {
+    if (typeof b.peso_bloque !== 'number' || !Number.isFinite(b.peso_bloque) || b.peso_bloque < 0) {
+      throw new Error(`CATALOGO_INVALIDO: peso_bloque de ${b.id}`);
+    }
+    for (const p of b.preguntas) {
+      if (typeof p.peso !== 'number' || !Number.isFinite(p.peso) || p.peso <= 0) {
+        throw new Error(`CATALOGO_INVALIDO: peso de ${p.id}`);
+      }
+    }
+  }
+}
+
+function calcularIndice(normativa, respuestas) {
+  comprobarCatalogo(normativa);
+  const valores = new Map(respuestas.map((r) => [r.pregunta_id, r.valor]));
+
+  const bloques = normativa.bloques.map((b) => {
+    const maximo = b.preguntas.reduce((s, p) => s + p.peso, 0);
+    const obtenido = b.preguntas.reduce((s, p) => s + (valores.get(p.id) ?? 0) * p.peso, 0);
+    const evaluable = maximo > 0 && b.peso_bloque > 0;
+    return {
+      bloque_id: b.id,
+      nombre: b.nombre,
+      peso_bloque: b.peso_bloque,
+      puntuacion: obtenido,
+      max_puntuacion: maximo,
+      evaluable,
+      porcentaje_exacto: maximo > 0 ? (100 * obtenido) / maximo : null,
+    };
+  });
+
+  const activos = bloques.filter((b) => b.evaluable);
+  const sumaPesos = activos.reduce((s, b) => s + b.peso_bloque, 0);
+
+  if (sumaPesos === 0) {
+    return {
+      algoritmo_version: ALGORITMO_VERSION,
+      sin_base_evaluable: true,
+      porcentaje_exacto: null,
+      porcentaje: null,
+      nivel: null,
+      bloques,
+    };
+  }
+
+  const exacto = activos.reduce((s, b) => s + b.porcentaje_exacto * b.peso_bloque, 0) / sumaPesos;
+  return {
+    algoritmo_version: ALGORITMO_VERSION,
+    sin_base_evaluable: false,
+    porcentaje_exacto: exacto,
+    porcentaje: Math.round(exacto),
+    nivel: getNivel(exacto),
+    bloques,
+  };
+}
+
 function construirRemediaciones(normativa, respuestas) {
   const mapa = {};
   respuestas.forEach(r => { mapa[r.pregunta_id] = r.valor; });
@@ -24,13 +101,6 @@ function construirRemediaciones(normativa, respuestas) {
   });
 
   return items.sort((a, b) => b.prioridad - a.prioridad);
-}
-
-function getNivel(porcentaje) {
-  if (porcentaje >= 85) return 'Alto';
-  if (porcentaje >= 60) return 'Medio';
-  if (porcentaje >= 30) return 'Bajo';
-  return 'Crítico';
 }
 
 function calcularCoberturaEstimada(normativaActual, puntuacionesBloques, otrasNormativas) {
@@ -107,4 +177,7 @@ function calcularCoberturaEstimada(normativaActual, puntuacionesBloques, otrasNo
   });
 }
 
-module.exports = { construirRemediaciones, getNivel, calcularCoberturaEstimada };
+module.exports = {
+  calcularIndice, getNivel, ALGORITMO_VERSION, NIVELES,
+  construirRemediaciones, calcularCoberturaEstimada
+};
