@@ -385,7 +385,7 @@ router.post('/2fa/verify', async (req, res) => {
     try { payload = jwt.verify(pendingToken, JWT_SECRET, { algorithms: ['HS256'] }); }
     catch { return res.status(401).json({ ok: false, error: 'Sesión de verificación expirada' }); }
 
-    if (!payload.pending2fa) {
+    if (!payload.pending2fa || typeof payload.jti !== 'string' || payload.jti === '') {
       return res.status(401).json({ ok: false, error: 'Token inválido' });
     }
 
@@ -413,10 +413,8 @@ router.post('/2fa/verify', async (req, res) => {
       });
     }
 
-    if (payload.jti) {
-      const alreadyUsed = await RevokedToken.exists({ jti: payload.jti });
-      if (alreadyUsed) return res.status(401).json({ ok: false, error: 'Sesión de verificación ya utilizada' });
-    }
+    const alreadyUsed = await RevokedToken.exists({ jti: payload.jti });
+    if (alreadyUsed) return res.status(401).json({ ok: false, error: 'Sesión de verificación ya utilizada' });
 
     const valid = speakeasy.totp.verify({
       secret:   readTotpSecret(usuario.twoFactorSecret, usuario._id),
@@ -429,8 +427,13 @@ router.post('/2fa/verify', async (req, res) => {
       return res.status(401).json({ ok: false, error: 'Código incorrecto' });
     }
 
-    if (payload.jti) {
+    try {
       await RevokedToken.create({ jti: payload.jti, expiresAt: new Date(payload.exp * 1000) });
+    } catch (err) {
+      if (err.code === 11000) {
+        return res.status(401).json({ ok: false, error: 'Sesión de verificación ya utilizada' });
+      }
+      throw err;
     }
 
     res.clearCookie(PENDING_2FA_COOKIE, COOKIE_BASE_OPTIONS);

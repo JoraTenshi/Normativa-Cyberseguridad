@@ -121,13 +121,13 @@ test('restablecer contraseña invalida una sesión anterior', async () => {
       select: async () => ({ sessionVersion: 1, emailVerifiedAt: emailVerified ? new Date() : null })
     });
     RevokedToken.exists = async () => false;
-    const oldToken = jwt.sign({ id: '507f1f77bcf86cd799439011', sessionVersion: 0 }, process.env.JWT_SECRET);
+    const oldToken = jwt.sign({ id: '507f1f77bcf86cd799439011', sessionVersion: 0, jti: 'jti-sesion-anterior' }, process.env.JWT_SECRET);
     const oldSession = await fetch(`${server.url}/protected`, {
       headers: { Cookie: `cyberaudit_token=${oldToken}` }
     });
     assert.equal(oldSession.status, 401);
 
-    const newToken = jwt.sign({ id: '507f1f77bcf86cd799439011', sessionVersion: 1 }, process.env.JWT_SECRET);
+    const newToken = jwt.sign({ id: '507f1f77bcf86cd799439011', sessionVersion: 1, jti: 'jti-sesion-nueva' }, process.env.JWT_SECRET);
     const newSession = await fetch(`${server.url}/protected`, {
       headers: { Cookie: `cyberaudit_token=${newToken}` }
     });

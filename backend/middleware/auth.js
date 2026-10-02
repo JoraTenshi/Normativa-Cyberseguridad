@@ -1,5 +1,6 @@
 const jwt          = require('jsonwebtoken');
 const crypto       = require('crypto');
+const mongoose     = require('mongoose');
 const RevokedToken = require('../models/RevokedToken');
 const Usuario      = require('../models/Usuario');
 
@@ -25,8 +26,8 @@ async function requireAuth(req, res, next) {
     if (!(await isCurrentSession(payload))) {
       return res.status(401).json({ ok: false, error: 'Sesión no válida. Inicia sesión de nuevo.' });
     }
-  } catch (err) {
-    return next(err);
+  } catch {
+    return serviceUnavailable(res);
   }
 
   req.user  = payload;
@@ -36,23 +37,36 @@ async function requireAuth(req, res, next) {
 
 async function optionalAuth(req, res, next) {
   const token = extractToken(req);
-  if (token) {
-    try {
-      const payload = jwt.verify(token, JWT_SECRET, { algorithms: ['HS256'] });
-      if (await isCurrentSession(payload)) {
-        req.user = payload; req.token = token;
-      }
-    } catch { }
+  if (!token) return next();
+
+  let payload;
+  try {
+    payload = jwt.verify(token, JWT_SECRET, { algorithms: ['HS256'] });
+  } catch {
+    return next();
+  }
+
+  try {
+    if (await isCurrentSession(payload)) {
+      req.user = payload; req.token = token;
+    }
+  } catch {
+    return serviceUnavailable(res);
   }
   next();
 }
 
 async function isCurrentSession(payload) {
-  if (!payload.id || payload.pending2fa) return false;
+  if (payload.pending2fa || !mongoose.isValidObjectId(payload.id)) return false;
+  if (typeof payload.jti !== 'string' || payload.jti === '') return false;
   const usuario = await Usuario.findById(payload.id).select('sessionVersion emailVerifiedAt');
   if (!usuario?.emailVerifiedAt || (payload.sessionVersion ?? 0) !== (usuario.sessionVersion ?? 0)) return false;
-  if (payload.jti && await RevokedToken.exists({ jti: payload.jti })) return false;
+  if (await RevokedToken.exists({ jti: payload.jti })) return false;
   return true;
+}
+
+function serviceUnavailable(res) {
+  return res.status(503).json({ ok: false, error: 'Servicio no disponible temporalmente' });
 }
 
 function extractToken(req) {
