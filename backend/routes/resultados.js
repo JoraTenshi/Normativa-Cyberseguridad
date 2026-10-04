@@ -4,9 +4,15 @@ const Normativa = require('../models/Normativa');
 const Resultado = require('../models/Resultado');
 const { optionalAuth } = require('../middleware/auth');
 const { construirRemediaciones, getNivel, calcularCoberturaEstimada } = require('../utils/scoring');
+const { validarRespuestas } = require('../validation/validarRespuestas');
 
-const MAX_RESPUESTAS  = 500;
-const VALORES_VALIDOS = [0, 0.5, 1];
+const MAX_RESPUESTAS = 500;
+
+const MENSAJES_VALIDACION = {
+  RESPUESTA_INVALIDA:      'Respuesta inválida: cada respuesta debe ser un objeto con una pregunta de esta normativa y un valor 0, 0.5 o 1',
+  RESPUESTA_DUPLICADA:     'Hay más de una respuesta para la misma pregunta',
+  CUESTIONARIO_INCOMPLETO: 'Faltan preguntas por responder'
+};
 
 router.post('/', optionalAuth, async (req, res) => {
   try {
@@ -22,20 +28,17 @@ router.post('/', optionalAuth, async (req, res) => {
       return res.status(400).json({ ok: false, error: `El número de respuestas no puede superar ${MAX_RESPUESTAS}` });
     }
 
-    for (const r of respuestas) {
-      if (typeof r.pregunta_id !== 'string' || r.pregunta_id.trim() === '') {
-        return res.status(400).json({ ok: false, error: 'Cada respuesta debe tener "pregunta_id" como string no vacío' });
-      }
-      if (!VALORES_VALIDOS.includes(r.valor)) {
-        return res.status(400).json({ ok: false, error: 'Los valores de respuesta solo pueden ser 0, 0.5 o 1' });
-      }
-    }
-
     const normativaIdClean = normativaId.trim();
 
     const normativa = await Normativa.findOne({ id: normativaIdClean });
     if (!normativa) {
       return res.status(404).json({ ok: false, error: 'Normativa no encontrada' });
+    }
+
+    const validacion = validarRespuestas(normativa, respuestas);
+    if (!validacion.ok) {
+      const { ok: _ok, code, ...detalle } = validacion;
+      return res.status(400).json({ ok: false, code, error: MENSAJES_VALIDACION[code], ...detalle });
     }
 
     const otrasNormativas = await Normativa.find({ id: { $ne: normativaIdClean } });
