@@ -72,25 +72,37 @@ aplican al valor exacto en vez de al redondeado.
 
 ## 4. Salida (DTO)
 
+Respuesta `201` de `POST /resultado` (`data`):
+
 ```json
 {
+  "id": "…",
+  "normativa": "lssi_ce",
+  "normativa_nombre": "…",
   "algoritmo_version": "2",
   "sin_base_evaluable": false,
   "porcentaje_exacto": 47.5,
   "porcentaje": 48,
   "nivel": "Bajo",
-  "bloques": [
-    { "bloque_id": "A", "nombre": "Bloque A", "peso_bloque": 80,
-      "puntuacion": 0.5, "max_puntuacion": 1, "evaluable": true, "porcentaje_exacto": 50 }
+  "mensaje": "Índice de autoevaluación bajo: …",
+  "puntuaciones_bloques": [
+    { "bloque_id": "A", "nombre": "Bloque A", "peso_bloque": 80, "evaluable": true,
+      "puntuacion": 0.5, "max_puntuacion": 1, "porcentaje_exacto": 50, "porcentaje": 50 }
   ],
   "remediaciones": [],
   "cobertura_estimada": []
 }
 ```
 
-`puntuacion_total` / `puntuacion_maxima` **se retiran** de la respuesta: son puntos brutos
-que ya no explican el porcentaje global. El frontend muestra el índice y el desglose por
-bloque (`bloques[]`).
+- `id` es `null` si no hay sesión (el resultado no se guarda).
+- El desglose por bloque se llama `puntuaciones_bloques` (no `bloques`): `GET /me/historial/:id`
+  ya usa `bloques` para las definiciones de la normativa.
+- `puntuacion_total` / `puntuacion_maxima` **se retiran** de la respuesta, del modelo y del
+  historial: son puntos brutos que ya no explican el porcentaje global.
+- El `Resultado` guarda `algoritmo_version`, `porcentaje_exacto`, `porcentaje`, `nivel` y
+  `puntuaciones_bloques`. El historial (`GET /me/historial`, `/me/historial/:id`) y el Plan
+  Director devuelven el `nivel` **guardado**, y el frontend lo muestra tal cual en lugar de
+  recalcularlo a partir del porcentaje redondeado.
 
 ## 5. Versionado
 

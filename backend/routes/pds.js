@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const { requireAuth } = require('../middleware/auth');
 const Resultado = require('../models/Resultado');
 const Normativa = require('../models/Normativa');
-const { construirRemediaciones, getNivel } = require('../utils/scoring');
+const { construirRemediaciones } = require('../utils/scoring');
 
 const FASES = {
   1: 'Análisis de situación inicial',
@@ -56,7 +56,7 @@ router.get('/:resultadoId', requireAuth, async (req, res) => {
         normativa:        resultado.normativa,
         normativa_nombre: normativa.nombre,
         porcentaje:       resultado.porcentaje,
-        nivel:            getNivel(resultado.porcentaje),
+        nivel:            resultado.nivel,
         total_acciones:   acciones.length,
         usa_fases_incibe: usaFases,
         plan

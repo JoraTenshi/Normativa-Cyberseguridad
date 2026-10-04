@@ -3,10 +3,17 @@ const router = express.Router();
 const Normativa = require('../models/Normativa');
 const Resultado = require('../models/Resultado');
 const { optionalAuth } = require('../middleware/auth');
-const { construirRemediaciones, getNivel, calcularCoberturaEstimada } = require('../utils/scoring');
+const { calcularIndice, construirRemediaciones, calcularCoberturaEstimada } = require('../utils/scoring');
 const { validarRespuestas } = require('../validation/validarRespuestas');
 
 const MAX_RESPUESTAS = 500;
+
+const MENSAJES_NIVEL = {
+  'Alto':    'Índice de autoevaluación alto: las respuestas indican una buena postura de seguridad.',
+  'Medio':   'Índice de autoevaluación medio: hay áreas que mejorar.',
+  'Bajo':    'Índice de autoevaluación bajo: las respuestas muestran brechas significativas.',
+  'Crítico': 'Índice de autoevaluación crítico: conviene revisar con urgencia las políticas de seguridad.'
+};
 
 const MENSAJES_VALIDACION = {
   RESPUESTA_INVALIDA:      'Respuesta inválida: cada respuesta debe ser un objeto con una pregunta de esta normativa y un valor 0, 0.5 o 1',
@@ -43,17 +50,22 @@ router.post('/', optionalAuth, async (req, res) => {
 
     const otrasNormativas = await Normativa.find({ id: { $ne: normativaIdClean } });
 
-    const { puntuacion_total, puntuacion_maxima, porcentaje, puntuaciones_bloques } = calcularPorcentaje(normativa, respuestas);
+    const indice = calcularIndice(normativa, respuestas);
+    const puntuaciones_bloques = indice.bloques.map(b => ({
+      ...b,
+      porcentaje: b.porcentaje_exacto === null ? null : Math.round(b.porcentaje_exacto)
+    }));
 
     let resultadoId = null;
     if (req.user) {
       const resultado = await Resultado.create({
-        usuario:   req.user.id,
-        normativa: normativaIdClean,
+        usuario:           req.user.id,
+        normativa:         normativaIdClean,
         respuestas,
-        puntuacion_total,
-        puntuacion_maxima,
-        porcentaje,
+        algoritmo_version: indice.algoritmo_version,
+        porcentaje_exacto: indice.porcentaje_exacto,
+        porcentaje:        indice.porcentaje,
+        nivel:             indice.nivel,
         puntuaciones_bloques
       });
       resultadoId = resultado._id;
@@ -68,11 +80,12 @@ router.post('/', optionalAuth, async (req, res) => {
         id:                  resultadoId,
         normativa:           normativaIdClean,
         normativa_nombre:    normativa.nombre,
-        puntuacion_total,
-        puntuacion_maxima,
-        porcentaje,
-        nivel:               getNivel(porcentaje),
-        mensaje:             getMensajeNivel(porcentaje),
+        algoritmo_version:   indice.algoritmo_version,
+        sin_base_evaluable:  indice.sin_base_evaluable,
+        porcentaje_exacto:   indice.porcentaje_exacto,
+        porcentaje:          indice.porcentaje,
+        nivel:               indice.nivel,
+        mensaje:             MENSAJES_NIVEL[indice.nivel] ?? null,
         puntuaciones_bloques,
         remediaciones,
         cobertura_estimada
@@ -83,48 +96,5 @@ router.post('/', optionalAuth, async (req, res) => {
     res.status(500).json({ ok: false, error: 'Error interno al procesar el resultado' });
   }
 });
-
-function calcularPorcentaje(normativa, respuestas) {
-  const mapa = {};
-  respuestas.forEach(r => { mapa[r.pregunta_id] = r.valor; });
-
-  let puntuacion_total = 0;
-  let puntuacion_maxima = 0;
-  const puntuaciones_bloques = [];
-
-  normativa.bloques.forEach(bloque => {
-    let bloque_total = 0;
-    let bloque_max   = 0;
-
-    bloque.preguntas.forEach(pregunta => {
-      bloque_max   += pregunta.peso;
-      bloque_total += (mapa[pregunta.id] ?? 0) * pregunta.peso;
-    });
-
-    puntuacion_maxima += bloque_max;
-    puntuacion_total  += bloque_total;
-
-    puntuaciones_bloques.push({
-      bloque_id:      bloque.id,
-      nombre:         bloque.nombre,
-      puntuacion:     bloque_total,
-      max_puntuacion: bloque_max,
-      porcentaje:     bloque_max > 0 ? Math.round((bloque_total / bloque_max) * 100) : 0
-    });
-  });
-
-  const porcentaje = puntuacion_maxima > 0
-    ? Math.round((puntuacion_total / puntuacion_maxima) * 100)
-    : 0;
-
-  return { puntuacion_total, puntuacion_maxima, porcentaje, puntuaciones_bloques };
-}
-
-function getMensajeNivel(porcentaje) {
-  if (porcentaje >= 85) return 'Nivel alto de cumplimiento. Excelente postura de seguridad.';
-  if (porcentaje >= 60) return 'Nivel medio de cumplimiento. Se requieren mejoras en algunas áreas.';
-  if (porcentaje >= 30) return 'Nivel bajo de cumplimiento. Existen brechas significativas de seguridad.';
-  return 'Nivel crítico. Se requiere una revisión urgente de las políticas de seguridad.';
-}
 
 module.exports = router;

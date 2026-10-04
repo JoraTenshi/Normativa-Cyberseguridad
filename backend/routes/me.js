@@ -5,7 +5,7 @@ const { requireAuth } = require('../middleware/auth');
 const Usuario = require('../models/Usuario');
 const Resultado = require('../models/Resultado');
 const Normativa = require('../models/Normativa');
-const { construirRemediaciones, getNivel, calcularCoberturaEstimada } = require('../utils/scoring');
+const { construirRemediaciones, calcularCoberturaEstimada } = require('../utils/scoring');
 
 const SECTORES_VALIDOS = ['publica', 'sanitaria', 'energia', 'transporte', 'financiero', 'educacion', 'privada', 'otro'];
 const TAMANOS_VALIDOS  = ['micro', 'pequena', 'mediana', 'grande'];
@@ -63,10 +63,9 @@ router.get('/historial', requireAuth, async (req, res) => {
       id:                r._id,
       normativa:         r.normativa,
       normativa_nombre:  nombrePor[r.normativa] ?? r.normativa,
+      algoritmo_version: r.algoritmo_version,
       porcentaje:        r.porcentaje,
-      puntuacion_total:  r.puntuacion_total,
-      puntuacion_maxima: r.puntuacion_maxima,
-      nivel:             getNivel(r.porcentaje),
+      nivel:             r.nivel,
       createdAt:         r.createdAt
     }));
 
@@ -105,10 +104,10 @@ router.get('/historial/:resultadoId', requireAuth, async (req, res) => {
         id:                   resultado._id,
         normativa:            resultado.normativa,
         normativa_nombre:     norm?.nombre ?? resultado.normativa,
+        algoritmo_version:    resultado.algoritmo_version,
+        porcentaje_exacto:    resultado.porcentaje_exacto,
         porcentaje:           resultado.porcentaje,
-        puntuacion_total:     resultado.puntuacion_total,
-        puntuacion_maxima:    resultado.puntuacion_maxima,
-        nivel:                getNivel(resultado.porcentaje),
+        nivel:                resultado.nivel,
         puntuaciones_bloques: resultado.puntuaciones_bloques ?? [],
         respuestas:           resultado.respuestas ?? [],
         bloques:              norm?.bloques ?? [],

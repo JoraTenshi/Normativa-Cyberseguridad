@@ -5,12 +5,14 @@ import { getHistorialDetalle } from '../services/api';
 const VALOR_LABEL = { 1: 'Sí', 0.5: 'Parcial', 0: 'No' };
 const VALOR_CLASE = { 1: 'resp-si', 0.5: 'resp-parcial', 0: 'resp-no' };
 
-const getNivel = (porcentaje) => {
-  if (porcentaje >= 85) return { nivel: 'Alto',    color: '#22c55e', clase: 'nivel-alto' };
-  if (porcentaje >= 60) return { nivel: 'Medio',   color: '#f59e0b', clase: 'nivel-medio' };
-  if (porcentaje >= 30) return { nivel: 'Bajo',    color: '#ef4444', clase: 'nivel-bajo' };
-  return                       { nivel: 'Crítico', color: '#7f1d1d', clase: 'nivel-critico' };
+// El nivel lo decide el backend sobre el valor exacto; aquí solo se elige cómo mostrarlo.
+const NIVELES = {
+  'Alto':    { nivel: 'Alto',    color: '#22c55e', clase: 'nivel-alto' },
+  'Medio':   { nivel: 'Medio',   color: '#f59e0b', clase: 'nivel-medio' },
+  'Bajo':    { nivel: 'Bajo',    color: '#ef4444', clase: 'nivel-bajo' },
+  'Crítico': { nivel: 'Crítico', color: '#7f1d1d', clase: 'nivel-critico' },
 };
+const getNivel = (nivel) => NIVELES[nivel] ?? NIVELES['Crítico'];
 
 const HistorialDetalle = () => {
   const { id }    = useParams();
@@ -45,7 +47,7 @@ const HistorialDetalle = () => {
     );
   }
 
-  const nivelInfo   = getNivel(detalle.porcentaje);
+  const nivelInfo   = getNivel(detalle.nivel);
   const mapaResp    = Object.fromEntries(detalle.respuestas.map(r => [r.pregunta_id, r.valor]));
   const fecha       = new Date(detalle.createdAt).toLocaleDateString('es-ES', {
     weekday: 'long', day: '2-digit', month: 'long', year: 'numeric',
@@ -85,17 +87,6 @@ const HistorialDetalle = () => {
         <div className="detalle-stats">
           <div className={`nivel-badge ${nivelInfo.clase}`} style={{ marginBottom: '0.75rem' }}>
             <span className="nivel-nombre">{nivelInfo.nivel}</span>
-          </div>
-          <div className="puntuacion-detalle" style={{ gap: '1.5rem' }}>
-            <div className="puntuacion-item">
-              <span className="puntuacion-valor">{detalle.puntuacion_total.toFixed(1)}</span>
-              <span className="puntuacion-label">Obtenidos</span>
-            </div>
-            <div className="puntuacion-divider" />
-            <div className="puntuacion-item">
-              <span className="puntuacion-valor">{detalle.puntuacion_maxima}</span>
-              <span className="puntuacion-label">Máximo</span>
-            </div>
           </div>
         </div>
       </div>

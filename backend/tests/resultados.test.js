@@ -96,3 +96,62 @@ test('respuestas vacío o que no es un array: 400 sin consultar la normativa', a
   }
   assert.equal(creados.length, 0);
 });
+
+// ── Algoritmo v2 (docs/contrato-evaluacion.md) ───────────────────────────────
+const conValores = valores => ids.map(pregunta_id => ({ pregunta_id, valor: valores[pregunta_id] ?? 0 }));
+const soloCOM = { 'LSSI-COM-001': 1, 'LSSI-COM-002': 1, 'LSSI-COM-003': 1 };
+
+test('v2: el índice pondera por peso_bloque (solo LSSI-COM, peso 26, al 100 % → 26)', async () => {
+  // Con la fórmula anterior (pesos de pregunta) daría 26/94 ≈ 28.
+  const res = await enviar(conValores(soloCOM));
+  assert.equal(res.status, 201);
+  assert.equal(res.body.data.porcentaje_exacto, 26);
+  assert.equal(res.body.data.porcentaje, 26);
+  assert.equal(res.body.data.nivel, 'Crítico');
+});
+
+test('v2: el nivel se decide con el valor exacto (29,73 se muestra 30 pero es Crítico)', async () => {
+  const res = await enviar(conValores({ ...soloCOM, 'LSSI-INT-002': 0.5 }));
+  assert.ok(res.body.data.porcentaje_exacto > 29.5 && res.body.data.porcentaje_exacto < 30);
+  assert.equal(res.body.data.porcentaje, 30);
+  assert.equal(res.body.data.nivel, 'Crítico');
+  assert.equal(creados[0].nivel, 'Crítico');
+});
+
+test('v2: formato de respuesta acordado, sin puntos brutos', async () => {
+  const { body } = await enviar(todas(1));
+  const d = body.data;
+  assert.equal(d.algoritmo_version, '2');
+  assert.equal(d.sin_base_evaluable, false);
+  assert.equal(d.nivel, 'Alto');
+  assert.match(d.mensaje, /^Índice de autoevaluación alto/);
+  assert.equal('puntuacion_total' in d, false);
+  assert.equal('puntuacion_maxima' in d, false);
+  assert.equal(d.puntuaciones_bloques.length, lssi.bloques.length);
+  for (const b of d.puntuaciones_bloques) {
+    assert.deepEqual(Object.keys(b).sort(),
+      ['bloque_id', 'evaluable', 'max_puntuacion', 'nombre', 'peso_bloque', 'porcentaje', 'porcentaje_exacto', 'puntuacion']);
+  }
+  assert.ok(Array.isArray(d.remediaciones));
+  assert.ok(Array.isArray(d.cobertura_estimada));
+});
+
+test('v2: el Resultado guardado incluye versión, valor exacto, nivel y desglose', async () => {
+  await enviar(conValores(soloCOM));
+  const r = creados[0];
+  assert.equal(r.algoritmo_version, '2');
+  assert.equal(r.porcentaje_exacto, 26);
+  assert.equal(r.porcentaje, 26);
+  assert.equal(r.nivel, 'Crítico');
+  assert.equal('puntuacion_total' in r, false);
+  const com = r.puntuaciones_bloques.find(b => b.bloque_id === 'LSSI-COM');
+  assert.equal(com.peso_bloque, 26);
+  assert.equal(com.porcentaje, 100);
+});
+
+test('el modelo Resultado exige algoritmo_version y acepta los niveles del contrato', () => {
+  const base = { normativa: 'lssi_ce', respuestas: [] };
+  assert.ok(new Resultado(base).validateSync().errors.algoritmo_version);
+  assert.equal(new Resultado({ ...base, algoritmo_version: '2', nivel: 'Crítico' }).validateSync(), undefined);
+  assert.ok(new Resultado({ ...base, algoritmo_version: '2', nivel: 'Excelente' }).validateSync().errors.nivel);
+});

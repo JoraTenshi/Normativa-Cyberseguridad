@@ -6,20 +6,24 @@ const RespuestaSchema = new mongoose.Schema({
 }, { _id: false });
 
 const PuntuacionBloqueSchema = new mongoose.Schema({
-  bloque_id:      { type: String, required: true },
-  nombre:         { type: String, required: true },
-  porcentaje:     { type: Number },
-  puntuacion:     { type: Number },
-  max_puntuacion: { type: Number }
+  bloque_id:         { type: String, required: true },
+  nombre:            { type: String, required: true },
+  peso_bloque:       { type: Number },
+  evaluable:         { type: Boolean },
+  porcentaje_exacto: { type: Number, default: null },
+  porcentaje:        { type: Number, default: null },
+  puntuacion:        { type: Number },
+  max_puntuacion:    { type: Number }
 }, { _id: false });
 
 const ResultadoSchema = new mongoose.Schema({
   usuario:             { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario', default: null },
   normativa:           { type: String, required: true },
   respuestas:          [RespuestaSchema],
-  puntuacion_total:    { type: Number },
-  puntuacion_maxima:   { type: Number },
-  porcentaje:          { type: Number },
+  algoritmo_version:   { type: String, required: true },
+  porcentaje_exacto:   { type: Number, default: null },
+  porcentaje:          { type: Number, default: null },
+  nivel:               { type: String, enum: ['Crítico', 'Bajo', 'Medio', 'Alto', null], default: null },
   puntuaciones_bloques: [PuntuacionBloqueSchema],
   expiresAt:           { type: Date, default: null }
 }, { timestamps: true });

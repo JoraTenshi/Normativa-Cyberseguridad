@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-const getNivel = (porcentaje) => {
-  if (porcentaje >= 85) return { nivel: 'Alto',    color: '#22c55e', emoji: '🟢', clase: 'nivel-alto' };
-  if (porcentaje >= 60) return { nivel: 'Medio',   color: '#f59e0b', emoji: '🟡', clase: 'nivel-medio' };
-  if (porcentaje >= 30) return { nivel: 'Bajo',    color: '#ef4444', emoji: '🔴', clase: 'nivel-bajo' };
-  return                       { nivel: 'Crítico', color: '#7f1d1d', emoji: '⚫', clase: 'nivel-critico' };
+// El nivel lo decide el backend sobre el valor exacto; aquí solo se elige cómo mostrarlo.
+const NIVELES = {
+  'Alto':    { nivel: 'Alto',    color: '#22c55e', emoji: '🟢', clase: 'nivel-alto' },
+  'Medio':   { nivel: 'Medio',   color: '#f59e0b', emoji: '🟡', clase: 'nivel-medio' },
+  'Bajo':    { nivel: 'Bajo',    color: '#ef4444', emoji: '🔴', clase: 'nivel-bajo' },
+  'Crítico': { nivel: 'Crítico', color: '#7f1d1d', emoji: '⚫', clase: 'nivel-critico' },
 };
+const getNivel = (nivel) => NIVELES[nivel] ?? NIVELES['Crítico'];
 
 const RECOMENDACIONES = {
   alto:    ['Mantener y mejorar los controles existentes', 'Buscar certificación formal', 'Realizar auditorías externas periódicas'],
@@ -54,7 +56,7 @@ const Resultado = () => {
 
   if (!resultado) return null;
 
-  const nivelInfo = getNivel(resultado.porcentaje);
+  const nivelInfo = getNivel(resultado.nivel);
   const nivelKey = nivelInfo.nivel.toLowerCase();
   const recomendaciones = RECOMENDACIONES[nivelKey] || RECOMENDACIONES.critico;
 
@@ -97,18 +99,6 @@ const Resultado = () => {
 
       <div className="resultado-mensaje">
         <p>{resultado.mensaje}</p>
-      </div>
-
-      <div className="puntuacion-detalle">
-        <div className="puntuacion-item">
-          <span className="puntuacion-valor">{resultado.puntuacion_total.toFixed(1)}</span>
-          <span className="puntuacion-label">Puntos obtenidos</span>
-        </div>
-        <div className="puntuacion-divider" />
-        <div className="puntuacion-item">
-          <span className="puntuacion-valor">{resultado.puntuacion_maxima}</span>
-          <span className="puntuacion-label">Puntos máximos</span>
-        </div>
       </div>
 
       <div className="recomendaciones">
