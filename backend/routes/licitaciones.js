@@ -84,7 +84,9 @@ router.post('/sync', requireAuth, requireAdmin, async (req, res) => {
     const data = await resp.json();
     res.status(resp.status).json(data);
   } catch (err) {
-    const unreachable = err.name === 'TimeoutError' || err.cause?.code === 'ECONNREFUSED';
+    // fetch lanza TypeError ante cualquier fallo de red (conexión rechazada, nombre sin resolver si
+    // el contenedor está parado…); una respuesta que no es JSON sigue siendo un 500.
+    const unreachable = err.name === 'TimeoutError' || err.name === 'TypeError';
     res.status(unreachable ? 503 : 500).json({
       ok:    false,
       error: unreachable ? 'Scraper no disponible' : 'Error al iniciar sync'

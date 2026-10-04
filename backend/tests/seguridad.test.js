@@ -247,3 +247,17 @@ test('frontend: tras iniciar sesión solo se redirige a rutas internas', () => {
     assert.equal(esRutaInterna(malo), false, String(malo));
   }
 });
+
+test('sync: scraper inalcanzable (DNS o conexión) → 503; respuesta no JSON → 500', async () => {
+  usuario.rol = 'admin';
+  for (const fallo of [
+    Object.assign(new TypeError('fetch failed'), { cause: { code: 'ENOTFOUND' } }),
+    Object.assign(new TypeError('fetch failed'), { cause: new AggregateError([Object.assign(new Error(), { code: 'ECONNREFUSED' })]) }),
+    Object.assign(new Error('timeout'), { name: 'TimeoutError' }),
+  ]) {
+    global.fetch = async () => { throw fallo; };
+    assert.equal((await sync(sesion())).status, 503, fallo.cause?.code ?? fallo.name);
+  }
+  global.fetch = async () => ({ status: 200, json: async () => { throw new SyntaxError('Unexpected token <'); } });
+  assert.equal((await sync(sesion())).status, 500);
+});
