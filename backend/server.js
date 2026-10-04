@@ -15,7 +15,8 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/cybers
 
 async function main() {
   try {
-    await mongoose.connect(MONGODB_URI);
+    // Sin esto, con MongoDB caído cada petición espera 30 s, lo mismo que proxy_read_timeout de nginx.
+    await mongoose.connect(MONGODB_URI, { serverSelectionTimeoutMS: 5000 });
   } catch (err) {
     console.error('Error al conectar con MongoDB:', err.message);
     process.exit(1);

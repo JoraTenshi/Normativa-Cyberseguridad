@@ -5,6 +5,7 @@ const Resultado = require('../models/Resultado');
 const { optionalAuth } = require('../middleware/auth');
 const { calcularIndice, construirRemediaciones, calcularCoberturaEstimada } = require('../utils/scoring');
 const { validarRespuestas } = require('../validation/validarRespuestas');
+const { esBDNoDisponible } = require('../utils/bd');
 
 const MAX_RESPUESTAS = 500;
 
@@ -102,6 +103,9 @@ router.post('/', optionalAuth, async (req, res) => {
     });
 
   } catch (err) {
+    if (esBDNoDisponible(err)) {
+      return res.status(503).json({ ok: false, error: 'Servicio no disponible temporalmente' });
+    }
     res.status(500).json({ ok: false, error: 'Error interno al procesar el resultado' });
   }
 });

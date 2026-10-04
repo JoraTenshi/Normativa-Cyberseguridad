@@ -181,3 +181,23 @@ test('el Resultado del modelo exige el nombre de la normativa', () => {
   const r = new Resultado({ normativa: 'lssi_ce', respuestas: [], algoritmo_version: '2' });
   assert.ok(r.validateSync().errors.normativa_nombre);
 });
+
+test('MongoDB no disponible: 503 (no 500) y no se crea ningún Resultado', async () => {
+  const original = Normativa.findOne;
+  try {
+    for (const err of [
+      Object.assign(new Error('Server selection timed out after 5000 ms'), { name: 'MongooseServerSelectionError' }),
+      Object.assign(new Error('connection refused'), { name: 'MongoNetworkError' }),
+      new Error('Operation `normativas.findOne()` buffering timed out after 10000ms'),
+    ]) {
+      Normativa.findOne = async () => { throw err; };
+      const res = await enviar(todas(1), { conSesion: false });
+      assert.equal(res.status, 503, err.name);
+    }
+    Normativa.findOne = async () => { throw new TypeError('bug'); };
+    assert.equal((await enviar(todas(1), { conSesion: false })).status, 500, 'un fallo de código sigue siendo 500');
+    assert.equal(creados.length, 0);
+  } finally {
+    Normativa.findOne = original;
+  }
+});
