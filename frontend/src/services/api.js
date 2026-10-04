@@ -76,7 +76,7 @@ export const verify2fa = async (token) => {
 };
 
 export const get2faSetup = async () => {
-  const { data } = await api.get('/me/2fa/setup');
+  const { data } = await api.post('/me/2fa/setup');
   return data.data;
 };
 

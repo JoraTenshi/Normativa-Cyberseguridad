@@ -111,7 +111,7 @@ function createApp({ rateLimits = true } = {}) {
         'GET  /me/historial',
         'GET  /me/historial/:id',
         'GET  /me/pds/:resultadoId',
-        'GET  /me/2fa/setup',
+        'POST /me/2fa/setup',
         'POST /me/2fa/enable',
         'POST /me/2fa/disable',
         'GET  /normativas',

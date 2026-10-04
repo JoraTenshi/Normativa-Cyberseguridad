@@ -7,10 +7,12 @@ const { encryptTotpSecret, readTotpSecret } = require('../utils/totpEncryption')
 
 const router = express.Router();
 
-router.get('/setup', requireAuth, async (req, res) => {
+const PENDING_TTL_MS = 10 * 60 * 1000;
+
+router.post('/setup', requireAuth, async (req, res) => {
   try {
     let usuario = await Usuario.findById(req.user.id)
-      .select('+twoFactorSecret');
+      .select('+twoFactorPendingSecret +twoFactorPendingExpiresAt');
 
     if (!usuario) {
       return res.status(404).json({ ok: false, error: 'Usuario no encontrado' });
@@ -20,23 +22,23 @@ router.get('/setup', requireAuth, async (req, res) => {
       return res.status(409).json({ ok: false, error: '2FA ya está activado' });
     }
 
-    if (!usuario.twoFactorSecret) {
+    // Se reutiliza el secreto pendiente mientras no caduque, para que el QR no cambie si se repite la llamada.
+    const vigente = usuario.twoFactorPendingSecret && usuario.twoFactorPendingExpiresAt > new Date();
+    if (!vigente) {
       const generated = speakeasy.generateSecret({ length: 20 });
 
-      const actualizado = await Usuario.findOneAndUpdate(
+      usuario = await Usuario.findOneAndUpdate(
+        { _id: usuario._id, twoFactorEnabled: false },
         {
-          _id: usuario._id,
-          twoFactorEnabled: false,
-          twoFactorSecret: null
+          $set: {
+            twoFactorPendingSecret:    encryptTotpSecret(generated.base32, usuario._id),
+            twoFactorPendingExpiresAt: new Date(Date.now() + PENDING_TTL_MS)
+          }
         },
-        { $set: { twoFactorSecret: encryptTotpSecret(generated.base32, usuario._id) } },
         { new: true }
-      ).select('+twoFactorSecret');
+      ).select('+twoFactorPendingSecret +twoFactorPendingExpiresAt');
 
-      usuario = actualizado || await Usuario.findById(req.user.id)
-        .select('+twoFactorSecret');
-
-      if (!usuario || usuario.twoFactorEnabled || !usuario.twoFactorSecret) {
+      if (!usuario) {
         return res.status(409).json({
           ok: false,
           error: 'No se pudo iniciar la configuración 2FA'
@@ -44,7 +46,7 @@ router.get('/setup', requireAuth, async (req, res) => {
       }
     }
 
-    const secret = readTotpSecret(usuario.twoFactorSecret, usuario._id);
+    const secret = readTotpSecret(usuario.twoFactorPendingSecret, usuario._id);
     const otpauthUrl = speakeasy.otpauthURL({
       secret,
       label: `CyberAudit (${req.user.email})`,
@@ -72,16 +74,17 @@ router.post('/enable', requireAuth, async (req, res) => {
       return res.status(400).json({ ok: false, error: 'El código es obligatorio' });
     }
 
-    const usuario = await Usuario.findById(req.user.id).select('+twoFactorSecret');
-    if (!usuario?.twoFactorSecret) {
-      return res.status(400).json({ ok: false, error: 'Primero llama a GET /me/2fa/setup' });
-    }
-    if (usuario.twoFactorEnabled) {
+    const usuario = await Usuario.findById(req.user.id)
+      .select('+twoFactorPendingSecret +twoFactorPendingExpiresAt');
+    if (usuario?.twoFactorEnabled) {
       return res.status(409).json({ ok: false, error: '2FA ya está activado' });
+    }
+    if (!usuario?.twoFactorPendingSecret || !(usuario.twoFactorPendingExpiresAt > new Date())) {
+      return res.status(400).json({ ok: false, error: 'Primero llama a POST /me/2fa/setup' });
     }
 
     const valid = speakeasy.totp.verify({
-      secret:   readTotpSecret(usuario.twoFactorSecret, usuario._id),
+      secret:   readTotpSecret(usuario.twoFactorPendingSecret, usuario._id),
       encoding: 'base32',
       token,
       window:   1
@@ -90,7 +93,26 @@ router.post('/enable', requireAuth, async (req, res) => {
       return res.status(401).json({ ok: false, error: 'Código incorrecto' });
     }
 
-    await usuario.updateOne({ twoFactorEnabled: true });
+    // Solo se activa el mismo secreto que se acaba de verificar y si nadie lo ha cambiado entretanto.
+    const activado = await Usuario.findOneAndUpdate(
+      {
+        _id: usuario._id,
+        twoFactorEnabled: false,
+        twoFactorPendingSecret: usuario.twoFactorPendingSecret
+      },
+      {
+        $set: {
+          twoFactorSecret:           usuario.twoFactorPendingSecret,
+          twoFactorEnabled:          true,
+          twoFactorPendingSecret:    null,
+          twoFactorPendingExpiresAt: null
+        }
+      }
+    );
+    if (!activado) {
+      return res.status(409).json({ ok: false, error: 'La configuración 2FA ha cambiado; vuelve a empezar' });
+    }
+
     res.json({ ok: true });
   } catch (err) {
     res.status(500).json({ ok: false, error: 'Error al activar 2FA' });
@@ -119,7 +141,12 @@ router.post('/disable', requireAuth, async (req, res) => {
       return res.status(401).json({ ok: false, error: 'Código incorrecto' });
     }
 
-    await usuario.updateOne({ twoFactorEnabled: false, twoFactorSecret: null });
+    await usuario.updateOne({
+      twoFactorEnabled: false,
+      twoFactorSecret: null,
+      twoFactorPendingSecret: null,
+      twoFactorPendingExpiresAt: null
+    });
     res.json({ ok: true });
   } catch (err) {
     res.status(500).json({ ok: false, error: 'Error al desactivar 2FA' });

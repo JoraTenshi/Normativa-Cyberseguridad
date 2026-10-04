@@ -44,6 +44,8 @@ test('2FA usa el secreto cifrado en configuración, activación, acceso y desact
     sessionVersion: 0,
     twoFactorSecret: null,
     twoFactorEnabled: false,
+    twoFactorPendingSecret: null,
+    twoFactorPendingExpiresAt: null,
     isLocked: () => false,
     verificarPassword: async password => password === 'Prueba123',
     resetLoginAttempts: async () => {},
@@ -52,14 +54,14 @@ test('2FA usa el secreto cifrado en configuración, activación, acceso y desact
 
   Usuario.findById = () => ({ select: async () => user });
   Usuario.findOne = async ({ email }) => email === user.email ? user : null;
-  Usuario.findOneAndUpdate = (filter, update) => ({
-    select: async () => {
-      assert.equal(filter._id.toString(), userId);
-      if (user.twoFactorEnabled || user.twoFactorSecret !== null) return null;
-      user.twoFactorSecret = update.$set.twoFactorSecret;
-      return user;
-    }
-  });
+  // Igual que MongoDB: aplica $set solo si el documento cumple el filtro; se puede encadenar .select().
+  Usuario.findOneAndUpdate = (filter, update) => {
+    assert.equal(filter._id.toString(), userId);
+    const cumple = Object.entries(filter).every(([k, v]) => k === '_id' || user[k] === v);
+    if (cumple) Object.assign(user, update.$set);
+    const resultado = Promise.resolve(cumple ? user : null);
+    return { select: () => resultado, then: (ok, ko) => resultado.then(ok, ko) };
+  };
   RevokedToken.exists = async () => false;
   RevokedToken.create = async () => ({});
 
@@ -82,28 +84,32 @@ test('2FA usa el secreto cifrado en configuración, activación, acceso y desact
     }, process.env.JWT_SECRET);
     const fullCookie = `cyberaudit_token=${fullToken}`;
 
-    const setup = await request(`${base}/me/2fa/setup`, 'GET', fullCookie);
+    const setup = await request(`${base}/me/2fa/setup`, 'POST', fullCookie);
     assert.equal(setup.response.status, 200);
-    assert.match(user.twoFactorSecret, /^v1:/);
-    assert.equal(user.twoFactorSecret.includes(setup.body.data.secret), false);
+    assert.match(user.twoFactorPendingSecret, /^v1:/);
+    assert.equal(user.twoFactorPendingSecret.includes(setup.body.data.secret), false);
+    assert.equal(user.twoFactorSecret, null, 'la configuración no toca el secreto activo');
+    assert.ok(user.twoFactorPendingExpiresAt > new Date());
     assert.match(setup.body.data.qr, /^data:image\/png;base64,/);
 
-    const refresh = await request(`${base}/me/2fa/setup`, 'GET', fullCookie);
+    const refresh = await request(`${base}/me/2fa/setup`, 'POST', fullCookie);
     assert.equal(refresh.response.status, 200);
     assert.equal(refresh.body.data.secret, setup.body.data.secret);
 
-    const stored = user.twoFactorSecret;
+    const stored = user.twoFactorPendingSecret;
     const altered = stored.split(':');
     altered[2] = `${altered[2][0] === '0' ? '1' : '0'}${altered[2].slice(1)}`;
-    user.twoFactorSecret = altered.join(':');
-    const badSetup = await request(`${base}/me/2fa/setup`, 'GET', fullCookie);
+    user.twoFactorPendingSecret = altered.join(':');
+    const badSetup = await request(`${base}/me/2fa/setup`, 'POST', fullCookie);
     assert.equal(badSetup.response.status, 500);
-    user.twoFactorSecret = stored;
+    user.twoFactorPendingSecret = stored;
 
     const code = speakeasy.totp({ secret: setup.body.data.secret, encoding: 'base32' });
     const enabled = await request(`${base}/me/2fa/enable`, 'POST', fullCookie, { token: code });
     assert.equal(enabled.response.status, 200);
     assert.equal(user.twoFactorEnabled, true);
+    assert.equal(user.twoFactorSecret, stored, 'el secreto verificado pasa a ser el activo');
+    assert.equal(user.twoFactorPendingSecret, null);
 
     const login = await request(`${base}/auth/login`, 'POST', null, {
       email: user.email,

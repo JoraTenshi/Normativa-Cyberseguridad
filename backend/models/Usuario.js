@@ -28,6 +28,9 @@ const UsuarioSchema = new mongoose.Schema({
   sessionVersion:   { type: Number,  default: 0 },
   twoFactorSecret:  { type: String,  default: null, select: false },
   twoFactorEnabled: { type: Boolean, default: false },
+  // Secreto en configuración: solo pasa a twoFactorSecret cuando /enable verifica un código.
+  twoFactorPendingSecret:    { type: String, default: null, select: false },
+  twoFactorPendingExpiresAt: { type: Date,   default: null, select: false },
 
   emailVerifiedAt: {
     type: Date,
