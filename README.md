@@ -79,14 +79,6 @@ mkcert -install
 make recert && sudo docker restart cybersec_nginx
 ```
 
-Si el navegador muestra un aviso de certificado, instala mkcert para evitarlo:
-
-```bash
-sudo apt install mkcert libnss3-tools
-mkcert -install
-make recert && sudo docker restart cybersec_nginx
-```
-
 ---
 
 ## Comandos
@@ -150,27 +142,27 @@ make recert && sudo docker restart cybersec_nginx
 ## Lógica de puntuación
 
 > El resultado es un **índice de autoevaluación** basado en respuestas declaradas, no una certificación.
-> El algoritmo v2 (media de bloques ponderada por `peso_bloque`, nivel sobre el valor exacto) está
-> definido en [`docs/contrato-evaluacion.md`](docs/contrato-evaluacion.md) y se integrará en `POST /resultado`.
-> Hasta entonces la aplicación calcula así:
+> Contrato completo (algoritmo v2): [`docs/contrato-evaluacion.md`](docs/contrato-evaluacion.md).
 
-Cada pregunta tiene un peso. La puntuación se calcula así:
+Antes de calcular, `POST /resultado` exige el cuestionario **completo**: una respuesta por pregunta de la normativa, con valor 0, 0,5 o 1. Si falta alguna, sobra, se repite o tiene otro valor, responde 400 y no guarda nada.
 
 ```
-Puntuación obtenida = valor_respuesta × peso_pregunta
-  Sí      → 1.0
-  Parcial → 0.5
-  No      → 0.0
+Valor de cada respuesta:  Sí → 1   Parcial → 0,5   No → 0
 
-Porcentaje = (Σ puntuaciones_obtenidas / puntuación_máxima) × 100
+Por bloque:  % bloque = 100 × Σ(valor × peso_pregunta) / Σ(peso_pregunta)
+Global:      índice   = Σ(% bloque × peso_bloque) / Σ(peso_bloque)
 ```
 
-| Porcentaje | Nivel |
-|------------|-------|
-| ≥ 85% | Alto |
-| 60–84% | Medio |
-| 30–59% | Bajo |
-| < 30% | Crítico |
+Cada bloque cuenta según su `peso_bloque` (los de una normativa suman 100), no según cuántas preguntas tenga. El índice se muestra redondeado, pero el nivel se decide con el **valor exacto** (29,7 se muestra como 30 % y es Crítico):
+
+| Índice exacto | Nivel |
+|---------------|-------|
+| ≥ 85 | Alto |
+| ≥ 60 y < 85 | Medio |
+| ≥ 30 y < 60 | Bajo |
+| < 30 | Crítico |
+
+Con sesión iniciada, cada evaluación guarda una copia de lo calculado (versión del algoritmo, índice exacto, nivel, desglose por bloque, remediaciones y cobertura estimada); el historial y el Plan Director muestran esa copia aunque el catálogo de normativas cambie después. Sin sesión, el resultado se muestra pero no se guarda.
 
 ### Cobertura estimada multinormativa
 
@@ -182,7 +174,7 @@ Al contestar una normativa, la respuesta de `POST /resultado` (y de `GET /me/his
 
 Las normativas siguen un contrato JSON canónico definido en `backend/seed/schema_normativa.json`. Para añadir una nueva:
 
-1. Crear un archivo `<NOMBRE>_normativa.json` (p. ej. `CRA_normativa.json`) en `backend/seed/`.
+1. Crear un archivo `<NOMBRE>_normativa.json` (p. ej. `DORA_normativa.json`) en `backend/seed/`.
 2. Validarlo: `python3 backend/seed/validate_normativa.py backend/seed/<NOMBRE>_normativa.json`.
 
 El validador (`backend/seed/validate_normativa.py`) verifica el esquema y la regla de negocio "la suma de `peso_bloque` debe ser 100"; `make seed` lo ejecuta sobre todos los ficheros antes del seed real. Cualquier `*_normativa.json` válido es descubierto e ingerido sin tocar código **en una instalación nueva**. `make seed` no añade ni actualiza normativas en una base de datos que ya tiene datos (para no borrar resultados que las referencian); ese caso todavía no está soportado.

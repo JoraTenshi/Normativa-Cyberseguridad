@@ -5,8 +5,12 @@
 ### Autenticación — `/auth`
 | Método | Endpoint | Descripción |
 |--------|----------|-------------|
-| POST | `/auth/register` | Registro con nombre, email y contraseña |
+| POST | `/auth/register` | Registro con nombre, email y contraseña; envía el enlace de verificación |
+| POST | `/auth/verify-email` | Confirma el correo (enlace de un solo uso); sin confirmar no se puede iniciar sesión |
+| POST | `/auth/resend-verification` | Reenvía el enlace de verificación |
 | POST | `/auth/login` | Login, devuelve cookie httpOnly |
+| POST | `/auth/forgot-password` | Envía un enlace de recuperación |
+| POST | `/auth/reset-password` | Cambia la contraseña (enlace de un solo uso) y cierra todas las sesiones |
 | POST | `/auth/logout` | Revoca el JWT (añade jti a la lista de bloqueados) |
 | POST | `/auth/2fa/verify` | Completa el login cuando el 2FA está activado |
 
@@ -14,6 +18,7 @@
 - Revocación de tokens mediante colección MongoDB `revokedtokens` con índice TTL
 - Bloqueo de cuenta tras 5 intentos fallidos (15 min)
 - Rate limiting en todas las rutas de autenticación (10 peticiones / 15 min)
+- Peticiones que cambian datos (`POST`, `PUT`, `PATCH`, `DELETE`): deben llevar el `Origin` del frontend o `X-Requested-With: XMLHttpRequest`; si no, 403 `ORIGEN_NO_PERMITIDO` (ver `docs/registro-auditoria-seguridad.md`, SEG-023)
 
 ### Perfil de usuario — `/me`
 | Método | Endpoint | Descripción |
@@ -21,13 +26,13 @@
 | GET | `/me` | Devuelve el perfil completo del usuario incluyendo datos de organización |
 | PUT | `/me/organizacion` | Actualiza sector, tamaño y tipo de actividad |
 | GET | `/me/historial` | Lista de evaluaciones pasadas (sin respuestas) |
-| GET | `/me/historial/:id` | Detalle completo de una evaluación con puntuaciones por bloque y remediaciones |
+| GET | `/me/historial/:id` | Detalle completo de una evaluación (copia guardada al enviarla: cuestionario, desglose por bloque, remediaciones y cobertura) |
 
 ### Doble factor de autenticación — `/me/2fa`
 | Método | Endpoint | Descripción |
 |--------|----------|-------------|
-| GET | `/me/2fa/setup` | Genera secreto TOTP y código QR |
-| POST | `/me/2fa/enable` | Confirma y activa el 2FA |
+| POST | `/me/2fa/setup` | Genera un secreto TOTP **pendiente** (cifrado, caduca en 10 min) y su código QR; no toca el secreto activo |
+| POST | `/me/2fa/enable` | Verifica un código del secreto pendiente y lo convierte en el activo |
 | POST | `/me/2fa/disable` | Desactiva el 2FA con el código TOTP actual |
 
 ### Normativas — `/normativas`
@@ -35,10 +40,10 @@
 |--------|----------|-------------|
 | GET | `/normativas` | Todas las normativas disponibles (público) |
 | GET | `/normativas/:id` | Normativa individual con bloques y preguntas completas |
-| GET | `/normativas/aplicables` | Normativas filtradas por el sector del usuario (requiere autenticación) |
+| GET | `/normativas/aplicables` | Todas las normativas con su aplicabilidad según el perfil de la organización (requiere autenticación) |
 
-- Las normativas con `sectores_aplicables: []` son universales y se muestran a todos
-- Las normativas con sectores definidos sólo se muestran a los usuarios del sector correspondiente
+- Cada normativa lleva un estado (`aplica`, `puede_aplicar`, `no_aplica`, `voluntaria` o `perfil_incompleto`) y su motivo; reglas y casos en `docs/aplicabilidad.md`
+- Si falta un dato del perfil necesario para decidir, el estado es `perfil_incompleto` con la lista `faltan`, nunca `no_aplica`
 
 #### Esquema canónico y validación
 
@@ -76,22 +81,26 @@ Actualmente las 11 normativas tienen todos sus bloques etiquetados con `temas`, 
 |--------|----------|-------------|
 | POST | `/resultado` | Envía respuestas y devuelve el resultado puntuado |
 
+Exige el cuestionario completo (una respuesta por pregunta, valores 0, 0.5 o 1); si no, 400 con `code` (`RESPUESTA_INVALIDA`, `RESPUESTA_DUPLICADA`, `CUESTIONARIO_INCOMPLETO`) y no guarda nada. Contrato completo en `docs/contrato-evaluacion.md`.
+
 La respuesta incluye:
-- `porcentaje` — puntuación global
-- `nivel` — Alto / Medio / Bajo / Crítico
-- `puntuaciones_bloques` — desglose de puntuación por bloque temático
+- `algoritmo_version` — versión del cálculo (hoy `"2"`)
+- `porcentaje_exacto` / `porcentaje` — índice de autoevaluación: media de bloques ponderada por `peso_bloque`, exacto y redondeado
+- `nivel` — Alto / Medio / Bajo / Crítico, decidido sobre el valor exacto; `mensaje` — texto para el nivel
+- `puntuaciones_bloques` — desglose por bloque (peso, porcentaje exacto y redondeado, puntos)
 - `remediaciones` — acciones de mejora priorizadas ordenadas por brecha (`peso × (1 − valor)`)
 - `normativa_nombre` — nombre legible de la normativa
 - `cobertura_estimada` — estimación cruzada del cumplimiento del usuario en el resto de normativas (ver subsección anterior)
 
-Funciona de forma anónima (el resultado caduca en 24 h) o autenticada (el resultado se persiste).
+Funciona sin sesión (se devuelve el resultado pero no se guarda) o con sesión (se guarda una copia de todo lo calculado, que es lo que leen el historial y el Plan Director aunque el catálogo cambie después).
 
 ### Plan Director de Seguridad — `/me/pds`
 | Método | Endpoint | Descripción |
 |--------|----------|-------------|
 | GET | `/me/pds/:resultadoId` | Genera el plan de acción para una evaluación pasada |
 
-- Las remediaciones se agrupan por las 5 fases del marco INCIBE cuando el campo `fase_pds` está presente en los datos de la normativa
+- Usa las remediaciones guardadas con la evaluación (no recalcula con el catálogo actual)
+- Las remediaciones se agrupan por las 5 fases del marco INCIBE cuando el campo `fase_pds` está presente en los datos de la normativa; las que no tienen fase van a un grupo final "Sin fase asignada"
 - Si no hay datos de fase, devuelve una lista plana priorizada
 - La respuesta incluye `usa_fases_incibe` para que el frontend sepa qué layout usar
 
@@ -100,7 +109,7 @@ Funciona de forma anónima (el resultado caduca en 24 h) o autenticada (el resul
 |--------|----------|-------------|
 | GET | `/licitaciones` | Lista paginada de licitaciones de ciberseguridad (público) |
 | GET | `/licitaciones/status` | Estado del scraper: última sincronización, número de registros y errores |
-| POST | `/licitaciones/sync` | Lanza una nueva descarga para el año y mes indicados (requiere autenticación) |
+| POST | `/licitaciones/sync` | Lanza una nueva descarga para el año y mes indicados (requiere rol `admin`; ver README) |
 
 Filtros disponibles en `GET /licitaciones`:
 - `?q=` — búsqueda por texto en título y resumen
@@ -125,12 +134,12 @@ La página de ajustes sólo gestiona el 2FA. Necesita una sección nueva donde e
 ### 2. Normativas filtradas por sector
 **Endpoint:** `GET /normativas/aplicables`
 
-`Home.jsx` llama a `GET /normativas` para todos los usuarios. Para usuarios autenticados debería llamar a `GET /normativas/aplicables`, que devuelve sólo las normativas relevantes para su sector. La respuesta incluye `perfil_completo: false` cuando el usuario no tiene sector definido — en ese caso el frontend debería redirigirle a completar su perfil.
+`Home.jsx` llama a `GET /normativas` para todos los usuarios. Para usuarios autenticados podría llamar a `GET /normativas/aplicables` y mostrar junto a cada normativa su estado y motivo. La respuesta incluye `perfil_completo: false` cuando falta el sector o el tamaño — en ese caso el frontend puede invitar a completar el perfil.
 
 ### 3. Puntuaciones por bloque en el detalle de evaluación
 **Ya devuelto por:** `GET /me/historial/:id` como `puntuaciones_bloques`
 
-`HistorialDetalle.jsx` intenta acceder a `detalle.bloques`, que no existe en la respuesta de la API — **esta página está rota**. Recalcula las puntuaciones por bloque en el cliente a partir de las preguntas en bruto, pero la API ya no devuelve los bloques completos de la normativa en este endpoint. La solución es sustituir esa lógica por `detalle.puntuaciones_bloques`, que ya viene calculado en la respuesta.
+✅ Resuelto: `GET /me/historial/:id` devuelve en `detalle.bloques` el cuestionario guardado con la evaluación (bloques, textos y pesos), que es lo que `HistorialDetalle.jsx` recorre. Mejora pendiente: usar `detalle.puntuaciones_bloques`, que ya trae el porcentaje de cada bloque, en lugar de recalcularlo en el cliente.
 
 ### 4. Remediaciones en el resultado y en el detalle
 **Ya devuelto por:** `POST /resultado` y `GET /me/historial/:id` como `remediaciones`
