@@ -83,7 +83,8 @@ $(CERT_FILE):
 			-keyout $(KEY_FILE) \
 			-out    $(CERT_FILE) \
 			-days 365 -nodes \
-			-subj '/C=ES/ST=Local/L=Local/O=CyberAudit/CN=localhost' 2>/dev/null; \
+			-subj '/C=ES/ST=Local/L=Local/O=CyberAudit/CN=localhost' \
+			-addext 'subjectAltName=DNS:localhost,IP:127.0.0.1,IP:::1' 2>/dev/null; \
 		echo ">>> Self-signed certificate ready (browser warning expected)."; \
 	fi
 	@if [ -f $(BACKEND_DIR)/.env ]; then \
