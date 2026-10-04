@@ -4,8 +4,6 @@ const mongoose = require('mongoose');
 const { requireAuth } = require('../middleware/auth');
 const Usuario = require('../models/Usuario');
 const Resultado = require('../models/Resultado');
-const Normativa = require('../models/Normativa');
-const { construirRemediaciones, calcularCoberturaEstimada } = require('../utils/scoring');
 
 const SECTORES_VALIDOS = ['publica', 'sanitaria', 'energia', 'transporte', 'financiero', 'educacion', 'privada', 'otro'];
 const TAMANOS_VALIDOS  = ['micro', 'pequena', 'mediana', 'grande'];
@@ -55,14 +53,10 @@ router.get('/historial', requireAuth, async (req, res) => {
       .find({ usuario: req.user.id }, { respuestas: 0, __v: 0 })
       .sort({ createdAt: -1 });
 
-    const normativaIds = [...new Set(resultados.map(r => r.normativa))];
-    const normativas = await Normativa.find({ id: { $in: normativaIds } }, { id: 1, nombre: 1 });
-    const nombrePor = Object.fromEntries(normativas.map(n => [n.id, n.nombre]));
-
     const data = resultados.map(r => ({
       id:                r._id,
       normativa:         r.normativa,
-      normativa_nombre:  nombrePor[r.normativa] ?? r.normativa,
+      normativa_nombre:  r.normativa_nombre,
       algoritmo_version: r.algoritmo_version,
       porcentaje:        r.porcentaje,
       nivel:             r.nivel,
@@ -88,31 +82,21 @@ router.get('/historial/:resultadoId', requireAuth, async (req, res) => {
     );
     if (!resultado) return res.status(404).json({ ok: false, error: 'Evaluación no encontrada' });
 
-    const norm = await Normativa.findOne({ id: resultado.normativa }, { nombre: 1, bloques: 1, _id: 0 });
-    const remediaciones = norm ? construirRemediaciones(norm, resultado.respuestas) : [];
-
-    const otrasNormativas = norm
-      ? await Normativa.find({ id: { $ne: resultado.normativa } })
-      : [];
-    const cobertura_estimada = norm
-      ? calcularCoberturaEstimada(norm, resultado.puntuaciones_bloques ?? [], otrasNormativas)
-      : [];
-
     res.json({
       ok: true,
       data: {
         id:                   resultado._id,
         normativa:            resultado.normativa,
-        normativa_nombre:     norm?.nombre ?? resultado.normativa,
+        normativa_nombre:     resultado.normativa_nombre,
         algoritmo_version:    resultado.algoritmo_version,
         porcentaje_exacto:    resultado.porcentaje_exacto,
         porcentaje:           resultado.porcentaje,
         nivel:                resultado.nivel,
         puntuaciones_bloques: resultado.puntuaciones_bloques ?? [],
-        respuestas:           resultado.respuestas ?? [],
-        bloques:              norm?.bloques ?? [],
-        remediaciones,
-        cobertura_estimada,
+        respuestas:           resultado.respuestas,
+        bloques:              resultado.cuestionario,
+        remediaciones:        resultado.remediaciones,
+        cobertura_estimada:   resultado.cobertura_estimada,
         createdAt:            resultado.createdAt
       }
     });

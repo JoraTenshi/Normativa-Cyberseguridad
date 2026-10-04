@@ -111,6 +111,13 @@ existen resultados v1 que conservar: la próxima instalación parte de una base 
 El campo sirve para que, si el algoritmo cambia más adelante, los resultados guardados sigan
 mostrando las cifras con las que se calcularon.
 
+**Copia del cálculo.** Al guardar un `Resultado` se calcula todo antes de crearlo y se guarda una
+copia: nombre de la normativa, cuestionario tal como se respondió (bloques, textos y pesos),
+índice, nivel, desglose por bloque, remediaciones y cobertura estimada. El historial
+(`GET /me/historial`, `/me/historial/:id`) y el Plan Director (`GET /me/pds/:id`) leen solo esa
+copia y no consultan el catálogo actual, de modo que un cambio posterior en un JSON de normativa
+no altera evaluaciones ya hechas.
+
 ## 6. Decisiones (30/09/2026)
 
 - [x] **Fórmula:** media de bloques ponderada por `peso_bloque` (§2). Es el peso que declara

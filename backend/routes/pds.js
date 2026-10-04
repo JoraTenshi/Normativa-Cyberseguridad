@@ -3,8 +3,6 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const { requireAuth } = require('../middleware/auth');
 const Resultado = require('../models/Resultado');
-const Normativa = require('../models/Normativa');
-const { construirRemediaciones } = require('../utils/scoring');
 
 const FASES = {
   1: 'Análisis de situación inicial',
@@ -22,10 +20,7 @@ router.get('/:resultadoId', requireAuth, async (req, res) => {
     const resultado = await Resultado.findOne({ _id: req.params.resultadoId, usuario: req.user.id });
     if (!resultado) return res.status(404).json({ ok: false, error: 'Evaluación no encontrada' });
 
-    const normativa = await Normativa.findOne({ id: resultado.normativa });
-    if (!normativa) return res.status(404).json({ ok: false, error: 'Normativa no encontrada' });
-
-    const acciones = construirRemediaciones(normativa, resultado.respuestas).map(
+    const acciones = resultado.remediaciones.map(
       ({ pregunta_id, bloque_id, bloque, pregunta, nivel, fase_pds, remediacion, valor_actual, prioridad }) => ({
         pregunta_id, bloque_id, bloque,
         accion:      remediacion ?? `Revisar y mejorar: ${pregunta}`,
@@ -54,7 +49,7 @@ router.get('/:resultadoId', requireAuth, async (req, res) => {
       data: {
         resultado_id:     resultado._id,
         normativa:        resultado.normativa,
-        normativa_nombre: normativa.nombre,
+        normativa_nombre: resultado.normativa_nombre,
         porcentaje:       resultado.porcentaje,
         nivel:            resultado.nivel,
         total_acciones:   acciones.length,

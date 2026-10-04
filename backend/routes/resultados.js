@@ -56,23 +56,32 @@ router.post('/', optionalAuth, async (req, res) => {
       porcentaje: b.porcentaje_exacto === null ? null : Math.round(b.porcentaje_exacto)
     }));
 
+    const remediaciones = construirRemediaciones(normativa, respuestas);
+    const cobertura_estimada = calcularCoberturaEstimada(normativa, puntuaciones_bloques, otrasNormativas);
+    const cuestionario = normativa.bloques.map(b => ({
+      id:        b.id,
+      nombre:    b.nombre,
+      preguntas: b.preguntas.map(p => ({ id: p.id, texto: p.texto, peso: p.peso }))
+    }));
+
     let resultadoId = null;
     if (req.user) {
       const resultado = await Resultado.create({
         usuario:           req.user.id,
         normativa:         normativaIdClean,
+        normativa_nombre:  normativa.nombre,
+        cuestionario,
         respuestas,
         algoritmo_version: indice.algoritmo_version,
         porcentaje_exacto: indice.porcentaje_exacto,
         porcentaje:        indice.porcentaje,
         nivel:             indice.nivel,
-        puntuaciones_bloques
+        puntuaciones_bloques,
+        remediaciones,
+        cobertura_estimada
       });
       resultadoId = resultado._id;
     }
-
-    const remediaciones = construirRemediaciones(normativa, respuestas);
-    const cobertura_estimada = calcularCoberturaEstimada(normativa, puntuaciones_bloques, otrasNormativas);
 
     res.status(201).json({
       ok: true,

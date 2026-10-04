@@ -150,8 +150,34 @@ test('v2: el Resultado guardado incluye versión, valor exacto, nivel y desglose
 });
 
 test('el modelo Resultado exige algoritmo_version y acepta los niveles del contrato', () => {
-  const base = { normativa: 'lssi_ce', respuestas: [] };
+  const base = { normativa: 'lssi_ce', normativa_nombre: 'LSSI-CE', respuestas: [] };
   assert.ok(new Resultado(base).validateSync().errors.algoritmo_version);
   assert.equal(new Resultado({ ...base, algoritmo_version: '2', nivel: 'Crítico' }).validateSync(), undefined);
   assert.ok(new Resultado({ ...base, algoritmo_version: '2', nivel: 'Excelente' }).validateSync().errors.nivel);
+});
+
+// ── Copia guardada en el Resultado (tarea 9) ─────────────────────────────────
+test('el Resultado guarda la copia de lo calculado: nombre, cuestionario, remediaciones y cobertura', async () => {
+  const otra = cargarNormativas().find(n => n.id === 'nis2');
+  Normativa.find = async () => [otra];
+  try {
+    const { body } = await enviar(conValores(soloCOM));
+    const r = creados[0];
+
+    assert.equal(r.normativa_nombre, lssi.nombre);
+    assert.deepEqual(r.cuestionario, lssi.bloques.map(b => ({
+      id: b.id, nombre: b.nombre, preguntas: b.preguntas.map(p => ({ id: p.id, texto: p.texto, peso: p.peso }))
+    })));
+    assert.equal(r.remediaciones.length, ids.length - 3, 'todas menos las 3 de LSSI-COM');
+    assert.deepEqual(r.remediaciones, body.data.remediaciones);
+    assert.equal(r.cobertura_estimada.length, 1);
+    assert.deepEqual(r.cobertura_estimada, body.data.cobertura_estimada);
+  } finally {
+    Normativa.find = async () => [];
+  }
+});
+
+test('el Resultado del modelo exige el nombre de la normativa', () => {
+  const r = new Resultado({ normativa: 'lssi_ce', respuestas: [], algoritmo_version: '2' });
+  assert.ok(r.validateSync().errors.normativa_nombre);
 });
