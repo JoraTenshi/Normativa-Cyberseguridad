@@ -323,3 +323,71 @@ Fecha: 1 de octubre de 2026. Estado: cambios comprometidos localmente; sin `push
 **Límite de la validación.** En la aplicación local se comprobaron la salud de la API, el acceso 2FA tras migrar y retirar el lector antiguo, la nueva cabecera de Nginx y la lectura del fragmento con un token ficticio. La prueba del token ficticio no sustituye abrir un enlace real nuevo de verificación o recuperación. El USB del portátil y los registros internos del Nginx real no fueron inspeccionados directamente por Codex.
 
 **Pendientes para el trabajo siguiente.** La captura mostró un certificado HTTPS local autofirmado no confiable para el navegador (SEG-021). También siguen abiertos para una auditoría de producto los límites de intentos en memoria, los permisos del proceso del contenedor y la revisión de dependencias y cabeceras generales, enumerados antes en este registro. Ninguno de estos puntos se presenta como resuelto ni como prueba de seguridad absoluta del producto.
+
+## SEG-022: cabeceras de seguridad y CSP del frontend
+
+Fecha: 4 de octubre de 2026. Estado: cambiado y comprobado con Nginx y Chromium locales; pendiente de comprobar en Docker.
+
+**Evidencia.** `nginx/nginx.conf` enviaba HSTS, `X-Frame-Options`, `nosniff`, `Referrer-Policy` y `Permissions-Policy`, pero ninguna `Content-Security-Policy`. El backend tenía Helmet con HSTS, `frameguard`, `noSniff`, `referrerPolicy` y CSP desactivados. Para que una CSP estricta no rompiera la aplicación se revisó el frontend: el `index.html` compilado no contiene `<script>` en línea; la API es del mismo origen (`/api`); las imágenes son ficheros; los QR del 2FA son `data:`; `App.css` importa Google Fonts, y `components/useJoseEE.jsx` insertaba un `<style>` en línea que además redefinía la animación global `fadeIn` de `App.css`.
+
+**Cambio.** Nginx añade, a nivel de `server`, `Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests`, sin `unsafe-inline` ni `unsafe-eval`. Ningún `location` define `add_header` (si lo hiciera dejaría de heredar todas las cabeceras del servidor). En `/api/` se ocultan con `proxy_hide_header` las cabeceras que también envía el backend, para que cada una salga una vez. Helmet vuelve a estar activo en `backend/app.js` con los mismos valores que Nginx y una CSP de API `default-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'`. Las animaciones del easter egg pasan a `App.css` como `ee-fade-in` y `ee-floating`. `frontend/Dockerfile` fija `INLINE_RUNTIME_CHUNK=false`.
+
+**Prueba.** Con la configuración del proyecto (cambiando solo puertos, rutas de certificados y direcciones de los servicios; `nginx -t` correcto) delante del backend real y del build real: en `/`, `/auth`, `/historial`, un fichero estático, `/api/`, `/api/health`, `/api/normativas` y `/.well-known/security.txt` cada cabecera aparece exactamente una vez y no hay `X-Powered-By`; en la API hay dos CSP (la de la API y la del sitio), que el navegador aplica a la vez. En Chromium 149 headless, `/`, `/auth`, `/cuestionario/lssi_ce` y `/settings` cargaron su contenido sin ninguna violación de CSP; un `<script>` en línea de prueba fue bloqueado (prueba de que la CSP se aplica) y una imagen `data:` cargó. `backend/tests/seguridad.test.js` comprueba las cabeceras de la API y que la configuración no retroceda (CSP sin `unsafe-*`, `add_header` solo en `server`, `INLINE_RUNTIME_CHUNK=false`, sin `<style>` ni `dangerouslySetInnerHTML` en `frontend/src`).
+
+## SEG-023: comprobación de origen en peticiones que cambian datos (CSRF)
+
+Fecha: 4 de octubre de 2026. Estado: cambiado y comprobado con Chromium y Firefox locales.
+
+**Motivo.** Las cookies `SameSite=Strict` son la defensa principal; la comprobación de origen es una segunda capa. Con `Referrer-Policy: no-referrer`, la especificación Fetch permite que un `POST` del mismo origen lleve `Origin: null`, así que exigir sin más que `Origin` coincida podría bloquear la propia aplicación. Se midió: Chromium 149 y Firefox envían el origen real en un `POST` del mismo origen (con `fetch` y con XHR) bajo `no-referrer`.
+
+**Cambio.** `backend/middleware/origen.js`, aplicado a `POST`, `PUT`, `PATCH` y `DELETE`: si llega un `Origin` real debe ser `CORS_ORIGIN`; si no llega o vale `null`, se exige `X-Requested-With: XMLHttpRequest`, que otra web no puede añadir sin una petición previa CORS. Si no, `403 ORIGEN_NO_PERMITIDO`. El cliente `axios` del frontend envía siempre esa cabecera.
+
+**Prueba.** A través de Nginx, con sesión válida: origen ajeno, origen ajeno con la cabecera, origen parecido (`https://localhost:8443.evil.example`), mismo host por `http`, `Origin: null` sin cabecera y formulario sin `Origin` dieron 403; el origen propio y `null` con cabecera, 200; los `GET` no se bloquean. En Chromium, una página de otro origen lanzó contra una sesión iniciada un formulario `POST` a `/api/auth/logout` y un `fetch` con credenciales a `/api/resultado`: el registro del backend muestra ambas peticiones **sin cookie** (SameSite) **y con 403** (comprobación de origen). Las peticiones del propio frontend (inicio de sesión, `GET /api/me`, `POST /resultado`, cierre de sesión) funcionaron. Las cookies llegan al navegador a través de Nginx sin cambios: `HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=86400`. Cubierto por 12 pruebas en `backend/tests/seguridad.test.js`.
+
+## SEG-024: rol de administrador en `POST /licitaciones/sync`
+
+Fecha: 4 de octubre de 2026. Estado: cambiado y probado.
+
+**Evidencia.** Cualquier usuario con sesión podía lanzar una sincronización del scraper.
+
+**Cambio.** `Usuario.rol` (`usuario` por defecto, o `admin`), que ninguna ruta modifica: el registro y `PUT /me/organizacion` solo copian campos concretos. `requireAdmin` lee el rol de MongoDB en cada petición, no del JWT, para que retirarlo surta efecto al momento; si la lectura falla responde 503. `POST /licitaciones/sync` exige `requireAuth` y `requireAdmin`. El rol se asigna directamente en la base de datos (ver README).
+
+**Prueba.** Sin sesión 401, usuario normal 403, JWT con `rol: "admin"` y usuario normal en la BD 403, administrador 202 con los parámetros validados, fallo de BD 503; en ninguno de los casos rechazados se llama al scraper. El registro y la actualización del perfil ignoran `rol` y `$set` enviados por el cliente.
+
+## SEG-025: operadores y expresiones regulares del cliente en `GET /licitaciones`
+
+Fecha: 4 de octubre de 2026. Estado: cambiado y probado. Hallazgo nuevo de esta revisión.
+
+**Evidencia.** El listado público pasaba `req.query.estado` a MongoDB sin comprobar su tipo (Express convierte `?estado[$ne]=x` en un objeto, inyectando un operador) y `req.query.q` a `$regex` sin escapar (expresiones costosas como `(a+)+$` y consultas arbitrarias).
+
+**Cambio.** Solo se aceptan textos (recortados a 100 caracteres) y enteros de hasta 4 cifras; la búsqueda se escapa para que sea literal.
+
+**Prueba.** `?estado[$ne]=x&anio[$gt]=1&q[$regex]=.*` produce un filtro vacío; `q=(a+)+$` llega escapado y solo coincide con ese texto literal; la longitud y los enteros se limitan. Con el código anterior estas pruebas fallan.
+
+## SEG-026: redirección tras iniciar sesión
+
+Fecha: 4 de octubre de 2026. Estado: defensa añadida y comprobada en Chromium.
+
+**Motivo.** `react-router` < 7.18 tiene un aviso de redirección abierta con barras invertidas en `<Link>`/`useNavigate`. El único destino de navegación que no es fijo es `from` en `Auth.jsx`, que viene de la ruta protegida que se intentaba abrir.
+
+**Prueba antes del cambio.** Con sesión iniciada y `from` de atacante (`//host`, `/\host`, `/\\host`, `/%5C%5Chost`) el navegador no salió del sitio: el servidor atacante no recibió ninguna visita, mientras el control `from=/settings` sí llegó a Ajustes.
+
+**Cambio.** `Auth.jsx` solo usa `from` si es una ruta interna (empieza por una sola `/`, sin `//` ni barras invertidas); si no, va a `/`. Repetida la prueba con el build nuevo: los destinos de atacante acaban en la página de inicio y el servidor atacante no recibe visitas.
+
+## SEG-027: análisis de dependencias (SCA)
+
+Fecha: 4 de octubre de 2026. Estado: dependencias de ejecución sin avisos conocidos; quedan avisos en herramientas de compilación.
+
+**Backend.** `npm audit` informaba de 8 avisos. Corregidos: `mongoose` 8.24.4 (contaminación de prototipo), `body-parser` 1.20.8, `express` 4.22.3, que pasa a `qs` ~6.16.0 (denegación de servicio en el analizador de consultas, alcanzable de forma remota) y `nodemailer` 10.0.14 (versión mayor: analizador de direcciones con coste cuadrático, lecturas de ficheros y validación de dominios). Se comprobó el envío real con `nodemailer` 10 contra un servidor SMTP local: autenticación, remitente, destinatario, asunto UTF-8 y mensaje texto + HTML con el enlace de recuperación. `npm audit --omit=dev`: 0 avisos. Queda `braces` a través de `nodemon` (solo desarrollo). `backend/Dockerfile` usa `npm ci --omit=dev`: versiones exactas del lockfile y sin `nodemon` ni `supertest` en la imagen; la aplicación carga con esa instalación.
+
+**Frontend.** De 91 avisos, se actualizaron dentro de los rangos `axios` 1.20.0 y `react-router-dom` 6.30.6 (`@remix-run/router` 1.23.4). Recorriendo el árbol de dependencias de ejecución (`axios`, `react`, `react-dom`, `react-router-dom`), solo quedan 2 avisos de `react-router` que llegan al navegador: hidratación SSR (no aplica: la aplicación no usa SSR) y la redirección con barras invertidas (ver SEG-026). Los otros 71 están en `react-scripts` (Jest, webpack, Babel, SVGO…), que solo se ejecuta al compilar y no forma parte del paquete servido. `react-scripts` no tiene versión corregida; eliminarlos exige migrar a otra herramienta de compilación (fuera del alcance de la Práctica 3).
+
+**Scraper.** `requests==2.32.3` y `pymongo==4.10.1` no se analizaron con una herramienta (no hay `pip-audit` instalado).
+
+## SEG-028: certificados TLS en el historial de Git
+
+Fecha: 4 de octubre de 2026. Estado: no se encontró ninguna filtración.
+
+**Comprobación.** Se buscaron ficheros `.pem`, `.key`, `.crt`, `.p12`, `.pfx` y `.env` añadidos alguna vez, y contenido `PRIVATE KEY` o `BEGIN CERTIFICATE` en todos los commits de las ramas remotas `main`, `backend`, `frontend` y `practica3` y en el stash local. Ningún certificado ni clave del proyecto aparece en el historial: `nginx/certs/` nunca se ha confirmado. Las únicas coincidencias son documentación y datos de prueba de paquetes npm de terceros (`dotenv`, `mongodb`, `spdy`, `selfsigned`) de cuando `node_modules` se versionó por error, retirados en `1702e9df`.
+
+**Límite.** La búsqueda cubre lo que hay en este clon y en las ramas remotas actuales; no puede ver commits eliminados con `push --force` que GitHub conserve sin rama. Si existe otra copia donde se viera el certificado, basta con regenerarlo con `make recert`: es un certificado autofirmado de `localhost` (SEG-021).

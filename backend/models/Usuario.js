@@ -23,6 +23,8 @@ const UsuarioSchema = new mongoose.Schema({
   email:         { type: String, required: true, unique: true, lowercase: true, trim: true },
   password:      { type: String, required: true },
   organizacion:     { type: OrganizacionSchema, default: () => ({}) },
+  // Solo se cambia en la base de datos (ver README); ninguna ruta lo modifica.
+  rol:              { type: String, enum: ['usuario', 'admin'], default: 'usuario' },
   loginAttempts:    { type: Number,  default: 0 },
   lockUntil:        { type: Date,    default: null },
   sessionVersion:   { type: Number,  default: 0 },

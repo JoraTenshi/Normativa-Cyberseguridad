@@ -57,6 +57,28 @@ docker exec cybersec_mongo mongosh -u "$MONGO_USER" -p "$MONGO_PASSWORD" --authe
   --eval 'db.usuarios.updateOne({ email: "tu@correo.test" }, { $set: { emailVerifiedAt: new Date() } })'
 ```
 
+### Administración
+
+`POST /licitaciones/sync` (lanzar el scraper) exige el rol `admin`. Ninguna ruta de la API permite cambiar el rol: se asigna en la base de datos, y el backend lo lee en cada petición, así que retirarlo surte efecto al momento.
+
+```bash
+source .env   # MONGO_USER y MONGO_PASSWORD
+docker exec cybersec_mongo mongosh -u "$MONGO_USER" -p "$MONGO_PASSWORD" --authenticationDatabase admin cybersec_audit \
+  --eval 'db.usuarios.updateOne({ email: "admin@correo.test" }, { $set: { rol: "admin" } })'
+```
+
+### Llamar a la API fuera del frontend
+
+Las peticiones que cambian datos (`POST`, `PUT`, `PATCH`, `DELETE`) se rechazan con `403 ORIGEN_NO_PERMITIDO` salvo que lleven el `Origin` del frontend (`CORS_ORIGIN`) o la cabecera `X-Requested-With: XMLHttpRequest`. El frontend la envía siempre; con `curl` hay que añadir `-H 'X-Requested-With: XMLHttpRequest'`.
+
+Si el navegador muestra un aviso de certificado, instala mkcert para evitarlo:
+
+```bash
+sudo apt install mkcert libnss3-tools
+mkcert -install
+make recert && sudo docker restart cybersec_nginx
+```
+
 Si el navegador muestra un aviso de certificado, instala mkcert para evitarlo:
 
 ```bash

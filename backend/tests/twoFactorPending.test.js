@@ -62,7 +62,7 @@ test('GET /me/2fa/setup ya no existe (cambiaba datos con un GET)', async () => {
 test('setup con 2FA ya activo: 409 y no toca el secreto activo', async () => {
   user.twoFactorEnabled = true;
   user.twoFactorSecret = 'activo';
-  const res = await request(app).post('/me/2fa/setup').set('Cookie', sesion);
+  const res = await request(app).post('/me/2fa/setup').set('X-Requested-With', 'XMLHttpRequest').set('Cookie', sesion);
   assert.equal(res.status, 409);
   assert.equal(user.twoFactorSecret, 'activo');
   assert.equal(user.twoFactorPendingSecret, null);
@@ -70,7 +70,7 @@ test('setup con 2FA ya activo: 409 y no toca el secreto activo', async () => {
 
 test('setup con un pendiente caducado genera un secreto nuevo', async () => {
   const viejo = pendiente(-1);
-  const res = await request(app).post('/me/2fa/setup').set('Cookie', sesion);
+  const res = await request(app).post('/me/2fa/setup').set('X-Requested-With', 'XMLHttpRequest').set('Cookie', sesion);
   assert.equal(res.status, 200);
   assert.notEqual(res.body.data.secret, viejo);
   assert.equal(readTotpSecret(user.twoFactorPendingSecret, USER_ID), res.body.data.secret);
@@ -78,20 +78,20 @@ test('setup con un pendiente caducado genera un secreto nuevo', async () => {
 
 test('enable con el pendiente caducado: 400 y no se activa', async () => {
   const secret = pendiente(-1);
-  const res = await request(app).post('/me/2fa/enable').set('Cookie', sesion).send({ token: codigo(secret) });
+  const res = await request(app).post('/me/2fa/enable').set('X-Requested-With', 'XMLHttpRequest').set('Cookie', sesion).send({ token: codigo(secret) });
   assert.equal(res.status, 400);
   assert.equal(user.twoFactorEnabled, false);
   assert.equal(user.twoFactorSecret, null);
 });
 
 test('enable sin configuración previa: 400', async () => {
-  const res = await request(app).post('/me/2fa/enable').set('Cookie', sesion).send({ token: '123456' });
+  const res = await request(app).post('/me/2fa/enable').set('X-Requested-With', 'XMLHttpRequest').set('Cookie', sesion).send({ token: '123456' });
   assert.equal(res.status, 400);
 });
 
 test('enable con código incorrecto: 401, sigue pendiente y no se activa', async () => {
   pendiente();
-  const res = await request(app).post('/me/2fa/enable').set('Cookie', sesion).send({ token: '000000' });
+  const res = await request(app).post('/me/2fa/enable').set('X-Requested-With', 'XMLHttpRequest').set('Cookie', sesion).send({ token: '000000' });
   assert.equal(res.status, 401);
   assert.equal(user.twoFactorEnabled, false);
   assert.notEqual(user.twoFactorPendingSecret, null);
@@ -100,7 +100,7 @@ test('enable con código incorrecto: 401, sigue pendiente y no se activa', async
 test('enable: si el pendiente cambia entre la verificación y la activación, 409 y no se activa', async () => {
   const secret = pendiente();
   antesDeActualizar = () => { user.twoFactorPendingSecret = encryptTotpSecret(speakeasy.generateSecret().base32, USER_ID); };
-  const res = await request(app).post('/me/2fa/enable').set('Cookie', sesion).send({ token: codigo(secret) });
+  const res = await request(app).post('/me/2fa/enable').set('X-Requested-With', 'XMLHttpRequest').set('Cookie', sesion).send({ token: codigo(secret) });
   assert.equal(res.status, 409);
   assert.equal(user.twoFactorEnabled, false);
   assert.equal(user.twoFactorSecret, null);
@@ -109,7 +109,7 @@ test('enable: si el pendiente cambia entre la verificación y la activación, 40
 test('enable correcto: el pendiente pasa a activo y se vacía', async () => {
   const secret = pendiente();
   const cifrado = user.twoFactorPendingSecret;
-  const res = await request(app).post('/me/2fa/enable').set('Cookie', sesion).send({ token: codigo(secret) });
+  const res = await request(app).post('/me/2fa/enable').set('X-Requested-With', 'XMLHttpRequest').set('Cookie', sesion).send({ token: codigo(secret) });
   assert.equal(res.status, 200);
   assert.equal(user.twoFactorEnabled, true);
   assert.equal(user.twoFactorSecret, cifrado);
@@ -122,7 +122,7 @@ test('disable también borra un secreto pendiente', async () => {
   user.twoFactorEnabled = true;
   user.twoFactorSecret = encryptTotpSecret(activo, USER_ID);
   pendiente();
-  const res = await request(app).post('/me/2fa/disable').set('Cookie', sesion).send({ token: codigo(activo) });
+  const res = await request(app).post('/me/2fa/disable').set('X-Requested-With', 'XMLHttpRequest').set('Cookie', sesion).send({ token: codigo(activo) });
   assert.equal(res.status, 200);
   assert.equal(user.twoFactorEnabled, false);
   assert.equal(user.twoFactorPendingSecret, null);

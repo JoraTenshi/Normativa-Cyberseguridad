@@ -65,6 +65,21 @@ async function isCurrentSession(payload) {
   return true;
 }
 
+// Tras requireAuth. El rol se lee de la base de datos en cada petición (no del JWT), para que
+// retirar el rol surta efecto inmediatamente.
+async function requireAdmin(req, res, next) {
+  let usuario;
+  try {
+    usuario = await Usuario.findById(req.user.id).select('rol');
+  } catch {
+    return serviceUnavailable(res);
+  }
+  if (usuario?.rol !== 'admin') {
+    return res.status(403).json({ ok: false, error: 'Se requiere rol de administrador' });
+  }
+  next();
+}
+
 function serviceUnavailable(res) {
   return res.status(503).json({ ok: false, error: 'Servicio no disponible temporalmente' });
 }
@@ -73,4 +88,4 @@ function extractToken(req) {
   return req.cookies?.cyberaudit_token ?? null;
 }
 
-module.exports = { requireAuth, optionalAuth, generateJti, JWT_SECRET, JWT_EXPIRES };
+module.exports = { requireAuth, requireAdmin, optionalAuth, generateJti, JWT_SECRET, JWT_EXPIRES };

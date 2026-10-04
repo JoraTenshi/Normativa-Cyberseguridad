@@ -39,7 +39,7 @@ test.beforeEach(() => { creados = []; });
 
 const todas = (valor = 1) => ids.map(pregunta_id => ({ pregunta_id, valor }));
 const enviar = (respuestas, { normativa = 'lssi_ce', conSesion = true } = {}) => {
-  const req = request(app).post('/resultado');
+  const req = request(app).post('/resultado').set('X-Requested-With', 'XMLHttpRequest'); // como el frontend
   if (conSesion) req.set('Cookie', sesion);
   return req.send({ normativa, respuestas });
 };

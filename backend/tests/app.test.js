@@ -41,7 +41,7 @@ test('GET /health devuelve 503 si Mongo no está conectado', async () => {
 });
 
 test('JSON malformado llega al errorHandler y da 400', async () => {
-  const res = await request(app).post('/resultado').set('content-type', 'application/json').send('{"normativa":');
+  const res = await request(app).post('/resultado').set('X-Requested-With', 'XMLHttpRequest').set('content-type', 'application/json').send('{"normativa":');
   assert.equal(res.status, 400);
 });
 
@@ -63,7 +63,7 @@ test('GET /me con token de acceso válido da 200', async () => {
 test('los límites de peticiones siguen activos por defecto (2FA: 10 fallos y luego 429)', async () => {
   const conLimites = createApp();
   const estados = [];
-  for (let i = 0; i < 11; i++) estados.push((await request(conLimites).post('/auth/2fa/verify')).status);
+  for (let i = 0; i < 11; i++) estados.push((await request(conLimites).post('/auth/2fa/verify').set('X-Requested-With', 'XMLHttpRequest')).status);
 
   assert.deepEqual(estados.slice(0, 10), Array(10).fill(401));
   assert.equal(estados[10], 429);

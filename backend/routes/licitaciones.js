@@ -1,9 +1,16 @@
 const express    = require('express');
 const router     = express.Router();
 const Licitacion = require('../models/Licitacion');
-const { requireAuth } = require('../middleware/auth');
+const { requireAuth, requireAdmin } = require('../middleware/auth');
 
 const SCRAPER_URL = process.env.SCRAPER_URL || 'http://scraper:8001';
+const MAX_TEXTO   = 100;
+
+// Los parámetros de consulta pueden llegar como objetos (?estado[$ne]=x) o arrays; solo se
+// aceptan textos, y la búsqueda se escapa para que sea literal (sin operadores ni regex del cliente).
+const texto  = v => (typeof v === 'string' && v.trim() !== '' ? v.trim().slice(0, MAX_TEXTO) : null);
+const entero = v => (typeof v === 'string' && /^\d{1,4}$/.test(v) ? Number(v) : null);
+const escaparRegex = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 router.get('/', async (req, res) => {
   try {
@@ -12,11 +19,15 @@ router.get('/', async (req, res) => {
     const skip  = (page - 1) * limit;
 
     const filter = {};
-    if (req.query.anio)   filter.anio   = parseInt(req.query.anio);
-    if (req.query.mes)    filter.mes    = parseInt(req.query.mes);
-    if (req.query.estado) filter.estado = req.query.estado;
-    if (req.query.q) {
-      const re = { $regex: req.query.q, $options: 'i' };
+    const anio   = entero(req.query.anio);
+    const mes    = entero(req.query.mes);
+    const estado = texto(req.query.estado);
+    const q      = texto(req.query.q);
+    if (anio !== null)   filter.anio   = anio;
+    if (mes !== null)    filter.mes    = mes;
+    if (estado !== null) filter.estado = estado;
+    if (q !== null) {
+      const re = { $regex: escaparRegex(q), $options: 'i' };
       filter.$or = [{ titulo: re }, { resumen: re }];
     }
 
@@ -51,7 +62,7 @@ router.get('/status', requireAuth, async (req, res) => {
   }
 });
 
-router.post('/sync', requireAuth, async (req, res) => {
+router.post('/sync', requireAuth, requireAdmin, async (req, res) => {
   try {
     const anio = req.body?.anio ? parseInt(req.body.anio) : null;
     const mes  = req.body?.mes  ? parseInt(req.body.mes)  : null;

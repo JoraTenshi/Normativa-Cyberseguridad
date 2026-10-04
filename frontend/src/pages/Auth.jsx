@@ -3,6 +3,9 @@ import { useNavigate, useLocation, Navigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { register, loginApi, verify2fa, resendVerification } from '../services/api';
 
+const esRutaInterna = destino =>
+  typeof destino === 'string' && /^\/(?![/\\])[^\\\s]*$/.test(destino);
+
 const Auth = () => {
   const [tab, setTab]         = useState('login');
   const [form, setForm]       = useState({ nombre: '', email: '', password: '' });
@@ -16,7 +19,8 @@ const Auth = () => {
   const { user, login } = useAuth();
   const navigate  = useNavigate();
   const location  = useLocation();
-  const from      = location.state?.from || '/';
+  // Solo rutas internas: evita redirecciones abiertas tras iniciar sesión (//dominio, /\dominio).
+  const from      = esRutaInterna(location.state?.from) ? location.state.from : '/';
 
   // Si ya hay sesión iniciada, no mostrar el formulario: redirigir.
   if (user) return <Navigate to={from} replace />;

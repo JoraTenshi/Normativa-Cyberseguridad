@@ -67,27 +67,6 @@ export default function DevToolsEasterEgg() {
 
   return (
     <>
-      <style>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: scale(1.08);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-
-        @keyframes floating {
-          0%,100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-12px);
-          }
-        }
-      `}</style>
 
       <div
         style={{
@@ -106,7 +85,7 @@ export default function DevToolsEasterEgg() {
           alignItems: 'center',
           gap: '2rem',
           overflow: 'hidden',
-          animation: 'fadeIn .35s ease',
+          animation: 'ee-fade-in .35s ease',
         }}
       >
         <audio ref={audioRef} loop>
@@ -120,7 +99,7 @@ export default function DevToolsEasterEgg() {
             width: 'min(90vw, 420px)',
             borderRadius: '18px',
             boxShadow: '0 0 60px rgba(255,255,255,0.12)',
-            animation: 'floating 3s ease-in-out infinite',
+            animation: 'ee-floating 3s ease-in-out infinite',
             userSelect: 'none',
             pointerEvents: 'none',
           }}

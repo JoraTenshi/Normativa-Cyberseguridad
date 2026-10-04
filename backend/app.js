@@ -13,6 +13,7 @@ const twoFactorRouter    = require('./routes/twoFactor');
 const pdsRouter          = require('./routes/pds');
 const licitacionesRouter = require('./routes/licitaciones');
 const errorHandler       = require('./middleware/errorHandler');
+const { comprobarOrigen } = require('./middleware/origen');
 
 const sinLimite = (req, res, next) => next();
 
@@ -22,14 +23,23 @@ function createApp({ rateLimits = true } = {}) {
 
   app.set('trust proxy', 1);
 
+  // Mismos valores que nginx/nginx.conf; la API solo devuelve JSON, así que su CSP no permite nada.
   app.use(helmet({
-    hsts:            false,
-    frameguard:      false,
-    noSniff:         false,
-    referrerPolicy:  false,
-    contentSecurityPolicy: false,
+    contentSecurityPolicy: {
+      useDefaults: false,
+      directives: {
+        defaultSrc:     ["'none'"],
+        frameAncestors: ["'none'"],
+        baseUri:        ["'none'"],
+        formAction:     ["'none'"]
+      }
+    },
+    strictTransportSecurity: { maxAge: 63072000, includeSubDomains: true },
+    frameguard:              { action: 'deny' },
+    referrerPolicy:          { policy: 'no-referrer' }
   }));
   app.use(cors({ origin: ALLOWED_ORIGIN, credentials: true }));
+  app.use(comprobarOrigen(ALLOWED_ORIGIN));
   app.use(cookieParser());
   app.use(express.json({ limit: '10kb' }));
 
