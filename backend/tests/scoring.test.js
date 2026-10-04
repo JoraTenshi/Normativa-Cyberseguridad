@@ -100,3 +100,65 @@ test('las 11 normativas reales pasan el catálogo y dan 100 con todo Sí y 0 con
     assert.equal(calcularIndice(n, todas(0)).porcentaje_exacto, 0, n.id);
   }
 });
+
+// ── Cobertura estimada ponderada por peso_bloque (tarea 11) ──────────────────
+const { calcularCoberturaEstimada } = require('../utils/scoring');
+
+// Perfil: tema "x" al 100 % (bloque A) y tema "z" al 0 % (bloque B).
+const actual = {
+  bloques: [
+    { id: 'A', peso_bloque: 80, temas: ['x'], preguntas: [{ id: 'a1', peso: 1 }] },
+    { id: 'B', peso_bloque: 20, temas: ['z'], preguntas: [{ id: 'b1', peso: 9 }] },
+  ],
+};
+const pbs = [
+  { bloque_id: 'A', porcentaje_exacto: 100 },
+  { bloque_id: 'B', porcentaje_exacto: 0 },
+];
+// Destino: E (tema x) pesa poco por bloque pero mucho por puntos; F (tema z) al revés.
+const destino = {
+  id: 'destino', nombre: 'Destino',
+  bloques: [
+    { id: 'E', nombre: 'E', peso_bloque: 10, temas: ['x'], preguntas: [{ id: 'e1', peso: 100 }] },
+    { id: 'F', nombre: 'F', peso_bloque: 90, temas: ['z'], preguntas: [{ id: 'f1', peso: 1 }] },
+    { id: 'G', nombre: 'G', peso_bloque: 0,  temas: ['y'], preguntas: [{ id: 'g1', peso: 5 }] },
+  ],
+};
+
+test('cobertura: la proyección pondera por peso_bloque, no por puntos de pregunta', () => {
+  // (100×10 + 0×90) / 100 = 10. Con puntos de pregunta daría (100×100 + 0×1) / 101 ≈ 99.
+  const [c] = calcularCoberturaEstimada(actual, pbs, [destino]);
+  assert.equal(c.porcentaje_estimado, 10);
+  assert.deepEqual(c.bloques_estimados.map(b => b.porcentaje_estimado), [100, 0, null]);
+  assert.equal(c.cobertura_tematica, 0.67);
+  assert.equal(c.tipo, 'estimado');
+});
+
+test('cobertura: el perfil temático pondera por peso_bloque', () => {
+  // A y B comparten tema: (100×80 + 0×20) / 100 = 80. Con puntos daría (100×1 + 0×9) / 10 = 10.
+  const mismoTema = structuredClone(actual);
+  mismoTema.bloques[1].temas = ['x'];
+  const [c] = calcularCoberturaEstimada(mismoTema, pbs, [destino]);
+  assert.equal(c.bloques_estimados[0].porcentaje_estimado, 80);
+});
+
+test('cobertura: un bloque contestado con peso_bloque 0 no entra en el perfil', () => {
+  const conCero = structuredClone(actual);
+  conCero.bloques[1] = { ...conCero.bloques[1], temas: ['x'], peso_bloque: 0 };
+  const [c] = calcularCoberturaEstimada(conCero, pbs, [destino]);
+  assert.equal(c.bloques_estimados[0].porcentaje_estimado, 100);
+});
+
+test('cobertura con datos reales: una entrada por cada otra normativa, valores entre 0 y 100', () => {
+  const todas = cargarNormativas();
+  const nis2 = todas.find(n => n.id === 'nis2');
+  const ids = nis2.bloques.flatMap(b => b.preguntas.map(p => p.id));
+  const { bloques } = calcularIndice(nis2, ids.map((pregunta_id, i) => ({ pregunta_id, valor: i % 2 })));
+  const otras = todas.filter(n => n.id !== 'nis2');
+
+  const cobertura = calcularCoberturaEstimada(nis2, bloques, otras);
+  assert.equal(cobertura.length, otras.length);
+  for (const c of cobertura) {
+    if (c.porcentaje_estimado !== null) assert.ok(c.porcentaje_estimado >= 0 && c.porcentaje_estimado <= 100, c.normativa_id);
+  }
+});

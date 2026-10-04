@@ -33,13 +33,17 @@ router.get('/:resultadoId', requireAuth, async (req, res) => {
 
     let plan;
     if (usaFases) {
-      const porFase = {};
+      const porFase = new Map();
       acciones.forEach(a => {
-        const fase = a.fase_pds ?? 2;
-        if (!porFase[fase]) porFase[fase] = { fase, nombre: FASES[fase] ?? `Fase ${fase}`, acciones: [] };
-        porFase[fase].acciones.push(a);
+        const fase = a.fase_pds ?? null;
+        if (!porFase.has(fase)) {
+          const nombre = fase === null ? 'Sin fase asignada' : (FASES[fase] ?? `Fase ${fase}`);
+          porFase.set(fase, { fase, nombre, acciones: [] });
+        }
+        porFase.get(fase).acciones.push(a);
       });
-      plan = Object.values(porFase).sort((a, b) => a.fase - b.fase);
+      // Fases en orden; las acciones sin fase van al final en su propio grupo, sin inventar una.
+      plan = [...porFase.values()].sort((a, b) => (a.fase ?? Infinity) - (b.fase ?? Infinity));
     } else {
       plan = [{ fase: null, nombre: 'Acciones de mejora', acciones }];
     }

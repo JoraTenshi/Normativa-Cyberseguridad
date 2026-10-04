@@ -85,3 +85,26 @@ test('GET /me/pds/:id construye el plan con las remediaciones guardadas', async 
   assert.equal(d.plan[0].acciones[0].accion, 'Acción guardada');
   assert.equal(d.plan[0].acciones[0].descripcion, 'Texto al enviar');
 });
+
+test('GET /me/pds/:id agrupa las acciones sin fase en "Sin fase asignada", al final y sin inventar fase', async () => {
+  const conSinFase = {
+    ...guardado,
+    remediaciones: [
+      { ...guardado.remediaciones[0], pregunta_id: 'q-sin', fase_pds: null, remediacion: 'Sin fase' },
+      { ...guardado.remediaciones[0], pregunta_id: 'q-f1',  fase_pds: 1,    remediacion: 'Fase uno' },
+    ]
+  };
+  const original = Resultado.findOne;
+  Resultado.findOne = async () => conSinFase;
+  try {
+    const res = await request(app).get(`/me/pds/${RESULTADO_ID}`).set('Cookie', sesion);
+    assert.equal(res.status, 200);
+    const plan = res.body.data.plan;
+    assert.deepEqual(plan.map(f => f.fase), [1, null]);
+    assert.equal(plan[1].nombre, 'Sin fase asignada');
+    assert.deepEqual(plan[1].acciones.map(a => a.accion), ['Sin fase']);
+    assert.equal(plan.some(f => f.fase === 2), false, 'no debe acabar en la fase 2');
+  } finally {
+    Resultado.findOne = original;
+  }
+});

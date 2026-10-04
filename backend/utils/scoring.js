@@ -103,6 +103,9 @@ function construirRemediaciones(normativa, respuestas) {
   return items.sort((a, b) => b.prioridad - a.prioridad);
 }
 
+// Proyección temática: estima el índice en otras normativas a partir de los temas de los bloques
+// contestados. Igual que calcularIndice, pondera los bloques por peso_bloque (no por la suma de
+// pesos de sus preguntas) y redondea solo al final.
 function calcularCoberturaEstimada(normativaActual, puntuacionesBloques, otrasNormativas) {
   const mapaBloquesActual = new Map(
     normativaActual.bloques.map(b => [b.id, b])
@@ -111,55 +114,45 @@ function calcularCoberturaEstimada(normativaActual, puntuacionesBloques, otrasNo
   const perfilAcumulado = {};
   for (const pb of puntuacionesBloques) {
     const bloqueDef = mapaBloquesActual.get(pb.bloque_id);
-    if (!bloqueDef || !bloqueDef.temas || bloqueDef.temas.length === 0) continue;
+    const peso = bloqueDef?.peso_bloque ?? 0;
+    const porcentaje = pb.porcentaje_exacto ?? pb.porcentaje;
+    if (!bloqueDef?.temas?.length || !(peso > 0) || porcentaje == null) continue;
     for (const tema of bloqueDef.temas) {
       if (!perfilAcumulado[tema]) perfilAcumulado[tema] = { suma: 0, peso: 0 };
-      perfilAcumulado[tema].suma += pb.porcentaje * pb.max_puntuacion;
-      perfilAcumulado[tema].peso += pb.max_puntuacion;
+      perfilAcumulado[tema].suma += porcentaje * peso;
+      perfilAcumulado[tema].peso += peso;
     }
   }
 
   const perfilTematico = {};
   for (const [tema, { suma, peso }] of Object.entries(perfilAcumulado)) {
-    perfilTematico[tema] = peso > 0 ? suma / peso : null;
+    perfilTematico[tema] = suma / peso;
   }
 
   if (Object.keys(perfilTematico).length === 0) return [];
 
   return otrasNormativas.map(norm => {
-    const bloquesEstimados = norm.bloques.map(bloque => {
-      const temasBloque = bloque.temas ?? [];
-      const valores = temasBloque
-        .map(t => perfilTematico[t])
-        .filter(v => v !== undefined && v !== null);
-
-      if (valores.length === 0) {
-        return {
-          bloque_id:           bloque.id,
-          nombre:              bloque.nombre,
-          porcentaje_estimado: null
-        };
-      }
-
-      const media = valores.reduce((s, v) => s + v, 0) / valores.length;
-      return {
-        bloque_id:           bloque.id,
-        nombre:              bloque.nombre,
-        porcentaje_estimado: Math.round(media)
-      };
-    });
-
     let sumaPond = 0;
     let pesoTotal = 0;
     let bloquesConDato = 0;
-    for (const be of bloquesEstimados) {
-      if (be.porcentaje_estimado === null) continue;
-      const bloqueDef = norm.bloques.find(b => b.id === be.bloque_id);
-      const pesoBloque = bloqueDef.preguntas.reduce((s, p) => s + p.peso, 0);
-      sumaPond += be.porcentaje_estimado * pesoBloque;
-      pesoTotal += pesoBloque;
+
+    const bloquesEstimados = norm.bloques.map(bloque => {
+      const valores = (bloque.temas ?? [])
+        .map(t => perfilTematico[t])
+        .filter(v => v !== undefined);
+
+      if (valores.length === 0) {
+        return { bloque_id: bloque.id, nombre: bloque.nombre, porcentaje_estimado: null };
+      }
+
+      const media = valores.reduce((s, v) => s + v, 0) / valores.length;
       bloquesConDato++;
-    }
+      if (bloque.peso_bloque > 0) {
+        sumaPond  += media * bloque.peso_bloque;
+        pesoTotal += bloque.peso_bloque;
+      }
+      return { bloque_id: bloque.id, nombre: bloque.nombre, porcentaje_estimado: Math.round(media) };
+    });
 
     const porcentajeEstimado = pesoTotal > 0 ? Math.round(sumaPond / pesoTotal) : null;
     const coberturaTematica = norm.bloques.length > 0
