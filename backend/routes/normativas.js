@@ -3,23 +3,26 @@ const router = express.Router();
 const Normativa = require('../models/Normativa');
 const Usuario = require('../models/Usuario');
 const { requireAuth } = require('../middleware/auth');
+const { evaluarAplicabilidad, perfilCompleto } = require('../services/aplicabilidad');
 
 router.get('/aplicables', requireAuth, async (req, res) => {
   try {
     const usuario = await Usuario.findById(req.user.id, { organizacion: 1 });
     if (!usuario) return res.status(404).json({ ok: false, error: 'Usuario no encontrado' });
 
-    const sector = usuario.organizacion?.sector ?? null;
+    const organizacion = usuario.organizacion ?? {};
+    const normativas = await Normativa.find(
+      {}, { id: 1, nombre: 1, descripcion: 1, fecha_aplicabilidad_general: 1, _id: 0 }
+    );
 
-    const normativas = await Normativa.find({}, { id: 1, nombre: 1, descripcion: 1, sectores_aplicables: 1, _id: 0 });
+    const data = normativas.map(n => ({
+      id:            n.id,
+      nombre:        n.nombre,
+      descripcion:   n.descripcion,
+      aplicabilidad: evaluarAplicabilidad(n, organizacion)
+    }));
 
-    const aplicables = normativas.filter(n => {
-      if (!n.sectores_aplicables || n.sectores_aplicables.length === 0) return true;
-      if (!sector) return false;
-      return n.sectores_aplicables.includes(sector);
-    });
-
-    res.json({ ok: true, data: aplicables, perfil_completo: !!sector });
+    res.json({ ok: true, data, perfil_completo: perfilCompleto(organizacion) });
   } catch (err) {
     console.error('Error al obtener normativas aplicables:', err.message);
     res.status(500).json({ ok: false, error: 'Error al obtener las normativas' });
