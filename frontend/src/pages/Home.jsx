@@ -34,7 +34,7 @@ const Home = () => {
           Autoevaluación de Ciberseguridad
         </h1>
         <p className="hero-subtitle">
-          Evalúa el nivel de cumplimiento de tu organización respecto a las principales normativas
+          Autoevalúa el nivel de cumplimiento de tu organización respecto a las principales normativas
           de seguridad de la información. Obtén un informe de madurez en minutos.
         </p>
       </header>
@@ -45,7 +45,7 @@ const Home = () => {
           {[
             { num: '01', titulo: 'Selecciona', desc: 'Elige la normativa que quieres evaluar y contesta el cuestionario.' },
             { num: '02', titulo: 'Responde', desc: 'Contesta "Sí", "Parcial" o "No" a cada pregunta.' },
-            { num: '03', titulo: 'Obtén tu nota', desc: 'Comprueba tu porcentaje de cumplimiento y descarga tu Plan Director de Seguridad.' }
+            { num: '03', titulo: 'Obtén tu nota', desc: 'Consulta tu índice de autoevaluación y descarga tu Plan Director de Seguridad.' }
           ].map(paso => (
             <div key={paso.num} className="paso">
               <div className="paso-num">{paso.num}</div>

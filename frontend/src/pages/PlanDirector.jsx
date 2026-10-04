@@ -123,7 +123,7 @@ const PdsHeader = ({ pds }) => {
         <div className="puntuacion-detalle" style={{ width: 'fit-content' }}>
           <div className="puntuacion-item">
             <span className="puntuacion-valor">{pds.porcentaje}%</span>
-            <span className="puntuacion-label">Cumplimiento</span>
+            <span className="puntuacion-label">Índice</span>
           </div>
           <div className="puntuacion-divider" />
           <div className="puntuacion-item">
@@ -212,7 +212,7 @@ const PlanDirector = () => {
           <p style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>✓</p>
           <p style={{ fontWeight: 600, marginBottom: '0.35rem' }}>Sin acciones de remediación pendientes</p>
           <p style={{ fontSize: '0.88rem' }}>
-            Tu nivel de cumplimiento en esta normativa es alto. No se han detectado gaps que requieran acción inmediata.
+            Tu índice de autoevaluación en esta normativa es alto. No se han detectado gaps que requieran acción inmediata.
           </p>
         </div>
         <div className="resultado-acciones" style={{ marginTop: '1.5rem' }}>

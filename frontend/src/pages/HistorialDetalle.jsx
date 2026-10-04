@@ -80,7 +80,7 @@ const HistorialDetalle = () => {
           </svg>
           <div className="porcentaje-inner">
             <span className="porcentaje-numero">{detalle.porcentaje}%</span>
-            <span className="porcentaje-label">Cumplimiento</span>
+            <span className="porcentaje-label">Índice</span>
           </div>
         </div>
 

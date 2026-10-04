@@ -64,7 +64,7 @@ const Resultado = () => {
   return (
     <div className="page resultado-page">
       <div className="resultado-header">
-        <h1 className="resultado-titulo">Informe de Cumplimiento</h1>
+        <h1 className="resultado-titulo">Informe de autoevaluación</h1>
         <p className="resultado-normativa">{normativaNombre}</p>
       </div>
 
@@ -85,7 +85,7 @@ const Resultado = () => {
           </svg>
           <div className="porcentaje-inner">
             <span className="porcentaje-numero">{porcentajeAnimado}%</span>
-            <span className="porcentaje-label">Cumplimiento</span>
+            <span className="porcentaje-label">Índice</span>
           </div>
         </div>
       </div>
