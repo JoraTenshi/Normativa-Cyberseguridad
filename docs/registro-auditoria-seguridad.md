@@ -332,7 +332,7 @@ Fecha: 4 de octubre de 2026. Estado: cambiado y comprobado con Nginx y Chromium 
 
 **Cambio.** Nginx añade, a nivel de `server`, `Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests`, sin `unsafe-inline` ni `unsafe-eval`. Ningún `location` define `add_header` (si lo hiciera dejaría de heredar todas las cabeceras del servidor). En `/api/` se ocultan con `proxy_hide_header` las cabeceras que también envía el backend, para que cada una salga una vez. Helmet vuelve a estar activo en `backend/app.js` con los mismos valores que Nginx y una CSP de API `default-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'`. Las animaciones del easter egg pasan a `App.css` como `ee-fade-in` y `ee-floating`. `frontend/Dockerfile` fija `INLINE_RUNTIME_CHUNK=false`.
 
-**Prueba.** Con la configuración del proyecto (cambiando solo puertos, rutas de certificados y direcciones de los servicios; `nginx -t` correcto) delante del backend real y del build real: en `/`, `/auth`, `/historial`, un fichero estático, `/api/`, `/api/health`, `/api/normativas` y `/.well-known/security.txt` cada cabecera aparece exactamente una vez y no hay `X-Powered-By`; en la API hay dos CSP (la de la API y la del sitio), que el navegador aplica a la vez. En Chromium 149 headless, `/`, `/auth`, `/cuestionario/lssi_ce` y `/settings` cargaron su contenido sin ninguna violación de CSP; un `<script>` en línea de prueba fue bloqueado (prueba de que la CSP se aplica) y una imagen `data:` cargó. `backend/tests/seguridad.test.js` comprueba las cabeceras de la API y que la configuración no retroceda (CSP sin `unsafe-*`, `add_header` solo en `server`, `INLINE_RUNTIME_CHUNK=false`, sin `<style>` ni `dangerouslySetInnerHTML` en `frontend/src`).
+**Prueba.** Con la configuración del proyecto (cambiando solo puertos, rutas de certificados y direcciones de los servicios; `nginx -t` correcto) delante del backend real y del build real: en `/`, `/auth`, `/historial`, un fichero estático, `/api/`, `/api/health`, `/api/normativas` y `/.well-known/security.txt` cada cabecera aparece exactamente una vez y no hay `X-Powered-By`; en la API hay dos CSP (la de la API y la del sitio), que el navegador aplica a la vez. En Chromium 149 headless, `/`, `/auth`, `/cuestionario/lssi_ce` y `/settings` cargaron su contenido sin ninguna violación de CSP; un `<script>` en línea de prueba fue bloqueado (prueba de que la CSP se aplica) y una imagen `data:` cargó. Firefox 140 ESR, sobre una copia HTTP del bloque `server` (mismas cabeceras y CSP salvo `upgrade-insecure-requests`, que no bloquea nada), tampoco registró ninguna violación en `/`, `/auth`, `/cuestionario/lssi_ce`, `/forgot-password` ni `/settings`; un control con un `<script>` en línea y una imagen externa fue bloqueado y notificado en ambos navegadores. `backend/tests/seguridad.test.js` comprueba las cabeceras de la API y que la configuración no retroceda (CSP sin `unsafe-*`, `add_header` solo en `server`, `INLINE_RUNTIME_CHUNK=false`, sin `<style>` ni `dangerouslySetInnerHTML` en `frontend/src`).
 
 ## SEG-023: comprobación de origen en peticiones que cambian datos (CSRF)
 
@@ -382,7 +382,7 @@ Fecha: 4 de octubre de 2026. Estado: dependencias de ejecución sin avisos conoc
 
 **Frontend.** De 91 avisos, se actualizaron dentro de los rangos `axios` 1.20.0 y `react-router-dom` 6.30.6 (`@remix-run/router` 1.23.4). Recorriendo el árbol de dependencias de ejecución (`axios`, `react`, `react-dom`, `react-router-dom`), solo quedan 2 avisos de `react-router` que llegan al navegador: hidratación SSR (no aplica: la aplicación no usa SSR) y la redirección con barras invertidas (ver SEG-026). Los otros 71 están en `react-scripts` (Jest, webpack, Babel, SVGO…), que solo se ejecuta al compilar y no forma parte del paquete servido. `react-scripts` no tiene versión corregida; eliminarlos exige migrar a otra herramienta de compilación (fuera del alcance de la Práctica 3).
 
-**Scraper.** `requests==2.32.3` y `pymongo==4.10.1` no se analizaron con una herramienta (no hay `pip-audit` instalado).
+**Scraper.** `pip-audit` 2.10.1 encontró dos avisos en `requests==2.32.3`: fuga de credenciales `.netrc` con URL manipuladas (corregido en 2.32.4) y fichero temporal predecible en `extract_zipped_paths()` (2.33.0). `scraper/requirements.txt` pasa a `requests==2.34.2`; `pip-audit` ya no encuentra avisos y `descargar_zip_mes()` descargó y guardó un ZIP válido con esa versión. `pymongo==4.10.1` no tiene avisos.
 
 ## SEG-028: certificados TLS en el historial de Git
 
@@ -391,3 +391,62 @@ Fecha: 4 de octubre de 2026. Estado: no se encontró ninguna filtración.
 **Comprobación.** Se buscaron ficheros `.pem`, `.key`, `.crt`, `.p12`, `.pfx` y `.env` añadidos alguna vez, y contenido `PRIVATE KEY` o `BEGIN CERTIFICATE` en todos los commits de las ramas remotas `main`, `backend`, `frontend` y `practica3` y en el stash local. Ningún certificado ni clave del proyecto aparece en el historial: `nginx/certs/` nunca se ha confirmado. Las únicas coincidencias son documentación y datos de prueba de paquetes npm de terceros (`dotenv`, `mongodb`, `spdy`, `selfsigned`) de cuando `node_modules` se versionó por error, retirados en `1702e9df`.
 
 **Límite.** La búsqueda cubre lo que hay en este clon y en las ramas remotas actuales; no puede ver commits eliminados con `push --force` que GitHub conserve sin rama. Si existe otra copia donde se viera el certificado, basta con regenerarlo con `make recert`: es un certificado autofirmado de `localhost` (SEG-021).
+
+## SEG-029: certificado autofirmado de `make cert` sin `subjectAltName`
+
+Fecha: 4 de octubre de 2026. Estado: corregido y comprobado con `make`.
+
+**Evidencia.** Sin mkcert, `make cert` generaba un certificado con solo `CN=localhost` y sin extensión `subjectAltName`. Los navegadores actuales ignoran el CN para validar el nombre del servidor, así que ese certificado no puede validarse para `localhost` ni siquiera si el usuario lo añade como de confianza; es parte de lo observado en SEG-021. Se reprodujo con Firefox: con el certificado del arnés sin SAN marcado como de confianza en el perfil, no llegaba ninguna petición a Nginx.
+
+**Cambio.** El comando `openssl` del `Makefile` añade `-addext 'subjectAltName=DNS:localhost,IP:127.0.0.1,IP:::1'`.
+
+**Prueba.** `make cert` ejecutado con un `PATH` sin mkcert produce un certificado con `DNS:localhost, IP:127.0.0.1, IP:::1` y la clave con permisos `600`. Con mkcert instalado el `Makefile` sigue usando mkcert, que ya incluía SAN.
+
+## SEG-030: respuesta de la API con MongoDB caído
+
+Fecha: 4 de octubre de 2026. Estado: corregido y comprobado con MongoDB real.
+
+**Evidencia.** Con una sesión iniciada se detuvo un MongoDB 7.0.14 real: `GET /health` respondió 503 al momento, pero `GET /me` y `POST /resultado` tardaron **30 s** en responder 503 (el tiempo de selección de servidor por defecto del controlador, igual que el `proxy_read_timeout` de Nginx, así que cualquier retraso adicional se convertiría en un 504). `POST /resultado` sin sesión respondía **500** «Error interno».
+
+**Cambio.** `server.js` conecta con `serverSelectionTimeoutMS: 5000`. `utils/bd.js` reconoce los errores de «base de datos no disponible» y `POST /resultado` responde 503 con ellos; un fallo de código sigue siendo 500.
+
+**Prueba.** Repetida la caída con el código nuevo: `GET /me`, `POST /resultado` con sesión y sin ella responden **503 en 5,0 s**; `GET /health`, 503 al momento. Prueba automática para los tres tipos de error y para el 500 de un fallo de código, sin crear ningún `Resultado`.
+
+## SEG-031: scraper no disponible en `POST /licitaciones/sync`
+
+Fecha: 4 de octubre de 2026. Estado: corregido y probado.
+
+**Evidencia.** La ruta solo respondía «Scraper no disponible» (503) si el error era exactamente `ECONNREFUSED`. Con el contenedor del scraper parado, el DNS de Docker no resuelve `scraper` y Node informa `ENOTFOUND`; además, una conexión rechazada puede llegar envuelta sin `code`. En ambos casos respondía 500 «Error al iniciar sync».
+
+**Cambio.** Cualquier fallo de red de `fetch` (`TypeError`) o el tiempo de espera se responde con 503; una respuesta del scraper que no es JSON sigue siendo 500.
+
+## Verificación local de las tareas 2 a 13 con MongoDB real
+
+Fecha: 4 de octubre de 2026. Estado: superada en local; pendiente de repetir en Docker.
+
+**Entorno.** Sin acceso al demonio Docker, se ejecutó en local la misma arquitectura: MongoDB 7.0.14 real, `server.js` real (comprobación de claves y conexión antes de escuchar), el build real del frontend, la configuración Nginx del proyecto (solo cambian puertos, rutas de certificados y direcciones de los servicios) y un servidor SMTP local que guarda los correos. `docker compose config` valida `docker-compose.yml` (puertos publicados en `127.0.0.1`).
+
+**Seed (tarea 2).** El validador acepta los 11 JSON; el primer seed inserta 11 normativas y el segundo se niega con código de salida 1 sin modificar nada. Tras reiniciar el backend, los usuarios, resultados y normativas siguen en la base de datos.
+
+**Prueba de extremo a extremo (47 comprobaciones, todas superadas, a través de Nginx y con consultas directas a MongoDB).** Registro con correo de verificación de un solo uso y token guardado como hash; inicio de sesión bloqueado sin verificar; cookies `HttpOnly; Secure; SameSite=Strict`; aplicabilidad con perfil vacío y completo; el cuerpo de `PUT /me/organizacion` no cambia el rol; cuestionario incompleto o con `null` → 400 sin crear `Resultado`; cuestionario completo → índice por bloques 26 y nivel Crítico, con versión, valor exacto, nivel, cuestionario, remediaciones y cobertura guardados y sin puntos brutos; historial, detalle y PDS no cambian al modificar el catálogo; 2FA con secreto pendiente cifrado, activación, inicio de sesión en dos pasos, rechazo del token pendiente como sesión y, con el índice único real de MongoDB, dos verificaciones simultáneas → 200 y 401; recuperación de contraseña con enlace de un solo uso que invalida la sesión anterior y guarda la contraseña con bcrypt; `sync` 403 para un usuario, autorizado para un administrador y 403 de nuevo al retirar el rol en la BD con la misma sesión; `GET /licitaciones` con operadores y regex del cliente → 200; `POST` desde otro origen → 403 sin cerrar la sesión.
+
+**Límites.** No se ha ejecutado con Docker (imágenes, red entre contenedores, `make up`), ni el scraper real contra PLACSP, ni un navegador con interacción de usuario completa (los navegadores cargaron las páginas reales; los flujos se ejecutaron por HTTP como los haría el frontend).
+
+## Verificación en Docker (instalación desde cero)
+
+Fecha: 4 de octubre de 2026. Estado: superada; quedan tres observaciones abiertas.
+
+**Instalación.** En este clon no había `.env`, `backend/.env` ni certificado. Siguiendo el README: `pip install` (ya presente), `backend/.env` desde `.env.example` con permisos `600` y las dos claves generadas con el comando documentado (`check-backend-secrets.js` las acepta), `make up` (código de salida 0: genera `MONGO_PASSWORD`, certificado de confianza con mkcert, construye las imágenes y espera a MongoDB y al backend sanos) y `make seed`. Compose usa sus propios volúmenes `newnormativa_*`; los volúmenes `normativa-cyberseguridad_*` de otro clon no se tocaron.
+
+**Imagen del backend.** Sin `nodemon` ni `supertest`; `express` 4.22.3 y `nodemailer` 10.0.14. `make up` no siembra (0 normativas); el primer `make seed` inserta 11 y el segundo se niega con error sin modificar nada.
+
+**Nginx real.** `curl` sin `-k` confía en el certificado (resultado de verificación 0) y Chromium 149 sin `--ignore-certificate-errors` no da errores de certificado: con mkcert, lo observado en SEG-021 queda resuelto en esta máquina. Cada cabecera de seguridad aparece una vez en páginas, recursos, API y `security.txt` (dos CSP en la API, como en SEG-022); HTTP redirige a HTTPS; `index.html` sin scripts en línea; el build de Docker produce el mismo `main.71b6c148.js` que el build local. Chromium cargó `/`, `/auth`, `/cuestionario/lssi_ce` y `/forgot-password` con datos de MongoDB y sin violaciones de CSP.
+
+**Extremo a extremo.** Las 47 comprobaciones de la verificación local, contra `https://localhost` y la base de datos del contenedor, con un SMTP de prueba temporal en la red de Compose: todas superadas. Con el contenedor del scraper parado, `POST /licitaciones/sync` como administrador responde 503 (SEG-031 con el DNS real de Docker).
+
+**Persistencia y caída de MongoDB.** Tras `make down` y `make up` siguen el usuario, el resultado (versión 2, 26 %, Crítico), las 11 normativas y los tokens revocados; `make up` no regenera `.env` ni siembra. Con el contenedor de MongoDB parado, `POST /resultado` responde 503 en 5,0 s (SEG-030); al arrancarlo de nuevo el backend se reconecta solo y `/health` vuelve a 200 en 2 s; el usuario inicia sesión con la contraseña cambiada antes del reinicio. El SMTP de prueba se retiró y `backend/.env` volvió a los valores del README.
+
+**Observaciones abiertas.**
+- El proceso del backend se ejecuta como `root` dentro del contenedor (ya señalado en este registro como «permisos del proceso del contenedor»).
+- El scraper no atiende `SIGTERM`: `docker compose stop` lo mata tras 10 s (código 137), así que cada `make down` espera ese tiempo.
+- Con MongoDB caído, `POST /auth/login` (y el resto de rutas de `routes/auth.js`) responde 500 en 5 s, no 503; solo la comprobación de sesión y `POST /resultado` distinguen la base de datos no disponible.
