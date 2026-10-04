@@ -143,7 +143,7 @@ make recert && sudo docker restart cybersec_nginx
 
 **Sin cuenta:** seleccionar normativa → responder cuestionario → ver informe. El resultado no se guarda.
 
-**Con cuenta:** registrarse → confirmar el correo con el enlace recibido → iniciar sesión → completar cuestionario → el resultado queda guardado en el historial. Desde **Ajustes** se puede activar la autenticación en dos pasos (TOTP). Si se olvida la contraseña, se restablece con un enlace por correo; al cambiarla se cierran todas las sesiones abiertas.
+**Con cuenta:** registrarse → confirmar el correo con el enlace recibido → iniciar sesión → completar cuestionario → el resultado queda guardado en el historial. El informe y el Plan Director se pueden guardar en PDF con el botón **Descargar PDF** (diálogo de impresión del navegador → «Guardar como PDF»). Desde **Ajustes** se puede activar la autenticación en dos pasos (TOTP). Si se olvida la contraseña, se restablece con un enlace por correo; al cambiarla se cierran todas las sesiones abiertas.
 
 ---
 

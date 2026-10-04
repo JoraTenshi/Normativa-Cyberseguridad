@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { flushSync } from 'react-dom';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getPlanDirector } from '../services/api';
+import { BotonDescargarPdf, NotaImpresion } from '../components/ImprimirPdf';
 
 const getNivelInfo = (nivel) => {
   const map = {
@@ -65,6 +67,14 @@ const PdsAccion = ({ accion, idx }) => {
 
 const PdsFase = ({ fase, usaFases }) => {
   const [expandida, setExpandida] = useState(true);
+
+  // Al imprimir (botón o Ctrl+P) se despliegan todas las fases; flushSync para que estén
+  // renderizadas antes de que el navegador prepare el documento.
+  useEffect(() => {
+    const desplegar = () => flushSync(() => setExpandida(true));
+    window.addEventListener('beforeprint', desplegar);
+    return () => window.removeEventListener('beforeprint', desplegar);
+  }, []);
 
   return (
     <div className="pds-fase">
@@ -240,7 +250,10 @@ const PlanDirector = () => {
         ))}
       </div>
 
+      <NotaImpresion />
+
       <div className="resultado-acciones">
+        <BotonDescargarPdf />
         <button className="btn-secondary" onClick={() => navigate('/historial')}>
           ← Historial
         </button>

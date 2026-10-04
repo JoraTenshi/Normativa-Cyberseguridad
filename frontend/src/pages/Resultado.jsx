@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { BotonDescargarPdf, NotaImpresion } from '../components/ImprimirPdf';
 
 // El nivel lo decide el backend sobre el valor exacto; aquí solo se elige cómo mostrarlo.
 const NIVELES = {
@@ -113,7 +114,10 @@ const Resultado = () => {
         </ul>
       </div>
 
+      <NotaImpresion />
+
       <div className="resultado-acciones">
+        <BotonDescargarPdf />
         <button
           className="btn-secondary"
           onClick={() => navigate(`/cuestionario/${normativaId}`)}

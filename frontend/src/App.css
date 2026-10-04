@@ -1750,3 +1750,48 @@ letter-spacing: 0.6em;
   0%, 100% { transform: translateY(0px); }
   50%      { transform: translateY(-12px); }
 }
+
+/* ── Descargar PDF (imprimir desde el navegador) ─────────────────────────────
+   components/ImprimirPdf.jsx abre el diálogo de impresión. En papel: fondo claro,
+   sin navegación ni botones, y sin cortar tarjetas ni acciones entre páginas. */
+.solo-impresion { display: none; }
+
+@media print {
+  :root {
+    --bg:           #FFFFFF;
+    --bg-card:      #FFFFFF;
+    --bg-card-2:    #F3F5F8;
+    --bg-elevated:  #FFFFFF;
+    --border:       #C5CED9;
+    --border-light: #D9DFE7;
+    --border-strong:#9AA8B8;
+    --text:         #111827;
+    --text-muted:   #374151;
+    --text-dim:     #4B5563;
+    --accent:       #7A5F24;
+    --cream:        #4B5563;
+    --shadow:       none;
+    --shadow-lg:    none;
+  }
+
+  @page { margin: 15mm; }
+
+  html, body { background: #FFFFFF !important; color: var(--text); }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  body::before { display: none !important; }   /* patrón decorativo de fondo */
+
+  .navbar, .drawer, .drawer-overlay, .site-footer,
+  .cookie-banner, .cookie-overlay, .modal-legal-overlay,
+  .resultado-acciones, .pds-back-row, .pds-fase-chevron { display: none !important; }
+
+  .main-content { padding: 0 !important; margin: 0 !important; }
+  .page { max-width: none !important; padding: 0 !important; }
+
+  .resultado-header, .porcentaje-wrapper, .nivel-badge, .resultado-mensaje,
+  .recomendacion-item, .pds-cabecera, .pds-fase-header, .pds-accion { break-inside: avoid; }
+  .pds-fase-header { break-after: avoid; }
+
+  .solo-impresion { display: block; }
+  .nota-impresion { margin-top: 1.5rem; font-size: 0.8rem; color: var(--text-dim); }
+}
