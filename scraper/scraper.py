@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import argparse, os, re, sys, zipfile
 from dataclasses import dataclass, asdict
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Iterator
 from xml.etree import ElementTree as ET
@@ -180,7 +180,7 @@ def guardar_en_mongo(encontradas, anio, mes, mongo_uri, mongo_db):
                     "motivos_match": motivos,
                     "anio":       anio,
                     "mes":        mes,
-                    "scraped_at": datetime.now(datetime.UTC),
+                    "scraped_at": datetime.now(UTC),
                 },
                 "$unset": {"id": ""},
             },

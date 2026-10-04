@@ -103,6 +103,7 @@ make recert && sudo docker restart cybersec_nginx
 | `bash scripts/backup-mongodb.sh` | Copia cifrada (GPG) de MongoDB en `~/Documents/Seguridad` (directorio con permisos `700`); para `backend` y `scraper` mientras copia. Requiere `sudo` |
 | `bash scripts/verify-mongodb-backup.sh <copia.gpg>` | Ensayo de restauración de una copia en un contenedor aislado |
 | `cd backend && npm ci && npm test` | Ejecuta las pruebas del backend (no necesitan Docker ni MongoDB) |
+| `cd scraper && python3 -m unittest discover -s tests -v` | Pruebas del scraper (con las dependencias de `scraper/requirements.txt`) |
 
 ---
 

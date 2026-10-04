@@ -4,7 +4,7 @@ Minimal HTTP server that exposes POST /sync to trigger the scraper
 and GET /health to check its status. Runs inside Docker.
 """
 import json, os, threading
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 from urllib.parse import urlparse, parse_qs
@@ -51,7 +51,7 @@ def sync_task(anio, mes):
 
         stored = guardar_en_mongo(encontradas, anio, mes, MONGO_URI, MONGO_DB)
         _status = {
-            "last_sync":  datetime.now(datetime.UTC).isoformat(),
+            "last_sync":  datetime.now(UTC).isoformat(),
             "last_count": stored,
             "last_error": None,
         }
