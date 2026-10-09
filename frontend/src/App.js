@@ -12,7 +12,7 @@ import Historial        from './pages/Historial';
 import HistorialDetalle from './pages/HistorialDetalle';
 import Settings         from './pages/Settings';
 import PlanDirector     from './pages/PlanDirector';
-import CookieBanner     from './components/CookieBanner';
+import WorkspacePage    from './workspace/WorkspacePage';import CookieBanner     from './components/CookieBanner';
 import Footer           from './components/Footer';
 import cyberlaw from './images/cyber.png';
 import DevToolsEasterEgg from './components/useJoseEE';
@@ -87,6 +87,9 @@ function Navbar() {
               <Link to="/" className="drawer-item" onClick={close}>Inicio</Link>
               <Link to="/historial" className="drawer-item" onClick={close}>Historial</Link>
               <Link to="/settings" className="drawer-item" onClick={close}>Ajustes</Link>
+              <Link to="/historial" className="drawer-item" onClick={close}>Historial</Link>
+<Link to="/espacio-de-trabajo" className="drawer-item" onClick={close}>Espacio de trabajo</Link>
+<Link to="/settings" className="drawer-item" onClick={close}>Ajustes</Link>
             </>
           ) : (
             <>
@@ -136,6 +139,13 @@ function App() {
               <Route path="/auth"      element={<Auth />} />
               <Route path="/verify-email" element={<VerifyEmail />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/pds/:resultadoId" element={<ProtectedRoute><PlanDirector /></ProtectedRoute>} />
+              <Route path="/espacio-de-trabajo" element={
+    <ProtectedRoute>
+      <WorkspacePage />
+    </ProtectedRoute>
+  }
+/>
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/historial" element={<ProtectedRoute><Historial /></ProtectedRoute>} />
               <Route path="/historial/:id" element={<ProtectedRoute><HistorialDetalle /></ProtectedRoute>} />
