@@ -77,7 +77,7 @@ async function comprobar({ uri, nombreBD, standalone = false }) {
     const ar = alcances.find(x=>x.contenido.origen.operaciones.some(o=>o.id===op.operacion.id)); assert.ok(ar);
     const refAlcance = { id: ar.id, version: ar.revision.numero, sha256: ar.revision.sha256 };
     const sistemaDatos = { nombre:'Sistema ENS sintético',descripcion:'Sistema delimitado del servicio',alcance:refAlcance,hechos:hechos(ENS),motivo:'Declaración contextual' };
-    let sistema, reqEns, reqRgpd, accion, evs, rv, datosRevision;
+    let sistema, reqEns, reqRgpd, accion, evs, rv, rvRgpd, datosRevision;
     await caso('sistema persiste con alcance real, hechos propios e idempotencia concurrente', async () => {
       const k=key(), rs=await Promise.all([post('sistemas',sistemaDatos,k),post('sistemas',sistemaDatos,k)]);
       assert.deepEqual(rs.map(x=>x.status).sort(),[200,201]); sistema=ok(rs.find(x=>x.status===201),201);
@@ -90,7 +90,8 @@ async function comprobar({ uri, nombreBD, standalone = false }) {
     await caso('ENS por sistema y RGPD por operación: requisitos reales con snapshots y sin satisfacción automática', async () => {
       reqEns=ok(await post('requisitos',reqDatos(ENS,{tipo:'sistema',id:sistema.id,version:1})),201);
       reqRgpd=ok(await post('requisitos',reqDatos(RGPD,{tipo:'operacion',id:op.operacion.id,version:1})),201);
-      for(const r of [reqEns,reqRgpd]) { assert.equal(r.contenido.requisito.resultado.decision.estado,'aplica'); assert.equal(r.estadoRevision.satisfaccionActual,'sin_revisar'); }
+      for(const r of [reqEns,reqRgpd]) { assert.equal(r.contenido.requisito.resultado.decision.estado,'aplica'); assert.equal(r.estadoRevision.satisfaccionActual,'sin_revisar');
+        assert.deepEqual(r.estadoRevision.avisosCobertura,[]);assert.equal(r.estadoRevision.coberturaPeriodo,null); }
       assert.equal((await post('requisitos',reqDatos(ENS,{tipo:'sistema',id:sistema.id,version:1}))).status,409);
       assert.equal((await post('requisitos',reqDatos(ENS,{tipo:'operacion',id:op.operacion.id,version:1}))).status,422);
     });
@@ -154,22 +155,37 @@ async function comprobar({ uri, nombreBD, standalone = false }) {
       assert.equal((await patch('revisiones/'+rv.id,datosRevision)).status,404);
     });
     await caso('revisión RGPD agrupa sus 14 criterios sin convertirlos en 14 requisitos',async()=>{
-      const r=ok(await post('revisiones',payloadRevision(reqRgpd,RGPD)),201); assert.equal(r.contenido.revision.criterios.length,14);
+      const r=ok(await post('revisiones',payloadRevision(reqRgpd,RGPD)),201);rvRgpd=r; assert.equal(r.contenido.revision.criterios.length,14);
       assert.equal((await H.countDocuments({tipo:'requisito'})),2);assert.equal(ok(await get('requisitos/'+reqRgpd.id)).estadoRevision.satisfaccionActual,'favorable');
     });
-    await caso('fuera del periodo factual la API no proyecta favorable actual; histórico inmutable',async()=>{
+    await caso('ENS por sistema y RGPD por operación: fuera del periodo no proyecta favorable; históricos inmutables',async()=>{
       try {
         const inicio=inicioDiaMadrid(hoy),fin=inicioDiaMadrid(manana);
         for(const [instante,cubre] of [[inicio-1,false],[fin-1,true],[fin,false],[fin+6*86400000,false]]) {
           Object.assign(servicios,servicios.crearServicioRegistros({reloj:()=>new Date(instante)}));
-          const r=ok(await get('requisitos/'+reqEns.id));
+          for(const [requisito,revisada] of [[reqEns,rv],[reqRgpd,rvRgpd]]){
+          const r=ok(await get('requisitos/'+requisito.id));
           assert.equal(r.estadoRevision.coberturaPeriodo.cubreFechaConsulta,cubre);
-          assert.equal(r.estadoRevision.satisfaccionActual,cubre?'favorable':'requiere_revision');
+          const anterior=instante<Date.parse(revisada.contenido.revision.fechaRevision);
+          assert.equal(r.estadoRevision.satisfaccionActual,anterior?'requiere_revision':cubre?'favorable':'fuera_del_periodo_revisado');
+          assert.equal(r.estadoRevision.requiereRevision,anterior);
+          assert.deepEqual(r.estadoRevision.avisosCobertura,cubre?[]:['fecha_consulta_fuera_del_periodo_revisado']);
+          assert.deepEqual(r.estadoRevision.motivos,anterior?['reloj_anterior_revision']:[]);
           assert.equal(r.estadoRevision.conclusionHistorica,'favorable');
-          const historica=ok(await get('revisiones/'+rv.id));assert.deepEqual(historica.contenido,rv.contenido);
+          const historica=ok(await get('revisiones/'+revisada.id));assert.deepEqual(historica.contenido,revisada.contenido);
           assert.equal(historica.estadoRevision.coberturaPeriodo.cubreFechaConsulta,cubre);
+          assert.equal(historica.estadoRevision.satisfaccionActual,r.estadoRevision.satisfaccionActual);
+          assert.deepEqual(historica.estadoRevision.avisosCobertura,r.estadoRevision.avisosCobertura);
+          assert.deepEqual(historica.referencia,revisada.referencia);
+          }
         }
       } finally { Object.assign(servicios,defecto); }
+    });
+    await caso('TEMP-01 evaluación futura sigue rechazada sin persistir revisión ni evento',async()=>{
+      const antes=await cuenta();
+      const futuro={...datosRevision,periodo:{...periodo,hasta:new Date(Date.parse(manana+'T12:00:00Z')+86400000).toISOString().slice(0,10)}};
+      assert.equal((await post('revisiones',futuro)).status,400);
+      assert.deepEqual(await cuenta(),antes);
     });
     await caso('rechaza revisión incompleta, evidencia no examinada, versión obsoleta y permiso externo',async()=>{
       assert.equal((await post('revisiones',{...datosRevision,criterios:datosRevision.criterios.slice(1)})).status,400);
@@ -190,6 +206,15 @@ async function comprobar({ uri, nombreBD, standalone = false }) {
       await D.updateOne({_id:doc._id},{$set:{version_actual:2}}); // simula publicación de siguiente PDF en fixture
       let r=ok(await get('requisitos/'+reqEns.id));assert.equal(r.estadoRevision.satisfaccionActual,'requiere_revision');assert.equal(r.estadoRevision.conclusionHistorica,'favorable');
       assert.equal((await post('revisiones',datosRevision)).status,409);
+      try {
+        Object.assign(servicios,servicios.crearServicioRegistros({reloj:()=>new Date(inicioDiaMadrid(manana))}));
+        const estado=ok(await get('requisitos/'+reqEns.id)).estadoRevision;
+        assert.equal(estado.satisfaccionActual,'requiere_revision');assert.equal(estado.requiereRevision,true);
+        assert.ok(estado.motivos.some(m=>m.startsWith('documento_con_nueva_version:')));
+        assert.deepEqual(estado.avisosCobertura,['fecha_consulta_fuera_del_periodo_revisado']);
+        const historica=ok(await get('revisiones/'+rv.id));assert.deepEqual(historica.contenido,rv.contenido);
+        assert.deepEqual(historica.referencia,rv.referencia);assert.equal(historica.estadoRevision.requiereRevision,true);
+      } finally { Object.assign(servicios,defecto); }
       await D.updateOne({_id:doc._id},{$set:{version_actual:1}});
       const t=ENS.ficha.criterios[0].tiposEvidencia[0], ev=evs.get(t);
       ev.dto=ok(await patch('evidencias/'+ev.dto.id,{...ev.datos,version:1,localizador:'Nuevo localizador'}));

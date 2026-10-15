@@ -175,7 +175,7 @@ function crearServicioRegistros({ catalogo = catalogoNormativo, reloj = () => ne
   async function satisfaccion(org, req, session, revisionEspecifica) {
     const fundamentosCambiados = await fundamentos(org, req.v.contenido, session);
     const revisionId = revisionEspecifica || req.h.ultima_revision;
-    if (!revisionId) return { conclusionHistorica: null, coberturaPeriodo: null, satisfaccionActual: fundamentosCambiados.length ? 'requiere_revision' : 'sin_revisar',
+    if (!revisionId) return { conclusionHistorica: null, coberturaPeriodo: null, avisosCobertura: [], satisfaccionActual: fundamentosCambiados.length ? 'requiere_revision' : 'sin_revisar',
       requiereRevision: fundamentosCambiados.length > 0, motivos: fundamentosCambiados, esCertificacion: false };
     const rv = await registro(org, 'revision', revisionId, session), revision = rv.v.contenido.revision;
     if (revision.requisito.id !== String(req.h._id)) fallo('SERVICIO_NO_DISPONIBLE');

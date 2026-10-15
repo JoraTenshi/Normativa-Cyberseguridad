@@ -201,7 +201,9 @@ function vigenciaRevision(entrada) {
     fechaCivilConsulta >= rv.periodo.hasta ? 'despues_del_periodo' : 'dentro_del_periodo';
   const coberturaPeriodo = { periodo: copiarJSON(rv.periodo), fechaCivilConsulta,
     estado: estadoCobertura, cubreFechaConsulta: estadoCobertura === 'dentro_del_periodo' };
-  if (!coberturaPeriodo.cubreFechaConsulta) motivos.push('fecha_consulta_fuera_del_periodo_revisado');
+  // La cobertura factual limita lo que afirma el juicio, pero no programa una
+  // revisión diaria. Sus avisos no son cambios de fundamentos ni caducidades.
+  const avisosCobertura = coberturaPeriodo.cubreFechaConsulta ? [] : ['fecha_consulta_fuera_del_periodo_revisado'];
   if (r.version !== rv.requisito.version || r.sha256 !== rv.requisito.sha256) motivos.push('requisito_o_fundamento_modificado');
   if (!r.resultado.decision.habilitaEvaluacion) motivos.push('evaluacion_no_habilitada');
   if (e.fechaConsulta < rv.fechaRevision) motivos.push('reloj_anterior_revision');
@@ -213,7 +215,9 @@ function vigenciaRevision(entrada) {
     if (!actual) motivos.push('evidencia_no_disponible:' + ev.id);
     else if (huella(actual) !== huella(ev)) motivos.push('evidencia_modificada:' + ev.id);
   }
-  return { conclusionHistorica: rv.conclusion, coberturaPeriodo, requiereRevision: motivos.length > 0, motivos,
-    satisfaccionActual: motivos.length ? 'requiere_revision' : rv.conclusion };
+  return { conclusionHistorica: rv.conclusion, coberturaPeriodo, avisosCobertura,
+    requiereRevision: motivos.length > 0, motivos,
+    satisfaccionActual: motivos.length ? 'requiere_revision' :
+      coberturaPeriodo.cubreFechaConsulta ? rv.conclusion : 'fuera_del_periodo_revisado' };
 }
 module.exports = { contextualizarRequisito, validarEvidencia, vincularActuacion, crearRevisionRequisito, vigenciaRevision };

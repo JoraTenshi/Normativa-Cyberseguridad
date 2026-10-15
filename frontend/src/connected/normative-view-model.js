@@ -44,13 +44,14 @@ export function recordDimensions({ ficha, decisionRecord:record, canReview = nul
   const historical = reviewMatches(ficha, record, revision, requisito);
   const evaluable = d?.habilitaEvaluacion === true && d.estado === 'aplica' && d.temporal === 'en_periodo' && d.cobertura?.estado === 'dentro_de_cobertura';
   const needsReview = historical && (!evaluable || revisionStatus?.requiereRevision === true || record.revision?.requiereNuevaDecision === true);
-  const satisfaction = historical && !needsReview ? ({ favorable:'Revisión interna favorable', desfavorable:'Revisión interna desfavorable', no_determinado:'Satisfacción no determinada', requiere_revision:'Requiere nueva revisión' })[revisionStatus?.satisfaccionActual] : null;
+  const outside = historical && revisionStatus?.satisfaccionActual === 'fuera_del_periodo_revisado';
+  const satisfaction = historical && !needsReview ? ({ favorable:'Revisión interna favorable', desfavorable:'Revisión interna desfavorable', no_determinado:'Satisfacción no determinada', requiere_revision:'Requiere nueva revisión', fuera_del_periodo_revisado:'Fuera del periodo revisado' })[revisionStatus?.satisfaccionActual] : null;
   return [
     { id:'coverage', label:'Cobertura del análisis', value:statuses.coverage[d?.cobertura?.estado] || 'Cobertura no informada', tone:d?.cobertura?.estado === 'fuera_de_cobertura' ? 'warning' : 'neutral', explanation:d?.cobertura?.descripcion || 'El análisis disponible no cubre necesariamente todos los supuestos. Estar fuera de cobertura no es una exención.' },
     { id:'temporal', label:'Temporalidad jurídica', value:statuses.temporal[d?.temporal] || 'Temporalidad no informada', tone:'neutral', explanation:'El periodo jurídico y el límite histórico de cobertura de la ficha son datos distintos.' },
     { id:'applicability', label:'Aplicabilidad al contexto', value:statuses.applicability[d?.estado] || 'Sin decisión compatible consultada', tone:'neutral', explanation:matched ? 'Resultado de esta regla y versión del contexto, no una conclusión sobre todas las normas.' : 'No se reutiliza una decisión de otra regla o versión como resultado de esta ficha.' },
     { id:'permission', label:'Permiso para revisar', value:canReview === true ? 'Autorización confirmada' : canReview === false ? 'Acción no autorizada' : 'Permiso no consultado', tone:'neutral', explanation:'Debe resolverlo el servidor para esta acción. Poder evaluar el caso no concede permisos ni convierte al usuario en certificador.' },
-    { id:'satisfaction', label:'Satisfacción del requisito', value:needsReview ? 'Requiere nueva revisión' : satisfaction || 'Valoración actual no consultada', tone:needsReview ? 'warning' : 'neutral', explanation:'Solo una revisión motivada y vinculada puede sustentar esta valoración; no se calcula a partir de documentos o tareas.' }
+    { id:'satisfaction', label:'Satisfacción del requisito', value:needsReview ? 'Requiere nueva revisión' : satisfaction || 'Valoración actual no consultada', tone:needsReview ? 'warning' : 'neutral', explanation:outside && !needsReview ? 'Se conserva la conclusión histórica para el periodo examinado. Estar fuera no exige por sí solo repetir la revisión ni acredita la situación actual.' : 'Solo una revisión motivada y vinculada puede sustentar esta valoración; no se calcula a partir de documentos o tareas.' }
   ];
 }
 

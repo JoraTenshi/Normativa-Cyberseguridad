@@ -101,3 +101,22 @@ test('un favorable histórico no se presenta como actual si la decisión deja de
   expect(recordDimensions(d)[3].value).toBe('Permiso no consultado');
 });
 
+test('fuera del periodo conserva el resultado histórico y no solicita revisión sin otra causa', async () => {
+  const d=domain(); d.revisionStatus={satisfaccionActual:'fuera_del_periodo_revisado',requiereRevision:false};
+  await render(d);
+  const dimension=recordDimensions(d)[4];
+  expect(dimension.value).toBe('Fuera del periodo revisado');
+  expect(dimension.tone).toBe('neutral');
+  expect(container.textContent).toContain('Conclusión histórica: favorable');
+  expect(container.querySelector('.norm-dimensions').textContent).not.toContain('Revisión interna favorable');
+  expect(container.textContent).not.toContain('Requiere nueva revisión');
+});
+
+test('fuera del periodo no oculta cambios de contexto ni permite mezclar revisiones ajenas', () => {
+  const d=domain(); d.revisionStatus={satisfaccionActual:'fuera_del_periodo_revisado',requiereRevision:false};
+  d.decisionRecord.revision={requiereNuevaDecision:true};
+  expect(recordDimensions(d)[4].value).toBe('Requiere nueva revisión');
+  d.revision.organizacionId='9'.repeat(24);
+  expect(recordDimensions(d)[4].value).toBe('Valoración actual no consultada');
+});
+
