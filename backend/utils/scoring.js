@@ -15,15 +15,33 @@ const NIVELES = [
 ];
 
 function getNivel(porcentajeExacto) {
-  return NIVELES.find((n) => porcentajeExacto >= n.min).nivel;
+  if (typeof porcentajeExacto !== 'number' || !Number.isFinite(porcentajeExacto)) return null;
+  return NIVELES.find((n) => porcentajeExacto >= n.min)?.nivel ?? null;
+}
+
+function getNivelResultado(resultado) {
+  const valor = resultado.algoritmo_version === '2'
+    ? resultado.porcentaje_exacto
+    : resultado.porcentaje;
+  return getNivel(valor);
 }
 
 function comprobarCatalogo(normativa) {
+  const idsBloque = new Set();
+  const idsPregunta = new Set();
   for (const b of normativa.bloques) {
+    if (typeof b.id !== 'string' || !b.id || idsBloque.has(b.id)) {
+      throw new Error(`CATALOGO_INVALIDO: id de bloque duplicado o ausente: ${b.id}`);
+    }
+    idsBloque.add(b.id);
     if (typeof b.peso_bloque !== 'number' || !Number.isFinite(b.peso_bloque) || b.peso_bloque < 0) {
       throw new Error(`CATALOGO_INVALIDO: peso_bloque de ${b.id}`);
     }
     for (const p of b.preguntas) {
+      if (typeof p.id !== 'string' || !p.id || idsPregunta.has(p.id)) {
+        throw new Error(`CATALOGO_INVALIDO: id de pregunta duplicado o ausente: ${p.id}`);
+      }
+      idsPregunta.add(p.id);
       if (typeof p.peso !== 'number' || !Number.isFinite(p.peso) || p.peso <= 0) {
         throw new Error(`CATALOGO_INVALIDO: peso de ${p.id}`);
       }
@@ -76,13 +94,14 @@ function calcularIndice(normativa, respuestas) {
 }
 
 function construirRemediaciones(normativa, respuestas) {
-  const mapa = {};
-  respuestas.forEach(r => { mapa[r.pregunta_id] = r.valor; });
+  const valores = new Map(respuestas.map(r => [r.pregunta_id, r.valor]));
 
   const items = [];
   normativa.bloques.forEach(bloque => {
     bloque.preguntas.forEach(pregunta => {
-      const valor = mapa[pregunta.id] ?? 0;
+      // Un catálogo posterior puede contener preguntas ausentes en un resultado histórico.
+      if (!valores.has(pregunta.id)) return;
+      const valor = valores.get(pregunta.id);
       if (valor < 1) {
         const gap = pregunta.peso * (1 - valor);
         items.push({
@@ -114,13 +133,14 @@ function calcularCoberturaEstimada(normativaActual, puntuacionesBloques, otrasNo
   const perfilAcumulado = {};
   for (const pb of puntuacionesBloques) {
     const bloqueDef = mapaBloquesActual.get(pb.bloque_id);
-    const peso = bloqueDef?.peso_bloque ?? 0;
-    const porcentaje = pb.porcentaje_exacto ?? pb.porcentaje;
-    if (!bloqueDef?.temas?.length || !(peso > 0) || porcentaje == null) continue;
+    const porcentajeBloque = pb.porcentaje_exacto ?? pb.porcentaje;
+    if (!bloqueDef || !bloqueDef.temas || bloqueDef.temas.length === 0 ||
+        pb.evaluable === false || !Number.isFinite(porcentajeBloque) ||
+        !Number.isFinite(bloqueDef.peso_bloque) || bloqueDef.peso_bloque <= 0) continue;
     for (const tema of bloqueDef.temas) {
       if (!perfilAcumulado[tema]) perfilAcumulado[tema] = { suma: 0, peso: 0 };
-      perfilAcumulado[tema].suma += porcentaje * peso;
-      perfilAcumulado[tema].peso += peso;
+      perfilAcumulado[tema].suma += porcentajeBloque * bloqueDef.peso_bloque;
+      perfilAcumulado[tema].peso += bloqueDef.peso_bloque;
     }
   }
 
@@ -147,7 +167,7 @@ function calcularCoberturaEstimada(normativaActual, puntuacionesBloques, otrasNo
 
       const media = valores.reduce((s, v) => s + v, 0) / valores.length;
       bloquesConDato++;
-      if (bloque.peso_bloque > 0) {
+      if (Number.isFinite(bloque.peso_bloque) && bloque.peso_bloque > 0) {
         sumaPond  += media * bloque.peso_bloque;
         pesoTotal += bloque.peso_bloque;
       }
@@ -171,6 +191,6 @@ function calcularCoberturaEstimada(normativaActual, puntuacionesBloques, otrasNo
 }
 
 module.exports = {
-  calcularIndice, getNivel, ALGORITMO_VERSION, NIVELES,
+  calcularIndice, getNivel, getNivelResultado, ALGORITMO_VERSION, NIVELES,
   construirRemediaciones, calcularCoberturaEstimada
 };

@@ -1,0 +1,9 @@
+.session-warning{position:sticky;top:0;z-index:1500;background:#fff2d6;color:#342513;padding:1rem;display:flex;flex-wrap:wrap;gap:.8rem;align-items:center;border-bottom:2px solid #a45d13}
+.session-warning button,.session-dialog button{cursor:pointer}
+.session-dialog{max-width:620px;width:calc(100% - 2rem);max-height:90vh;overflow:auto;border:1px solid #819394;border-radius:12px;padding:1.6rem;background:#12232e;color:#eef6f6}
+.session-dialog::backdrop{background:#061018ed}
+.session-dialog .auth-page{padding:1rem 0;min-height:0}
+.session-dialog .auth-card{width:100%;max-width:none}
+.session-dialog>button{margin:.4rem;padding:.6rem .8rem}
+[hidden]{display:none!important}
+.session-loading{padding:2rem}

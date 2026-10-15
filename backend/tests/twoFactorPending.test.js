@@ -31,14 +31,14 @@ function usuarioNuevo() {
 Usuario.findById = () => ({ select: async () => ({ ...user, updateOne: user.updateOne }) });
 Usuario.findOneAndUpdate = (filter, update) => {
   antesDeActualizar();
-  const cumple = Object.entries(filter).every(([k, v]) => k === '_id' || user[k] === v);
+  const cumple = Object.entries(filter).every(([k, v]) => k === '_id' || (v && typeof v === 'object' && '$gt' in v ? user[k] > v.$gt : user[k] === v));
   if (cumple) Object.assign(user, update.$set);
   const resultado = Promise.resolve(cumple ? { ...user } : null);
   return { select: () => resultado, then: (ok, ko) => resultado.then(ok, ko) };
 };
 RevokedToken.exists = async () => null;
 
-const app = createApp({ rateLimits: false });
+const app = createApp({ rateLimits:false, politicaSesiones:'legado_pruebas' });
 const sesion = `cyberaudit_token=${jwt.sign(
   { id: USER_ID, email: 'ana@example.test', sessionVersion: 0, jti: crypto.randomBytes(16).toString('hex') },
   process.env.JWT_SECRET, { expiresIn: '1h' }
@@ -126,4 +126,18 @@ test('disable también borra un secreto pendiente', async () => {
   assert.equal(res.status, 200);
   assert.equal(user.twoFactorEnabled, false);
   assert.equal(user.twoFactorPendingSecret, null);
+});
+test('setup concurrente no sustituye el pendiente que otra petición acaba de crear', async () => {
+  let nuevo;
+  antesDeActualizar = () => { nuevo = pendiente(); };
+  const res = await request(app).post('/me/2fa/setup').set('X-Requested-With', 'XMLHttpRequest').set('Cookie', sesion);
+  assert.equal(res.status, 409);
+  assert.equal(readTotpSecret(user.twoFactorPendingSecret, USER_ID), nuevo);
+});
+test('enable comprueba también la caducidad al consumir el pendiente', async () => {
+  const secret = pendiente();
+  antesDeActualizar = () => { user.twoFactorPendingExpiresAt = new Date(0); };
+  const res = await request(app).post('/me/2fa/enable').set('X-Requested-With', 'XMLHttpRequest').set('Cookie', sesion).send({ token: codigo(secret) });
+  assert.equal(res.status, 409);
+  assert.equal(user.twoFactorEnabled, false);
 });

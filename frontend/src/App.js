@@ -1,9 +1,9 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import Home             from './pages/Home';
-import Cuestionario     from './pages/Cuestionario';
-import Resultado        from './pages/Resultado';
+import PublicExperience from './public-experience/main';
+import { ProductHeader, ProductFooter } from './product/ProductFrame';
+import PreviousEvaluationNotice from './product/PreviousEvaluationNotice';
 import Auth             from './pages/Auth';
 import VerifyEmail      from './pages/VerifyEmail';
 import ForgotPassword   from './pages/ForgotPassword';
@@ -12,137 +12,53 @@ import Historial        from './pages/Historial';
 import HistorialDetalle from './pages/HistorialDetalle';
 import Settings         from './pages/Settings';
 import PlanDirector     from './pages/PlanDirector';
-import WorkspacePage    from './workspace/WorkspacePage';import CookieBanner     from './components/CookieBanner';
-import Footer           from './components/Footer';
-import cyberlaw from './images/cyber.png';
-import DevToolsEasterEgg from './components/useJoseEE';
+import ApiWorkspace from './connected/ApiWorkspace';
+import EnrollmentPortal from './connected/EnrollmentPortal';
+import SessionBoundary from './session/SessionBoundary';
+import DraftNavigationGuard from './session/DraftNavigationGuard';
+import CookieBanner     from './components/CookieBanner';
+
 import './App.css';
+import './product/green-theme.css';
 
-function Navbar() {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
-  const [open, setOpen] = React.useState(false);
-
-  const close = () => setOpen(false);
-
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-    close();
-  };
-
-  return (
-    <>
-      <nav className="navbar">
-        <div className="navbar-left">
-            <button
-              className={`hamburger-btn${open ? ' open' : ''}`}
-              onClick={() => setOpen(v => !v)}
-              aria-label="Menú"
-            >
-              <span className="ham-line" />
-              <span className="ham-line" />
-              <span className="ham-line" />
-            </button>
-          </div>
-        <div className="navbar-inner">
-          <Link to="/" className="navbar-brand" onClick={close}>
-            <img src={cyberlaw} alt="" className="navbar-icon" />
-            <span className="navbar-name">
-              <span className="letter">C</span>
-              <span className="letter">Y</span>
-              <span className="letter">B</span>
-              <span className="letter">E</span>
-              <span className="letter">R</span>
-              <span className="letter">L</span>
-              <span className="letter">A</span>
-              <span className="letter">W</span>
-            </span>
-          </Link>
-
-          <div className="navbar-right-placeholder" />
-        </div>
-      </nav>
-
-      <div
-        className={`drawer-overlay${open ? ' visible' : ''}`}
-        onClick={close}
-      />
-
-      <div className={`drawer${open ? ' open' : ''}`}>
-        <div className="drawer-header">
-          <span className="drawer-logo-name">CyberLaw</span>
-          <button className="drawer-close-btn" onClick={close} aria-label="Cerrar menú">
-            {'<<<'}
-          </button>
-        </div>
-
-        <div className="drawer-body">
-          {user ? (
-            <>
-              <span className="drawer-section-label">Cuenta</span>
-              <div className="drawer-item user-item">{user.nombre}</div>
-              <div className="drawer-divider" />
-              <span className="drawer-section-label">Navegación</span>
-              <Link to="/" className="drawer-item" onClick={close}>Inicio</Link>
-              <Link to="/historial" className="drawer-item" onClick={close}>Historial</Link>
-              <Link to="/settings" className="drawer-item" onClick={close}>Ajustes</Link>
-              <Link to="/historial" className="drawer-item" onClick={close}>Historial</Link>
-<Link to="/espacio-de-trabajo" className="drawer-item" onClick={close}>Espacio de trabajo</Link>
-<Link to="/settings" className="drawer-item" onClick={close}>Ajustes</Link>
-            </>
-          ) : (
-            <>
-              <span className="drawer-section-label">Navegación</span>
-              <Link to="/" className="drawer-item" onClick={close}>Inicio</Link>
-            </>
-          )}
-        </div>
-
-        <div className="drawer-footer">
-          {user ? (
-            <button className="drawer-item danger" onClick={handleLogout}>
-              Cerrar sesión
-            </button>
-          ) : (
-            <Link to="/auth" className="drawer-item login-item" onClick={close}>
-              Iniciar sesión
-            </Link>
-          )}
-        </div>
-      </div>
-    </>
-  );
-}
 function ProtectedRoute({ children }) {
-  const { user } = useAuth();
+  const { user, phase, machine, error } = useAuth();
   const navigate = useNavigate();
   React.useEffect(() => {
-    if (!user) navigate('/auth', { replace: true, state: { from: window.location.pathname } });
-  }, [user, navigate]);
-  return user ? children : null;
+    if (phase === 'anonymous' && !user) navigate('/auth', { replace:true, state:{ from:window.location.pathname } });
+  }, [user, phase, navigate]);
+  // Keep mounted during a lock: SessionBoundary hides it without losing the draft.
+  if (user) return children;
+  return <section className="session-loading" role="status">
+    <p>{phase === 'unavailable' ? error : 'Comprobando sesión…'}</p>
+    {phase === 'unavailable' && <button onClick={() => machine.sync()}>Reintentar conexión</button>}
+  </section>;
 }
 
-function App() {
+function Application() {
+  const location = useLocation();
+  const publicPage = location.pathname === '/';
+  const workspace = ['/espacio-de-trabajo', '/solicitudes-de-alta', '/administracion/altas'].includes(location.pathname.replace(/\/$/, ''));
   return (
-    <AuthProvider>
-      <Router>
-        <div className="app">
-          <DevToolsEasterEgg />
+    <>
+        <DraftNavigationGuard />
+        <SessionBoundary><div className="app green-app">
           <CookieBanner />
-          <Navbar />
-          <main className="main-content">
+          {!workspace && !publicPage && <ProductHeader />}
+          <div className={workspace || publicPage ? 'workspace-content' : 'main-content'}>
             <Routes>
-              <Route path="/"          element={<Home />} />
-              <Route path="/cuestionario/:normativaId" element={<Cuestionario />} />
-              <Route path="/resultado" element={<Resultado />} />
+              <Route path="/"          element={<PublicExperience />} />
+              <Route path="/cuestionario/:normativaId" element={<PreviousEvaluationNotice />} />
+              <Route path="/resultado" element={<PreviousEvaluationNotice />} />
               <Route path="/auth"      element={<Auth />} />
+              <Route path="/solicitudes-de-alta" element={<ProtectedRoute><EnrollmentPortal /></ProtectedRoute>} />
+              <Route path="/administracion/altas" element={<ProtectedRoute><EnrollmentPortal admin /></ProtectedRoute>} />
               <Route path="/verify-email" element={<VerifyEmail />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/pds/:resultadoId" element={<ProtectedRoute><PlanDirector /></ProtectedRoute>} />
               <Route path="/espacio-de-trabajo" element={
     <ProtectedRoute>
-      <WorkspacePage />
+      <ApiWorkspace />
     </ProtectedRoute>
   }
 />
@@ -150,7 +66,7 @@ function App() {
               <Route path="/historial" element={<ProtectedRoute><Historial /></ProtectedRoute>} />
               <Route path="/historial/:id" element={<ProtectedRoute><HistorialDetalle /></ProtectedRoute>} />
               <Route path="/settings"     element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-              <Route path="/pds/:resultadoId" element={<ProtectedRoute><PlanDirector /></ProtectedRoute>} />
+
               <Route path="*" element={
                 <div className="page error-page">
                   <h2>404 — Página no encontrada</h2>
@@ -158,12 +74,13 @@ function App() {
                 </div>
               } />
             </Routes>
-          </main>
-          <Footer />
-        </div>
-      </Router>
-    </AuthProvider>
+          </div>
+          <ProductFooter />
+        </div></SessionBoundary>
+    </>
   );
 }
 
+const router = createBrowserRouter([{ path:'*', element:<Application /> }]);
+function App() { return <AuthProvider><RouterProvider router={router}/></AuthProvider>; }
 export default App;

@@ -1,0 +1,8 @@
+.company-profile .profile-operation-option {display:flex;flex-direction:row;align-items:flex-start;gap:12px;padding:14px;border:1px solid var(--border);border-radius:10px;background:var(--paper)}
+.company-profile .profile-operation-option input {width:20px;min-width:20px;height:20px;margin:3px 0 0}
+.company-profile .profile-operation-option strong {display:block;font-size:16px}
+.company-profile .profile-operation-option small {font-size:14px;line-height:1.6}
+.company-profile .profile-operation-picker legend {font-weight:650;margin-bottom:12px}
+.company-profile .profile-operation-missing {padding:16px;border:1px solid #ba9248;margin:12px 0;border-radius:10px}
+.company-profile .profile-operation-summary {margin-block:16px;padding:14px;border-left:3px solid #52715b;background:#eaf0e4}
+.company-profile .profile-operation-summary code {overflow-wrap:anywhere;white-space:normal}

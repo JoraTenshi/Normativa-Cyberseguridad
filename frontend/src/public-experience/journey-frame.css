@@ -1,0 +1,195 @@
+/* Only the surrounding frame, controls and hero balance; diagram styles stay intact. */
+.public-experience .nc-home .home-hero:has(.journey-frame) {
+  grid-template-columns:minmax(480px,1fr) minmax(700px,1.42fr);
+  gap:clamp(28px,3vw,48px);
+  padding-inline:max(2.5%,calc((100% - 1570px)/2));
+}
+.public-experience .nc-home .home-hero:has(.journey-frame) .hero-copy h1 {
+  font-size:clamp(44px,3.45vw,56px);
+  line-height:1.22;
+  letter-spacing:-.015em;
+  margin-block:28px;
+  text-wrap:balance;
+}
+.public-experience .nc-home .home-hero:has(.journey-frame) .hero-copy h1 em {display:block}
+.public-experience .nc-home .home-hero:has(.journey-frame) .hero-copy {align-self:start;padding-top:32px}
+.public-experience .nc-home .journey-shell.journey-frame {scroll-margin-top:24px}
+.public-experience .nc-home .journey-shell.journey-frame.mode-picker .journey-picker {min-height:0}
+.public-experience .nc-home .journey-frame .journey-heading {
+  display:block;
+  padding:21px 22px;
+  border:1px solid #b6caa5;
+  border-radius:18px;
+  background:#dce8cc;
+  color:#214939;
+  letter-spacing:normal;
+}
+.public-experience .nc-home .journey-frame .journey-heading h2 {
+  margin:0;
+  font-size:clamp(26px,2.25vw,34px);
+  line-height:1.25;
+  font-weight:650;
+  letter-spacing:-.02em;
+  text-align:center;
+}
+.public-experience .nc-home .journey-frame .journey-frame-intro {
+  margin:10px 0 0;
+  font-size:15px;
+  font-weight:450;
+  line-height:1.6;
+  text-align:center;
+}
+.public-experience .nc-home .journey-frame .journey-toolbar {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:22px;
+  margin-top:20px;
+}
+.public-experience .nc-home .journey-frame .journey-progress {min-width:145px;color:#214939}
+.public-experience .nc-home .journey-frame .journey-progress-label {font-size:16px;font-weight:500;white-space:nowrap}
+.public-experience .nc-home .journey-frame .journey-progress-label strong {font-size:26px;font-weight:700;margin-inline:4px;font-variant-numeric:tabular-nums}
+.public-experience .nc-home .journey-frame .journey-progress-track {display:flex;gap:6px;margin-top:7px}
+.public-experience .nc-home .journey-frame .journey-progress-track span {height:5px;flex:1;border-radius:4px;background:#aebd9e}
+.public-experience .nc-home .journey-frame .journey-progress-track .is-reached {background:#285a43}
+.public-experience .nc-home .journey-frame :is(.journey-heading,.journey-controls) button {
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  min-height:48px;
+  padding:12px 17px;
+  border:1px solid #9cb38c;
+  border-radius:11px;
+  font-size:15px!important;
+  font-weight:600;
+  line-height:1.35;
+  letter-spacing:normal;
+  color:#244d38;
+  background:#f0f4e7;
+  text-decoration:none;
+  transition:background .2s,box-shadow .2s;
+}
+.public-experience .nc-home .journey-frame :is(.journey-heading,.journey-controls) button:hover {background:#e2eccf;box-shadow:0 3px 10px #244d3815;text-decoration:none}
+.public-experience .nc-home .journey-frame :is(.journey-heading,.journey-controls) button:focus-visible {outline:3px solid #bd7d21;outline-offset:4px}
+.public-experience .nc-home .journey-frame :is(.journey-heading,.journey-controls) button svg {width:21px;height:21px;flex-shrink:0}
+.public-experience .nc-home .journey-frame :is(.journey-heading,.journey-controls) .journey-switch,.public-experience .nc-home .journey-frame .journey-controls .journey-next {color:#fff;background:#245740;border-color:#245740}
+.public-experience .nc-home .journey-frame :is(.journey-heading,.journey-controls) .journey-switch:hover,.public-experience .nc-home .journey-frame .journey-controls .journey-next:hover {background:#173e2d}
+.public-experience .nc-home .journey-frame .journey-footer {
+  margin-top:24px;
+  padding:20px;
+  border:1px solid #b6caa5;
+  border-radius:18px;
+  background:#dce8cc;
+}
+.public-experience .nc-home .journey-frame .journey-footer > p {font-size:16px!important;color:#304d36;line-height:1.6!important}
+.public-experience .nc-home .journey-frame .journey-caption {min-height:0}
+.public-experience .nc-home .journey-frame .journey-caption b {font-size:18px;font-weight:650;line-height:1.4;margin-bottom:7px;color:#214939}
+.public-experience .nc-home .journey-frame .journey-controls {gap:12px;margin-top:20px}
+.public-experience .nc-home .journey-frame .journey-controls .journey-switch {margin-left:auto}
+.public-experience .nc-home .journey-frame .journey-finish {display:flex;align-items:center;gap:12px;padding-top:16px;margin-top:18px;border-top:1px solid #b3c6a0;color:#214939}
+.public-experience .nc-home .journey-frame .journey-finish > svg {width:32px;height:32px;padding:5px;background:#bdd4aa;border-radius:50%}
+.public-experience .nc-home .journey-frame .journey-finish strong {display:block;font-size:17px;line-height:1.4}
+.public-experience .nc-home .journey-frame .journey-finish span {display:block;font-size:14px;line-height:1.5;margin-top:3px}
+.public-experience .nc-home .journey-frame .journey-controls.is-complete {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(130px,1fr) minmax(0,1fr);
+  align-items:center;
+  gap:16px;
+  margin-top:0;
+}
+.public-experience .nc-home .journey-frame .journey-controls.is-complete > button {min-width:0;padding-inline:12px}
+.public-experience .nc-home .journey-frame .journey-controls.is-complete .journey-replay {justify-self:start}
+.public-experience .nc-home .journey-frame .journey-controls.is-complete .journey-switch {justify-self:end;margin-left:0}
+.public-experience .nc-home .journey-frame .journey-controls.is-complete .journey-finish {
+  justify-content:center;
+  gap:8px;
+  margin:0;
+  padding:0;
+  border:0;
+  text-align:center;
+}
+.public-experience .nc-home .journey-frame .journey-controls.is-complete .journey-finish > svg {flex-shrink:0;width:28px;height:28px}
+.public-experience .nc-home .journey-frame .journey-controls.is-complete .journey-finish strong {font-size:16px}
+@media(max-width:1320px) {
+  .public-experience .nc-home .home-hero:has(.journey-frame) {grid-template-columns:1fr;gap:38px;padding-inline:6%}
+  .public-experience .nc-home .home-hero:has(.journey-frame) .hero-copy {max-width:760px;padding-top:0}
+  .public-experience .nc-home .home-hero:has(.journey-frame) > .journey-shell {justify-self:center}
+}
+
+/* Frame hierarchy wins over the compact flow skin without changing its diagram. */
+.public-experience .nc-home .journey-shell.journey-frame .journey-heading {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(136px,.8fr) minmax(0,1fr);
+  grid-template-areas:"title title title" "replay progress change";
+  align-items:center;
+  gap:22px 16px;
+  padding:24px 20px;
+}
+.public-experience .nc-home .journey-shell.journey-frame.mode-picker .journey-heading {
+  grid-template-columns:1fr;
+  grid-template-areas:"title";
+}
+.public-experience .nc-home .journey-shell.journey-frame .journey-heading h2 {
+  grid-area:title;
+  font-size:clamp(28px,2.35vw,36px);
+  line-height:1.3;
+}
+.public-experience .nc-home .journey-shell.journey-frame .journey-toolbar {display:contents}
+.public-experience .nc-home .journey-shell.journey-frame .journey-heading button {
+  width:100%;
+  max-width:none;
+  height:auto;
+  min-height:52px;
+  padding:12px 14px;
+  gap:9px;
+  font-size:15px!important;
+}
+.public-experience .nc-home .journey-shell.journey-frame .journey-heading button svg {width:21px;height:21px}
+.public-experience .nc-home .journey-shell.journey-frame .journey-progress {
+  width:100%;
+  min-width:0;
+  padding:9px 12px;
+  border:1px solid #b6caa5;
+  border-radius:12px;
+  background:#edf3e2;
+  text-align:center;
+}
+.public-experience .nc-home .journey-shell.journey-frame .journey-progress-label {font-size:16px}
+.public-experience .nc-home .journey-shell.journey-frame .journey-progress-label strong {font-size:28px;margin-inline:4px}
+.public-experience .nc-home .journey-shell.journey-frame .journey-progress-track {width:100%;max-width:150px;margin:6px auto 0;gap:6px}
+.public-experience .nc-home .journey-shell.journey-frame .journey-progress-track span {height:5px}
+.public-experience .nc-home .journey-shell.journey-frame .journey-finish {
+  padding:16px;
+  border:1px solid #b6caa5;
+  border-radius:14px;
+  background:#dce8cc;
+}
+.public-experience .nc-home .journey-shell.journey-frame .journey-finish strong {font-size:18px;line-height:1.5}
+@media(max-width:700px) {
+  .public-experience .nc-home .journey-shell.journey-frame .journey-heading {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-template-areas:"title title" "progress progress" "replay change";
+    padding:20px 14px;
+    gap:16px 12px;
+  }
+  .public-experience .nc-home .journey-shell.journey-frame .journey-heading h2 {font-size:27px}
+  .public-experience .nc-home .journey-shell.journey-frame .journey-progress {width:auto;min-width:170px}
+  .public-experience .nc-home .journey-shell.journey-frame .journey-heading button {padding:12px 8px;gap:7px}
+}
+@media(max-width:600px) {
+  .public-experience .nc-home .home-hero:has(.journey-frame) {padding-inline:5%}
+  .public-experience .nc-home .home-hero:has(.journey-frame) .hero-copy h1 {font-size:clamp(36px,10vw,44px)}
+  .public-experience .nc-home .journey-frame .journey-heading {padding:20px 16px}
+  .public-experience .nc-home .journey-frame .journey-heading h2 {font-size:25px;line-height:1.3}
+  .public-experience .nc-home .journey-frame .journey-frame-intro {font-size:14px}
+  .public-experience .nc-home .journey-frame .journey-toolbar {flex-direction:column;align-items:stretch;gap:16px;margin-top:17px}
+  .public-experience .nc-home .journey-frame .journey-progress {text-align:center}
+  .public-experience .nc-home .journey-frame .journey-progress-track {max-width:180px;margin-inline:auto}
+  .public-experience .nc-home .journey-frame .journey-footer {padding:18px 16px}
+  .public-experience .nc-home .journey-frame .journey-controls {display:grid;grid-template-columns:1fr;gap:10px}
+  .public-experience .nc-home .journey-frame .journey-controls :is(.journey-switch,.journey-next) {margin-left:0}
+  .public-experience .nc-home .journey-frame .journey-controls.is-complete {grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 12px}
+  .public-experience .nc-home .journey-frame .journey-controls.is-complete .journey-finish {grid-column:1/-1;grid-row:1}
+  .public-experience .nc-home .journey-frame .journey-controls.is-complete > button {width:100%;height:100%;padding-inline:10px}
+}

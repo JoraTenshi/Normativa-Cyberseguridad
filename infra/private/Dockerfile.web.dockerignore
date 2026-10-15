@@ -1,0 +1,7 @@
+**
+!web-build/
+!web-build/**
+**/*.map
+**/.env*
+**/*.key
+**/*.pem

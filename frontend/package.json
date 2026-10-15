@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Frontend React para la herramienta de autoevaluación de ciberseguridad",
   "private": true,
+  "devDependencies": {
+    "@testing-library/react": "14.3.1",
+    "@testing-library/jest-dom": "6.6.3"
+  },
   "dependencies": {
     "axios": "^1.7.2",
     "react": "^18.3.1",
@@ -12,7 +16,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build"
+    "build": "react-scripts build",
+    "test": "react-scripts test"
   },
   "proxy": "http://localhost:5000",
   "browserslist": {

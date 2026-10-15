@@ -57,7 +57,7 @@ test('2FA usa el secreto cifrado en configuración, activación, acceso y desact
   // Igual que MongoDB: aplica $set solo si el documento cumple el filtro; se puede encadenar .select().
   Usuario.findOneAndUpdate = (filter, update) => {
     assert.equal(filter._id.toString(), userId);
-    const cumple = Object.entries(filter).every(([k, v]) => k === '_id' || user[k] === v);
+    const cumple = Object.entries(filter).every(([k, v]) => k === '_id' || (v && typeof v === 'object' && '$gt' in v ? user[k] > v.$gt : user[k] === v));
     if (cumple) Object.assign(user, update.$set);
     const resultado = Promise.resolve(cumple ? user : null);
     return { select: () => resultado, then: (ok, ko) => resultado.then(ok, ko) };
@@ -66,6 +66,7 @@ test('2FA usa el secreto cifrado en configuración, activación, acceso y desact
   RevokedToken.create = async () => ({});
 
   const app = express();
+  app.locals.politicaSesiones = 'legado_pruebas';
   app.use(express.json());
   app.use(cookieParser());
   app.use('/auth', authRouter);

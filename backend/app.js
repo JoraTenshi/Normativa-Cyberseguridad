@@ -12,13 +12,17 @@ const meRouter           = require('./routes/me');
 const twoFactorRouter    = require('./routes/twoFactor');
 const pdsRouter          = require('./routes/pds');
 const licitacionesRouter = require('./routes/licitaciones');
+const organizacionesRouter = require('./routes/organizaciones');
+const solicitudesOrganizacionRouter = require('./routes/solicitudesOrganizacion');
 const errorHandler       = require('./middleware/errorHandler');
 const { comprobarOrigen } = require('./middleware/origen');
 
 const sinLimite = (req, res, next) => next();
 
-function createApp({ rateLimits = true } = {}) {
+function createApp({ rateLimits = true, politicaSesiones = 'persistente' } = {}) {
+  if (!['persistente','legado_pruebas'].includes(politicaSesiones)) throw new TypeError('Política de sesiones inválida');
   const app = express();
+  app.locals.politicaSesiones = politicaSesiones;
   const ALLOWED_ORIGIN = process.env.CORS_ORIGIN  || 'http://localhost:3000';
 
   app.set('trust proxy', 1);
@@ -94,13 +98,15 @@ function createApp({ rateLimits = true } = {}) {
   app.use('/auth/reset-password', authLimiter);
   app.use('/auth/login', loginLimiter);
   app.use('/auth/2fa/verify', twoFactorLimiter);
-  app.use('/auth', authRouter);
+  app.use('/auth', (req,res,next) => { res.set('Cache-Control','no-store'); next(); }, authRouter);
+  app.use(solicitudesOrganizacionRouter);
   app.use('/normativas',   normativasRouter);
   app.use('/resultado',    resultadosRouter);
   app.use('/me',           meRouter);
   app.use('/me/2fa',       twoFactorLimiter, twoFactorRouter);
   app.use('/me/pds',       pdsRouter);
   app.use('/licitaciones', licitacionesRouter);
+  app.use('/organizaciones', organizacionesRouter);
 
   app.get('/', (req, res) => {
     res.json({
@@ -119,6 +125,7 @@ function createApp({ rateLimits = true } = {}) {
         'GET  /me',
         'PUT  /me/organizacion',
         'GET  /me/historial',
+        'GET  /organizaciones/:organizacionId/actividad',
         'GET  /me/historial/:id',
         'GET  /me/pds/:resultadoId',
         'POST /me/2fa/setup',

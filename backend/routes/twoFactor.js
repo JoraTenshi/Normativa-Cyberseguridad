@@ -5,7 +5,9 @@ const Usuario   = require('../models/Usuario');
 const { requireAuth } = require('../middleware/auth');
 const { encryptTotpSecret, readTotpSecret } = require('../utils/totpEncryption');
 
+const { esBDNoDisponible } = require('../utils/bd');
 const router = express.Router();
+const { esPersistente, OPCIONES_COOKIE, COOKIE, PENDING } = require('../services/accesoSesion');
 
 const PENDING_TTL_MS = 10 * 60 * 1000;
 
@@ -28,7 +30,11 @@ router.post('/setup', requireAuth, async (req, res) => {
       const generated = speakeasy.generateSecret({ length: 20 });
 
       usuario = await Usuario.findOneAndUpdate(
-        { _id: usuario._id, twoFactorEnabled: false },
+        {
+          _id: usuario._id,
+          twoFactorEnabled: false,
+          twoFactorPendingSecret: usuario.twoFactorPendingSecret ?? null
+        },
         {
           $set: {
             twoFactorPendingSecret:    encryptTotpSecret(generated.base32, usuario._id),
@@ -60,6 +66,7 @@ router.post('/setup', requireAuth, async (req, res) => {
       data: { qr, secret }
     });
   } catch (err) {
+    if (esBDNoDisponible(err)) return res.status(503).json({ ok: false, error: 'Servicio no disponible temporalmente' });
     return res.status(500).json({
       ok: false,
       error: 'Error al generar el secreto 2FA'
@@ -98,7 +105,9 @@ router.post('/enable', requireAuth, async (req, res) => {
       {
         _id: usuario._id,
         twoFactorEnabled: false,
-        twoFactorPendingSecret: usuario.twoFactorPendingSecret
+        twoFactorPendingSecret: usuario.twoFactorPendingSecret,
+        twoFactorPendingExpiresAt: { $gt: new Date() },
+        ...(esPersistente(req) ? { sessionVersion:usuario.sessionVersion ?? 0 } : {})
       },
       {
         $set: {
@@ -106,15 +115,21 @@ router.post('/enable', requireAuth, async (req, res) => {
           twoFactorEnabled:          true,
           twoFactorPendingSecret:    null,
           twoFactorPendingExpiresAt: null
-        }
+        },
+        ...(esPersistente(req) ? { $inc:{ sessionVersion:1 } } : {})
       }
     );
     if (!activado) {
       return res.status(409).json({ ok: false, error: 'La configuración 2FA ha cambiado; vuelve a empezar' });
     }
 
-    res.json({ ok: true });
+    if (esPersistente(req)) {
+      res.clearCookie(COOKIE, OPCIONES_COOKIE);
+      res.clearCookie(PENDING, OPCIONES_COOKIE);
+    }
+    res.json({ ok: true, ...(esPersistente(req) ? { requiereReautenticacion:true } : {}) });
   } catch (err) {
+    if (esBDNoDisponible(err)) return res.status(503).json({ ok: false, error: 'Servicio no disponible temporalmente' });
     res.status(500).json({ ok: false, error: 'Error al activar 2FA' });
   }
 });
@@ -141,14 +156,27 @@ router.post('/disable', requireAuth, async (req, res) => {
       return res.status(401).json({ ok: false, error: 'Código incorrecto' });
     }
 
-    await usuario.updateOne({
-      twoFactorEnabled: false,
-      twoFactorSecret: null,
-      twoFactorPendingSecret: null,
-      twoFactorPendingExpiresAt: null
-    });
-    res.json({ ok: true });
+    if (esPersistente(req)) {
+      const resultado = await Usuario.updateOne({
+        _id:usuario._id, sessionVersion:usuario.sessionVersion ?? 0,
+        twoFactorEnabled:true, twoFactorSecret:usuario.twoFactorSecret
+      }, {
+        $set:{ twoFactorEnabled:false, twoFactorSecret:null, twoFactorPendingSecret:null, twoFactorPendingExpiresAt:null },
+        $inc:{ sessionVersion:1 }
+      });
+      if (resultado.matchedCount !== 1) return res.status(409).json({ ok:false, error:'La cuenta cambió; vuelve a identificarte' });
+    } else {
+      await usuario.updateOne({
+        twoFactorEnabled:false, twoFactorSecret:null, twoFactorPendingSecret:null, twoFactorPendingExpiresAt:null
+      });
+    }
+    if (esPersistente(req)) {
+      res.clearCookie(COOKIE, OPCIONES_COOKIE);
+      res.clearCookie(PENDING, OPCIONES_COOKIE);
+    }
+    res.json({ ok: true, ...(esPersistente(req) ? { requiereReautenticacion:true } : {}) });
   } catch (err) {
+    if (esBDNoDisponible(err)) return res.status(503).json({ ok: false, error: 'Servicio no disponible temporalmente' });
     res.status(500).json({ ok: false, error: 'Error al desactivar 2FA' });
   }
 });

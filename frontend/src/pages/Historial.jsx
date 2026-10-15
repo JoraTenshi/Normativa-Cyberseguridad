@@ -20,7 +20,7 @@ const Historial = () => {
   useEffect(() => {
     getHistorial()
       .then(setHistorial)
-      .catch(() => setError('No se pudo cargar el historial. Verifica que el backend esté activo.'))
+      .catch(() => setError('No se pudo cargar el historial. Comprueba la conexión y vuelve a intentarlo.'))
       .finally(() => setCargando(false));
   }, []);
 
@@ -40,18 +40,19 @@ const Historial = () => {
           <h1 className="historial-titulo">Historial de evaluaciones</h1>
           <p className="historial-sub">{user?.nombre} · {historial.length} evaluación(es) registrada(s)</p>
         </div>
-        <button className="btn-primary" onClick={() => navigate('/')}>+ Nueva evaluación</button>
+        <button className="btn-primary" onClick={() => navigate('/espacio-de-trabajo')}>Ir a mi espacio</button>
       </div>
 
+      <p>Consulta las evaluaciones guardadas con el cuestionario anterior y sus planes. Los resultados se conservan en su contexto original; no describen por sí solos la situación actual de tu empresa.</p>
       {error && <div className="error-banner"><span>⚠️</span> {error}</div>}
 
       {!error && historial.length === 0 && (
         <div className="historial-empty">
-          <p>Aún no has realizado ninguna evaluación.</p>
+          <p>No tienes evaluaciones anteriores guardadas.</p>
           <p className="historial-empty-hint">
-            Completa un cuestionario con sesión iniciada y aparecerá aquí.
+            El trabajo actual de tu empresa se organiza en tu espacio.
           </p>
-          <button className="btn-primary" onClick={() => navigate('/')}>Comenzar ahora</button>
+          <button className="btn-primary" onClick={() => navigate('/espacio-de-trabajo')}>Abrir mi espacio</button>
         </div>
       )}
 

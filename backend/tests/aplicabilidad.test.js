@@ -96,7 +96,7 @@ Usuario.findById = () => ({
 RevokedToken.exists = async () => null;
 Normativa.find = async () => normativas;
 
-const app = createApp({ rateLimits: false });
+const app = createApp({ rateLimits:false, politicaSesiones:'legado_pruebas' });
 const sesion = `cyberaudit_token=${jwt.sign(
   { id: USER_ID, sessionVersion: 0, jti: generateJti() }, process.env.JWT_SECRET, { expiresIn: '1h' }
 )}`;

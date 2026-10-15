@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { get2faSetup, enable2fa, disable2fa } from '../services/api';
 
 const Settings = () => {
-  const { user, login } = useAuth();
+  const { user, machine, phase } = useAuth();
 
   const [step, setStep]         = useState('idle'); // idle | setup | confirm-disable
   const [qr, setQr]             = useState(null);
@@ -12,6 +12,10 @@ const Settings = () => {
   const [error, setError]       = useState(null);
   const [success, setSuccess]   = useState(null);
   const [loading, setLoading]   = useState(false);
+
+  useEffect(() => {
+    if (phase !== 'authenticated') { setQr(null); setSecret(null); setTotpCode(''); setStep('idle'); }
+  }, [phase]);
 
   const startSetup = async () => {
     setError(null);
@@ -36,7 +40,8 @@ const Settings = () => {
     setLoading(true);
     try {
       await enable2fa(totpCode);
-      login({ ...user, twoFactorEnabled: true });
+      setQr(null); setSecret(null);
+      machine.lock('El segundo factor ha cambiado. Identifícate de nuevo.');
       setStep('idle');
       setSuccess('Autenticación en dos pasos activada.');
       setTotpCode('');
@@ -53,7 +58,8 @@ const Settings = () => {
     setLoading(true);
     try {
       await disable2fa(totpCode);
-      login({ ...user, twoFactorEnabled: false });
+      setQr(null); setSecret(null);
+      machine.lock('El segundo factor ha cambiado. Identifícate de nuevo.');
       setStep('idle');
       setSuccess('Autenticación en dos pasos desactivada.');
       setTotpCode('');

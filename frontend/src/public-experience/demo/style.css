@@ -1,0 +1,40 @@
+.public-experience { font-family: 'Segoe UI', Arial, sans-serif; color: #253c37; background: #f6f5ef; font-synthesis: none; }
+.public-experience * { box-sizing: border-box; }
+.public-experience { margin: 0; }
+.public-experience button, .public-experience input, .public-experience select, .public-experience textarea { font: inherit; }
+.public-experience button, .public-experience a, .public-experience select, .public-experience summary { -webkit-tap-highlight-color: transparent; }
+.public-experience button { cursor: pointer; }
+.public-experience button:disabled { cursor: not-allowed; opacity: .58; }
+.public-experience button { border: 0; background: none; color: inherit; }
+.public-experience a { color: inherit; }
+.public-experience h1,.public-experience h2,.public-experience h3,.public-experience p { margin: 0; }
+.public-experience h1 { font-size: clamp(29px,3vw,42px); line-height: 1.13; letter-spacing: -.035em; font-weight: 620; }
+.public-experience h2 { font-size: 24px; line-height: 1.28; letter-spacing: -.025em; font-weight: 620; }
+.public-experience h3 { font-size: 16px; line-height: 1.45; font-weight: 650; }
+.public-experience p { line-height: 1.7; }
+.public-experience small { display: block; line-height: 1.5; font-size: 12px; color: var(--muted); }
+.public-experience input, .public-experience select, .public-experience textarea { width: 100%; padding: 11px 12px; color: var(--ink); border: 1px solid var(--border); background: var(--paper); border-radius: 5px; min-height: 44px; }
+.public-experience textarea { resize: vertical; min-height: 105px; }
+.public-experience label { display: grid; gap: 7px; font-size: 13px; font-weight: 600; }
+.public-experience button:focus-visible, .public-experience a:focus-visible, .public-experience input:focus-visible, .public-experience select:focus-visible, .public-experience textarea:focus-visible, .public-experience summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+.public-experience h1:focus { outline: none; }
+.public-experience .app { --ink: #233e35; --muted: #52655e; --accent: #236650; --tint: #e8efe5; --border: #cfd8cf; --paper: #fffefa; --bg: #f5f5ef; color: var(--ink); background: var(--bg); min-height: 100vh; }
+.public-experience .variant-B { --ink: #292b30; --muted: #5e626b; --accent: #a64224; --tint: #f6eadd; --border: #dcdbd7; --paper: #fff; --bg: #f6f5f2; }
+.public-experience .brand-mark { font-family: Georgia,serif; font-size: 28px; font-style: italic; background: var(--ink); color: var(--paper); width: 42px; height: 42px; display: grid; place-items: center; border-radius: 11px 2px 11px 2px; }
+.public-experience .skip-link { position: fixed; top: -100px; left: 12px; z-index: 20; background: var(--ink); color: white; padding: 14px; }
+.public-experience .skip-link:focus { top: 8px; }
+.public-experience dialog { color: var(--ink); background: var(--paper); border: 1px solid var(--border); border-radius: 12px; padding: 28px; max-width: min(650px, calc(100vw - 30px)); max-height: 90vh; width: 650px; }
+.public-experience dialog::backdrop { background: rgb(24 34 32 / .48); }
+.public-experience dialog header { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 22px; }
+.public-experience dialog header h2 { font-size: 22px; padding-top: 6px; }
+.public-experience dialog h3 { margin: 15px 0 18px; }
+.public-experience dialog p { font-size: 14px; margin: 15px 0; }
+.public-experience dialog label { margin: 16px 0; }
+.public-experience fieldset { border: 1px solid var(--border); border-radius: 5px; padding: 12px 18px; margin: 22px 0; }
+.public-experience legend { font-size: 12px; padding: 0 6px; }
+.public-experience .check-label { display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 400; min-height: 32px; margin: 8px 0; }
+.public-experience .check-label input { width: 18px; min-height: 18px; height: 18px; accent-color: var(--accent); }
+.public-experience details { padding: 14px 0; border-block: 1px solid var(--border); margin-top: 20px; }
+.public-experience summary { cursor: pointer; font-size: 13px; font-weight: 600; min-height: 28px; }
+.public-experience .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
+@media (max-width:760px) { .public-experience .modal-actions { flex-wrap:wrap; } }

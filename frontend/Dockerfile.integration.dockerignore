@@ -1,0 +1,13 @@
+**
+!Dockerfile.integration
+!package.json
+!package-lock.json
+!src/
+!src/**
+!public/
+!public/**
+**/.env*
+**/*.key
+**/*.pem
+**/*.log
+**/node_modules

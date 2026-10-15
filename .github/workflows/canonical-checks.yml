@@ -1,0 +1,36 @@
+name: Canonical source checks
+on:
+  push:
+    branches: [main, practica3, 'integracion/**']
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: |
+            backend/package-lock.json
+            frontend/package-lock.json
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+        working-directory: backend
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+        working-directory: frontend
+      - run: npm test
+        working-directory: backend
+      - run: npm test -- --watchAll=false --runInBand
+        working-directory: frontend
+        env:
+          CI: 'true'
+      - run: npm run build
+        working-directory: frontend
+        env:
+          CI: 'true'
+          GENERATE_SOURCEMAP: 'false'
+      # No Docker start, deploy, seed, production DB or SMTP credentials in CI.

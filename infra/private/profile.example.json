@@ -1,0 +1,7 @@
+{
+  "releaseRoot": "/srv/normativacheck/releases/REPLACE_WITH_ACCEPTED_RELEASE",
+  "stateRoot": "/srv/normativacheck/state",
+  "port": 9443,
+  "wireguardUnit": "wg-quick@wg0.service",
+  "smtpMode": "disabled"
+}

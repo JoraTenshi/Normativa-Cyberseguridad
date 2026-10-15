@@ -1,0 +1,605 @@
+{
+  "ficha": {
+    "schemaVersion": 1,
+    "paqueteId": "NORM_C2_20261014",
+    "id": "ENS_POLITICA_SEGURIDAD",
+    "version": 3,
+    "reglaId": "ENS_ORG1_PROVEEDOR_PUBLICO_DIRECTO",
+    "versionRegla": 3,
+    "titulo": "Política de seguridad del proveedor privado: contenido, aprobación y conocimiento",
+    "explicacion": "Evaluación interna del requisito concreto de política de seguridad para un sistema comprendido en el ENS. No determina conformidad global, categoría ni certificación ENS.",
+    "fuentes": [
+      {
+        "id": "ENS_RD311_2022_CON_20241106",
+        "version": 2,
+        "editor": "Agencia Estatal Boletín Oficial del Estado",
+        "titulo": "Real Decreto 311/2022 — consolidación informativa 06/11/2024",
+        "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2022-7191",
+        "localizador": "Arts. 2.3, 11.3, 12.1, 13.2; anexo II 3.1 org.1; DT única",
+        "consultadaEn": "2026-10-14T14:13:18.000Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "ENS_RD1125_2024_DF2",
+        "version": 2,
+        "editor": "Agencia Estatal Boletín Oficial del Estado",
+        "titulo": "Real Decreto 1125/2024 — modificación de DA segunda ENS",
+        "url": "https://www.boe.es/buscar/doc.php?id=BOE-A-2024-22935",
+        "localizador": "Disposición final segunda y cuarta",
+        "consultadaEn": "2026-10-14T14:13:18.000Z",
+        "estadoRevision": "revisada"
+      }
+    ],
+    "criterios": [
+      {
+        "id": "ENS_POL_DOCUMENTO",
+        "descripcion": "La política existe como documento identificable y es pertinente para la organización y los sistemas del alcance; no basta con una plantilla vacía.",
+        "origen": "norma",
+        "fuenteIds": [
+          "ENS_RD311_2022_CON_20241106"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "ENS_RD311_2022_CON_20241106",
+            "localizador": "Anexo II 3.1, encabezamiento"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "ENS_POL_APROBACION",
+        "descripcion": "Consta aprobación de la política por el órgano con las máximas competencias ejecutivas de la entidad privada. Comprobar órgano, autoridad, fecha y documento aprobado; el administrador de la app no es por ese hecho el aprobador.",
+        "origen": "norma",
+        "fuenteIds": [
+          "ENS_RD311_2022_CON_20241106"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "ENS_RD311_2022_CON_20241106",
+            "localizador": "Art. 2.3; art. 12; anexo II 3.1"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "acta_aprobacion"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "ENS_POL_MISION",
+        "descripcion": "La política precisa objetivos o misión de la organización.",
+        "origen": "norma",
+        "fuenteIds": [
+          "ENS_RD311_2022_CON_20241106"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "ENS_RD311_2022_CON_20241106",
+            "localizador": "Art. 12.1.a; org.1.1"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "ENS_POL_MARCO",
+        "descripcion": "Identifica el marco legal y regulatorio de sus actividades con pertinencia al caso, no un listado indiscriminado de normas.",
+        "origen": "norma",
+        "fuenteIds": [
+          "ENS_RD311_2022_CON_20241106"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "ENS_RD311_2022_CON_20241106",
+            "localizador": "Art. 12.1.b; org.1.2"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "ENS_POL_FUNCIONES",
+        "descripcion": "Define funciones de seguridad, deberes y responsabilidades y procedimiento de designación y renovación. Identifica inequívocamente los responsables de velar por su cumplimiento y las funciones de información, servicio, seguridad y sistema según art. 13.2.",
+        "origen": "norma",
+        "fuenteIds": [
+          "ENS_RD311_2022_CON_20241106"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "ENS_RD311_2022_CON_20241106",
+            "localizador": "Art. 12.1.c; org.1.3; art. 13.2.a-d"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "acta_designacion"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "ENS_POL_COORDINACION",
+        "descripcion": "La política detalla los mecanismos de coordinación y resolución de conflictos entre los responsables. Las atribuciones se comprueban junto con ENS_POL_FUNCIONES; no basta con enumerar cargos sin explicar cómo se coordinan y resuelven discrepancias.",
+        "origen": "norma",
+        "fuenteIds": [
+          "ENS_RD311_2022_CON_20241106"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "ENS_RD311_2022_CON_20241106",
+            "localizador": "Art. 11.3"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "ENS_POL_COMITES",
+        "descripcion": "Precisa estructura y composición del comité o comités, ámbito de responsabilidad y relaciones con otros elementos organizativos. No presumir exención por ser micropyme.",
+        "origen": "norma",
+        "fuenteIds": [
+          "ENS_RD311_2022_CON_20241106"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "ENS_RD311_2022_CON_20241106",
+            "localizador": "Art. 12.1.d; org.1.4"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "acta_organizativa"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "ENS_POL_DOCUMENTACION",
+        "descripcion": "Establece las directrices de estructura, gestión y acceso de la documentación de seguridad.",
+        "origen": "norma",
+        "fuenteIds": [
+          "ENS_RD311_2022_CON_20241106"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "ENS_RD311_2022_CON_20241106",
+            "localizador": "Art. 12.1.e; org.1.5"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "ENS_POL_DATOS_PERSONALES",
+        "descripcion": "Incluye los riesgos derivados del tratamiento de datos personales. No omitir este punto por no aparecer en los cinco subapartados de org.1; si se alega ausencia de tratamiento, justificar el análisis del ámbito de la política, no solo de una carpeta.",
+        "origen": "norma",
+        "fuenteIds": [
+          "ENS_RD311_2022_CON_20241106"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "ENS_RD311_2022_CON_20241106",
+            "localizador": "Art. 12.1.f"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "analisis_documentado"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "ENS_POL_CONOCIMIENTO",
+        "descripcion": "La política es conocida por todas las personas de la organización. Revisar destinatarios, distribución/acceso, incorporación de nuevas personas y constancias disponibles; la mera existencia de un PDF no acredita conocimiento.",
+        "origen": "norma",
+        "fuenteIds": [
+          "ENS_RD311_2022_CON_20241106"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "ENS_RD311_2022_CON_20241106",
+            "localizador": "Art. 13.2"
+          }
+        ],
+        "tiposEvidencia": [
+          "registro_comunicacion",
+          "constatacion_revision",
+          "version_documento"
+        ],
+        "exigeConclusionMotivada": true
+      }
+    ],
+    "coberturaTemporalDelPaquete": {
+      "desde": "2024-05-05",
+      "hasta": null,
+      "tipo": "limite_de_cobertura_historica_no_fecha_legal",
+      "motivo": "El piloto evalúa periodos posteriores a los 24 meses de adaptación. Periodos anteriores requieren otra versión que contemple sistema preexistente/nuevo, RD 3/2010 y DT única. No convertir este límite en exención o en entrada en vigor de 2024.",
+      "accionFuera": "requiere_analisis_fuera_de_cobertura",
+      "obligatoriaAntesDeEvaluar": true,
+      "implementacion": "regla.cobertura.periodo; no sustituye regla.vigencia"
+    },
+    "fuentesYCalendario": {
+      "publicacion": "2022-05-04",
+      "entradaEnVigor": "2022-05-05",
+      "ultimaModificacionInstrumentoPublicada": "2024-11-06",
+      "efectoModificacion": "2024-11-07",
+      "impactoModificacion": "RD 1125/2024 modifica DA segunda; no modifica los criterios de arts. 2.3/11.3/12.1/13.2/org.1 de esta ficha.",
+      "transitorio": "DT única: 24 meses para sistemas preexistentes; sistemas nuevos desde su concepción.",
+      "derogacion": "RD 3/2010 derogado, sin eliminar su relevancia transitoria o histórica.",
+      "consultaVigencia": "2026-10-14",
+      "limiteVerificacion": "Segundo control editorial asistido por IA completado el 14/10/2026: texto consolidado, art. 11.3 adicional, arts. 2.3/12.1/13.2/org.1 y DT; modificación RD 1125/2024 comprobada sin cambio de estos criterios. No es dictamen jurídico profesional ni prueba de integración."
+    },
+    "usoContenido": {
+      "tipo": "explicacion_propia_basada_en_legislacion",
+      "atribucion": "Basado en datos de la Agencia Estatal Boletín Oficial del Estado",
+      "urlCondiciones": "https://www.boe.es/informacion/aviso_legal/index.php",
+      "advertencia": "El texto consolidado del BOE tiene carácter meramente informativo. Esta ficha es una elaboración de la aplicación y no tiene carácter oficial.",
+      "incluyeISOoCCNProtegido": false
+    },
+    "revisionEditorial": {
+      "actor": "Codex — chat Normativa (2)",
+      "tipo": "analisis_asistido_IA_con_fuentes_primarias",
+      "fecha": "2026-10-14T14:13:18.000Z",
+      "dictamenJuridicoProfesional": false,
+      "publicacion": "control_fuentes_completado_apta_para_integracion_aislada_tras_validacion_tecnica"
+    },
+    "actuacionesSugeridas": [
+      {
+        "id": "ENS_POL_PREPARAR",
+        "titulo": "Preparar o revisar la política",
+        "funcionSugerida": "seguridad, con información/servicio/sistema y dirección",
+        "criterioCierreTarea": "Borrador completo listo para aprobación; no declara el requisito satisfecho.",
+        "dependeDe": []
+      },
+      {
+        "id": "ENS_POL_APROBAR",
+        "titulo": "Obtener aprobación del órgano competente",
+        "funcionSugerida": "órgano de máximas competencias ejecutivas",
+        "criterioCierreTarea": "Aprobación y versión aprobada identificadas.",
+        "dependeDe": [
+          "ENS_POL_PREPARAR"
+        ]
+      },
+      {
+        "id": "ENS_POL_COMUNICAR",
+        "titulo": "Comunicar y verificar conocimiento de la política",
+        "funcionSugerida": "seguridad y gestión de personas",
+        "criterioCierreTarea": "Actuación y constancias de comunicación incorporadas para revisión.",
+        "dependeDe": [
+          "ENS_POL_APROBAR"
+        ]
+      }
+    ],
+    "condicionesRevision": {
+      "unidadContada": "un requisito contextualizado; los criterios no se suman como requisitos independientes",
+      "favorable": "Todos los criterios pertinentes revisados favorablemente con evidencia suficiente; cualquier no procede requiere fundamento y alternativa admisible, no un checkbox libre.",
+      "evidencia": "Vincular ID y versión exactos, procedencia, localizador y periodo de validez factual. Un mismo documento puede servir en varios alcances si cubre cada uno.",
+      "aprobacionAutomatica": false,
+      "revisor": "Miembro autorizado para revisión, con tipo interna/externa/automatizada limitada explícito. No atribuir certificación ni rol ENS por ser admin.",
+      "caducidadUniversal": null,
+      "desencadenantes": [
+        "cambio sustancial del alcance o actividades",
+        "cambio de funciones u órgano aprobador",
+        "nueva versión de política o evidencia relevante",
+        "cambio normativo que afecte a criterios",
+        "evidencia contradictoria o pérdida de cobertura"
+      ],
+      "preservarHistorico": true
+    },
+    "limites": [
+      "No evalúa todo el marco organizativo ni implantación completa de los principios/requisitos mínimos del ENS.",
+      "No acredita independencia efectiva seguridad/sistema (art. 13.3), POC (art. 13.5), análisis de riesgos, auditoría, conformidad ni certificación; requisitos separados pendientes.",
+      "No aplica org.1 por una categoría inferida del tamaño: es común a categorías básica, media y alta dentro del ámbito ENS.",
+      "No presupone una política por espacio. Una política corporativa puede cubrir varios sistemas; comprobar alcance y trazabilidad.",
+      "Una salida no_aplica de esta regla solo descarta esta vía para el sistema evaluado; no descarta otros orígenes ENS o contractuales.",
+      "CCN e ISO no se reproducen ni se procesan por IA en este paquete."
+    ],
+    "sustituyeVersionPreparacion": 2
+  },
+  "regla": {
+    "contratoVersion": 2,
+    "id": "ENS_ORG1_PROVEEDOR_PUBLICO_DIRECTO",
+    "version": 3,
+    "estado": "revisada",
+    "revision": {
+      "revisorRef": "Codex-Normativa2-revision-editorial-fuentes-no-dictamen",
+      "fecha": "2026-10-14T14:13:18.000Z"
+    },
+    "naturaleza": "ley_reglamento",
+    "origenes": [
+      "legal"
+    ],
+    "tiposObjeto": [
+      "sistema"
+    ],
+    "fuentes": [
+      {
+        "id": "ENS_RD311_2022_CON_20241106",
+        "version": 2,
+        "editor": "Agencia Estatal Boletín Oficial del Estado",
+        "titulo": "Real Decreto 311/2022 — consolidación informativa 06/11/2024",
+        "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2022-7191",
+        "localizador": "Arts. 2.3, 11.3, 12.1, 13.2; anexo II 3.1 org.1; DT única",
+        "consultadaEn": "2026-10-14T14:13:18.000Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "ENS_RD1125_2024_DF2",
+        "version": 2,
+        "editor": "Agencia Estatal Boletín Oficial del Estado",
+        "titulo": "Real Decreto 1125/2024 — modificación de DA segunda ENS",
+        "url": "https://www.boe.es/buscar/doc.php?id=BOE-A-2024-22935",
+        "localizador": "Disposición final segunda y cuarta",
+        "consultadaEn": "2026-10-14T14:13:18.000Z",
+        "estadoRevision": "revisada"
+      }
+    ],
+    "vigencia": {
+      "estado": "definida",
+      "tipo": "fecha_civil",
+      "calendario": "gregoriano",
+      "jurisdiccion": "ES",
+      "zonaEvaluacion": "Europe/Madrid",
+      "desde": "2022-05-05",
+      "hasta": null
+    },
+    "cobertura": {
+      "descripcion": "Primera vía: sistemas no clasificados de proveedores privados con relación contractual pública directa. No cubre sector público, cadena indirecta, información clasificada ni adopción/contratos privados independientes.",
+      "condicion": {
+        "op": "and",
+        "args": [
+          {
+            "op": "eq",
+            "hecho": "proveedor_privado",
+            "valor": true
+          },
+          {
+            "op": "eq",
+            "hecho": "cliente_sector_publico_es",
+            "valor": true
+          },
+          {
+            "op": "eq",
+            "hecho": "relacion_contractual_publica_directa",
+            "valor": true
+          },
+          {
+            "op": "eq",
+            "hecho": "sistema_informacion_clasificada",
+            "valor": false
+          }
+        ]
+      },
+      "periodo": {
+        "desde": "2024-05-05",
+        "hasta": null,
+        "motivo": "El piloto evalúa periodos posteriores a los 24 meses de adaptación. Periodos anteriores requieren otra versión que contemple sistema preexistente/nuevo, RD 3/2010 y DT única. No convertir este límite en exención o en entrada en vigor de 2024."
+      }
+    },
+    "hechos": [
+      {
+        "clave": "proveedor_privado",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "ENS_P_proveedor_privado",
+          "texto": "¿La entidad que presta el servicio es una entidad privada?",
+          "grupo": "ENS: proveedor y sistema",
+          "motivo": "Esta rama cubre proveedores privados; el sector público se estudia por otra vía."
+        }
+      },
+      {
+        "clave": "cliente_sector_publico_es",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "ENS_P_cliente_sector_publico_es",
+          "texto": "¿La entidad destinataria pertenece al sector público español?",
+          "grupo": "ENS: proveedor y sistema",
+          "motivo": "Comprobar identidad y naturaleza jurídica; el nombre del cliente no basta."
+        }
+      },
+      {
+        "clave": "relacion_contractual_publica_directa",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "ENS_P_relacion_contractual_publica_directa",
+          "texto": "¿La empresa presta el servicio o solución directamente a esa entidad en virtud de una relación contractual vigente?",
+          "grupo": "ENS: proveedor y sistema",
+          "motivo": "Si es subcontratista hay que analizar la cadena de suministro, no concluir que el ENS no aplica."
+        }
+      },
+      {
+        "clave": "sistema_informacion_clasificada",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "ENS_P_sistema_informacion_clasificada",
+          "texto": "¿El sistema trata información oficialmente clasificada?",
+          "grupo": "ENS: proveedor y sistema",
+          "motivo": "Ese supuesto requiere análisis especial del art. 2.2; no pedir documentos clasificados."
+        }
+      },
+      {
+        "clave": "servicio_para_competencias_publicas",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "ENS_P_servicio_para_competencias_publicas",
+          "texto": "¿El servicio o solución se utiliza para el ejercicio de competencias o potestades de la entidad pública?",
+          "grupo": "ENS: proveedor y sistema",
+          "motivo": "Identificar uso concreto y documentación contractual, dejando pendiente lo incierto."
+        }
+      },
+      {
+        "clave": "sistema_soporta_servicio",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "ENS_P_sistema_soporta_servicio",
+          "texto": "¿El sistema delimitado en este alcance sustenta ese servicio o solución?",
+          "grupo": "ENS: proveedor y sistema",
+          "motivo": "El ENS afecta al sistema delimitado, no automáticamente a todos los productos o carpetas de la empresa."
+        }
+      }
+    ],
+    "condicion": {
+      "op": "and",
+      "args": [
+        {
+          "op": "eq",
+          "hecho": "servicio_para_competencias_publicas",
+          "valor": true
+        },
+        {
+          "op": "eq",
+          "hecho": "sistema_soporta_servicio",
+          "valor": true
+        }
+      ]
+    },
+    "excepciones": []
+  },
+  "casosAplicabilidad": {
+    "schemaVersion": 1,
+    "reglaId": "ENS_ORG1_PROVEEDOR_PUBLICO_DIRECTO",
+    "base": {
+      "proveedor_privado": true,
+      "cliente_sector_publico_es": true,
+      "relacion_contractual_publica_directa": true,
+      "sistema_informacion_clasificada": false,
+      "servicio_para_competencias_publicas": true,
+      "sistema_soporta_servicio": true
+    },
+    "fechaBase": "2026-10-14T14:13:18.000Z",
+    "casos": [
+      {
+        "id": "ENS_POS",
+        "cambios": {},
+        "esperado": {
+          "cobertura": "dentro_de_cobertura",
+          "estado": "aplica",
+          "habilitaEvaluacion": true
+        }
+      },
+      {
+        "id": "ENS_NO_SISTEMA",
+        "cambios": {
+          "sistema_soporta_servicio": false
+        },
+        "esperado": {
+          "cobertura": "dentro_de_cobertura",
+          "estado": "no_aplica",
+          "ambitoConclusion": "solo esta via y sistema"
+        }
+      },
+      {
+        "id": "ENS_NO_COMPETENCIA",
+        "cambios": {
+          "servicio_para_competencias_publicas": false
+        },
+        "esperado": {
+          "cobertura": "dentro_de_cobertura",
+          "estado": "no_aplica",
+          "ambitoConclusion": "solo esta via y sistema"
+        }
+      },
+      {
+        "id": "ENS_INDIRECTO",
+        "cambios": {
+          "relacion_contractual_publica_directa": false
+        },
+        "esperado": {
+          "cobertura": "fuera_de_cobertura",
+          "estado": "pendiente_de_determinar",
+          "habilitaEvaluacion": false,
+          "alerta": "Analizar cadena de suministro; no excluir ENS",
+          "traza": null
+        }
+      },
+      {
+        "id": "ENS_CLASIFICADA",
+        "cambios": {
+          "sistema_informacion_clasificada": true
+        },
+        "esperado": {
+          "cobertura": "fuera_de_cobertura",
+          "estado": "pendiente_de_determinar",
+          "traza": null,
+          "habilitaEvaluacion": false
+        }
+      },
+      {
+        "id": "ENS_CLIENTE_PRIVADO",
+        "cambios": {
+          "cliente_sector_publico_es": false
+        },
+        "esperado": {
+          "cobertura": "fuera_de_cobertura",
+          "estado": "pendiente_de_determinar",
+          "alerta": "No desactiva adopcion o contrato privado",
+          "traza": null,
+          "habilitaEvaluacion": false
+        }
+      },
+      {
+        "id": "ENS_FALTA_AMBITO",
+        "desconocidos": [
+          "sistema_soporta_servicio"
+        ],
+        "esperado": {
+          "cobertura": "dentro_de_cobertura",
+          "estado": "pendiente_de_determinar"
+        }
+      },
+      {
+        "id": "ENS_CONFLICTO",
+        "conflictivos": [
+          "servicio_para_competencias_publicas"
+        ],
+        "esperado": {
+          "cobertura": "dentro_de_cobertura",
+          "estado": "pendiente_de_determinar"
+        }
+      },
+      {
+        "id": "ENS_FALTA_COBERTURA",
+        "desconocidos": [
+          "relacion_contractual_publica_directa"
+        ],
+        "esperado": {
+          "cobertura": "pendiente_de_delimitar",
+          "estado": "pendiente_de_determinar",
+          "traza": null,
+          "habilitaEvaluacion": false
+        }
+      },
+      {
+        "id": "ENS_HISTORICO",
+        "fechaCivil": "2024-05-04",
+        "esperado": {
+          "cobertura": "fuera_de_cobertura",
+          "estado": "pendiente_de_determinar",
+          "traza": null,
+          "habilitaEvaluacion": false,
+          "coberturaTemporal": "fuera_de_periodo"
+        },
+        "nota": "Prueba de guardia de cobertura con snapshot editorial de prueba; no falsificar fecha real de revisión de fuentes."
+      },
+      {
+        "id": "ENS_LIMITE_TRANSITORIO",
+        "fechaCivil": "2024-05-05",
+        "esperado": {
+          "cobertura": "dentro_de_cobertura",
+          "estado": "aplica"
+        },
+        "nota": "Separar prueba del calendario de pretensión de evaluación histórica con fuentes futuras."
+      }
+    ]
+  }
+}
+

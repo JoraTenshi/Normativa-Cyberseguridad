@@ -1,3 +1,4 @@
+import { sessionTicket, acceptSessionResponse } from '../session/session-bridge';
 import axios from 'axios';
 
 const api = axios.create({
@@ -7,16 +8,22 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
 });
 
+// Guard both identity and generation. A late response cannot revive an old screen.
+const protectedPath = path => /^\/(me|organizaciones)(\/|$)/.test(path || '');
+api.interceptors.request.use(config => {
+  if (protectedPath(config.url)) {
+    const ticket = sessionTicket(); config.sessionTicket = ticket;
+    config.headers['X-Session-User'] = ticket.userId;
+  }
+  return config;
+});
 api.interceptors.response.use(
-  res => res,
+  res => { if (res.config?.sessionTicket) acceptSessionResponse(res.config.sessionTicket, res.status); return res; },
   err => {
-    if (err.response?.status === 401) {
-      const url = err.config?.url ?? '';
-      const isAuthCall = url.includes('/auth/login') || url.includes('/auth/register') || url.includes('/auth/2fa');
-      if (!isAuthCall) {
-        localStorage.removeItem('cyberaudit_user');
-        window.location.href = '/auth';
-      }
+    if (err.config?.sessionTicket) {
+      // TOTP incorrecto no significa que haya caducado la sesión ya autenticada.
+      const wrongTotp = /^\/me\/2fa\//.test(err.config.url || '') && err.response?.status === 401 && err.response?.data?.error === 'Código incorrecto';
+      acceptSessionResponse(err.config.sessionTicket, wrongTotp ? 400 : err.response?.status, err.response?.data?.codigo);
     }
     return Promise.reject(err);
   }
@@ -62,8 +69,8 @@ export const resetPassword = async (token, password) => {
   return data;
 };
 
-export const loginApi = async (email, password) => {
-  const { data } = await api.post('/auth/login', { email, password });
+export const loginApi = async (email, password, mantenerSesion = false) => {
+  const { data } = await api.post('/auth/login', { email, password, mantenerSesion });
   return data.data;
 };
 

@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation, Navigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { register, loginApi, verify2fa, resendVerification } from '../services/api';
+import { PrivacyAccess } from '../components/CookieBanner';
 
 const esRutaInterna = destino =>
   typeof destino === 'string' && /^\/(?![/\\])[^\\\s]*$/.test(destino);
 
-const Auth = () => {
-  const [tab, setTab]         = useState('login');
+const Auth = ({ embedded = false }) => {
+  const location = useLocation();
+  const [tab, setTab]         = useState(() => !embedded && new URLSearchParams(location.search).get('modo') === 'registro' ? 'register' : 'login');
   const [form, setForm]       = useState({ nombre: '', email: '', password: '' });
   const [error, setError]     = useState(null);
   const [notice, setNotice]   = useState(null);
@@ -15,15 +17,15 @@ const Auth = () => {
   const [loading, setLoading] = useState(false);
   const [needs2fa, setNeeds2fa] = useState(false);
   const [totpCode, setTotpCode] = useState('');
+  const [mantenerSesion, setMantenerSesion] = useState(false);
 
-  const { user, login } = useAuth();
+  const { user, phase, login } = useAuth();
   const navigate  = useNavigate();
-  const location  = useLocation();
   // Solo rutas internas: evita redirecciones abiertas tras iniciar sesión (//dominio, /\dominio).
-  const from      = esRutaInterna(location.state?.from) ? location.state.from : '/';
+  const from      = esRutaInterna(location.state?.from) ? location.state.from : '/espacio-de-trabajo';
 
   // Si ya hay sesión iniciada, no mostrar el formulario: redirigir.
-  if (user) return <Navigate to={from} replace />;
+  if (!embedded && user && phase === 'authenticated') return <Navigate to={from} replace />;
 
   const handleChange = e =>
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -49,17 +51,18 @@ const Auth = () => {
         return;
       }
 
-      const data = await loginApi(form.email, form.password);
+      const data = await loginApi(form.email, form.password, mantenerSesion);
+      setForm(prev => ({ ...prev, password: '' }));
 
       if (data.requires2fa) {
         setNeeds2fa(true);
         return;
       }
 
-      login(data.usuario);
-      navigate(from, { replace: true });
+      if (!(await login())) throw new Error('No se ha podido confirmar la sesión en el servidor.');
+      if (!embedded) navigate(from, { replace: true });
     } catch (err) {
-      setError(err.response?.data?.error || 'Error de conexión con el servidor');
+      setError(err.response?.data?.error || err.message || 'Error de conexión con el servidor');
       setCanResend(err.response?.data?.code === 'EMAIL_NOT_VERIFIED');
     } finally {
       setLoading(false);
@@ -84,9 +87,10 @@ const Auth = () => {
     setError(null);
     setLoading(true);
     try {
-      const data = await verify2fa(totpCode);
-      login(data.usuario);
-      navigate(from, { replace: true });
+      await verify2fa(totpCode);
+      setTotpCode('');
+      if (!(await login())) throw new Error('No se ha podido confirmar la sesión en el servidor.');
+      if (!embedded) navigate(from, { replace: true });
     } catch (err) {
       setError(err.response?.data?.error || 'Código incorrecto');
     } finally {
@@ -99,7 +103,7 @@ const Auth = () => {
       <div className="page auth-page">
         <div className="auth-card">
           <div className="auth-brand">
-            <span className="auth-title">CyberLaw</span>
+            <span className="auth-title">NormativaCheck</span>
           </div>
 
           <form onSubmit={handle2faSubmit} className="auth-form">
@@ -150,10 +154,11 @@ const Auth = () => {
     <div className="page auth-page">
       <div className="auth-card">
         <div className="auth-brand">
-          <span className="auth-title">CyberLaw</span>
+          <span className="auth-title">Tu espacio, con todo el contexto.</span>
         </div>
 
-        <div className="auth-tabs">
+        {!embedded && <p className="auth-intro">Accede a tu cuenta o regístrate para solicitar el espacio de tu empresa.</p>}
+        {!embedded && <div className="auth-tabs">
           <button
             className={`auth-tab ${tab === 'login' ? 'active' : ''}`}
             onClick={() => switchTab('login')}
@@ -166,14 +171,21 @@ const Auth = () => {
           >
             Registrarse
           </button>
-        </div>
+        </div>}
 
+        {tab === 'register' && <div className="registration-privacy"><strong>Acceso restringido a validación</strong><p>Utiliza información de prueba. No aportes documentación real de clientes ni datos personales de terceros. La información de privacidad para admitir clientes está pendiente de completar.</p><PrivacyAccess/></div>}
         <form onSubmit={handleSubmit} className="auth-form">
+          {tab === 'login' && <div className="form-group">
+            <label><input type="checkbox" checked={mantenerSesion}
+              onChange={e => setMantenerSesion(e.target.checked)} /> Mantener la sesión en este dispositivo</label>
+            <small>Hasta 8 horas desde el acceso y 30 minutos sin actividad. No utilizar en equipos compartidos.</small>
+          </div>}
           {notice && <p role="status">{notice}</p>}
           {tab === 'register' && (
             <div className="form-group">
-              <label className="form-label">Nombre</label>
+              <label className="form-label" htmlFor="account-name">Nombre</label>
               <input
+                id="account-name"
                 className="form-input"
                 name="nombre"
                 type="text"
@@ -187,8 +199,9 @@ const Auth = () => {
           )}
 
           <div className="form-group">
-            <label className="form-label">Email</label>
+            <label className="form-label" htmlFor="account-email">Email</label>
             <input
+              id="account-email"
               className="form-input"
               name="email"
               type="email"
@@ -201,8 +214,9 @@ const Auth = () => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Contraseña</label>
+            <label className="form-label" htmlFor="account-password">Contraseña</label>
             <input
+              id="account-password"
               className="form-input"
               name="password"
               type="password"
@@ -238,12 +252,12 @@ const Auth = () => {
           <p className="auth-switch"><Link to="/forgot-password" className="auth-link">¿Has olvidado tu contraseña?</Link></p>
         )}
 
-        <p className="auth-switch">
+        {!embedded && <p className="auth-switch">
           {tab === 'login'
             ? <>¿Sin cuenta? <button className="auth-link" onClick={() => switchTab('register')}>Regístrate</button></>
             : <>¿Ya tienes cuenta? <button className="auth-link" onClick={() => switchTab('login')}>Inicia sesión</button></>
           }
-        </p>
+        </p>}
       </div>
     </div>
   );

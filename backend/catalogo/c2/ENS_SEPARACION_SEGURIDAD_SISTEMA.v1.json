@@ -1,0 +1,582 @@
+{
+  "ficha": {
+    "schemaVersion": 2,
+    "paqueteId": "NORM_C2_ENS_ROLES_20261014",
+    "id": "ENS_SEPARACION_SEGURIDAD_SISTEMA",
+    "version": 1,
+    "reglaId": "ENS_SEPARACION_SEGURIDAD_SISTEMA_PUBLICO_DIRECTO",
+    "versionRegla": 1,
+    "titulo": "Diferenciación efectiva entre seguridad y explotación del sistema",
+    "explicacion": "Evaluación interna de diferenciación efectiva entre seguridad y explotación del sistema para un sistema del proveedor privado dentro de la primera vía contractual pública directa. La política puede describir funciones sin que exista esta separación real. Se evalúa de forma diferenciada. No determina conformidad global ni certificación ENS.",
+    "fuentes": [
+      {
+        "id": "ENS_RD311_2022_CON_20241106",
+        "version": 3,
+        "editor": "Agencia Estatal Boletín Oficial del Estado",
+        "titulo": "Real Decreto 311/2022 — consolidación informativa 06/11/2024",
+        "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2022-7191",
+        "localizador": "Arts. 2.3, 11.2, 13.3; arts. 12.7/28 y DT única para límites y contexto",
+        "consultadaEn": "2026-10-14T18:30:22.104Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "ENS_RD311_2022_ORIGINAL",
+        "version": 1,
+        "editor": "Agencia Estatal Boletín Oficial del Estado",
+        "titulo": "Real Decreto 311/2022 — publicación original 04/05/2022",
+        "url": "https://www.boe.es/buscar/doc.php?id=BOE-A-2022-7191",
+        "localizador": "Arts. 2.3, 11.2, 13.3; arts. 12.7/28 y DT única para límites y contexto",
+        "consultadaEn": "2026-10-14T18:30:22.222Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "ENS_RD1125_2024_DF2",
+        "version": 3,
+        "editor": "Agencia Estatal Boletín Oficial del Estado",
+        "titulo": "Real Decreto 1125/2024 — modificación de DA segunda ENS",
+        "url": "https://www.boe.es/buscar/doc.php?id=BOE-A-2024-22935",
+        "localizador": "Disposición final segunda y cuarta",
+        "consultadaEn": "2026-10-14T18:30:22.110Z",
+        "estadoRevision": "revisada"
+      }
+    ],
+    "criterios": [
+      {
+        "id": "SEP_PERSONAS",
+        "descripcion": "Las funciones de responsable de seguridad y responsable del sistema recaen en personas distintas, identificadas para el alcance. Revisión motivada del caso, alcance y periodo. El nombre del archivo o del cargo no prueba contenido ni ejercicio.",
+        "origen": "norma",
+        "fuenteIds": [
+          "ENS_RD311_2022_CON_20241106"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "ENS_RD311_2022_CON_20241106",
+            "localizador": "Art. 13.3, primera oración"
+          }
+        ],
+        "tiposEvidencia": [
+          "designacion_versionada",
+          "organigrama",
+          "comprobacion_documentada"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "SEP_JERARQUIA",
+        "descripcion": "No existe dependencia jerárquica entre ambas funciones/personas en el caso examinado. Revisión motivada del caso, alcance y periodo. El nombre del archivo o del cargo no prueba contenido ni ejercicio.",
+        "origen": "norma",
+        "fuenteIds": [
+          "ENS_RD311_2022_CON_20241106"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "ENS_RD311_2022_CON_20241106",
+            "localizador": "Art. 13.3, primera oración"
+          }
+        ],
+        "tiposEvidencia": [
+          "organigrama",
+          "atribuciones_organizativas",
+          "comprobacion_documentada"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "EXC_RECURSOS",
+        "descripcion": "Se justifica una situación excepcional de ausencia de recursos que hace necesaria la coincidencia de personas o la dependencia jerárquica. Ser micropyme no acredita por sí solo esa necesidad. Revisión motivada del caso, alcance y periodo. El nombre del archivo o del cargo no prueba contenido ni ejercicio.",
+        "origen": "norma",
+        "fuenteIds": [
+          "ENS_RD311_2022_CON_20241106"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "ENS_RD311_2022_CON_20241106",
+            "localizador": "Art. 13.3, segunda oración"
+          }
+        ],
+        "tiposEvidencia": [
+          "analisis_recursos",
+          "justificacion_organizativa",
+          "comprobacion_documentada"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "EXC_MEDIDAS",
+        "descripcion": "Están aplicadas medidas compensatorias y se verifica de forma motivada que garantizan la finalidad de diferenciación de responsabilidades del art. 11. Una intención o medida futura no basta. Revisión motivada del caso, alcance y periodo. El nombre del archivo o del cargo no prueba contenido ni ejercicio.",
+        "origen": "norma",
+        "fuenteIds": [
+          "ENS_RD311_2022_CON_20241106"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "ENS_RD311_2022_CON_20241106",
+            "localizador": "Arts. 13.3 y 11"
+          }
+        ],
+        "tiposEvidencia": [
+          "medidas_compensatorias",
+          "registros_supervision_independiente",
+          "comprobacion_operativa"
+        ],
+        "exigeConclusionMotivada": true
+      }
+    ],
+    "coberturaTemporalDelPaquete": {
+      "desde": "2024-05-05",
+      "hasta": null,
+      "tipo": "limite_de_cobertura_historica_no_fecha_legal",
+      "motivo": "El piloto evalúa periodos posteriores a los 24 meses de adaptación. Periodos anteriores requieren otra versión que contemple sistema preexistente/nuevo, RD 3/2010 y DT única. No convertir este límite en exención o en entrada en vigor de 2024.",
+      "accionFuera": "requiere_analisis_fuera_de_cobertura",
+      "obligatoriaAntesDeEvaluar": true,
+      "implementacion": "regla.cobertura.periodo; no sustituye regla.vigencia"
+    },
+    "fuentesYCalendario": {
+      "publicacion": "2022-05-04",
+      "entradaEnVigor": "2022-05-05",
+      "ultimaModificacionInstrumentoPublicada": "2024-11-06",
+      "efectoModificacion": "2024-11-07",
+      "impactoModificacion": "La modificación publicada el 06/11/2024 afecta a DA segunda. Los apartados de arts.11/13 examinados coinciden con el original; el contraste documental no sustituye revisión de cada caso.",
+      "transitorio": "DT única: 24 meses para sistemas preexistentes; sistemas nuevos desde su concepción.",
+      "derogacion": "RD 3/2010 derogado, sin eliminar su relevancia transitoria o histórica.",
+      "consultaVigencia": "2026-10-14",
+      "limiteVerificacion": "Segundo control de original/consolidación/modificación y de arts.2,11,12,13,28 y DT única, con capturas de14/10/2026. Conversión al contrato2 examinada en este lote; pendiente validación independiente de motor/API/UI y publicación. No es dictamen jurídico profesional.",
+      "capturas": [
+        {
+          "id": "ENS_ORIGINAL",
+          "url": "https://www.boe.es/buscar/doc.php?id=BOE-A-2022-7191",
+          "archivo": "fuentes/2026-10-14T18-30-21-761Z/ENS_ORIGINAL.html",
+          "sha256": "02e32d6a3e89d07e309ce3656beb541bda3376b7569dfce129e7980bc04f2ee4",
+          "consultadaEn": "2026-10-14T18:30:22.222Z"
+        },
+        {
+          "id": "ENS_CONSOLIDADO",
+          "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2022-7191",
+          "archivo": "fuentes/2026-10-14T18-30-21-761Z/ENS_CONSOLIDADO.html",
+          "sha256": "df333ac600b13f58055c12844191fa97cc9f83b287aea6d83766ff852511c894",
+          "consultadaEn": "2026-10-14T18:30:22.104Z"
+        },
+        {
+          "id": "ENS_MODIFICACION_2024",
+          "url": "https://www.boe.es/buscar/doc.php?id=BOE-A-2024-22935",
+          "archivo": "fuentes/2026-10-14T18-30-21-761Z/ENS_MODIFICACION_2024.html",
+          "sha256": "dbcec26978bf9167acd9806abc3fb584382d90d74ab66a8f511844cfe64871ac",
+          "consultadaEn": "2026-10-14T18:30:22.110Z"
+        }
+      ]
+    },
+    "usoContenido": {
+      "tipo": "explicacion_propia_basada_en_legislacion",
+      "atribucion": "Basado en datos de la Agencia Estatal Boletín Oficial del Estado",
+      "urlCondiciones": "https://www.boe.es/informacion/aviso_legal/index.php",
+      "advertencia": "El texto consolidado del BOE tiene carácter meramente informativo. Esta ficha es una elaboración de la aplicación y no tiene carácter oficial.",
+      "incluyeISOoCCNProtegido": false
+    },
+    "revisionEditorial": {
+      "actor": "Codex — chat Normativa (2)",
+      "tipo": "analisis_asistido_IA_con_fuentes_primarias",
+      "fecha": "2026-10-14T18:52:16.000Z",
+      "dictamenJuridicoProfesional": false,
+      "publicacion": "borrador_convertido_pendiente_pruebas_y_publicacion_controlada"
+    },
+    "actuacionesSugeridas": [
+      {
+        "id": "ENS_SEP_COMPROBAR",
+        "titulo": "Contrastar personas, atribuciones y dependencia jerárquica",
+        "funcionSugerida": "dirección y responsables de seguridad y sistema",
+        "criterioCierreTarea": "Situación organizativa real registrada y respaldada; dos cuentas no prueban dos personas.",
+        "dependeDe": []
+      },
+      {
+        "id": "ENS_SEP_RESOLVER",
+        "titulo": "Resolver la separación o instrumentar la excepción pertinente",
+        "funcionSugerida": "dirección, con revisión de seguridad",
+        "criterioCierreTarea": "Separación implantada o necesidad excepcional y medidas compensatorias aplicadas, listas para revisión. No basta con proponer medidas.",
+        "dependeDe": [
+          "ENS_SEP_COMPROBAR"
+        ]
+      }
+    ],
+    "condicionesRevision": {
+      "unidadContada": "Una instancia por requisito y alcance/objeto; rutas, criterios, funciones, documentos y actuaciones no se cuentan como requisitos adicionales.",
+      "favorable": "Todos los criterios de una única ruta cerrada revisados favorablemente, compatibilidad motivada y hechos requeridos conocidos/coincidentes. No mezclar criterios de rutas incompletas ni admitir no_procede libre.",
+      "evidencia": "Evidencias suficientes de cada condición, con referencia exacta, procedencia, alcance y periodo. Una designación por sí sola no demuestra ejercicio, independencia o eficacia; comprobar contenidos e instrumentos pertinentes.",
+      "aprobacionAutomatica": false,
+      "revisor": "Revisión interna por miembro autorizado de la organización. El permiso de administrador es técnico, no acredita competencia profesional, función ENS ni certificación.",
+      "caducidadUniversal": null,
+      "desencadenantes": [
+        "cambio de personas, funciones, atribuciones o dependencia jerárquica",
+        "cambio del alcance, objeto o servicio externalizado",
+        "cambio de designación o sus instrumentos y evidencias",
+        "cambio de contexto factual de la ruta examinada",
+        "modificación normativa pertinente",
+        "evidencia contradictoria o periodo factual no cubierto"
+      ],
+      "preservarHistorico": true
+    },
+    "limites": [
+      "La excepción debe fundarse en ausencia justificada de recursos que hace necesaria la coincidencia o dependencia; no basta con tamaño de la empresa.",
+      "Las medidas compensatorias deben estar efectivamente aplicadas y garantizar la finalidad de diferenciación. Una tarea futura o subir un documento no prueba su suficiencia.",
+      "La comparación de IDs de usuario o sujeto no prueba por sí sola si son personas físicas diferentes.",
+      "Primera conexión limitada a proveedor privado con relación contractual pública directa y sistema no clasificado. Otras vías ENS, cadena indirecta y alcance histórico anterior al 05/05/2024 son trabajo pendiente, no exclusiones jurídicas.",
+      "Cualquier alegación de arts.12.7/28 o perfil específico que no encaje en las rutas descritas necesita análisis particular. No crear una excepción libre ni afirmar incumplimiento por carecer de esa ruta.",
+      "No cubre el compromiso general del art.13.1, todo el art.11, el desarrollo al que remite art.13.4, riesgos, auditoría ni conformidad global.",
+      "Hechos y compatibilidad se declaran y revisan; el motor no interpreta semánticamente documentos ni garantiza suficiencia jurídica.",
+      "No se crean cuentas ni se conceden permisos por registrar una función o designación.",
+      "Las fuentes protegidas ISO/UNE/CCN no están incorporadas ni procesadas con IA."
+    ],
+    "satisfaccion": {
+      "tipo": "rutas_cerradas",
+      "hechos": [
+        {
+          "clave": "seguridad_sistema_coincidencia_o_dependencia",
+          "tipo": "booleano",
+          "pregunta": {
+            "id": "ENS_P_seguridad_sistema_coincidencia_o_dependencia",
+            "texto": "¿Las funciones de seguridad y sistema recaen en la misma persona, o existe dependencia jerárquica entre quienes las ejercen?",
+            "grupo": "ENS: comprobación del requisito",
+            "motivo": "Responder no exige haber descartado ambas circunstancias. Si no se conoce alguna, mantener desconocido; comparar cuentas o nombres no basta."
+          }
+        }
+      ],
+      "rutas": [
+        {
+          "id": "SEPARACION_ORDINARIA",
+          "titulo": "Personas distintas sin dependencia jerárquica",
+          "explicacion": "Regla ordinaria completa.",
+          "requiereTodos": [
+            "SEP_PERSONAS",
+            "SEP_JERARQUIA"
+          ],
+          "hechosRequeridos": [
+            {
+              "clave": "seguridad_sistema_coincidencia_o_dependencia",
+              "valor": false
+            }
+          ]
+        },
+        {
+          "id": "EXCEPCION_COMPENSADA",
+          "titulo": "Excepción por recursos con compensación aplicada",
+          "explicacion": "Alternativa excepcional prevista en el precepto, no exención ni no aplica.",
+          "requiereTodos": [
+            "EXC_RECURSOS",
+            "EXC_MEDIDAS"
+          ],
+          "hechosRequeridos": [
+            {
+              "clave": "seguridad_sistema_coincidencia_o_dependencia",
+              "valor": true
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "regla": {
+    "contratoVersion": 2,
+    "id": "ENS_SEPARACION_SEGURIDAD_SISTEMA_PUBLICO_DIRECTO",
+    "version": 1,
+    "estado": "revisada",
+    "revision": {
+      "revisorRef": "Codex-Normativa2-revision-editorial-fuentes-no-dictamen",
+      "fecha": "2026-10-14T18:52:16.000Z"
+    },
+    "naturaleza": "ley_reglamento",
+    "origenes": [
+      "legal"
+    ],
+    "tiposObjeto": [
+      "sistema"
+    ],
+    "fuentes": [
+      {
+        "id": "ENS_RD311_2022_CON_20241106",
+        "version": 3,
+        "editor": "Agencia Estatal Boletín Oficial del Estado",
+        "titulo": "Real Decreto 311/2022 — consolidación informativa 06/11/2024",
+        "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2022-7191",
+        "localizador": "Arts. 2.3, 11.2, 13.3; arts. 12.7/28 y DT única para límites y contexto",
+        "consultadaEn": "2026-10-14T18:30:22.104Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "ENS_RD311_2022_ORIGINAL",
+        "version": 1,
+        "editor": "Agencia Estatal Boletín Oficial del Estado",
+        "titulo": "Real Decreto 311/2022 — publicación original 04/05/2022",
+        "url": "https://www.boe.es/buscar/doc.php?id=BOE-A-2022-7191",
+        "localizador": "Arts. 2.3, 11.2, 13.3; arts. 12.7/28 y DT única para límites y contexto",
+        "consultadaEn": "2026-10-14T18:30:22.222Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "ENS_RD1125_2024_DF2",
+        "version": 3,
+        "editor": "Agencia Estatal Boletín Oficial del Estado",
+        "titulo": "Real Decreto 1125/2024 — modificación de DA segunda ENS",
+        "url": "https://www.boe.es/buscar/doc.php?id=BOE-A-2024-22935",
+        "localizador": "Disposición final segunda y cuarta",
+        "consultadaEn": "2026-10-14T18:30:22.110Z",
+        "estadoRevision": "revisada"
+      }
+    ],
+    "vigencia": {
+      "estado": "definida",
+      "tipo": "fecha_civil",
+      "calendario": "gregoriano",
+      "jurisdiccion": "ES",
+      "zonaEvaluacion": "Europe/Madrid",
+      "desde": "2022-05-05",
+      "hasta": null
+    },
+    "cobertura": {
+      "descripcion": "Primera vía: sistemas no clasificados de proveedores privados con relación contractual pública directa. No cubre sector público, cadena indirecta, información clasificada ni adopción/contratos privados independientes.",
+      "condicion": {
+        "op": "and",
+        "args": [
+          {
+            "op": "eq",
+            "hecho": "proveedor_privado",
+            "valor": true
+          },
+          {
+            "op": "eq",
+            "hecho": "cliente_sector_publico_es",
+            "valor": true
+          },
+          {
+            "op": "eq",
+            "hecho": "relacion_contractual_publica_directa",
+            "valor": true
+          },
+          {
+            "op": "eq",
+            "hecho": "sistema_informacion_clasificada",
+            "valor": false
+          }
+        ]
+      },
+      "periodo": {
+        "desde": "2024-05-05",
+        "hasta": null,
+        "motivo": "El piloto evalúa periodos posteriores a los 24 meses de adaptación. Periodos anteriores requieren otra versión que contemple sistema preexistente/nuevo, RD 3/2010 y DT única. No convertir este límite en exención o en entrada en vigor de 2024."
+      }
+    },
+    "hechos": [
+      {
+        "clave": "proveedor_privado",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "ENS_P_proveedor_privado",
+          "texto": "¿La entidad que presta el servicio es una entidad privada?",
+          "grupo": "ENS: proveedor y sistema",
+          "motivo": "Esta rama cubre proveedores privados; el sector público se estudia por otra vía."
+        }
+      },
+      {
+        "clave": "cliente_sector_publico_es",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "ENS_P_cliente_sector_publico_es",
+          "texto": "¿La entidad destinataria pertenece al sector público español?",
+          "grupo": "ENS: proveedor y sistema",
+          "motivo": "Comprobar identidad y naturaleza jurídica; el nombre del cliente no basta."
+        }
+      },
+      {
+        "clave": "relacion_contractual_publica_directa",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "ENS_P_relacion_contractual_publica_directa",
+          "texto": "¿La empresa presta el servicio o solución directamente a esa entidad en virtud de una relación contractual vigente?",
+          "grupo": "ENS: proveedor y sistema",
+          "motivo": "Si es subcontratista hay que analizar la cadena de suministro, no concluir que el ENS no aplica."
+        }
+      },
+      {
+        "clave": "sistema_informacion_clasificada",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "ENS_P_sistema_informacion_clasificada",
+          "texto": "¿El sistema trata información oficialmente clasificada?",
+          "grupo": "ENS: proveedor y sistema",
+          "motivo": "Ese supuesto requiere análisis especial del art. 2.2; no pedir documentos clasificados."
+        }
+      },
+      {
+        "clave": "servicio_para_competencias_publicas",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "ENS_P_servicio_para_competencias_publicas",
+          "texto": "¿El servicio o solución se utiliza para el ejercicio de competencias o potestades de la entidad pública?",
+          "grupo": "ENS: proveedor y sistema",
+          "motivo": "Identificar uso concreto y documentación contractual, dejando pendiente lo incierto."
+        }
+      },
+      {
+        "clave": "sistema_soporta_servicio",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "ENS_P_sistema_soporta_servicio",
+          "texto": "¿El sistema delimitado en este alcance sustenta ese servicio o solución?",
+          "grupo": "ENS: proveedor y sistema",
+          "motivo": "El ENS afecta al sistema delimitado, no automáticamente a todos los productos o carpetas de la empresa."
+        }
+      }
+    ],
+    "condicion": {
+      "op": "and",
+      "args": [
+        {
+          "op": "eq",
+          "hecho": "servicio_para_competencias_publicas",
+          "valor": true
+        },
+        {
+          "op": "eq",
+          "hecho": "sistema_soporta_servicio",
+          "valor": true
+        }
+      ]
+    },
+    "excepciones": []
+  },
+  "casosAplicabilidad": {
+    "schemaVersion": 1,
+    "reglaId": "ENS_SEPARACION_SEGURIDAD_SISTEMA_PUBLICO_DIRECTO",
+    "base": {
+      "proveedor_privado": true,
+      "cliente_sector_publico_es": true,
+      "relacion_contractual_publica_directa": true,
+      "sistema_informacion_clasificada": false,
+      "servicio_para_competencias_publicas": true,
+      "sistema_soporta_servicio": true
+    },
+    "fechaBase": "2026-10-14T18:52:16.000Z",
+    "casos": [
+      {
+        "id": "ENS_POS",
+        "cambios": {},
+        "esperado": {
+          "cobertura": "dentro_de_cobertura",
+          "estado": "aplica",
+          "habilitaEvaluacion": true
+        }
+      },
+      {
+        "id": "ENS_NO_SISTEMA",
+        "cambios": {
+          "sistema_soporta_servicio": false
+        },
+        "esperado": {
+          "cobertura": "dentro_de_cobertura",
+          "estado": "no_aplica",
+          "ambitoConclusion": "solo esta via y sistema"
+        }
+      },
+      {
+        "id": "ENS_NO_COMPETENCIA",
+        "cambios": {
+          "servicio_para_competencias_publicas": false
+        },
+        "esperado": {
+          "cobertura": "dentro_de_cobertura",
+          "estado": "no_aplica",
+          "ambitoConclusion": "solo esta via y sistema"
+        }
+      },
+      {
+        "id": "ENS_INDIRECTO",
+        "cambios": {
+          "relacion_contractual_publica_directa": false
+        },
+        "esperado": {
+          "cobertura": "fuera_de_cobertura",
+          "estado": "pendiente_de_determinar",
+          "habilitaEvaluacion": false,
+          "alerta": "Analizar cadena de suministro; no excluir ENS",
+          "traza": null
+        }
+      },
+      {
+        "id": "ENS_CLASIFICADA",
+        "cambios": {
+          "sistema_informacion_clasificada": true
+        },
+        "esperado": {
+          "cobertura": "fuera_de_cobertura",
+          "estado": "pendiente_de_determinar",
+          "traza": null,
+          "habilitaEvaluacion": false
+        }
+      },
+      {
+        "id": "ENS_CLIENTE_PRIVADO",
+        "cambios": {
+          "cliente_sector_publico_es": false
+        },
+        "esperado": {
+          "cobertura": "fuera_de_cobertura",
+          "estado": "pendiente_de_determinar",
+          "alerta": "No desactiva adopcion o contrato privado",
+          "traza": null,
+          "habilitaEvaluacion": false
+        }
+      },
+      {
+        "id": "ENS_FALTA_AMBITO",
+        "desconocidos": [
+          "sistema_soporta_servicio"
+        ],
+        "esperado": {
+          "cobertura": "dentro_de_cobertura",
+          "estado": "pendiente_de_determinar"
+        }
+      },
+      {
+        "id": "ENS_CONFLICTO",
+        "conflictivos": [
+          "servicio_para_competencias_publicas"
+        ],
+        "esperado": {
+          "cobertura": "dentro_de_cobertura",
+          "estado": "pendiente_de_determinar"
+        }
+      },
+      {
+        "id": "ENS_FALTA_COBERTURA",
+        "desconocidos": [
+          "relacion_contractual_publica_directa"
+        ],
+        "esperado": {
+          "cobertura": "pendiente_de_delimitar",
+          "estado": "pendiente_de_determinar",
+          "traza": null,
+          "habilitaEvaluacion": false
+        }
+      },
+      {
+        "id": "ENS_HISTORICO",
+        "fechaCivil": "2024-05-04",
+        "esperado": {
+          "cobertura": "fuera_de_cobertura",
+          "estado": "pendiente_de_determinar",
+          "traza": null,
+          "habilitaEvaluacion": false,
+          "coberturaTemporal": "fuera_de_periodo"
+        },
+        "nota": "Prueba de guardia de cobertura con snapshot editorial de prueba; no falsificar fecha real de revisión de fuentes."
+      },
+      {
+        "id": "ENS_LIMITE_TRANSITORIO",
+        "fechaCivil": "2024-05-05",
+        "esperado": {
+          "cobertura": "dentro_de_cobertura",
+          "estado": "aplica"
+        },
+        "nota": "Separar prueba del calendario de pretensión de evaluación histórica con fuentes futuras."
+      }
+    ]
+  }
+}

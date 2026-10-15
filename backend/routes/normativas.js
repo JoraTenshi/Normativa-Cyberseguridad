@@ -1,3 +1,4 @@
+const { esBDNoDisponible } = require('../utils/bd');
 const express = require('express');
 const router = express.Router();
 const Normativa = require('../models/Normativa');
@@ -24,6 +25,7 @@ router.get('/aplicables', requireAuth, async (req, res) => {
 
     res.json({ ok: true, data, perfil_completo: perfilCompleto(organizacion) });
   } catch (err) {
+    if (esBDNoDisponible(err)) return res.status(503).json({ ok: false, error: 'Servicio no disponible temporalmente' });
     console.error('Error al obtener normativas aplicables:', err.message);
     res.status(500).json({ ok: false, error: 'Error al obtener las normativas' });
   }
@@ -34,6 +36,7 @@ router.get('/', async (req, res) => {
     const normativas = await Normativa.find({}, { id: 1, nombre: 1, descripcion: 1, _id: 0 });
     res.json({ ok: true, data: normativas });
   } catch (err) {
+    if (esBDNoDisponible(err)) return res.status(503).json({ ok: false, error: 'Servicio no disponible temporalmente' });
     console.error('Error al obtener normativas:', err.message);
     res.status(500).json({ ok: false, error: 'Error al obtener las normativas' });
   }
@@ -49,6 +52,7 @@ router.get('/:id', async (req, res) => {
 
     res.json({ ok: true, data: normativa });
   } catch (err) {
+    if (esBDNoDisponible(err)) return res.status(503).json({ ok: false, error: 'Servicio no disponible temporalmente' });
     console.error('Error al obtener normativa:', err.message);
     res.status(500).json({ ok: false, error: 'Error al obtener la normativa' });
   }

@@ -1,61 +1,33 @@
 import { useEffect, useState } from 'react';
 
-const STORAGE_KEY = 'cyberlaw_cookie_consent_v1';
-const RECONFIRM_DAYS = 365;
-
-const POR_DEFECTO = {
-  tecnicas:     true,
-  preferencias: false,
-  analitica:    false,
-  marketing:    false,
-};
-
+// Reuse only the old notice key. Never clear session or demo storage.
+export const STORAGE_KEY = 'cyberlaw_cookie_consent_v1';
+const CHANGE_EVENT = 'normativacheck:storage-notice';
 function leer() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
-    const data = JSON.parse(raw);
-    const edad = (Date.now() - new Date(data.ts).getTime()) / 86400000;
-    if (edad > RECONFIRM_DAYS) return null;
-    return data;
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    return data?.version === 2 && data?.avisoLeido === true &&
+      data.preferencias === false && data.analitica === false && data.marketing === false ? data : null;
   } catch { return null; }
 }
-
-function guardar(estado) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({
-    ...estado,
-    ts: new Date().toISOString(),
-    version: 1,
-  }));
-}
-
 export function useConsentimientoCookies() {
-  const [estado, setEstado] = useState(undefined);
-
-  useEffect(() => { setEstado(leer()); }, []);
-
-  const aceptarTodo = () => {
-    const s = { ...POR_DEFECTO, preferencias: true, analitica: true, marketing: true };
-    guardar(s);
-    setEstado(s);
-  };
-
-  const rechazarTodo = () => {
-    const s = { ...POR_DEFECTO, rechazado: true };
-    guardar(s);
-    setEstado(s);
-  };
-
-  const configurar = (cfg) => {
-    const s = { ...POR_DEFECTO, ...cfg };
-    guardar(s);
-    setEstado(s);
-  };
-
-  const revocar = () => {
-    localStorage.removeItem(STORAGE_KEY);
-    setEstado(null);
-  };
-
-  return { estado, aceptarTodo, rechazarTodo, configurar, revocar };
+  const [estado,setEstado] = useState(undefined);
+  useEffect(() => {
+    setEstado(leer());
+    const localChange = event => setEstado(event.detail);
+    const externalChange = event => { if (event.key === STORAGE_KEY || event.key === null) setEstado(leer()); };
+    window.addEventListener(CHANGE_EVENT, localChange);
+    window.addEventListener('storage', externalChange);
+    return () => { window.removeEventListener(CHANGE_EVENT,localChange); window.removeEventListener('storage',externalChange); };
+  }, []);
+  function recordarAviso() {
+    const next = { version:2, avisoLeido:true, tecnicas:true, preferencias:false, analitica:false, marketing:false, ts:new Date().toISOString() };
+    let saved = true;
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); } catch { saved = false; }
+    // Still allow dismissal if storage is unavailable; this is not consent.
+    setEstado(next);
+    window.dispatchEvent(new CustomEvent(CHANGE_EVENT,{detail:next}));
+    return saved;
+  }
+  return { estado, recordarAviso, desactivarOpcionales:recordarAviso };
 }

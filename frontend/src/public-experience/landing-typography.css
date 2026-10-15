@@ -1,0 +1,30 @@
+/* Shared hierarchy: section heading / subsection / body. Hero and UI stay distinct. */
+.public-experience .nc-home {
+  --section-title-size: clamp(30px, 3.1vw, 43px);
+  --subsection-title-size: clamp(27px, 2.55vw, 35px);
+  --section-body-size: 15px;
+  --section-label-size: 14px;
+}
+.public-experience .nc-home :is(.about-copy, .home-product .section-heading, .home-story .section-heading, .try-heading, .demo-invite-copy, .home-faq > div:first-child, .signup-section > div) > h2 {
+  font-size: var(--section-title-size);
+  font-weight: 570;
+  line-height: 1.16;
+  letter-spacing: -.045em;
+}
+.public-experience .nc-home :is(.about-copy, .home-product .section-heading, .demo-invite-copy, .home-faq > div:first-child, .signup-section > div) > .eyebrow {
+  font-size: var(--section-label-size);
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: .11em;
+  margin-bottom: 22px;
+}
+.public-experience .nc-home :is(.about-copy, .product-copy, .phase-copy, .try-heading, .demo-invite-copy, .signup-section > div) > p, .public-experience .nc-home .home-product .product-intro {
+  font-size: var(--section-body-size);
+  font-weight: 400;
+  line-height: 1.85;
+}
+.public-experience .nc-home .about-copy > p, .public-experience .nc-home .home-product .product-intro {margin-top:20px!important}
+.public-experience .nc-home :is(.product-copy, .phase-copy) > h3 {font-size:var(--subsection-title-size);font-weight:570;line-height:1.2;letter-spacing:-.04em}
+.public-experience .nc-home :is(.product-copy, .phase-copy) > .step-index {font-size:13px;font-weight:700;line-height:1.5;letter-spacing:.1em}
+@media(max-width:800px){.public-experience .nc-home{--section-title-size:38px;--subsection-title-size:32px;--section-label-size:12px}}
+@media(max-width:600px){.public-experience .nc-home{--section-title-size:31px;--subsection-title-size:27px;--section-body-size:14px;--section-label-size:11px}.public-experience .nc-home :is(.product-copy,.phase-copy)>.step-index{font-size:11px}}

@@ -1,0 +1,408 @@
+{
+  "aviso": "Solo fixture completa, no ENS ni contenido publicable",
+  "paquete": {
+    "ficha": {
+      "schemaVersion": 2,
+      "paqueteId": "DEMO_C2",
+      "id": "REQUISITO_FICTICIO",
+      "version": 1,
+      "reglaId": "DEMO_CONDICION",
+      "versionRegla": 1,
+      "titulo": "Requisito sintético",
+      "explicacion": "No es una obligación jurídica",
+      "fuentes": [
+        {
+          "id": "DEMO_FUENTE",
+          "version": 1,
+          "editor": "Fixture de test",
+          "titulo": "Contrato ficticio, no normativo",
+          "url": "https://example.invalid/contrato",
+          "localizador": "Cláusula ficticia A",
+          "consultadaEn": "2020-01-01T00:00:00.000Z",
+          "estadoRevision": "revisada"
+        }
+      ],
+      "criterios": [
+        {
+          "id": "C1",
+          "descripcion": "Criterio ficticio C1",
+          "origen": "metodologia",
+          "fuenteIds": [
+            "DEMO_FUENTE"
+          ],
+          "preceptos": [
+            {
+              "fuenteId": "DEMO_FUENTE",
+              "localizador": "Fixture"
+            }
+          ],
+          "tiposEvidencia": [
+            "version_documento",
+            "constatacion_revision",
+            "designacion_versionada"
+          ],
+          "exigeConclusionMotivada": true
+        },
+        {
+          "id": "C2",
+          "descripcion": "Criterio ficticio C2",
+          "origen": "metodologia",
+          "fuenteIds": [
+            "DEMO_FUENTE"
+          ],
+          "preceptos": [
+            {
+              "fuenteId": "DEMO_FUENTE",
+              "localizador": "Fixture"
+            }
+          ],
+          "tiposEvidencia": [
+            "version_documento",
+            "constatacion_revision",
+            "designacion_versionada"
+          ],
+          "exigeConclusionMotivada": true
+        },
+        {
+          "id": "C3",
+          "descripcion": "Criterio ficticio C1",
+          "origen": "metodologia",
+          "fuenteIds": [
+            "DEMO_FUENTE"
+          ],
+          "preceptos": [
+            {
+              "fuenteId": "DEMO_FUENTE",
+              "localizador": "Fixture"
+            }
+          ],
+          "tiposEvidencia": [
+            "version_documento",
+            "constatacion_revision",
+            "designacion_versionada"
+          ],
+          "exigeConclusionMotivada": true
+        }
+      ],
+      "fuentesYCalendario": {
+        "consultaVigencia": "2020-01-01",
+        "limiteVerificacion": "Fixture, no verificación legal"
+      },
+      "usoContenido": {
+        "tipo": "fixture",
+        "atribucion": "Prueba",
+        "urlCondiciones": "https://example.invalid/uso",
+        "advertencia": "No normativo",
+        "incluyeISOoCCNProtegido": false
+      },
+      "revisionEditorial": {
+        "actor": "Test",
+        "tipo": "fixture",
+        "fecha": "2020-01-01T00:00:00.000Z",
+        "dictamenJuridicoProfesional": false,
+        "publicacion": "no_publicable_fixture"
+      },
+      "actuacionesSugeridas": [
+        {
+          "id": "A1",
+          "titulo": "Acción ficticia",
+          "funcionSugerida": "Responsable de prueba",
+          "criterioCierreTarea": "Cerrar no aprueba requisito",
+          "dependeDe": []
+        }
+      ],
+      "condicionesRevision": {
+        "unidadContada": "Requisito",
+        "favorable": "Todos revisados",
+        "evidencia": "Versionada",
+        "aprobacionAutomatica": false,
+        "revisor": "Miembro autorizado",
+        "caducidadUniversal": null,
+        "desencadenantes": [
+          "Cambio de fundamento"
+        ],
+        "preservarHistorico": true
+      },
+      "limites": [
+        "Solo prueba"
+      ],
+      "satisfaccion": {
+        "tipo": "rutas_cerradas",
+        "hechos": [
+          {
+            "clave": "via_ordinaria",
+            "tipo": "booleano",
+            "pregunta": {
+              "id": "P_VIA",
+              "texto": "Hecho sintético",
+              "grupo": "Prueba",
+              "motivo": "No decide aplicabilidad"
+            }
+          }
+        ],
+        "rutas": [
+          {
+            "id": "NORMAL",
+            "titulo": "Ruta ficticia A",
+            "explicacion": "Solo test",
+            "requiereTodos": [
+              "C1",
+              "C2"
+            ],
+            "hechosRequeridos": [
+              {
+                "clave": "via_ordinaria",
+                "valor": true
+              }
+            ]
+          },
+          {
+            "id": "ALTERNATIVA",
+            "titulo": "Ruta ficticia B",
+            "explicacion": "Solo test",
+            "requiereTodos": [
+              "C2",
+              "C3"
+            ],
+            "hechosRequeridos": [
+              {
+                "clave": "via_ordinaria",
+                "valor": false
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "regla": {
+      "id": "DEMO_CONDICION",
+      "version": 1,
+      "estado": "revisada",
+      "revision": {
+        "revisorRef": "revision-sintetica-no-juridica",
+        "fecha": "2020-01-01T00:00:00.000Z"
+      },
+      "naturaleza": "contrato",
+      "origenes": [
+        "contractual"
+      ],
+      "tiposObjeto": [
+        "sistema"
+      ],
+      "fuentes": [
+        {
+          "id": "DEMO_FUENTE",
+          "version": 1,
+          "editor": "Fixture de test",
+          "titulo": "Contrato ficticio, no normativo",
+          "url": "https://example.invalid/contrato",
+          "localizador": "Cláusula ficticia A",
+          "consultadaEn": "2020-01-01T00:00:00.000Z",
+          "estadoRevision": "revisada"
+        }
+      ],
+      "vigencia": {
+        "estado": "definida",
+        "tipo": "fecha_civil",
+        "calendario": "gregoriano",
+        "jurisdiccion": "ES",
+        "zonaEvaluacion": "Europe/Madrid",
+        "desde": "2026-10-14",
+        "hasta": "2026-10-15"
+      },
+      "hechos": [
+        {
+          "clave": "a",
+          "tipo": "booleano",
+          "pregunta": {
+            "id": "P_a",
+            "texto": "Pregunta sintética sobre a?",
+            "grupo": "Contexto sintético",
+            "motivo": "Resolver la condición sintética a"
+          }
+        },
+        {
+          "clave": "b",
+          "tipo": "booleano",
+          "pregunta": {
+            "id": "P_b",
+            "texto": "Pregunta sintética sobre b?",
+            "grupo": "Contexto sintético",
+            "motivo": "Resolver la condición sintética b"
+          }
+        },
+        {
+          "clave": "cubierto",
+          "tipo": "booleano",
+          "pregunta": {
+            "id": "P_cubierto",
+            "texto": "Pregunta sintética sobre cubierto?",
+            "grupo": "Contexto sintético",
+            "motivo": "Resolver la condición sintética cubierto"
+          }
+        }
+      ],
+      "condicion": {
+        "op": "and",
+        "args": [
+          {
+            "op": "eq",
+            "hecho": "a",
+            "valor": true
+          },
+          {
+            "op": "eq",
+            "hecho": "b",
+            "valor": true
+          }
+        ]
+      },
+      "excepciones": [],
+      "contratoVersion": 2,
+      "cobertura": {
+        "descripcion": "Solo el caso sintético explícitamente cubierto",
+        "condicion": {
+          "op": "eq",
+          "hecho": "cubierto",
+          "valor": true
+        }
+      }
+    }
+  },
+  "sistema": {
+    "nombre": "Sistema sintético",
+    "descripcion": "Prueba",
+    "alcance": {
+      "id": "000000000000000000000014",
+      "version": 1,
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "hechos": [
+      {
+        "clave": "a",
+        "estado": "conocido",
+        "valor": true
+      },
+      {
+        "clave": "b",
+        "estado": "conocido",
+        "valor": true
+      },
+      {
+        "clave": "cubierto",
+        "estado": "conocido",
+        "valor": true
+      },
+      {
+        "clave": "via_ordinaria",
+        "estado": "conocido",
+        "valor": true
+      }
+    ],
+    "motivo": "Contexto inicial"
+  },
+  "sujeto": {
+    "tipo": "persona",
+    "nombre": "Persona ficticia externa",
+    "procedenciaOrganizativa": "Cliente ficticio declarado",
+    "membresiaId": null,
+    "motivo": "Alta"
+  },
+  "designacion": {
+    "alcance": {
+      "id": "000000000000000000000014",
+      "version": 1,
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "objeto": {
+      "tipo": "sistema",
+      "id": "000000000000000000000050",
+      "version": 1
+    },
+    "funcionId": "FUNCION_FICTICIA",
+    "estado": "identificada",
+    "motivoDelEstado": "Declaración limitada, no prueba de ejercicio",
+    "titulares": [
+      {
+        "sujeto": {
+          "id": "00000000000000000000005a",
+          "version": 1,
+          "sha256": "bb9aaffbd923989958ac4e7903a2c25e3748e3a8de1c2055d63e91d72884cb81"
+        },
+        "delimitacion": "Parte A"
+      }
+    ],
+    "instrumentos": [
+      {
+        "tipo": "comprobacion",
+        "metodo": "Revisión de acta sintética",
+        "realizadaEn": "2026-10-14T13:00:00.000Z",
+        "resultado": "Constatación declarada",
+        "limitaciones": "Sin verificar identidad real"
+      }
+    ],
+    "periodo": {
+      "desde": "2026-10-14",
+      "hasta": null,
+      "calendario": "gregoriano",
+      "jurisdiccion": "ES",
+      "zonaEvaluacion": "Europe/Madrid"
+    },
+    "motivo": "Alta"
+  },
+  "revision": {
+    "requisito": {
+      "id": "00000000000000000000000a",
+      "version": 1,
+      "sha256": "REEMPLAZAR_POR_DTO_REFERENCIA"
+    },
+    "tipo": "interna",
+    "periodo": {
+      "desde": "2026-10-14",
+      "hasta": "2026-10-15",
+      "calendario": "gregoriano",
+      "jurisdiccion": "ES",
+      "zonaEvaluacion": "Europe/Madrid"
+    },
+    "criterios": [
+      {
+        "criterioId": "C1",
+        "resultado": "favorable",
+        "motivo": "Comprobación sintética razonada, no basta nombre del PDF",
+        "evidenciaIds": [
+          "000000000000000000000028"
+        ],
+        "compatibilidad": {
+          "estado": "compatible",
+          "motivo": "Revisión humana sintética, no detector"
+        }
+      },
+      {
+        "criterioId": "C2",
+        "resultado": "favorable",
+        "motivo": "Comprobación sintética razonada, no basta nombre del PDF",
+        "evidenciaIds": [
+          "000000000000000000000028"
+        ],
+        "compatibilidad": {
+          "estado": "compatible",
+          "motivo": "Revisión humana sintética, no detector"
+        }
+      }
+    ],
+    "conclusion": "favorable",
+    "motivo": "Los criterios ficticios han sido examinados expresamente",
+    "ruta": {
+      "id": "NORMAL",
+      "motivo": "Elección sintética expresamente motivada"
+    },
+    "evidencias": [
+      {
+        "id": "000000000000000000000028",
+        "version": 1,
+        "sha256": "REEMPLAZAR_POR_DTO_REFERENCIA"
+      }
+    ]
+  },
+  "advertenciaReferencias": "Los IDs y hashes son sintéticos. POST revisión requiere dto.referencia persistida de requisito/evidencias, no huella interna del dominio. No enviar id, actor, organización o salida calculada."
+}

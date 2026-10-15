@@ -1,0 +1,882 @@
+{
+  "ficha": {
+    "schemaVersion": 1,
+    "paqueteId": "NORM_C2_20261014",
+    "id": "RGPD28_FORMALIZACION_CONTENIDO",
+    "version": 3,
+    "reglaId": "RGPD_ART28_ENCARGO_DIRECTO",
+    "versionRegla": 4,
+    "titulo": "Formalización y contenido del encargo directo de tratamiento",
+    "explicacion": "Revisa la existencia, forma, vinculación y contenido del instrumento que rige el encargo. No certifica la ejecución de todas las obligaciones del encargado ni el cumplimiento completo del artículo28 o RGPD.",
+    "fuentes": [
+      {
+        "id": "RGPD_2016_679_ORIGINAL",
+        "version": 2,
+        "editor": "Unión Europea / Agencia Estatal Boletín Oficial del Estado",
+        "titulo": "Reglamento (UE) 2016/679 — publicación original",
+        "url": "https://www.boe.es/buscar/doc.php?id=DOUE-L-2016-80807",
+        "localizador": "Arts.2,3.1,4.1/2/7/8,26,28,99.2",
+        "consultadaEn": "2026-10-14T14:13:18.000Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "RGPD_CORRECCION_ES_20210304",
+        "version": 2,
+        "editor": "Unión Europea / Agencia Estatal Boletín Oficial del Estado",
+        "titulo": "Corrección de errores del RGPD de 04/03/2021",
+        "url": "https://www.boe.es/buscar/doc.php?id=DOUE-L-2021-80264",
+        "localizador": "Apartados12,13,14: art28.1,28.3.b/e",
+        "consultadaEn": "2026-10-14T14:13:18.000Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "RGPD_CORRECCION_ES_20180523",
+        "version": 2,
+        "editor": "Unión Europea / Agencia Estatal Boletín Oficial del Estado",
+        "titulo": "Corrección de errores del RGPD de 23/05/2018",
+        "url": "https://www.boe.es/buscar/doc.php?id=DOUE-L-2018-80845",
+        "localizador": "Corrección lingüística; sin modificación del art28 en este acto",
+        "consultadaEn": "2026-10-14T14:13:18.000Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "LOPDGDD_CON_20251227",
+        "version": 2,
+        "editor": "Agencia Estatal Boletín Oficial del Estado — Jefatura del Estado",
+        "titulo": "Ley Orgánica 3/2018 — consolidación informativa 27/12/2025",
+        "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2018-16673",
+        "localizador": "Art33.2,33.3/4/5; disposición final16",
+        "consultadaEn": "2026-10-14T14:13:18.000Z",
+        "estadoRevision": "revisada"
+      }
+    ],
+    "criterios": [
+      {
+        "id": "RGPD28_VINCULANTE",
+        "descripcion": "Existe contrato u otro acto jurídico válido con arreglo al Derecho de la UE o del Estado miembro, vinculante para el encargado respecto del responsable y referido a la operación real. Una plantilla no aceptada no basta.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679_ORIGINAL"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679_ORIGINAL",
+            "localizador": "Art28.3, primer párrafo"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "registro_aceptacion",
+          "acto_juridico_identificado"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "RGPD28_ESCRITO",
+        "descripcion": "El contrato o acto jurídico consta por escrito, incluido formato electrónico. No exigir universalmente firma manuscrita, notario o certificado cualificado; verificar la forma admisible y la vinculación.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679_ORIGINAL"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679_ORIGINAL",
+            "localizador": "Art28.9"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "registro_aceptacion",
+          "acto_juridico_identificado"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "RGPD28_DESCRIPCION",
+        "descripcion": "Especifica objeto, duración, naturaleza y finalidad del tratamiento con concreción suficiente para la operación.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679_ORIGINAL"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679_ORIGINAL",
+            "localizador": "Art28.3, primer párrafo"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "RGPD28_DATOS_PERSONAS",
+        "descripcion": "Especifica tipos de datos personales y categorías de personas interesadas.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679_ORIGINAL"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679_ORIGINAL",
+            "localizador": "Art28.3, primer párrafo"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "RGPD28_DERECHOS_RESP",
+        "descripcion": "Determina las obligaciones y derechos del responsable.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679_ORIGINAL"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679_ORIGINAL",
+            "localizador": "Art28.3, primer párrafo"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "RGPD28_INSTRUCCIONES",
+        "descripcion": "Estipula tratamiento solo siguiendo instrucciones documentadas, incluidas transferencias internacionales; contempla la obligación legal impuesta al encargado y la información previa al responsable salvo prohibición por interés público importante.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679_ORIGINAL"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679_ORIGINAL",
+            "localizador": "Art28.3.a"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "RGPD28_CONFIDENCIALIDAD",
+        "descripcion": "Estipula compromiso de confidencialidad de las personas autorizadas o su sujeción a una obligación de confidencialidad de naturaleza LEGAL, según la corrección española de 2021.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679_ORIGINAL",
+          "RGPD_CORRECCION_ES_20210304"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679_ORIGINAL",
+            "localizador": "Art. 28.3.b"
+          },
+          {
+            "fuenteId": "RGPD_CORRECCION_ES_20210304",
+            "localizador": "Apartado 13"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "RGPD28_SEGURIDAD",
+        "descripcion": "Estipula la adopción de las medidas necesarias conforme al art. 32. Valorar la concreción aplicable; la cláusula no acredita que esas medidas estén implantadas o sean eficaces.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679_ORIGINAL"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679_ORIGINAL",
+            "localizador": "Art28.3.c"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "RGPD28_SUBENCARGO",
+        "descripcion": "Recoge las condiciones de los apartados 2 y 4 para recurrir a otros encargados: autorización previa escrita específica o general; si general, información de cambios y posibilidad de oposición; obligaciones equivalentes, garantías y responsabilidad del encargado inicial. Puede prohibir subencargos. La autorización real de cada cadena se revisa por separado.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679_ORIGINAL"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679_ORIGINAL",
+            "localizador": "Art28.3.d, en relación con28.2 y28.4"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "RGPD28_DERECHOS_INTERESADOS",
+        "descripcion": "Estipula asistencia al responsable mediante medidas técnicas y organizativas apropiadas, teniendo en cuenta la naturaleza del tratamiento y siempre que sea posible, para atender derechos del capítulo III.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679_ORIGINAL",
+          "RGPD_CORRECCION_ES_20210304"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679_ORIGINAL",
+            "localizador": "Art. 28.3.e"
+          },
+          {
+            "fuenteId": "RGPD_CORRECCION_ES_20210304",
+            "localizador": "Apartado 14"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "RGPD28_ASISTENCIA",
+        "descripcion": "Estipula ayuda para cumplir arts. 32 a 36, atendiendo a la naturaleza del tratamiento y a la información disponible para el encargado.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679_ORIGINAL"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679_ORIGINAL",
+            "localizador": "Art28.3.f"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "RGPD28_FIN_SERVICIO",
+        "descripcion": "A elección del responsable, prevé supresión o devolución al terminar el servicio y eliminación de copias, salvo conservación exigida por Derecho UE/Estado miembro. Si se invoca bloqueo o conservación en España, motivar su base y límites (LOPDGDD33.3/4), sin permitir uso activo por defecto.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679_ORIGINAL",
+          "LOPDGDD_CON_20251227"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679_ORIGINAL",
+            "localizador": "Art. 28.3.g"
+          },
+          {
+            "fuenteId": "LOPDGDD_CON_20251227",
+            "localizador": "Art33.3/4"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "RGPD28_AUDITORIA",
+        "descripcion": "Obliga a poner a disposición la información necesaria para demostrar el cumplimiento del artículo y a permitir y contribuir a auditorías/inspecciones del responsable o auditor autorizado.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679_ORIGINAL"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679_ORIGINAL",
+            "localizador": "Art28.3.h"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "RGPD28_INSTRUCCION_ILICITA",
+        "descripcion": "Recoge la información inmediata al responsable si, en opinión del encargado, una instrucción infringe el RGPD u otras disposiciones UE/Estado miembro sobre protección de datos.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679_ORIGINAL"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679_ORIGINAL",
+            "localizador": "Art28.3, último párrafo"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento"
+        ],
+        "exigeConclusionMotivada": true
+      }
+    ],
+    "coberturaTemporalDelPaquete": {
+      "desde": "2018-12-07",
+      "hasta": null,
+      "tipo": "limite_de_cobertura_historica_no_fecha_legal",
+      "motivo": "Esta versión incorpora la cautela de LOPDGDD33.2 desde su entrada en vigor. Periodos anteriores requieren regla histórica separada; RGPD se aplica desde25/05/2018.",
+      "accionFuera": "requiere_analisis_fuera_de_cobertura",
+      "obligatoriaAntesDeEvaluar": true,
+      "implementacion": "regla.cobertura.periodo; no sustituye regla.vigencia"
+    },
+    "fuentesYCalendario": {
+      "publicacionRGPD": "2016-05-04",
+      "entradaEnVigorRGPD": "2016-05-24",
+      "aplicacionRGPD": "2018-05-25",
+      "correccionesPublicadas": [
+        "2018-05-23",
+        "2021-03-04"
+      ],
+      "correccionPertinente": "2021, apartados12/13/14: apropiadas, confidencialidad de naturaleza legal, teniendo en cuenta.",
+      "ultimaConsolidacionLOPDGDDPublicada": "2025-12-27",
+      "entradaEnVigorLOPDGDD": "2018-12-07",
+      "derogaciones": "RGPD sustituye Directiva95/46 con efectos25/05/2018; no hay excepción general de este requisito por ser micropyme.",
+      "consultaVigencia": "2026-10-14",
+      "limiteVerificacion": "Segundo control editorial asistido por IA completado el 14/10/2026: art. 28 íntegro, correcciones de 2018 y 2021, art. 33 LOPDGDD y modificación de 2025 comprobados. La Ley 10/2025 modifica el art. 23.1 LOPDGDD, no el art. 33. Consulta a EUR-Lex no devolvió texto legible; se usa publicación DOUE en BOE. No es dictamen profesional ni revisión de todos los preceptos del RGPD/LOPDGDD."
+    },
+    "usoContenido": {
+      "tipo": "explicacion_propia_basada_en_legislacion",
+      "atribucion": "Basado en datos de la Agencia Estatal Boletín Oficial del Estado",
+      "urlCondiciones": "https://www.boe.es/informacion/aviso_legal/index.php",
+      "advertencia": "Ficha propia no oficial; la consolidación LOPDGDD es informativa. La publicación original RGPD debe leerse con sus correcciones.",
+      "incluyeISOoCCNProtegido": false
+    },
+    "revisionEditorial": {
+      "actor": "Codex — chat Normativa (2)",
+      "tipo": "analisis_asistido_IA_con_fuentes_primarias",
+      "fecha": "2026-10-14T14:13:18.000Z",
+      "dictamenJuridicoProfesional": false,
+      "publicacion": "control_fuentes_completado_apta_para_integracion_aislada_tras_validacion_tecnica"
+    },
+    "actuacionesSugeridas": [
+      {
+        "id": "RGPD28_DELIMITAR",
+        "titulo": "Delimitar operación, partes e instrucciones",
+        "funcionSugerida": "responsable del servicio y función de protección de datos; asesoría si hay ambigüedad",
+        "criterioCierreTarea": "Hechos y papeles delimitados o duda expresamente registrada; no asignar DPD a todas las pymes.",
+        "dependeDe": []
+      },
+      {
+        "id": "RGPD28_FORMALIZAR",
+        "titulo": "Formalizar o revisar instrumento de encargo y anexos",
+        "funcionSugerida": "personas con capacidad de vincular a las partes y función de protección de datos",
+        "criterioCierreTarea": "Instrumento y anexos identificados, vinculantes y disponibles para revisión; la tarea cerrada no aprueba el requisito.",
+        "dependeDe": [
+          "RGPD28_DELIMITAR"
+        ]
+      },
+      {
+        "id": "RGPD28_CORREGIR",
+        "titulo": "Corregir carencias motivadas por la revisión",
+        "funcionSugerida": "responsable del servicio y función de protección de datos",
+        "criterioCierreTarea": "Nueva versión y cambios aportados para nueva revisión, conservando la anterior.",
+        "dependeDe": [
+          "RGPD28_FORMALIZAR"
+        ]
+      }
+    ],
+    "condicionesRevision": {
+      "unidadContada": "un requisito contextualizado por operación/relación; no sumar sus 14 criterios como 14 requisitos",
+      "favorable": "Todos los criterios de formalización/contenido revisados favorablemente, incluida vinculación y pertinencia al tratamiento. Una valoración parcial no se agrega como favorable.",
+      "evidencia": "Instrumento y anexos efectivos, prueba suficiente de vinculación y versión exacta. Admite forma electrónica y acto jurídico, no exige un PDF firmado como única prueba.",
+      "aprobacionAutomatica": false,
+      "revisor": "Miembro autorizado, tipo de revisión explícito. No implica dictamen profesional ni certificación.",
+      "caducidadUniversal": null,
+      "desencadenantes": [
+        "cambio de partes o papel en la operación",
+        "nuevas finalidades, datos, interesados o instrucciones",
+        "cambio contractual o anexos",
+        "cambio relevante de norma",
+        "nueva evidencia contradictoria",
+        "finalización del servicio o del instrumento"
+      ],
+      "preservarHistorico": true
+    },
+    "limites": [
+      "No evalúa en esta ficha la suficiencia real de garantías 28.1, autorización operativa y cadena 28.2/4, ejecución de obligaciones, art. 32, transferencias ni RAT. Son requisitos pendientes separados, no aprobados por contrato.",
+      "Contrato firmado no es hecho de aplicabilidad. Su ausencia produce una carencia del requisito, no la desaparición de la obligación.",
+      "Una relación de subencargo, corresponsabilidad, fines propios o rol legal requiere otra rama; no excluir globalmente RGPD.",
+      "Las cláusulas tipo 28.6/7/8 son una opción, no formato único; tampoco acreditan por sí mismas una transferencia internacional.",
+      "No pedir datos personales reales de clientes/interesados para el perfil. Admitir redacción de datos irrelevantes sin ocultar lo necesario para la revisión.",
+      "No reproducir guías EDPB/AEPD en este paquete; se fundamenta en los textos legales y las correcciones indicadas."
+    ],
+    "sustituyeVersionPreparacion": 2
+  },
+  "regla": {
+    "contratoVersion": 2,
+    "id": "RGPD_ART28_ENCARGO_DIRECTO",
+    "version": 4,
+    "estado": "revisada",
+    "revision": {
+      "revisorRef": "Codex-Normativa2-revision-editorial-fuentes-no-dictamen",
+      "fecha": "2026-10-14T14:13:18.000Z"
+    },
+    "naturaleza": "ley_reglamento",
+    "origenes": [
+      "legal"
+    ],
+    "tiposObjeto": [
+      "operacion"
+    ],
+    "fuentes": [
+      {
+        "id": "RGPD_2016_679_ORIGINAL",
+        "version": 2,
+        "editor": "Unión Europea / Agencia Estatal Boletín Oficial del Estado",
+        "titulo": "Reglamento (UE) 2016/679 — publicación original",
+        "url": "https://www.boe.es/buscar/doc.php?id=DOUE-L-2016-80807",
+        "localizador": "Arts.2,3.1,4.1/2/7/8,26,28,99.2",
+        "consultadaEn": "2026-10-14T14:13:18.000Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "RGPD_CORRECCION_ES_20210304",
+        "version": 2,
+        "editor": "Unión Europea / Agencia Estatal Boletín Oficial del Estado",
+        "titulo": "Corrección de errores del RGPD de 04/03/2021",
+        "url": "https://www.boe.es/buscar/doc.php?id=DOUE-L-2021-80264",
+        "localizador": "Apartados12,13,14: art28.1,28.3.b/e",
+        "consultadaEn": "2026-10-14T14:13:18.000Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "RGPD_CORRECCION_ES_20180523",
+        "version": 2,
+        "editor": "Unión Europea / Agencia Estatal Boletín Oficial del Estado",
+        "titulo": "Corrección de errores del RGPD de 23/05/2018",
+        "url": "https://www.boe.es/buscar/doc.php?id=DOUE-L-2018-80845",
+        "localizador": "Corrección lingüística; sin modificación del art28 en este acto",
+        "consultadaEn": "2026-10-14T14:13:18.000Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "LOPDGDD_CON_20251227",
+        "version": 2,
+        "editor": "Agencia Estatal Boletín Oficial del Estado — Jefatura del Estado",
+        "titulo": "Ley Orgánica 3/2018 — consolidación informativa 27/12/2025",
+        "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2018-16673",
+        "localizador": "Art33.2,33.3/4/5; disposición final16",
+        "consultadaEn": "2026-10-14T14:13:18.000Z",
+        "estadoRevision": "revisada"
+      }
+    ],
+    "vigencia": {
+      "estado": "definida",
+      "tipo": "fecha_civil",
+      "calendario": "gregoriano",
+      "jurisdiccion": "ES",
+      "zonaEvaluacion": "Europe/Madrid",
+      "desde": "2018-05-25",
+      "hasta": null
+    },
+    "cobertura": {
+      "descripcion": "Operación comercial ordinaria ligada a establecimiento español, cliente responsable directo, sin rol especial fijado por ley ni fines propios/conjuntos del proveedor. Se atiende además a la cautela del art33.2 LOPDGDD. Fuera de esta rama no significa fuera del RGPD.",
+      "condicion": {
+        "op": "and",
+        "args": [
+          {
+            "op": "eq",
+            "hecho": "operacion_vinculada_establecimiento_es",
+            "valor": true
+          },
+          {
+            "op": "eq",
+            "hecho": "actividad_comercial_ordinaria",
+            "valor": true
+          },
+          {
+            "op": "eq",
+            "hecho": "cliente_actua_como_responsable",
+            "valor": true
+          },
+          {
+            "op": "eq",
+            "hecho": "rol_determinado_por_ley",
+            "valor": false
+          },
+          {
+            "op": "eq",
+            "hecho": "fines_propios_misma_operacion",
+            "valor": false
+          },
+          {
+            "op": "or",
+            "args": [
+              {
+                "op": "eq",
+                "hecho": "relacion_afectados_nombre_propio_sin_cuenta_ajena",
+                "valor": false
+              },
+              {
+                "op": "eq",
+                "hecho": "encargo_contratacion_sector_publico",
+                "valor": true
+              }
+            ]
+          }
+        ]
+      },
+      "periodo": {
+        "desde": "2018-12-07",
+        "hasta": null,
+        "motivo": "Esta versión incorpora la cautela de LOPDGDD33.2 desde su entrada en vigor. Periodos anteriores requieren regla histórica separada; RGPD se aplica desde25/05/2018."
+      }
+    },
+    "hechos": [
+      {
+        "clave": "operacion_vinculada_establecimiento_es",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "RGPD_P_operacion_vinculada_establecimiento_es",
+          "texto": "¿Esta operación se realiza en el contexto de las actividades de un establecimiento de tu empresa en España?",
+          "grupo": "Operación y relación de tratamiento",
+          "motivo": "La ubicación del servidor y la nacionalidad del cliente no deciden por sí solas el ámbito territorial."
+        }
+      },
+      {
+        "clave": "actividad_comercial_ordinaria",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "RGPD_P_actividad_comercial_ordinaria",
+          "texto": "¿La operación corresponde a un servicio comercial ordinario, sin un régimen especial de tratamiento que deba analizarse?",
+          "grupo": "Operación y relación de tratamiento",
+          "motivo": "Ante un régimen especial o incertidumbre se requiere análisis, no una exención automática."
+        }
+      },
+      {
+        "clave": "cliente_actua_como_responsable",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "RGPD_P_cliente_actua_como_responsable",
+          "texto": "¿El cliente decide los fines del tratamiento en esta relación, en lugar de actuar por cuenta de otra entidad?",
+          "grupo": "Operación y relación de tratamiento",
+          "motivo": "Esta primera rama es de encargo directo; la cadena de subencargo se estudia aparte."
+        }
+      },
+      {
+        "clave": "rol_determinado_por_ley",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "RGPD_P_rol_determinado_por_ley",
+          "texto": "¿Existe una disposición legal que determine específicamente el papel de las partes en esta operación?",
+          "grupo": "Operación y relación de tratamiento",
+          "motivo": "Un contrato comercial no equivale a una atribución normativa. Si hay norma específica, revisar esa rama."
+        }
+      },
+      {
+        "clave": "trata_datos_personales",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "RGPD_P_trata_datos_personales",
+          "texto": "¿La operación implica recoger, guardar, consultar o realizar otra acción sobre información de personas identificadas o identificables?",
+          "grupo": "Operación y relación de tratamiento",
+          "motivo": "Incluye contactos profesionales identificables y datos seudonimizados. No aportar datos reales para perfilar."
+        }
+      },
+      {
+        "clave": "tratamiento_automatizado_o_fichero",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "RGPD_P_tratamiento_automatizado_o_fichero",
+          "texto": "¿Se usan medios total o parcialmente automatizados, o datos manuales que forman o formarán parte de un fichero organizado?",
+          "grupo": "Operación y relación de tratamiento",
+          "motivo": "Una operación manual no queda excluida por defecto."
+        }
+      },
+      {
+        "clave": "entidades_distintas",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "RGPD_P_entidades_distintas",
+          "texto": "¿La empresa y el cliente son entidades distintas?",
+          "grupo": "Operación y relación de tratamiento",
+          "motivo": "Dos departamentos de la misma entidad no constituyen un encargo entre entidades; un grupo puede contener varias entidades."
+        }
+      },
+      {
+        "clave": "cliente_decide_fines_medios_esenciales",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "RGPD_P_cliente_decide_fines_medios_esenciales",
+          "texto": "¿El cliente decide para qué se utilizan los datos y los elementos esenciales del tratamiento?",
+          "grupo": "Operación y relación de tratamiento",
+          "motivo": "Examinar la relación real. Escoger detalles técnicos no determina por sí solo el papel. Si las decisiones son conjuntas, se necesita otra rama."
+        }
+      },
+      {
+        "clave": "tratamiento_por_cuenta_cliente",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "RGPD_P_tratamiento_por_cuenta_cliente",
+          "texto": "¿Tu empresa realiza el tratamiento por cuenta del cliente, dentro de sus instrucciones y encargo?",
+          "grupo": "Operación y relación de tratamiento",
+          "motivo": "La falta de contrato escrito no convierte una relación de encargo real en no aplicable."
+        }
+      },
+      {
+        "clave": "fines_propios_misma_operacion",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "RGPD_P_fines_propios_misma_operacion",
+          "texto": "¿Tu empresa utiliza los datos de esta operación para fines propios o compartidos con el cliente?",
+          "grupo": "Operación y relación de tratamiento",
+          "motivo": "Distinguir operaciones y papeles. El interés comercial en cobrar no es por sí solo una finalidad propia de tratamiento."
+        }
+      },
+      {
+        "clave": "relacion_afectados_nombre_propio_sin_cuenta_ajena",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "RGPD_P_relacion_afectados_nombre_propio_sin_cuenta_ajena",
+          "texto": "¿Tu empresa se relaciona con las personas afectadas en nombre propio sin que conste que actúa por cuenta de otra entidad?",
+          "grupo": "Operación y relación de tratamiento",
+          "motivo": "El art33.2 LOPDGDD contiene una regla de responsable que debe comprobarse aunque exista contrato de encargo."
+        }
+      },
+      {
+        "clave": "encargo_contratacion_sector_publico",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "RGPD_P_encargo_contratacion_sector_publico",
+          "texto": "¿Este encargo se realiza en el marco de la legislación de contratación del sector público?",
+          "grupo": "Operación y relación de tratamiento",
+          "motivo": "Es relevante para la excepción del primer párrafo del art33.2 LOPDGDD; no convierte por sí solo al proveedor en encargado."
+        }
+      }
+    ],
+    "condicion": {
+      "op": "and",
+      "args": [
+        {
+          "op": "eq",
+          "hecho": "trata_datos_personales",
+          "valor": true
+        },
+        {
+          "op": "eq",
+          "hecho": "tratamiento_automatizado_o_fichero",
+          "valor": true
+        },
+        {
+          "op": "eq",
+          "hecho": "entidades_distintas",
+          "valor": true
+        },
+        {
+          "op": "eq",
+          "hecho": "cliente_decide_fines_medios_esenciales",
+          "valor": true
+        },
+        {
+          "op": "eq",
+          "hecho": "tratamiento_por_cuenta_cliente",
+          "valor": true
+        }
+      ]
+    },
+    "excepciones": []
+  },
+  "casosAplicabilidad": {
+    "schemaVersion": 1,
+    "reglaId": "RGPD_ART28_ENCARGO_DIRECTO",
+    "base": {
+      "operacion_vinculada_establecimiento_es": true,
+      "actividad_comercial_ordinaria": true,
+      "cliente_actua_como_responsable": true,
+      "rol_determinado_por_ley": false,
+      "trata_datos_personales": true,
+      "tratamiento_automatizado_o_fichero": true,
+      "entidades_distintas": true,
+      "cliente_decide_fines_medios_esenciales": true,
+      "tratamiento_por_cuenta_cliente": true,
+      "fines_propios_misma_operacion": false,
+      "relacion_afectados_nombre_propio_sin_cuenta_ajena": false,
+      "encargo_contratacion_sector_publico": false
+    },
+    "fechaBase": "2026-10-14T14:13:18.000Z",
+    "casos": [
+      {
+        "id": "RGPD_POS",
+        "cambios": {},
+        "esperado": {
+          "cobertura": "dentro_de_cobertura",
+          "estado": "aplica",
+          "habilitaEvaluacion": true
+        }
+      },
+      {
+        "id": "RGPD_SIN_CONTRATO",
+        "extras": {
+          "contrato_firmado": false
+        },
+        "esperado": {
+          "cobertura": "dentro_de_cobertura",
+          "estado": "aplica",
+          "habilitaEvaluacion": true
+        }
+      },
+      {
+        "id": "RGPD_SIN_PERSONALES",
+        "cambios": {
+          "trata_datos_personales": false
+        },
+        "esperado": {
+          "cobertura": "dentro_de_cobertura",
+          "estado": "no_aplica",
+          "ambitoConclusion": "solo esta operacion y requisito"
+        }
+      },
+      {
+        "id": "RGPD_MISMA_ENTIDAD",
+        "cambios": {
+          "entidades_distintas": false
+        },
+        "esperado": {
+          "cobertura": "dentro_de_cobertura",
+          "estado": "no_aplica",
+          "ambitoConclusion": "encargo entre entidades"
+        }
+      },
+      {
+        "id": "RGPD_SUBENCARGO",
+        "cambios": {
+          "cliente_actua_como_responsable": false
+        },
+        "esperado": {
+          "cobertura": "fuera_de_cobertura",
+          "estado": "pendiente_de_determinar",
+          "traza": null,
+          "habilitaEvaluacion": false
+        }
+      },
+      {
+        "id": "RGPD_FIN_PROPIO",
+        "cambios": {
+          "fines_propios_misma_operacion": true
+        },
+        "esperado": {
+          "cobertura": "fuera_de_cobertura",
+          "estado": "pendiente_de_determinar",
+          "traza": null,
+          "habilitaEvaluacion": false
+        }
+      },
+      {
+        "id": "RGPD_ART33_NOMBRE_PROPIO",
+        "cambios": {
+          "relacion_afectados_nombre_propio_sin_cuenta_ajena": true
+        },
+        "esperado": {
+          "cobertura": "fuera_de_cobertura",
+          "estado": "pendiente_de_determinar",
+          "alerta": "Revisar papel de responsable art33.2 LOPDGDD",
+          "traza": null,
+          "habilitaEvaluacion": false
+        }
+      },
+      {
+        "id": "RGPD_ART33_EXCEPCION_PUBLICA",
+        "cambios": {
+          "relacion_afectados_nombre_propio_sin_cuenta_ajena": true,
+          "encargo_contratacion_sector_publico": true
+        },
+        "esperado": {
+          "cobertura": "dentro_de_cobertura",
+          "estado": "aplica"
+        },
+        "nota": "La excepción solo elimina esa cautela; siguen siendo necesarios todos los hechos de encargo."
+      },
+      {
+        "id": "RGPD_FALTA_ROL",
+        "desconocidos": [
+          "cliente_decide_fines_medios_esenciales"
+        ],
+        "esperado": {
+          "cobertura": "dentro_de_cobertura",
+          "estado": "pendiente_de_determinar"
+        }
+      },
+      {
+        "id": "RGPD_CONFLICTO_ROL",
+        "conflictivos": [
+          "tratamiento_por_cuenta_cliente"
+        ],
+        "esperado": {
+          "cobertura": "dentro_de_cobertura",
+          "estado": "pendiente_de_determinar"
+        }
+      },
+      {
+        "id": "RGPD_ESTABLECIMIENTO_FUERA",
+        "cambios": {
+          "operacion_vinculada_establecimiento_es": false
+        },
+        "esperado": {
+          "cobertura": "fuera_de_cobertura",
+          "estado": "pendiente_de_determinar",
+          "traza": null,
+          "habilitaEvaluacion": false
+        }
+      },
+      {
+        "id": "RGPD_33_SIN_DATO_PUBLICO",
+        "cambios": {
+          "relacion_afectados_nombre_propio_sin_cuenta_ajena": true
+        },
+        "desconocidos": [
+          "encargo_contratacion_sector_publico"
+        ],
+        "esperado": {
+          "cobertura": "pendiente_de_delimitar",
+          "estado": "pendiente_de_determinar",
+          "traza": null,
+          "habilitaEvaluacion": false
+        }
+      },
+      {
+        "id": "RGPD_PUBLICO_NO_NECESARIO",
+        "desconocidos": [
+          "encargo_contratacion_sector_publico"
+        ],
+        "esperado": {
+          "cobertura": "dentro_de_cobertura",
+          "estado": "aplica"
+        },
+        "nota": "La rama OR ya queda resuelta por ausencia de relación propia; no pedir el hecho no decisivo."
+      },
+      {
+        "id": "RGPD_HISTORICO_PRE_LOPDGDD",
+        "fechaCivil": "2018-12-06",
+        "esperado": {
+          "cobertura": "fuera_de_cobertura",
+          "estado": "pendiente_de_determinar",
+          "traza": null,
+          "habilitaEvaluacion": false,
+          "coberturaTemporal": "fuera_de_periodo"
+        }
+      },
+      {
+        "id": "RGPD_LIMITE_LOPDGDD",
+        "fechaCivil": "2018-12-07",
+        "esperado": {
+          "cobertura": "dentro_de_cobertura",
+          "estado": "aplica"
+        },
+        "nota": "Probar calendario mediante fixture; fuentes reales de2026 no se antedatan."
+      }
+    ]
+  }
+}

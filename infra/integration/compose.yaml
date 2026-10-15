@@ -1,0 +1,100 @@
+# Solo la copia de integración. No combinar con docker-compose.yml.
+name: normativacheck_integracion
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+services:
+  mongodb:
+    image: mongo:7.0.43@sha256:494b956596706b19ba44908cb9d03648b585214600987b86cd2a34249358e572
+    platform: linux/amd64
+    restart: unless-stopped
+    entrypoint: ["bash", "/integration/mongo-entrypoint.sh"]
+    command: ["mongod", "--replSet", "nc-integration-rs", "--keyFile", "/run/mongo-private/keyfile", "--bind_ip_all", "--wiredTigerCacheSizeGB", "0.5"]
+    volumes:
+      - mongo_data:/data/db
+      - mongo_config:/data/configdb
+      - ./:/integration:ro
+    tmpfs:
+      - /run/mongo-private
+    secrets: [mongo_root_password, mongo_app_password, mongo_keyfile]
+    networks: [database]
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--norc", "--file", "/integration/mongo-health.js"]
+      interval: 15s
+      timeout: 10s
+      retries: 8
+      start_period: 120s
+    stop_grace_period: 60s
+    logging: *logging
+  backend:
+    build:
+      context: ../../backend
+      dockerfile: Dockerfile.integration
+    restart: unless-stopped
+    init: true
+    read_only: true
+    tmpfs: ["/tmp:mode=1777,size=64m"]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    environment:
+      NODE_ENV: production
+      APP_URL: https://127.0.0.2:9443
+      CORS_ORIGIN: https://127.0.0.2:9443
+    secrets: [mongo_app_password, jwt_secret, totp_key]
+    networks: [database, application]
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "scripts/integration/health.js"]
+      interval: 15s
+      timeout: 8s
+      retries: 5
+      start_period: 90s
+    stop_grace_period: 35s
+    logging: *logging
+  web:
+    build:
+      context: ../../frontend
+      dockerfile: Dockerfile.integration
+    restart: unless-stopped
+    ports: ["127.0.0.2:9443:8443"]
+    read_only: true
+    tmpfs: ["/var/cache/nginx", "/var/run", "/tmp"]
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    secrets: [tls_certificate, tls_key]
+    networks: [application]
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8080/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    logging: *logging
+networks:
+  database:
+    internal: true
+  application:
+volumes:
+  mongo_data:
+  mongo_config:
+secrets:
+  mongo_root_password:
+    file: ../../.runtime/integration/secrets/mongo_root_password
+  mongo_app_password:
+    file: ../../.runtime/integration/secrets/mongo_app_password
+  mongo_keyfile:
+    file: ../../.runtime/integration/secrets/mongo_keyfile
+  jwt_secret:
+    file: ../../.runtime/integration/secrets/jwt_secret
+  totp_key:
+    file: ../../.runtime/integration/secrets/totp_key
+  tls_certificate:
+    file: ../../.runtime/integration/tls/server.crt
+  tls_key:
+    file: ../../.runtime/integration/tls/server.key

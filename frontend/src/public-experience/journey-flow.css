@@ -1,0 +1,144 @@
+/* One continuous route; content remains specific to each activity. */
+.public-experience .nc-home .journey-flow .journey-diagram {position:relative;min-height:0;padding-left:24px}
+.public-experience .nc-home .journey-flow.mode-diagram .journey-space {min-height:0}
+.public-experience .nc-home .journey-flow .journey-spine {position:absolute;left:0;top:8px;bottom:8px;width:12px;height:calc(100% - 16px);overflow:visible;pointer-events:none}
+.public-experience .nc-home .journey-flow .journey-phase {position:relative;min-height:0;padding:0;margin:0;animation:journey-phase-arrive .65s ease both}
+.public-experience .nc-home .journey-flow .journey-phase + .journey-phase {margin-top:26px}
+.public-experience .nc-home .journey-flow .journey-phase-heading {margin:0 0 14px}
+.public-experience .nc-home .journey-flow .journey-phase-title-row {display:flex;align-items:center;gap:10px 16px;flex-wrap:wrap}
+.public-experience .nc-home .journey-flow .journey-phase-title {font-size:14px;line-height:1.5;font-weight:700;letter-spacing:.04em;color:var(--j-accent);margin:0;text-transform:uppercase}
+.public-experience .nc-home .journey-flow .journey-phase-heading p {margin:8px 0 0;font-size:16px;line-height:1.55;color:#3f5948}
+.public-experience .nc-home .journey-flow .journey-activity-tag {display:inline-flex;align-items:center;gap:7px;border:1px solid color-mix(in srgb,var(--j-accent) 25%,transparent);border-radius:20px;padding:5px 10px;background:var(--j-tint);font-size:13px;font-weight:600;line-height:1.4;color:var(--j-accent)}
+.public-experience .nc-home .journey-flow .journey-activity-tag svg {width:17px;height:17px;flex-shrink:0}
+.public-experience .nc-home .journey-flow .journey-network {height:150px;margin:12px 32px 28px}
+.public-experience .nc-home .journey-flow .journey-network-node {width:42px;min-width:0;height:42px;display:block}
+.public-experience .nc-home .journey-flow .journey-network-node > span {width:42px;height:42px;box-shadow:0 0 0 5px #eaf0dc}
+.public-experience .nc-home .journey-flow .journey-network-node b {position:absolute;top:45px;left:50%;transform:translateX(-50%);margin:0;width:max-content;max-width:120px;font-size:13px;line-height:1.35}
+.public-experience .nc-home .journey-flow .journey-flow-base,.public-experience .nc-home .journey-flow .journey-flow-pulse {fill:none;stroke:var(--j-accent);stroke-linecap:round;stroke-width:1.7px;vector-effect:non-scaling-stroke;stroke-dasharray:none;stroke-dashoffset:0;opacity:.3;animation:none}
+.public-experience .nc-home .journey-flow .journey-flow-pulse {stroke-width:2.5px;opacity:.9;filter:drop-shadow(0 0 2px var(--j-soft))}
+.public-experience .nc-home .journey-flow[data-flow-active=false] .journey-flow-pulse {opacity:0}
+.public-experience .nc-home .journey-flow .journey-review-grid {grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.public-experience .nc-home .journey-flow .journey-node {padding:11px 12px;min-height:0;gap:8px;align-items:flex-start;animation:journey-card-arrive .8s var(--node-delay,0ms) cubic-bezier(.2,.7,.2,1) both}
+.public-experience .nc-home .journey-flow .journey-node > span:nth-child(2) {flex:1;min-width:0;padding-right:8px}
+.public-experience .nc-home .journey-flow .journey-node-icon svg {width:18px;height:18px}
+.public-experience .nc-home .journey-flow .journey-node strong {font-size:15px;line-height:1.4}
+.public-experience .nc-home .journey-flow .journey-node small {font-size:14px;line-height:1.45;margin-top:4px}
+.public-experience .nc-home .journey-flow .journey-review:nth-child(2),.public-experience .nc-home .journey-flow .journey-review:nth-child(3) {background:color-mix(in srgb,var(--j-soft) 48%,#f5f6eb)}
+.public-experience .nc-home .journey-flow .journey-reference {font-size:13px;line-height:1.45;margin-top:9px}
+.public-experience .nc-home .journey-flow .journey-document {align-items:center}
+.public-experience .nc-home .journey-flow .journey-plan-card {padding:12px 14px}
+.public-experience .nc-home .journey-flow .journey-plan-card strong {font-size:16px;line-height:1.4}
+.public-experience .nc-home .journey-flow .journey-plan-card small {font-size:14px;line-height:1.4}
+.public-experience .nc-home .journey-flow .journey-plan-steps {gap:10px;margin-top:12px;grid-template-columns:repeat(3,minmax(0,1fr))}
+.public-experience .nc-home .journey-flow .journey-plan-steps li {display:flex;gap:8px;min-width:0;padding:12px 10px;background:#f2f5e7;border:1px solid color-mix(in srgb,var(--j-accent) 25%,transparent);border-radius:12px;font-size:16px;line-height:1.4;animation:journey-card-arrive .8s var(--node-delay,0ms) both}
+.public-experience .nc-home .journey-flow .journey-plan-steps li > div {min-width:0;flex:1}
+.public-experience .nc-home .journey-flow .journey-plan-steps strong {font-size:16px;line-height:1.4;font-weight:650;display:block;color:#244d38}
+.public-experience .nc-home .journey-flow .journey-action-owner {display:block;font-size:13px;line-height:1.4;color:var(--j-accent);margin-top:6px}
+.public-experience .nc-home .journey-flow .journey-plan-steps p {font-size:14px;line-height:1.45;margin:10px 0 0;color:#405b46}
+.public-experience .nc-home .journey-flow .journey-plan-steps p b {display:block;font-size:11px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px;color:var(--j-accent)}
+.public-experience .nc-home .journey-flow .journey-controls:not(.is-complete) {margin-top:0}
+@keyframes journey-card-arrive {from{opacity:0;transform:translateY(8px) scale(.97);filter:blur(3px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes journey-phase-arrive {from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(max-width:600px) {
+  .public-experience .nc-home .journey-flow .journey-diagram {padding-left:16px}
+  .public-experience .nc-home .journey-flow .journey-spine {width:8px}
+  .public-experience .nc-home .journey-flow .journey-phase + .journey-phase {margin-top:24px}
+  .public-experience .nc-home .journey-flow .journey-phase-heading p {font-size:15px}
+  .public-experience .nc-home .journey-flow .journey-network {height:150px;margin:12px 14px 30px}
+  .public-experience .nc-home .journey-flow .journey-network-node,.public-experience .nc-home .journey-flow .journey-network-node > span {width:34px;height:34px}
+  .public-experience .nc-home .journey-flow .journey-network-node b {font-size:12px;max-width:80px;top:39px}
+  .public-experience .nc-home .journey-flow .journey-review-grid {gap:8px}
+  .public-experience .nc-home .journey-flow .journey-review {display:grid;grid-template-columns:1fr;padding:10px}
+  .public-experience .nc-home .journey-flow .journey-review .journey-node-icon {height:18px}
+  .public-experience .nc-home .journey-flow .journey-review > span:nth-child(2) {padding-right:0}
+  .public-experience .nc-home .journey-flow .journey-review strong {font-size:14px}
+  .public-experience .nc-home .journey-flow .journey-plan-steps {grid-template-columns:1fr}
+  .public-experience .nc-home .journey-flow .journey-plan-steps li {padding:12px}
+  .public-experience .nc-home .journey-flow .journey-plan-steps p {margin-top:7px}
+}
+@media(prefers-reduced-motion:reduce) {
+  .public-experience .nc-home .journey-flow .journey-flow-pulse {display:none}
+}
+.public-experience .nc-home .journey-flow.journey-reduced .journey-flow-pulse {display:none}
+.public-experience .nc-home .journey-flow.journey-reduced * {animation:none!important;transition:none!important}
+
+/* Compact controls stay at the start; cards reveal details in place. */
+.public-experience .nc-home .journey-flow .journey-heading {display:grid;grid-template-columns:150px minmax(0,1fr) 150px;grid-template-areas:"replay title change" ". progress .";gap:9px 12px;align-items:start;padding:16px}
+.public-experience .nc-home .journey-flow .journey-heading h2 {grid-area:title;align-self:center;font-size:26px;line-height:1.22;text-wrap:balance}
+.public-experience .nc-home .journey-flow.mode-picker .journey-heading {grid-template-columns:1fr;grid-template-areas:"title"}
+.public-experience .nc-home .journey-flow .journey-toolbar {display:contents}
+.public-experience .nc-home .journey-flow .journey-heading .journey-replay {grid-area:replay}
+.public-experience .nc-home .journey-flow .journey-heading .journey-switch {grid-area:change}
+.public-experience .nc-home .journey-flow .journey-heading button {width:150px;min-height:44px;height:44px;padding:6px 8px;gap:7px;font-size:13px!important;border-radius:10px}
+.public-experience .nc-home .journey-flow .journey-heading button svg {width:17px;height:17px}
+.public-experience .nc-home .journey-flow .journey-progress {grid-area:progress;min-width:0;justify-self:center;text-align:center}
+.public-experience .nc-home .journey-flow .journey-progress-label {font-size:13px}
+.public-experience .nc-home .journey-flow .journey-progress-label strong {font-size:19px;margin-inline:3px}
+.public-experience .nc-home .journey-flow .journey-progress-track {width:110px;margin:5px auto 0;gap:5px}
+.public-experience .nc-home .journey-flow .journey-progress-track span {height:4px}
+.public-experience .nc-home .journey-flow .journey-branch {align-items:start}
+.public-experience .nc-home .journey-flow .journey-expand-card {display:block;min-height:0;min-width:0;padding:0;border:1px solid color-mix(in srgb,var(--j-accent) 28%,#e4ebd7);border-radius:12px;background:#f5f6eb;overflow:hidden;animation:journey-card-arrive .8s var(--node-delay,0ms) cubic-bezier(.2,.7,.2,1) both;transition:border-color .35s,box-shadow .35s}
+.public-experience .nc-home .journey-flow .journey-expand-card.journey-document {background:var(--j-tint)}
+.public-experience .nc-home .journey-flow .journey-expand-card[data-expanded=true] {border-color:color-mix(in srgb,var(--j-accent) 60%,#e4ebd7);box-shadow:0 5px 16px #254b3210}
+.public-experience .nc-home .journey-flow .journey-expand-card > button {width:100%;margin:0;border:0;border-radius:0;animation:none;box-shadow:none;background:transparent;align-items:flex-start}
+.public-experience .nc-home .journey-flow .journey-expand-card > button:hover {background:color-mix(in srgb,var(--j-soft) 38%,transparent)}
+.public-experience .nc-home .journey-flow .journey-expand-card > button:focus-visible {outline:2px solid var(--j-accent);outline-offset:-4px;border-radius:10px}
+.public-experience .nc-home .journey-flow .journey-expand-card > button > span:nth-child(2) {flex:1;min-width:0}
+.public-experience .nc-home .journey-flow .journey-card-chevron {width:17px;height:17px;flex-shrink:0;margin-top:2px;transition:transform .4s ease}
+.public-experience .nc-home .journey-flow .journey-expand-card[data-expanded=true] .journey-card-chevron {transform:rotate(180deg)}
+.public-experience .nc-home .journey-flow .journey-inline-detail {display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .5s cubic-bezier(.22,.65,.25,1),opacity .35s}
+.public-experience .nc-home .journey-flow .journey-inline-detail > div {min-height:0;overflow:hidden}
+.public-experience .nc-home .journey-flow .journey-inline-detail p {margin:0 14px 14px;padding-top:12px;border-top:1px solid color-mix(in srgb,var(--j-accent) 22%,transparent);color:#3f5948;font-size:14px;line-height:1.6}
+.public-experience .nc-home .journey-flow .journey-expand-card[data-expanded=true] .journey-inline-detail {grid-template-rows:1fr;opacity:1}
+.public-experience .nc-home .journey-flow .journey-plan-expand {border-color:var(--j-accent);background:var(--j-accent)}
+.public-experience .nc-home .journey-flow .journey-plan-expand .journey-inline-detail p {color:#f3f6e8;border-color:#ffffff35}
+.public-experience .nc-home .journey-flow .journey-footer {padding:0;margin-top:20px;min-height:0;border:0;border-radius:0;background:none}
+
+/* The moving light follows each edge and breathes only at a node's arrival. */
+.public-experience .nc-home .journey-flow .journey-network-node > span {transition:transform .12s linear,background .2s,box-shadow .2s;background:color-mix(in srgb,#fff var(--breath,0%),var(--j-soft));box-shadow:0 0 0 5px #eaf0dc,0 0 16px 4px color-mix(in srgb,var(--j-accent) var(--breath,0%),transparent)}
+.public-experience .nc-home .journey-flow .journey-diagram {padding-left:28px}
+.public-experience .nc-home .journey-flow .journey-spine {inset:0;width:100%;height:100%;overflow:visible;z-index:0}
+.public-experience .nc-home .journey-flow .journey-spine .journey-flow-base {stroke-width:3px;opacity:.36}
+.public-experience .nc-home .journey-flow .journey-spine .journey-flow-pulse {stroke-width:4px}
+.public-experience .nc-home .journey-flow .journey-route-marker {fill:#e6edd4;stroke:var(--j-accent);stroke-width:1.6px}
+.public-experience .nc-home .journey-flow .journey-route-origin {fill:var(--j-accent)}
+.public-experience .nc-home .journey-flow .journey-spine-trace {fill:none;stroke:var(--j-accent);stroke-width:3px;stroke-linecap:round;stroke-dashoffset:var(--trace-length);opacity:0;filter:drop-shadow(0 0 3px var(--j-soft))}
+.public-experience .nc-home .journey-flow[data-ending=tracing] .journey-spine-trace {opacity:.9;animation:journey-end-trace 2.6s cubic-bezier(.4,0,.3,1) both}
+.public-experience .nc-home .journey-flow[data-ending-active=false] .journey-spine-trace,.public-experience .nc-home .journey-flow[data-ending-active=false] .journey-completion-mark {animation-play-state:paused}
+.public-experience .nc-home .journey-flow:is([data-ending=glow],[data-ending=done]) .journey-spine-trace {stroke-dashoffset:0;opacity:.65}
+.public-experience .nc-home .journey-flow .journey-finish {position:relative;z-index:1;display:flex;justify-content:center;align-items:center;gap:10px;margin:32px 0 0;padding:12px 0 4px;border:0;background:none;color:#3e614d}
+.public-experience .nc-home .journey-flow .journey-finish strong {font-size:16px;font-weight:600;letter-spacing:.01em;line-height:1.4}
+.public-experience .nc-home .journey-flow .journey-finish .journey-completion-mark {display:grid;place-items:center;flex-shrink:0;width:32px;height:32px;margin:0;border:1px solid color-mix(in srgb,var(--j-accent) 40%,transparent);border-radius:50%;background:#e3edcf;color:var(--j-accent)}
+.public-experience .nc-home .journey-flow .journey-completion-mark svg {width:19px;height:19px}
+.public-experience .nc-home .journey-flow[data-ending=glow] .journey-completion-mark {animation:journey-end-glow .9s ease both}
+.public-experience .nc-home .journey-flow[data-ending=done] .journey-completion-mark {background:var(--j-accent);color:#fff;border-color:var(--j-accent)}
+@keyframes journey-end-trace {from{stroke-dashoffset:var(--trace-length)}to{stroke-dashoffset:0}}
+@keyframes journey-end-glow {0%{box-shadow:0 0 0 0 transparent}50%{box-shadow:0 0 0 7px color-mix(in srgb,var(--j-accent) 12%,transparent),0 0 18px var(--j-soft);transform:scale(1.08)}100%{box-shadow:0 0 0 0 transparent;transform:scale(1);background:var(--j-accent);color:#fff}}
+@media(max-width:700px) {
+  .public-experience .nc-home .journey-flow .journey-heading {grid-template-columns:1fr 1fr;grid-template-areas:"replay change" "title title" "progress progress";padding:12px;gap:12px 8px}
+  .public-experience .nc-home .journey-flow .journey-heading h2 {font-size:24px}
+  .public-experience .nc-home .journey-flow .journey-heading button {width:100%;max-width:150px;font-size:12px!important;padding:7px 6px;gap:5px}
+  .public-experience .nc-home .journey-flow .journey-heading .journey-switch {justify-self:end}
+}
+@media(max-width:600px) {
+  .public-experience .nc-home .journey-flow .journey-diagram {padding-left:24px}
+  .public-experience .nc-home .journey-flow .journey-review > .journey-node {display:grid;grid-template-columns:1fr;position:relative;padding:10px}
+  .public-experience .nc-home .journey-flow .journey-review .journey-card-chevron {position:absolute;top:10px;right:10px}
+  .public-experience .nc-home .journey-flow .journey-review .journey-node > span:nth-child(2) {padding-right:0}
+  .public-experience .nc-home .journey-flow .journey-inline-detail p {margin-inline:10px;font-size:14px}
+  .public-experience .nc-home .journey-flow .journey-finish {gap:8px}
+  .public-experience .nc-home .journey-flow .journey-finish strong {font-size:15px}
+}
+
+/* Reveal the space as well as its content, so a new phase never jumps into place. */
+.public-experience .nc-home .journey-flow .journey-phase-reveal {--phase-gap:0px;display:grid;grid-template-rows:1fr;padding-top:var(--phase-gap);animation:journey-phase-unfold 1.6s cubic-bezier(.22,.6,.28,1) both}
+.public-experience .nc-home .journey-flow .journey-phase-reveal + .journey-phase-reveal {--phase-gap:26px}
+.public-experience .nc-home .journey-flow .journey-phase-reveal > .journey-phase {min-height:0;overflow:hidden;animation:journey-phase-arrive 1.25s .12s cubic-bezier(.22,.6,.28,1) both}
+.public-experience .nc-home .journey-flow .journey-expand-card {animation-duration:1.05s}
+.public-experience .nc-home .journey-flow .journey-plan-steps li {animation-duration:1.05s}
+.public-experience .nc-home .journey-flow .journey-finish {animation:journey-completion-appear 1.8s ease both}
+@keyframes journey-phase-unfold {from{grid-template-rows:0fr;padding-top:0;opacity:0}to{grid-template-rows:1fr;padding-top:var(--phase-gap);opacity:1}}
+@keyframes journey-completion-appear {from{margin-top:0;opacity:0;transform:translateY(-5px)}60%{opacity:0}to{margin-top:32px;opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce) {
+  .public-experience .nc-home .journey-flow .journey-phase-reveal,.public-experience .nc-home .journey-flow .journey-phase,.public-experience .nc-home .journey-flow .journey-expand-card,.public-experience .nc-home .journey-flow .journey-plan-steps li,.public-experience .nc-home .journey-flow .journey-finish {animation:none}
+}

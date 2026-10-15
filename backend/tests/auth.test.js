@@ -22,6 +22,7 @@ const { requireAuth } = require('../middleware/auth');
 
 async function startServer() {
   const app = express();
+  app.locals.politicaSesiones = 'legado_pruebas';
   app.use(express.json());
   app.use(cookieParser());
   app.use('/auth', authRouter);
@@ -142,6 +143,84 @@ test('restablecer contraseña invalida una sesión anterior', async () => {
     Usuario.updateOne = originalUpdateOne;
     Usuario.findById = originalFindById;
     RevokedToken.exists = originalExists;
+    await server.close();
+  }
+});
+
+test('recuperación: plazo de diez minutos y respuesta genérica para ambos correos', async t => {
+  const issuedAt = Date.UTC(2026, 9, 3, 12);
+  t.mock.timers.enable({ apis: ['Date'], now: issuedAt });
+  const originalFindOneAndUpdate = Usuario.findOneAndUpdate;
+  const originalSendEmail = sendEmail;
+  let stored;
+  const deliveries = [];
+  const server = await startServer();
+  try {
+    Usuario.findOneAndUpdate = (filter, update) => ({ select: async () => {
+      if (filter.email !== 'registrada@example.test') return null;
+      stored = update.$set;
+      return { _id: '507f1f77bcf86cd799439011', email: filter.email };
+    } });
+    sendEmail = async (to, url) => {
+      deliveries.push({ to, url });
+      return { enviado: true };
+    };
+
+    const known = await post(`${server.url}/auth/forgot-password`, { email: 'registrada@example.test' });
+    const unknown = await post(`${server.url}/auth/forgot-password`, { email: 'inexistente@example.test' });
+
+    assert.equal(known.response.status, 200);
+    assert.equal(unknown.response.status, 200);
+    assert.deepEqual(known.body, {
+      ok: true,
+      message: 'Si el email está registrado, recibirás un enlace de recuperación.'
+    });
+    assert.deepEqual(unknown.body, known.body);
+    assert.equal(stored.resetPasswordExpires.getTime(), issuedAt + 10 * 60 * 1000);
+    assert.equal(deliveries.length, 1);
+    const token = new URLSearchParams(new URL(deliveries[0].url).hash.slice(1)).get('token');
+    assert.match(token, /^[a-f0-9]{64}$/);
+    assert.equal(stored.resetPasswordToken, crypto.createHash('sha256').update(token).digest('hex'));
+  } finally {
+    Usuario.findOneAndUpdate = originalFindOneAndUpdate;
+    sendEmail = originalSendEmail;
+    t.mock.timers.reset();
+    await server.close();
+  }
+});
+
+test('recuperación: acepta antes de caducar y rechaza en el límite y después', async t => {
+  const issuedAt = Date.UTC(2026, 9, 3, 12);
+  const expiresAt = issuedAt + 10 * 60 * 1000;
+  t.mock.timers.enable({ apis: ['Date'], now: issuedAt });
+  const originalUpdateOne = Usuario.updateOne;
+  let writes = 0;
+  const server = await startServer();
+  try {
+    // Doble de Mongo: evalúa el filtro real de la ruta, sin conectar a una base.
+    Usuario.updateOne = async filter => {
+      assert.equal(filter.resetPasswordToken, crypto.createHash('sha256').update('token-caducidad').digest('hex'));
+      assert.deepEqual(Object.keys(filter.resetPasswordExpires), ['$gt']);
+      assert.equal(filter.resetPasswordExpires.$gt.getTime(), Date.now());
+      const valid = expiresAt > filter.resetPasswordExpires.$gt.getTime();
+      if (valid) writes += 1;
+      return { matchedCount: valid ? 1 : 0 };
+    };
+    // Cada petición representa un enlace independiente con la misma caducidad.
+    for (const [offset, status] of [[-1, 200], [0, 400], [1, 400]]) {
+      t.mock.timers.setTime(expiresAt + offset);
+      const result = await post(`${server.url}/auth/reset-password`, {
+        token: 'token-caducidad', password: 'NuevaClave123'
+      });
+      assert.equal(result.response.status, status, `desfase respecto a caducidad: ${offset} ms`);
+      if (status === 400) {
+        assert.equal(result.body.error, 'El enlace de recuperación es inválido o ha caducado');
+      }
+    }
+    assert.equal(writes, 1);
+  } finally {
+    Usuario.updateOne = originalUpdateOne;
+    t.mock.timers.reset();
     await server.close();
   }
 });

@@ -10,6 +10,7 @@ import styles from './WorkspaceUnits.module.css';
 // onFilterChange recibe siempre el objeto de filtros completo.
 export default function TaskTable({
   items = [], filters = DEFAULT_FILTERS, onFilterChange, onSelect, selectedId = null,
+  showDueDate = true, contextLabel = 'Tareas del alcance', emptyLabel = 'Todavía no hay tareas en este alcance.',
 }) {
   const list = Array.isArray(items) ? items : [];
   const active = list.filter(item => !item.archivedAt);
@@ -26,7 +27,7 @@ export default function TaskTable({
   return (
     <section className={styles.unit} aria-label="Tareas">
       {active.length === 0 ? (
-        <p role="status">Todavía no hay tareas en este alcance.</p>
+        <p role="status">{emptyLabel}</p>
       ) : (
         <>
           <div className={styles.filtersRow}>
@@ -61,13 +62,13 @@ export default function TaskTable({
           ) : (
             <div className={styles.tableWrap} role="region" aria-label="Tabla de tareas" tabIndex={0}>
               <table className={styles.table}>
-                <caption>Tareas del alcance</caption>
+                <caption>{contextLabel}</caption>
                 <thead>
                   <tr>
                     <th scope="col">Tarea</th>
                     <th scope="col">Estado</th>
                     <th scope="col">Responsable</th>
-                    <th scope="col">Fecha prevista</th>
+                    {showDueDate && <th scope="col">Fecha prevista</th>}
                   </tr>
                 </thead>
                 <tbody>
@@ -89,9 +90,9 @@ export default function TaskTable({
                         </th>
                         <td>{statusLabel(task.status)}</td>
                         <td>{owner || 'Sin responsable'}</td>
-                        <td>
+                        {showDueDate && <td>
                           {day ? <time dateTime={task.dueDate}>{day}</time> : 'Sin fecha prevista'}
-                        </td>
+                        </td>}
                       </tr>
                     );
                   })}

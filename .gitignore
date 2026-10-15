@@ -50,3 +50,24 @@ cookies.txt
 
 # Special
 .claude
+
+# Private integration runtime (keys, certificates; never commit).
+/.runtime/integration/
+
+# Private runtime and deployment artifacts (not application source).
+/.runtime/
+/web-build/
+/state/
+/releases/
+/backups/
+/outputs/
+/work/
+**/secrets/
+*.key
+*.p12
+*.pfx
+*.bson
+*.dump
+*.archive
+*.tar.gz
+*.tgz

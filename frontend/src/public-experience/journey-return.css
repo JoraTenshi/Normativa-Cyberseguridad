@@ -1,0 +1,46 @@
+/* Mirror the entry animation when returning to the activity selector. */
+.public-experience .nc-home .journey-frame:is(.mode-return-bloom,.mode-return-gather) .journey-picker {
+  position:relative;
+  inset:auto;
+  min-height:0;
+  pointer-events:none;
+}
+.public-experience .nc-home .journey-frame.mode-return-bloom .journey-picker {opacity:0}
+.public-experience .nc-home .journey-frame.mode-return-gather .journey-picker {animation:journey-picker-back 1.5s ease both}
+.public-experience .nc-home .journey-frame:is(.mode-return-bloom,.mode-return-gather) [data-return-selected] .journey-orb {visibility:hidden}
+.public-experience .nc-home .journey-frame:is(.mode-return-bloom,.mode-return-gather) .journey-space {transition:height 1.5s cubic-bezier(.3,.05,.12,1)}
+.public-experience .nc-home .journey-frame.mode-return-bloom .journey-diagram {position:absolute;inset:0;animation:journey-diagram-back 1s ease both}
+.public-experience .journey-travel.travel-return-bloom {animation:journey-bloom 1s cubic-bezier(.22,.6,.3,1) reverse both}
+.public-experience .journey-travel.travel-return-gather {animation:journey-return-to-choice 1.5s cubic-bezier(.3,.05,.12,1) both}
+.public-experience .nc-home .journey-frame:is(.mode-return-bloom,.mode-return-gather) .journey-toolbar {
+  overflow:hidden;
+  pointer-events:none;
+  animation:journey-toolbar-back 1s ease both;
+}
+.public-experience .nc-home .journey-frame:is(.mode-return-bloom,.mode-return-gather) .journey-footer {
+  display:block;
+  overflow:hidden;
+  pointer-events:none;
+  min-height:0;
+  animation:journey-footer-back 1s ease both;
+}
+@keyframes journey-picker-back {
+  from {opacity:0;filter:blur(5px)}
+  to {opacity:1;filter:blur(0)}
+}
+@keyframes journey-diagram-back {
+  from {opacity:1;filter:blur(0)}
+  to {opacity:0;filter:blur(5px)}
+}
+@keyframes journey-return-to-choice {
+  from {transform:translate(var(--dx),var(--dy)) scale(var(--return-scale,1.28))}
+  to {transform:translate(0,0) scale(1)}
+}
+@keyframes journey-toolbar-back {
+  from {max-height:var(--return-toolbar-height);opacity:1}
+  to {max-height:0;margin-top:0;opacity:0}
+}
+@keyframes journey-footer-back {
+  from {max-height:var(--return-footer-height);opacity:1}
+  to {max-height:0;margin-top:0;padding-top:0;padding-bottom:0;border-width:0;opacity:0}
+}

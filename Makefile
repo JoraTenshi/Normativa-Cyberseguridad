@@ -1,146 +1,31 @@
-.PHONY: up down seed cert recert install logs status clean setup help
-
-BACKEND_DIR  = backend
-FRONTEND_DIR = frontend
-CERT_DIR     = nginx/certs
-CERT_FILE    = $(CERT_DIR)/cert.pem
-KEY_FILE     = $(CERT_DIR)/key.pem
-
-DC := $(shell docker compose version >/dev/null 2>&1 && echo 'docker compose' || echo 'docker-compose')
-
+.PHONY: help test test-back test-front build config status up down seed setup cert recert clean
 .DEFAULT_GOAL := help
 
 help:
-	@echo "CyberAudit — Herramienta de Autoevaluación de Ciberseguridad"
-	@echo ""
-	@echo "  make setup   Generate MONGO_PASSWORD in .env (auto-run by 'up')"
-	@echo "  make up      Build and start all services (MongoDB, backend, frontend, nginx)"
-	@echo "  make down    Stop all services"
-	@echo "  make status  Show service status"
-	@echo "  make logs    Tail backend and frontend logs"
-	@echo "  make seed    Seed normativas into an EMPTY database (services must be running)"
-	@echo "  make install Install npm dependencies locally (for IDE tooling)"
-	@echo "  make cert    Generate SSL certificate (mkcert if installed, else self-signed)"
-	@echo "  make recert  Force certificate regeneration (run after installing mkcert)"
-	@echo "  make clean   Stop everything and remove local images and node_modules (keep data and .env)"
+	@echo "NormativaCheck — fuente canónica de la aplicación verde"
+	@echo "make test-back  Pruebas unitarias backend (sin Mongo ni SMTP reales)"
+	@echo "make test-front Pruebas frontend (requiere npm ci en frontend)"
+	@echo "make build      Compila frontend; NO instala ni despliega"
+	@echo "make config     Valida un perfil elegido con NC_PRIVATE_COMPOSE"
+	@echo "make status     Consulta ese proyecto privado; no crea servicios"
+	@echo "Operación/actualización: docs/operacion-privada.md"
 
-# ── Root .env bootstrap (generates MONGO_PASSWORD if blank) ──────────────────
-setup:
-	@if [ ! -f .env ]; then \
-		printf 'MONGO_USER=cybersec\nMONGO_PASSWORD=\n' > .env; \
-	fi
-	@chmod 600 .env
-	@if grep -qE '^MONGO_PASSWORD=$$' .env; then \
-		PASS=$$(node -e "process.stdout.write(require('crypto').randomBytes(32).toString('hex'))"); \
-		sed -i "s|^MONGO_PASSWORD=.*|MONGO_PASSWORD=$$PASS|" .env; \
-		echo ">>> Generated MONGO_PASSWORD and saved to .env"; \
-	fi
-
-# ── Main target ───────────────────────────────────────────────────────────────
-up: setup cert $(BACKEND_DIR)/.env
-	@node scripts/check-backend-secrets.js $(BACKEND_DIR)/.env
-	@echo ">>> [1/3] Building and starting all services..."
-	$(DC) up -d --build
-	@echo ">>> [2/3] Waiting for MongoDB to be healthy..."
-	@while [ "$$(docker inspect --format='{{.State.Health.Status}}' cybersec_mongo 2>/dev/null)" != "healthy" ]; do \
-		if [ "$$(docker inspect --format='{{.State.Status}}' cybersec_mongo 2>/dev/null)" = "exited" ]; then \
-			echo " MongoDB crashed! Run: docker logs cybersec_mongo"; exit 1; \
-		fi; \
-		printf '.'; sleep 2; \
-	done
-	@echo " MongoDB ready."
-	@echo ">>> [3/3] Waiting for backend to be healthy..."
-	@while [ "$$(docker inspect --format='{{.State.Health.Status}}' cybersec_backend 2>/dev/null)" != "healthy" ]; do \
-		if [ "$$(docker inspect --format='{{.State.Status}}' cybersec_backend 2>/dev/null)" = "exited" ]; then \
-			echo " Backend crashed! Run: docker logs cybersec_backend"; exit 1; \
-		fi; \
-		printf '.'; sleep 2; \
-	done
-	@echo " Backend ready."
-	@echo ""
-	@echo "CyberAudit is up and running!"
-	@echo "  App (HTTPS) -> https://localhost"
-	@echo ""
-	@echo "  First install on an empty database: make seed"
-	@echo "  make logs    to view logs"
-	@echo "  make status  to check services"
-	@echo "  make down    to stop all services"
-
-# ── SSL certificate (generated once; uses mkcert if available) ────────────────
-cert: $(CERT_FILE)
-
-$(CERT_FILE):
-	@mkdir -p $(CERT_DIR)
-	@if command -v mkcert > /dev/null 2>&1; then \
-		echo ">>> Generating trusted certificate with mkcert..."; \
-		mkcert -cert-file $(CERT_FILE) -key-file $(KEY_FILE) localhost 127.0.0.1 ::1; \
-		echo ">>> Certificate ready — no browser warning."; \
-	else \
-		echo ">>> mkcert not found — generating self-signed certificate..."; \
-		echo "    TIP: install mkcert to avoid browser warnings:"; \
-		echo "         sudo apt install mkcert libnss3-tools && mkcert -install && make recert"; \
-		openssl req -x509 -newkey rsa:4096 \
-			-keyout $(KEY_FILE) \
-			-out    $(CERT_FILE) \
-			-days 365 -nodes \
-			-subj '/C=ES/ST=Local/L=Local/O=CyberAudit/CN=localhost' \
-			-addext 'subjectAltName=DNS:localhost,IP:127.0.0.1,IP:::1' 2>/dev/null; \
-		echo ">>> Self-signed certificate ready (browser warning expected)."; \
-	fi
-	@if [ -f $(BACKEND_DIR)/.env ]; then \
-		sed -i 's|^CORS_ORIGIN=.*|CORS_ORIGIN=https://localhost|' $(BACKEND_DIR)/.env; \
-	fi
-
-# Force cert regeneration (use after installing mkcert)
-recert:
-	rm -f $(CERT_FILE) $(KEY_FILE)
-	$(MAKE) cert
-
-# ── Backend .env (created once from example) ─────────────────────────────────
-$(BACKEND_DIR)/.env:
-	@echo ">>> Creating backend/.env from .env.example..."
-	cp $(BACKEND_DIR)/.env.example $(BACKEND_DIR)/.env
-	@chmod 600 $(BACKEND_DIR)/.env
-	@if [ -f $(CERT_FILE) ]; then \
-		sed -i 's|^CORS_ORIGIN=.*|CORS_ORIGIN=https://localhost|' $(BACKEND_DIR)/.env; \
-		echo ">>> Set CORS_ORIGIN=https://localhost (nginx HTTPS)"; \
-	fi
-
-# ── npm install (local only — for IDE tooling, not needed for Docker) ─────────
-install: $(BACKEND_DIR)/node_modules $(FRONTEND_DIR)/node_modules
-
-$(BACKEND_DIR)/node_modules: $(BACKEND_DIR)/package.json
-	@echo ">>> Installing backend dependencies..."
-	cd $(BACKEND_DIR) && npm install
-	@touch $@
-
-$(FRONTEND_DIR)/node_modules: $(FRONTEND_DIR)/package.json
-	@echo ">>> Installing frontend dependencies..."
-	cd $(FRONTEND_DIR) && npm install
-	@touch $@
-
-# ── Database seed (validates on host, then runs inside backend container) ────
-# Only seeds an empty normativas collection; seed.js refuses otherwise.
-seed:
-	@python3 -c "import jsonschema" 2>/dev/null || { \
-		echo "jsonschema not installed. Run: pip install -r $(BACKEND_DIR)/seed/requirements.txt"; exit 1; }
-	@cd $(BACKEND_DIR)/seed && for f in *_normativa.json; do [ "$$f" = "schema_normativa.json" ] && continue; python3 validate_normativa.py "$$f" || exit 1; done
-	docker exec cybersec_backend node seed/seed.js
-
-# ── Logs ──────────────────────────────────────────────────────────────────────
-logs:
-	$(DC) logs -f --tail=50 backend frontend
-
-# ── Status ────────────────────────────────────────────────────────────────────
+test: test-back test-front
+test-back:
+	cd backend && npm test
+test-front:
+	cd frontend && CI=true npm test -- --watchAll=false --runInBand
+build:
+	cd frontend && npm run build
+config:
+	@test -n "$(NC_PRIVATE_COMPOSE)" || { echo "Falta NC_PRIVATE_COMPOSE: ruta del perfil revisado, no un secreto."; exit 2; }
+	docker --host unix:///var/run/docker.sock compose --env-file /dev/null --project-name normativacheck_private --file "$(NC_PRIVATE_COMPOSE)" config --quiet
 status:
-	@$(DC) ps
+	@test -n "$(NC_PRIVATE_COMPOSE)" || { echo "Falta NC_PRIVATE_COMPOSE: consulta docs/operacion-privada.md."; exit 2; }
+	docker --host unix:///var/run/docker.sock compose --env-file /dev/null --project-name normativacheck_private --file "$(NC_PRIVATE_COMPOSE)" ps
 
-# ── Stop ──────────────────────────────────────────────────────────────────────
-down:
-	$(DC) down
-
-# ── Clean ─────────────────────────────────────────────────────────────────────
-clean:
-	$(DC) down --rmi local
-	rm -rf $(BACKEND_DIR)/node_modules $(FRONTEND_DIR)/node_modules
-	@echo "Clean complete. MongoDB volumes, .env files and SSL certs were kept."
+# Old shortcuts must not silently start a different product or regenerate state.
+up down seed setup cert recert clean:
+	@echo "Atajo antiguo deshabilitado. No se ha cambiado nada."
+	@echo "En una instalación existente usa el procedimiento revisado de docs/operacion-privada.md."
+	@exit 2

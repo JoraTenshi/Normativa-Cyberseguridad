@@ -1,0 +1,116 @@
+/* Marketing/legibility layer. Preserve shared typography and the L05 frame. */
+.public-experience .nc-home {--section-body-size:16px;--section-label-size:14px}
+.public-experience .nc-home .section-heading > h2 {max-width:26ch}
+.public-experience .nc-home .home-product h2 em {color:#4b6e40}
+.public-experience .nc-home .section-note {font-size:15px;line-height:1.7;max-width:65ch;margin-top:22px;color:#49604c}
+.public-experience .nc-home .hero-demo-note {font-size:14px;line-height:1.7;color:#d9e6d9;max-width:48ch;margin-top:22px}
+.public-experience .nc-home .hero-copy .eyebrow {font-size:13px;line-height:1.65;letter-spacing:.09em;max-width:45ch}
+.public-experience .nc-home .hero-description {font-size:17px;line-height:1.7!important}
+.public-experience .nc-home .home-nav {gap:26px;font-size:15px}
+.public-experience .nc-home .home-btn {font-size:16px;line-height:1.45}
+.public-experience .nc-home .text-link {font-size:16px;line-height:1.5;gap:18px;max-width:100%}
+.public-experience .nc-home .product-copy p,.public-experience .nc-home .phase-copy p {max-width:55ch}
+.public-experience .nc-home .product-copy h3,.public-experience .nc-home .phase-copy h3 {max-width:23ch}
+.public-experience .nc-home .phase-copy li {font-size:15px;line-height:1.75}
+.public-experience .nc-home .demo-invite-copy .section-note {color:#d3e2df}
+.public-experience .nc-home .visual-panel-top {flex-wrap:wrap;gap:8px 12px;font-size:13px;line-height:1.5;padding:20px 24px}
+.public-experience .nc-home .visual-panel-top strong {font-size:15px}
+.public-experience .nc-home .visual-panel-top>span:nth-child(2) {font-size:13px;letter-spacing:.045em}
+.public-experience .nc-home .visual-panel-top .visual-dots {display:none}
+.public-experience .nc-home .visual-panel-content {padding:26px}
+.public-experience .nc-home .case-tabs,.public-experience .nc-home .screen-tabs {gap:8px;flex-wrap:wrap}
+.public-experience .nc-home .case-tabs button,.public-experience .nc-home .screen-tabs button {font-size:14px!important;line-height:1.4;min-height:44px;padding:10px 13px;white-space:normal}
+.public-experience .nc-home .legal-condition,.public-experience .nc-home .legal-action {font-size:16px;line-height:1.65}
+.public-experience .nc-home .basis-pair {gap:18px;flex-wrap:wrap}
+.public-experience .nc-home .basis-pair>span {font-size:14px;line-height:1.6;max-width:220px;color:#355940}
+.public-experience .nc-home .basis-pair em {font-size:15px}
+.public-experience .nc-home .basis-task>span,.public-experience .nc-home .document-label,.public-experience .nc-home .task-category,.public-experience .nc-home .file-observation>span {font-size:13px;line-height:1.6}
+.public-experience .nc-home .basis-task h4,.public-experience .nc-home .document-preview h4,.public-experience .nc-home .plan-visual h4 {font-size:23px;line-height:1.4}
+.public-experience .nc-home .basis-task p,.public-experience .nc-home .document-preview p,.public-experience .nc-home .document-preview mark {font-size:16px;line-height:1.7}
+.public-experience .nc-home .legal-links a {font-size:14px;line-height:1.6;padding-block:8px}
+.public-experience .nc-home .document-file {flex-wrap:wrap;gap:12px}
+.public-experience .nc-home .document-file>div:nth-child(2) {flex:1;min-width:180px}
+.public-experience .nc-home .document-file strong,.public-experience .nc-home .visual-timeline b {font-size:17px;line-height:1.4}
+.public-experience .nc-home .document-file p,.public-experience .nc-home .visual-timeline p,.public-experience .nc-home .file-observation p {font-size:15px;line-height:1.65}
+.public-experience .nc-home .visual-status {font-size:13px;line-height:1.5;white-space:normal}
+.public-experience .nc-home .file-versions {grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.public-experience .nc-home .file-versions span,.public-experience .nc-home .review-reference span,.public-experience .nc-home .history-order {font-size:14px;line-height:1.6}
+.public-experience .nc-home .file-versions b,.public-experience .nc-home .review-reference b {font-size:16px;line-height:1.5}
+.public-experience .nc-home .visual-timeline time {font-size:13px;line-height:1.5;white-space:nowrap}
+.public-experience .nc-home .case-intro,.public-experience .nc-home .activity-options button {font-size:16px!important;line-height:1.6}
+.public-experience .nc-home .profile-next b,.public-experience .nc-home .task-person b {font-size:15px;line-height:1.5}
+.public-experience .nc-home .profile-next p,.public-experience .nc-home .visual-checklist li,.public-experience .nc-home .task-result {font-size:15px;line-height:1.7}
+.public-experience .nc-home .review-tabs button {font-size:14px!important;min-height:44px}
+.public-experience .nc-home .task-person {flex-wrap:wrap;gap:14px}
+.public-experience .nc-home .task-person label,.public-experience .nc-home .task-person small,.public-experience .nc-home .task-person select {font-size:14px;line-height:1.5}
+.public-experience .nc-home .task-person select {min-height:44px;font-size:14px!important}
+.public-experience .nc-home .screen-bar {font-size:13px;line-height:1.5;gap:12px;flex-wrap:wrap}
+.public-experience .nc-home .screen-context {font-size:13px;line-height:1.5;color:#36592e}
+.public-experience .nc-home .typed-question {font-size:clamp(23px,2.2vw,31px);line-height:1.5;min-height:230px}
+.public-experience .nc-home .screen-topic,.public-experience .nc-home .screen-open {font-size:15px;line-height:1.6}
+.public-experience .nc-home .computer-content {padding:28px;min-height:540px}
+.public-experience .nc-home .home-faq summary {font-size:17px;line-height:1.5;gap:20px}
+.public-experience .nc-home .home-faq details p {font-size:16px;line-height:1.8}
+.public-experience .nc-home .home-footer h3 {font-size:16px}
+.public-experience .nc-home .home-footer a,.public-experience .nc-home .home-footer button,.public-experience .nc-home .footer-brand p,.public-experience .nc-home .footer-bottom {font-size:15px;line-height:1.7}
+.public-experience .nc-home .footer-main>div>a:not(.nc-brand),.public-experience .nc-home .footer-main>div>button {font-size:15px}
+.public-experience .nc-home .footer-brand .nc-brand {font-size:23px}
+.public-experience .nc-home .about-visual blockquote {font-size:17px;line-height:1.7}
+.public-experience .nc-home .about-values span,.public-experience .nc-home .team-symbols span {font-size:14px}
+.public-experience .nc-home .visual-checklist li>span {font-size:12px;width:24px;height:24px}
+.public-experience .nc-home .footer-main {grid-template-columns:1.4fr 1fr 1fr 1.15fr;gap:28px}
+.public-experience .nc-home .home-dialog {max-height:calc(100dvh - 32px);overflow:auto}
+.public-experience .nc-home .home-dialog p {font-size:16px;line-height:1.8}
+.public-experience .nc-home .home-dialog h2 {font-size:28px;padding-right:25px}
+/* Diagram content only: frame/controls are maintained by the original Frontend chat. */
+.public-experience .nc-home .journey-activity strong {font-size:16px;line-height:1.4;max-width:210px}
+.public-experience .nc-home .journey-activity small {font-size:14px;line-height:1.5;max-width:200px;color:#455c43}
+.public-experience .nc-home .journey-picker>p {font-size:16px;max-width:46ch}
+.public-experience .nc-home .journey-intro,.public-experience .nc-home .journey-node small,.public-experience .nc-home .journey-detail p {font-size:16px;line-height:1.65}
+.public-experience .nc-home .journey-node strong {font-size:16px;line-height:1.45}
+.public-experience .nc-home .journey-reference {font-size:14px;line-height:1.6;color:#465b3f}
+.public-experience .nc-home .journey-layer-label {font-size:13px;line-height:1.5;letter-spacing:.04em}
+.public-experience .nc-home .journey-network {height:160px;margin-block:20px 32px}
+.public-experience .nc-home .journey-network-node b {font-size:13px;line-height:1.4;white-space:normal;text-align:center;max-width:110px}
+.public-experience .nc-home .journey-layer {min-height:245px}
+.public-experience .nc-home .journey-documents {min-height:144px}
+.public-experience .nc-home .journey-plan-layer {min-height:170px}
+.public-experience .nc-home .journey-plan-steps li {font-size:14px;line-height:1.5}
+.public-experience .nc-home .journey-plan-card small {font-size:14px}
+@media(max-width:1050px){
+  .public-experience .nc-home .home-nav {gap:18px;font-size:14px}
+  .public-experience .nc-home .footer-main {grid-template-columns:repeat(2,minmax(0,1fr));gap:38px}
+}
+@media(max-width:800px){
+  .public-experience .nc-home {--section-body-size:16px;--section-label-size:13px}
+  .public-experience .nc-home .home-header {height:auto;min-height:90px;flex-wrap:wrap;gap:16px;padding-block:18px}
+  .public-experience .nc-home .home-nav {gap:18px;flex-wrap:wrap}
+  .public-experience .nc-home .product-row,.public-experience .nc-home .phase-row,.public-experience .nc-home .about-section,.public-experience .nc-home .demo-invitation {grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .public-experience .nc-home {--section-body-size:16px;--section-label-size:13px}
+  .public-experience .nc-home .home-header {flex-wrap:nowrap;min-height:80px;padding-block:12px}
+  .public-experience .nc-home .home-nav {font-size:16px}
+  .public-experience .nc-home .hero-demo-note {font-size:14px}
+  .public-experience .nc-home .visual-panel-content,.public-experience .nc-home .computer-content {padding:20px}
+  .public-experience .nc-home .visual-panel-top {padding:16px 20px}
+  .public-experience .nc-home .case-tabs button,.public-experience .nc-home .screen-tabs button {font-size:14px!important;padding:9px 12px}
+  .public-experience .nc-home .visual-timeline {padding-left:14px}
+  .public-experience .nc-home .file-versions {grid-template-columns:1fr 1fr}
+  .public-experience .nc-home .basis-task h4,.public-experience .nc-home .document-preview h4 {font-size:22px}
+  .public-experience .nc-home .typed-question {font-size:24px;min-height:270px}
+  .public-experience .nc-home .screen-bar>span:nth-child(2) {display:none}
+  .public-experience .nc-home .footer-main {grid-template-columns:1fr;gap:28px}
+  .public-experience .nc-home .footer-bottom {flex-wrap:wrap;gap:15px}
+  .public-experience .nc-home .home-dialog {padding:26px 22px}
+  .public-experience .nc-home .dialog-actions {flex-wrap:wrap}
+  .public-experience .nc-home .journey-activities {gap:26px 12px}
+  .public-experience .nc-home .journey-activity strong {font-size:15px}
+  .public-experience .nc-home .journey-activity small {font-size:14px}
+  .public-experience .nc-home .journey-network {height:190px;margin-inline:0}
+  .public-experience .nc-home .journey-network-node {min-width:0;width:90px}
+  .public-experience .nc-home .journey-network-node b {font-size:12px;max-width:85px}
+  .public-experience .nc-home .journey-layer {min-height:380px}
+  .public-experience .nc-home .journey-documents {min-height:230px}
+  .public-experience .nc-home .journey-plan-layer {min-height:250px}
+}

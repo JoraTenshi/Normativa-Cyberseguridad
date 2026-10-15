@@ -1,0 +1,109 @@
+/* L05 readability: allocate space to the demonstration, not just its frame. */
+.public-experience .nc-home .home-hero {
+  grid-template-columns: minmax(270px, .78fr) minmax(0, 1.45fr);
+  gap: 4%;
+  padding-inline: max(4%, calc((100% - 1510px) / 2));
+}
+.public-experience .nc-home .hero-copy h1 {font-size:clamp(46px,4.2vw,66px);line-height:1.08;letter-spacing:-.05em}
+.public-experience .nc-home .hero-copy {min-width:0}
+.public-experience .nc-home .home-hero > .journey-shell {max-width:900px;padding:30px;justify-self:end}
+.public-experience .nc-home .journey-heading {font-size:12px}
+.public-experience .nc-home .journey-heading > span:last-child {font-size:10px}
+.public-experience .nc-home .journey-heading button {font-size:13px}
+.public-experience .nc-home .journey-space {height:650px}
+.public-experience .nc-home .mode-picker .journey-space {height:auto}
+.public-experience .nc-home .mode-picker .journey-picker {position:relative;inset:auto;min-height:650px}
+.public-experience .nc-home .journey-picker h3 {font-size:28px}
+.public-experience .nc-home .journey-picker > p {font-size:15px;max-width:400px}
+.public-experience .nc-home .journey-activities {gap:23px 16px;margin-top:18px}
+.public-experience .nc-home .journey-orb {width:78px;height:78px}
+.public-experience .nc-home .journey-orb svg {width:35px;height:35px}
+.public-experience .nc-home .journey-activity strong {font-size:15px;max-width:190px}
+.public-experience .nc-home .journey-activity small {font-size:12px;max-width:170px}
+.public-experience .nc-home .journey-picker-note {font-size:13px}
+.public-experience .nc-home .journey-case-title h3 {font-size:28px}
+.public-experience .nc-home .journey-case-title > div > span {font-size:11px}
+.public-experience .nc-home .journey-stage-count {font-size:13px}
+.public-experience .nc-home .journey-intro {font-size:15px;min-height:44px}
+.public-experience .nc-home .journey-network {height:128px;margin:8px 24px 20px}
+.public-experience .nc-home .journey-network-node > span {width:43px;height:43px}
+.public-experience .nc-home .journey-network-node svg {width:24px;height:24px}
+.public-experience .nc-home .journey-network-node b {font-size:12px}
+.public-experience .nc-home .journey-layer {min-height:198px;padding-top:13px}
+.public-experience .nc-home .journey-layer-label {font-size:11px;margin-bottom:11px}
+.public-experience .nc-home .journey-branch {gap:12px}
+.public-experience .nc-home .journey-node {padding:14px 13px;gap:9px}
+.public-experience .nc-home .journey-node strong {font-size:15px;line-height:1.4}
+.public-experience .nc-home .journey-node small {font-size:14px;line-height:1.55}
+.public-experience .nc-home .journey-node-icon svg {width:20px;height:20px}
+.public-experience .nc-home .journey-reference {font-size:12px;margin-top:10px}
+.public-experience .nc-home .journey-documents {min-height:124px;padding-top:17px}
+.public-experience .nc-home .journey-document {min-height:65px}
+.public-experience .nc-home .journey-plan-layer {min-height:145px}
+.public-experience .nc-home .journey-plan-card {padding:15px}
+.public-experience .nc-home .journey-plan-card strong {font-size:16px}
+.public-experience .nc-home .journey-plan-card small {font-size:13px}
+.public-experience .nc-home .journey-plan-steps li {font-size:12px;gap:6px}
+.public-experience .nc-home .journey-plan-steps li > span {width:18px;height:18px;font-size:10px}
+.public-experience .nc-home .journey-footer > p {font-size:14px!important}
+.public-experience .nc-home .journey-caption b,.public-experience .nc-home .journey-complete {font-size:12px}
+.public-experience .nc-home .journey-controls button {font-size:12px!important;padding-block:9px}
+.public-experience .nc-home .journey-detail h4 {font-size:24px}
+.public-experience .nc-home .journey-detail p {font-size:15px}
+.public-experience .nc-home .journey-detail-label {font-size:11px}
+.public-experience .nc-home .journey-detail-return {font-size:13px!important}
+.public-experience .nc-home .mode-diagram .journey-space {height:auto;min-height:650px}
+.public-experience .nc-home .mode-diagram .journey-diagram {min-height:650px}
+@media(max-width:1050px) {
+  .public-experience .nc-home .home-hero {grid-template-columns:1fr;gap:35px;padding-inline:6%}
+  .public-experience .nc-home .hero-copy {max-width:670px}
+  .public-experience .nc-home .hero-copy h1 {font-size:clamp(45px,6vw,62px)}
+  .public-experience .nc-home .home-hero > .journey-shell {max-width:850px;justify-self:center}
+}
+@media(max-width:600px) {
+  .public-experience .nc-home .home-hero {padding-inline:5%}
+  .public-experience .nc-home .hero-copy h1 {font-size:clamp(40px,11.5vw,57px)}
+  .public-experience .nc-home .home-hero > .journey-shell {padding:22px 17px}
+  .public-experience .nc-home .journey-heading {font-size:10px}
+  .public-experience .nc-home .journey-heading > span:last-child {font-size:8px}
+  .public-experience .nc-home .journey-heading button {font-size:12px}
+  .public-experience .nc-home .journey-space {height:740px}
+  .public-experience .nc-home .mode-picker .journey-picker {min-height:740px}
+  .public-experience .nc-home .journey-picker h3 {font-size:25px}
+  .public-experience .nc-home .journey-picker > p {font-size:14px}
+  .public-experience .nc-home .journey-activities {gap:22px 10px;margin-top:0}
+  .public-experience .nc-home .journey-orb {width:64px;height:64px}
+  .public-experience .nc-home .journey-orb svg {width:30px;height:30px}
+  .public-experience .nc-home .journey-activity strong {font-size:14px}
+  .public-experience .nc-home .journey-activity small {font-size:12px}
+  .public-experience .nc-home .journey-picker-note {font-size:12px}
+  .public-experience .nc-home .journey-case-title h3 {font-size:24px}
+  .public-experience .nc-home .journey-intro {font-size:14px}
+  .public-experience .nc-home .journey-network {height:144px;margin-inline:9px}
+  .public-experience .nc-home .journey-network-node > span {width:34px;height:34px}
+  .public-experience .nc-home .journey-network-node svg {width:20px;height:20px}
+  .public-experience .nc-home .journey-network-node b {font-size:10px;max-width:95px;white-space:normal;text-align:center}
+  .public-experience .nc-home .journey-branch {grid-template-columns:1fr;gap:10px}
+  .public-experience .nc-home .journey-node {flex-wrap:nowrap;padding:14px 12px}
+  .public-experience .nc-home .journey-node > span:nth-child(2) {width:auto;flex:1;padding-right:13px}
+  .public-experience .nc-home .journey-node strong {font-size:15px}
+  .public-experience .nc-home .journey-node small {font-size:14px}
+  .public-experience .nc-home .journey-review {min-height:0}
+  .public-experience .nc-home .journey-layer {min-height:310px;padding-top:15px}
+  .public-experience .nc-home .journey-documents {min-height:209px;padding-top:24px}
+  .public-experience .nc-home .journey-plan-layer {min-height:213px;padding-top:20px}
+  .public-experience .nc-home .journey-plan-card strong {font-size:15px}
+  .public-experience .nc-home .journey-plan-steps {grid-template-columns:1fr;gap:9px}
+  .public-experience .nc-home .journey-controls {gap:14px}
+  .public-experience .nc-home .mode-diagram .journey-space {height:auto}
+  .public-experience .nc-home .journey-detail {padding:24px 19px}
+}
+.public-experience .nc-home .journey-frame .journey-case-title>div>span {font-size:13px;line-height:1.5;letter-spacing:.04em}
+.public-experience .nc-home .journey-frame .journey-plan-heading {display:flex;align-items:flex-start;gap:12px 20px;margin-bottom:16px}
+.public-experience .nc-home .journey-frame .journey-plan-heading .journey-layer-label {flex-shrink:0;margin:0;padding:0;background:transparent}
+.public-experience .nc-home .journey-frame .journey-plan-heading p {margin:0;font-size:15px;line-height:1.55;color:#405b46}
+.public-experience .nc-home .journey-frame .journey-plan-steps li {font-size:16px;line-height:1.55;gap:8px}
+.public-experience .nc-home .journey-frame .journey-plan-steps li>span {width:22px;height:22px;flex-shrink:0;font-size:12px;line-height:1;margin-top:1px}
+@media(max-width:600px) {
+  .public-experience .nc-home .journey-frame .journey-plan-heading {flex-direction:column;gap:8px}
+}

@@ -1,0 +1,4 @@
+FROM nginx:stable-alpine@sha256:8f84ed99befc3891b8f329c5c202785278a2cfb7c25107d57fb2a134a3117433
+# Exact tested bundle. No rebuild that silently changes the candidate identity.
+COPY web-build/ /usr/share/nginx/html/
+EXPOSE 8443

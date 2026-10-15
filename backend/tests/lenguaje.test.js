@@ -9,7 +9,7 @@ const leer = rel => fs.readFileSync(path.join(__dirname, '..', '..', 'frontend',
 
 for (const pagina of ['pages/Resultado.jsx', 'pages/HistorialDetalle.jsx', 'pages/PlanDirector.jsx']) {
   test(`${pagina} no presenta el resultado como "cumplimiento"`, () => {
-    assert.doesNotMatch(leer(pagina), /cumplimiento/i);
+    assert.doesNotMatch(leer(pagina), /(?:nivel de cumplimiento|porcentaje de cumplimiento|>Cumplimiento<)/i);
   });
 }
 

@@ -1,0 +1,82 @@
+.public-experience .desk-v2 .desk-top-help { margin-left:auto; display:flex; align-items:center; gap:7px; padding:8px 10px; border:1px solid var(--border); border-radius:5px; font-size:12px; white-space:nowrap; }
+.public-experience .desk-v2 .desk-top-help span { display:grid; place-items:center; width:17px; height:17px; border:1px solid currentColor; border-radius:50%; font-size:11px; }
+.public-experience .desk-v2 .desk-top-help + .desk-org { margin-left:0; }
+.public-experience .desk-v2 .help-intro { color:var(--muted); margin:0 0 20px; max-width:70ch; }
+.public-experience .desk-v2 .help-tour-intro { padding:20px; background:#f5f3ed; border:1px solid var(--border); display:flex; align-items:center; gap:25px; margin:0 0 24px; border-radius:6px; }
+.public-experience .desk-v2 .help-tour-intro h3 { font-size:19px; margin:6px 0 9px; }
+.public-experience .desk-v2 .help-tour-intro p { margin:0 0 8px; }
+.public-experience .desk-v2 .help-tour-intro small { color:var(--muted); line-height:1.5; }
+.public-experience .desk-v2 .help-tour-actions { flex-shrink:0; display:grid; justify-items:start; gap:10px; }
+.public-experience .desk-v2 .help-eyebrow { color:#656859; font-size:10px; letter-spacing:.06em; text-transform:uppercase; display:block; }
+.public-experience .desk-v2 .help-back { font-size:12px; color:var(--accent); padding:0; text-align:left; text-decoration:underline; text-underline-offset:3px; }
+.public-experience .desk-v2 .help-search { font-size:14px; font-weight:600; margin-bottom:15px; }
+.public-experience .desk-v2 .help-search input { font-size:14px; min-height:44px; font-weight:400; }
+.public-experience .desk-v2 .help-topics { display:flex; gap:6px; flex-wrap:wrap; }
+.public-experience .desk-v2 .help-topics button { padding:8px 10px; font-size:12px; border:1px solid var(--border); border-radius:4px; }
+.public-experience .desk-v2 .help-topics button[aria-pressed=true] { background:#293b35; border-color:#293b35; color:white; }
+.public-experience .desk-v2 .help-count, .public-experience .desk-v2 .help-privacy { font-size:11px; color:var(--muted); margin:17px 0; }
+.public-experience .desk-v2 .help-results > button { display:flex; width:100%; justify-content:space-between; gap:20px; text-align:left; padding:16px 4px; border-top:1px solid var(--border); }
+.public-experience .desk-v2 .help-results > button:hover { background:#faf8f2; }
+.public-experience .desk-v2 .help-results small { display:block; color:var(--muted); font-size:10px; }
+.public-experience .desk-v2 .help-results strong { display:block; font-size:14px; margin:5px 0; font-weight:600; }
+.public-experience .desk-v2 .help-results button span span { display:block; font-size:12px; color:var(--muted); line-height:1.5; }
+.public-experience .desk-v2 .help-article { max-width:76ch; margin:20px 0; }
+.public-experience .desk-v2 .help-article h3 { font-size:24px; line-height:1.3; margin-bottom:14px; scroll-margin-top:100px; }
+.public-experience .desk-v2 .help-article p, .public-experience .desk-v2 .help-article li { font-size:14px; line-height:1.8; }
+.public-experience .desk-v2 .help-article .help-summary { color:var(--muted); margin-bottom:22px; }
+.public-experience .desk-v2 .help-article h4 { font-size:15px; margin:24px 0 12px; }
+.public-experience .desk-v2 .help-article ol { padding-left:22px; }
+.public-experience .desk-v2 .help-article li { padding-left:6px; margin-bottom:12px; }
+.public-experience .desk-v2 .help-article aside { padding:15px; background:#f5f3ed; border-left:2px solid #8a977f; line-height:1.7; margin:22px 0; }
+.public-experience .desk-v2 .help-center > .help-eyebrow { margin-top:22px; }
+.public-experience .desk-v2 .help-no-results { padding:25px 0; }
+.public-experience .desk-v2 .help-no-results p { margin:12px 0; }
+.public-experience .desk-v2 .help-warning { color:#814226; background:#fff4e9; padding:12px; margin-bottom:20px; }
+
+/* The guide owns only its overlay; the dashboard palette stays unchanged. */
+.public-experience .desk-v2 .help-tour-layer { position:fixed; inset:0; margin:0; padding:0; width:100%; height:100dvh; max-width:none; max-height:none; border:0; border-radius:0; background:transparent; overflow:hidden; color:var(--ink); animation:none; transform:none; }
+.public-experience .desk-v2 .help-tour-layer::backdrop { background:rgb(29 41 35 / .16); }
+.public-experience .desk-v2 .help-focus-frame { position:absolute; left:0; top:0; pointer-events:none; border:2px solid #567661; border-radius:8px; box-shadow:0 0 0 4px rgb(255 253 248 / .9); }
+.public-experience .desk-v2 .help-compass { position:absolute; left:0; top:0; width:40px; height:40px; z-index:3; border-radius:50%; color:#f5e5c4; background:#294238; border:2px solid #fffaf0; box-shadow:0 4px 12px #1e372633; pointer-events:none; }
+.public-experience .desk-v2 .help-compass svg { width:100%; height:100%; }
+.public-experience .desk-v2 .help-floating-card { position:absolute; top:0; left:0; width:354px; max-width:calc(100% - 28px); max-height:calc(100dvh - 28px); overflow-y:auto; overscroll-behavior:contain; scrollbar-gutter:stable; background:#fffdf8; border:1px solid #c6cebf; border-radius:13px; padding:19px 20px 16px; box-shadow:0 12px 36px #25362a26; z-index:2; }
+.public-experience .desk-v2 .help-floating-top { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:7px; }
+.public-experience .desk-v2 .help-floating-close { display:grid; place-items:center; min-width:30px; height:30px; padding:0; font-size:24px; color:var(--muted); border-radius:50%; }
+.public-experience .desk-v2 .help-floating-close:hover { background:#efece2; }
+.public-experience .desk-v2 .help-floating-card h2 { font-size:20px; line-height:1.3; margin:0 0 12px; padding:0; letter-spacing:-.025em; }
+.public-experience .desk-v2 .help-floating-card p { font-size:13px; line-height:1.75; margin:0 0 13px; color:#4a514d; }
+.public-experience .desk-v2 .help-floating-card .help-back { font-size:11px; min-height:30px; }
+.public-experience .desk-v2 .help-route-progress { display:flex; gap:4px; margin:15px 0; }
+.public-experience .desk-v2 .help-route-progress span { height:3px; flex:1; background:#e2e4da; border-radius:3px; }
+.public-experience .desk-v2 .help-route-progress .passed { background:#a3b69d; }
+.public-experience .desk-v2 .help-route-progress .current { background:#294238; }
+.public-experience .desk-v2 .help-floating-navigation { display:flex; justify-content:space-between; gap:12px; }
+.public-experience .desk-v2 .help-floating-navigation button { min-height:38px; font-size:12px; padding:9px 14px; }
+.public-experience .desk-v2 .help-floating-navigation button:disabled { opacity:.4; cursor:not-allowed; }
+.public-experience .desk-v2 .help-floating-navigation .desk-primary { background:#294238; border-color:#294238; }
+.public-experience .desk-v2 .help-floating-navigation .desk-primary:hover { background:#385749; }
+.public-experience .desk-v2 .help-floating-exit { display:flex; gap:12px; justify-content:space-between; margin-top:14px; border-top:1px solid #e4e4da; padding-top:9px; }
+.public-experience .desk-v2 .help-floating-exit button { min-height:36px; padding:4px 0; font-size:11px; text-decoration:underline; text-underline-offset:3px; }
+.public-experience .desk-v2 .help-floating-hint { display:block; font-size:10px; line-height:1.6; color:var(--muted); margin-top:5px; }
+@media (prefers-reduced-motion: no-preference) {
+  .public-experience .desk-v2 .help-compass { transition:transform 1.2s cubic-bezier(.45,0,.2,1); }
+  .public-experience .desk-v2 .help-compass svg { animation:compass-arrival 1.2s ease-in-out; }
+  /* The panel follows the compass; navigation waits for arrival (1350ms). */
+  .public-experience .desk-v2 .help-floating-card { transition:transform 1.05s cubic-bezier(.45,0,.2,1); }
+  .public-experience .desk-v2 .help-focus-frame { transition:transform 1.05s ease, width 1.05s ease, height 1.05s ease; }
+  .public-experience .desk-v2 .help-floating-copy { animation:tour-copy-in .8s .25s ease-out both; }
+  @keyframes tour-copy-in { from { opacity:.15; translate:0 6px; } to { opacity:1; translate:0 0; } }
+  @keyframes compass-arrival { from { rotate:-55deg; } to { rotate:0deg; } }
+}
+.public-experience .desk-v2 .help-tour-return { position:sticky; top:-25px; z-index:1; padding:15px; margin-bottom:20px; background:#f0f4ed; border:1px solid #bac9b6; border-radius:7px; }
+.public-experience .desk-v2 .help-tour-return p { font-size:11px; margin:6px 0 12px; }
+@media(max-width:760px) {
+  .public-experience .desk-v2 .desk-top-help { padding:7px; gap:4px; font-size:11px; }
+  .public-experience .desk-v2 .desk-top-help span { display:none; }
+  .public-experience .desk-v2 .help-tour-intro { flex-direction:column; align-items:start; gap:15px; padding:16px; }
+  .public-experience .desk-v2 .help-tour-actions { gap:8px; }
+  .public-experience .desk-v2 .help-article h3 { font-size:21px; }
+  .public-experience .desk-v2 .help-floating-card { padding:14px 16px 12px; }
+  .public-experience .desk-v2 .help-floating-card h2 { font-size:18px; }
+  .public-experience .desk-v2 .help-floating-card p { font-size:12px; line-height:1.65; }
+}

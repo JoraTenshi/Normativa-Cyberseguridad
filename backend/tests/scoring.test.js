@@ -2,7 +2,7 @@
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { calcularIndice, getNivel } = require('../utils/scoring');
+const { calcularIndice, calcularCoberturaEstimada, construirRemediaciones, getNivel, getNivelResultado } = require('../utils/scoring');
 const { validarRespuestas } = require('../validation/validarRespuestas');
 const { cargarNormativas } = require('../seed/seed');
 
@@ -68,9 +68,41 @@ test('catálogo con pesos inválidos se rechaza', () => {
   assert.throws(() => calcularIndice(n, resp(1, 1, 1, 1)), /CATALOGO_INVALIDO/);
 });
 
+test('catálogo con IDs de pregunta repetidos no genera un índice', () => {
+  const n = structuredClone(norma);
+  n.bloques[1].preguntas[0].id = 'a1';
+  assert.throws(() => calcularIndice(n, resp(1, 1, 1, 1)), /CATALOGO_INVALIDO/);
+});
+
 test('umbrales de nivel usan el valor exacto', () => {
   const casos = [[29.5, 'Crítico'], [30, 'Bajo'], [59.5, 'Bajo'], [60, 'Medio'], [84.5, 'Medio'], [85, 'Alto']];
   for (const [v, esperado] of casos) assert.equal(getNivel(v), esperado, `valor ${v}`);
+  assert.equal(getNivel(null), null);
+  assert.equal(getNivelResultado({ algoritmo_version: '2', porcentaje_exacto: 29.5, porcentaje: 30 }), 'Crítico');
+  assert.equal(getNivelResultado({ porcentaje: 30 }), 'Bajo');
+});
+
+test('la proyección temática acepta porcentajes de bloque v2 y omite bloques no evaluables', () => {
+  const actual = { bloques: [{ id: 'A', peso_bloque: 100, temas: ['governance'] }] };
+  const otra = [{ id: 'otra', nombre: 'Otra', bloques: [{
+    id: 'X', nombre: 'Bloque X', peso_bloque: 100, temas: ['governance'], preguntas: [{ peso: 1 }]
+  }] }];
+  const bloque = { bloque_id: 'A', porcentaje_exacto: 47.5, max_puntuacion: 1, evaluable: true };
+
+  assert.equal(calcularCoberturaEstimada(actual, [bloque], otra)[0].porcentaje_estimado, 48);
+  assert.deepEqual(calcularCoberturaEstimada(actual, [{ ...bloque, evaluable: false }], otra), []);
+});
+
+test('las remediaciones distinguen un No guardado de una pregunta histórica sin respuesta', () => {
+  const catalogoActual = { bloques: [{ id: 'A', nombre: 'Bloque A', preguntas: [
+    { id: 'a1', texto: 'Pregunta antigua', peso: 5, remediacion: 'Mejorar a1' },
+    { id: 'a2', texto: 'Pregunta añadida después', peso: 7, remediacion: 'Mejorar a2' }
+  ] }] };
+  const acciones = construirRemediaciones(catalogoActual, [{ pregunta_id: 'a1', valor: 0 }]);
+
+  assert.equal(acciones.length, 1);
+  assert.equal(acciones[0].pregunta_id, 'a1');
+  assert.equal(acciones[0].prioridad, 5);
 });
 
 test('validación: acepta un cuestionario completo', () => {
@@ -102,7 +134,7 @@ test('las 11 normativas reales pasan el catálogo y dan 100 con todo Sí y 0 con
 });
 
 // ── Cobertura estimada ponderada por peso_bloque (tarea 11) ──────────────────
-const { calcularCoberturaEstimada } = require('../utils/scoring');
+
 
 // Perfil: tema "x" al 100 % (bloque A) y tema "z" al 0 % (bloque B).
 const actual = {

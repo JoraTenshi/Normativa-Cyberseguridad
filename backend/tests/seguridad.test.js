@@ -20,7 +20,7 @@ const { generateJti } = require('../middleware/auth');
 
 const RAIZ = path.join(__dirname, '..', '..');
 const USER_ID = '507f1f77bcf86cd799439011';
-const app = createApp({ rateLimits: false });
+const app = createApp({ rateLimits:false, politicaSesiones:'legado_pruebas' });
 
 // ── Estado simulado de MongoDB ────────────────────────────────────────────────
 let usuario;
@@ -229,7 +229,19 @@ test('frontend: compatible con la CSP (sin script ni estilos en línea)', () => 
       if (e.isDirectory()) { pendientes.push(ruta); continue; }
       if (!/\.(jsx?|html)$/.test(e.name)) continue;
       const src = fs.readFileSync(ruta, 'utf8');
-      assert.doesNotMatch(src, /<style[\s>]/, `${ruta}: <style> en línea`);
+      let appSource = src;
+      // Only this static downloaded report owns its own CSP. Its CSS is not
+      // injected into the application DOM. All dynamic-code checks remain global.
+      if (ruta === path.join(RAIZ, 'frontend/src/public-experience/demo/task-history.js')) {
+        const report = src.match(/export function buildHistoryReport\([\s\S]*\n}\s*$/)?.[0];
+        assert.ok(report, 'falta exportación autónoma identificada');
+        const styles = [...report.matchAll(/<style>([\s\S]*?)<\/style>/g)];
+        assert.equal(styles.length, 1, 'un único CSS estático en la exportación');
+        assert.doesNotMatch(styles[0][1], /\$\{|url\s*\(|@import/i, 'sin CSS dinámico ni recursos remotos');
+        assert.match(report, /default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'/);
+        appSource = src.replace(styles[0][0], '');
+      }
+      assert.doesNotMatch(appSource, /<style[\s>]/, `${ruta}: <style> en aplicación`);
       assert.doesNotMatch(src, /dangerouslySetInnerHTML|\beval\(|new Function\(/, `${ruta}: código dinámico`);
     }
   }
@@ -238,11 +250,11 @@ test('frontend: compatible con la CSP (sin script ni estilos en línea)', () => 
 
 test('frontend: tras iniciar sesión solo se redirige a rutas internas', () => {
   const auth = leer('frontend/src/pages/Auth.jsx');
-  assert.match(auth, /const from\s*=\s*esRutaInterna\(location\.state\?\.from\) \? location\.state\.from : '\/';/);
+  assert.match(auth, /const from\s*=\s*esRutaInterna\(location\.state\?\.from\) \? location\.state\.from : '\/espacio-de-trabajo';/);
   const regex = auth.match(/esRutaInterna = destino =>\s*typeof destino === 'string' && (\/.+\/)\.test\(destino\);/)?.[1];
   assert.ok(regex, 'falta esRutaInterna');
   const esRutaInterna = d => typeof d === 'string' && new RegExp(regex.slice(1, -1)).test(d);
-  for (const ok of ['/', '/settings', '/historial/64b0']) assert.equal(esRutaInterna(ok), true, ok);
+  for (const ok of ['/', '/espacio-de-trabajo', '/settings', '/historial/64b0']) assert.equal(esRutaInterna(ok), true, ok);
   for (const malo of ['//evil.example', '/\\evil.example', 'https://evil.example', 'evil.example', '/a b', undefined]) {
     assert.equal(esRutaInterna(malo), false, String(malo));
   }

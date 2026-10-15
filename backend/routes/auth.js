@@ -1,3 +1,4 @@
+const { esBDNoDisponible } = require('../utils/bd');
 const express      = require('express');
 const crypto       = require('crypto');
 const bcrypt       = require('bcryptjs');
@@ -23,7 +24,9 @@ const { readTotpSecret } = require('../utils/totpEncryption');
 
 const { JWT_SECRET, JWT_EXPIRES, generateJti, requireAuth } = require('../middleware/auth');
 
-const RESET_TTL_MS = 30 * 60 * 1000;
+const accesoSesion = require('../services/accesoSesion');
+
+const RESET_TTL_MS = 10 * 60 * 1000;
 const emailVerificationTtlHours = Number(process.env.EMAIL_VERIFICATION_TTL_HOURS || 24);
 if (!Number.isSafeInteger(emailVerificationTtlHours) || emailVerificationTtlHours < 1 || emailVerificationTtlHours > 168) {
   throw new Error('EMAIL_VERIFICATION_TTL_HOURS debe estar entre 1 y 168 horas');
@@ -63,8 +66,21 @@ function signToken(user) {
   );
 }
 
-function signPending2fa(user) {
-  return jwt.sign({ pending2fa: true, id: user._id.toString(), sessionVersion: user.sessionVersion ?? 0, jti: generateJti() }, JWT_SECRET, { expiresIn: '5m' });
+function signPending2fa(user, mantenerSesion, persistente) {
+  return jwt.sign({ pending2fa:true, id:user._id.toString(), sessionVersion:user.sessionVersion ?? 0, jti:generateJti(),
+    ...(persistente ? { tipo:'desafio_mfa_v1', mantenerSesion } : {})
+  }, JWT_SECRET, { expiresIn:'5m' });
+}
+async function entregarSesion(req, res, usuario, mantenerSesion) {
+  if (!accesoSesion.esPersistente(req)) {
+    res.cookie(COOKIE_NAME, signToken(usuario), COOKIE_OPTIONS);
+    return res.json({ ok:true, data:{ usuario:safeUser(usuario) } });
+  }
+  const acceso = await accesoSesion.iniciar(usuario, mantenerSesion);
+  if (!acceso) return res.status(401).json({ ok:false, codigo:'CREDENCIALES_CAMBIADAS',
+    error:'La cuenta cambió durante el acceso. Inicia sesión de nuevo.' });
+  accesoSesion.ponerCookie(res, acceso);
+  return res.json({ ok:true, data:{ usuario:safeUser(usuario), sesion:accesoSesion.estadoPublico(acceso.estado) } });
 }
 
 function safeUser(u) {
@@ -173,6 +189,7 @@ router.post('/register', async (req, res) => {
     });
 
   } catch (err) {
+    if (esBDNoDisponible(err) || err.code === 'SESIONES_NO_DISPONIBLES') return res.status(503).json({ ok: false, error: 'Servicio no disponible temporalmente' });
     if (err.code === 11000) {
       return res.status(409).json({ ok: false, error: 'El email ya está registrado' });
     }
@@ -227,6 +244,7 @@ router.post('/verify-email', async (req, res) => {
     });
 
   } catch (err) {
+    if (esBDNoDisponible(err) || err.code === 'SESIONES_NO_DISPONIBLES') return res.status(503).json({ ok: false, error: 'Servicio no disponible temporalmente' });
     console.error(
       'Error al verificar el correo:',
       err.stack
@@ -317,6 +335,7 @@ router.post('/resend-verification', async (req, res) => {
 
     return res.json(respuesta);
   } catch (error) {
+    if (esBDNoDisponible(error)) return res.status(503).json({ ok: false, error: 'Servicio no disponible temporalmente' });
     console.error('Error al preparar el reenvío:', error.message);
 
     return res.status(500).json({
@@ -328,7 +347,11 @@ router.post('/resend-verification', async (req, res) => {
 
 router.post('/login', async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, mantenerSesion = false } = req.body;
+    if (accesoSesion.esPersistente(req) &&
+        (typeof mantenerSesion !== 'boolean' || Object.keys(req.body).some(k => !['email','password','mantenerSesion'].includes(k)))) {
+      return res.status(400).json({ ok:false, error:'Datos de inicio de sesión inválidos' });
+    }
 
     if (typeof email !== 'string' || typeof password !== 'string') {
       return res.status(400).json({ ok: false, error: 'Email y contraseña son obligatorios' });
@@ -362,14 +385,15 @@ router.post('/login', async (req, res) => {
     }
 
     if (usuario.twoFactorEnabled) {
-      res.cookie(PENDING_2FA_COOKIE, signPending2fa(usuario), PENDING_2FA_OPTIONS);
+      if (accesoSesion.esPersistente(req)) res.clearCookie(COOKIE_NAME, accesoSesion.OPCIONES_COOKIE);
+      res.cookie(PENDING_2FA_COOKIE, signPending2fa(usuario, mantenerSesion, accesoSesion.esPersistente(req)), PENDING_2FA_OPTIONS);
       return res.json({ ok: true, data: { requires2fa: true } });
     }
 
-    res.cookie(COOKIE_NAME, signToken(usuario), COOKIE_OPTIONS);
-    res.json({ ok: true, data: { usuario: safeUser(usuario) } });
+    return await entregarSesion(req, res, usuario, mantenerSesion);
 
   } catch (err) {
+    if (esBDNoDisponible(err) || err.code === 'SESIONES_NO_DISPONIBLES') return res.status(503).json({ ok: false, error: 'Servicio no disponible temporalmente' });
     res.status(500).json({ ok: false, error: 'Error interno al iniciar sesión' });
   }
 });
@@ -385,10 +409,16 @@ router.post('/2fa/verify', async (req, res) => {
     try { payload = jwt.verify(pendingToken, JWT_SECRET, { algorithms: ['HS256'] }); }
     catch { return res.status(401).json({ ok: false, error: 'Sesión de verificación expirada' }); }
 
-    if (!payload.pending2fa || typeof payload.jti !== 'string' || payload.jti === '') {
+    if (!payload.pending2fa || typeof payload.jti !== 'string' || payload.jti === '' ||
+        (accesoSesion.esPersistente(req) && (payload.tipo !== 'desafio_mfa_v1' ||
+          typeof payload.mantenerSesion !== 'boolean' || !/^[a-f0-9]{24}$/.test(payload.id ?? '') ||
+          !Number.isSafeInteger(payload.sessionVersion) || payload.sessionVersion < 0))) {
       return res.status(401).json({ ok: false, error: 'Token inválido' });
     }
 
+    if (accesoSesion.esPersistente(req) && Object.keys(req.body).some(k => k !== 'token')) {
+      return res.status(400).json({ ok:false, error:'Datos de segundo factor inválidos' });
+    }
     const { token: totpToken } = req.body;
     if (typeof totpToken !== 'string') {
       return res.status(400).json({ ok: false, error: 'El código 2FA es obligatorio' });
@@ -430,6 +460,7 @@ router.post('/2fa/verify', async (req, res) => {
     try {
       await RevokedToken.create({ jti: payload.jti, expiresAt: new Date(payload.exp * 1000) });
     } catch (err) {
+    if (esBDNoDisponible(err) || err.code === 'SESIONES_NO_DISPONIBLES') return res.status(503).json({ ok: false, error: 'Servicio no disponible temporalmente' });
       if (err.code === 11000) {
         return res.status(401).json({ ok: false, error: 'Sesión de verificación ya utilizada' });
       }
@@ -437,10 +468,10 @@ router.post('/2fa/verify', async (req, res) => {
     }
 
     res.clearCookie(PENDING_2FA_COOKIE, COOKIE_BASE_OPTIONS);
-    res.cookie(COOKIE_NAME, signToken(usuario), COOKIE_OPTIONS);
-    res.json({ ok: true, data: { usuario: safeUser(usuario) } });
+    return await entregarSesion(req, res, usuario, payload.mantenerSesion ?? false);
 
   } catch (err) {
+    if (esBDNoDisponible(err) || err.code === 'SESIONES_NO_DISPONIBLES') return res.status(503).json({ ok: false, error: 'Servicio no disponible temporalmente' });
     res.status(500).json({ ok: false, error: 'Error interno al verificar 2FA' });
   }
 });
@@ -489,6 +520,7 @@ router.post('/forgot-password', async (req, res) => {
 
     res.json(respuestaGenerica);
   } catch (err) {
+    if (esBDNoDisponible(err) || err.code === 'SESIONES_NO_DISPONIBLES') return res.status(503).json({ ok: false, error: 'Servicio no disponible temporalmente' });
     res.status(500).json({ ok: false, error: 'Error interno al solicitar la recuperación' });
   }
 });
@@ -523,11 +555,44 @@ router.post('/reset-password', async (req, res) => {
 
     res.json({ ok: true, message: 'Contraseña actualizada. Ya puedes iniciar sesión.' });
   } catch (err) {
+    if (esBDNoDisponible(err) || err.code === 'SESIONES_NO_DISPONIBLES') return res.status(503).json({ ok: false, error: 'Servicio no disponible temporalmente' });
     res.status(500).json({ ok: false, error: 'Error interno al restablecer la contraseña' });
   }
 });
 
-router.post('/logout', requireAuth, async (req, res) => {
+router.get('/session', requireAuth, (req,res) => {
+  if (!req.estadoSesion) return res.status(404).json({ ok:false, error:'Política de sesiones no habilitada' });
+  res.json({ ok:true, data:{ ...accesoSesion.estadoPublico(req.estadoSesion), usuario:req.usuarioActual } });
+});
+router.post('/session/actividad', requireAuth, async (req,res) => {
+  if (!req.claveSesion) return res.status(404).json({ ok:false, error:'Política de sesiones no habilitada' });
+  if (!req.body || typeof req.body !== 'object' || Array.isArray(req.body) || Object.keys(req.body).length) {
+    return res.status(400).json({ ok:false, error:'La actividad no admite fechas ni datos del cliente' });
+  }
+  try {
+    const estado = await accesoSesion.actividad(req.claveSesion);
+    if (!estado.valida) return res.status(401).json({ ok:false, codigo:'SESION_NO_VALIDA', error:'La sesión ha caducado o se ha cerrado' });
+    return res.json({ ok:true, data:{ ...accesoSesion.estadoPublico(estado), usuario:req.usuarioActual } });
+  } catch { return res.status(503).json({ ok:false, error:'Servicio no disponible temporalmente' }); }
+});
+router.post('/logout', async (req,res,next) => {
+  if (!accesoSesion.esPersistente(req)) return requireAuth(req,res,next);
+  try {
+    await accesoSesion.cerrar(req.cookies?.[COOKIE_NAME]);
+    const pendiente = req.cookies?.[PENDING_2FA_COOKIE];
+    if (pendiente) {
+      let p;
+      try { p = jwt.verify(pendiente, JWT_SECRET, { algorithms:['HS256'] }); } catch {}
+      if (p?.pending2fa && p.tipo === 'desafio_mfa_v1' && typeof p.jti === 'string') {
+        await RevokedToken.updateOne({ jti:p.jti },
+          { $setOnInsert:{ expiresAt:new Date(p.exp * 1000) } }, { upsert:true });
+      }
+    }
+    res.clearCookie(COOKIE_NAME, accesoSesion.OPCIONES_COOKIE);
+    res.clearCookie(PENDING_2FA_COOKIE, accesoSesion.OPCIONES_COOKIE);
+    return res.json({ ok:true });
+  } catch { return res.status(503).json({ ok:false, error:'No se pudo confirmar el cierre de sesión' }); }
+}, async (req, res) => {
   try {
     const payload = req.user;
     if (payload?.jti) {
@@ -539,6 +604,7 @@ router.post('/logout', requireAuth, async (req, res) => {
     res.clearCookie(COOKIE_NAME, COOKIE_BASE_OPTIONS);
     res.json({ ok: true });
   } catch (err) {
+    if (esBDNoDisponible(err) || err.code === 'SESIONES_NO_DISPONIBLES') return res.status(503).json({ ok: false, error: 'Servicio no disponible temporalmente' });
     res.status(500).json({ ok: false, error: 'Error interno al cerrar sesión' });
   }
 });

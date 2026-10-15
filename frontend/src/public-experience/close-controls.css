@@ -1,0 +1,21 @@
+/* Keep the mark centred independently of the surrounding text and font. */
+.public-experience :is(.nc-home, .demo-host, .desk-v2, .entry-cue) button.nc-close-control:not(.mobile-menu) {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.public-experience button.nc-close-control > svg.nc-close-icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  flex-shrink: 0;
+}
+.public-experience .desk-v2 .help-floating-close.nc-close-control {width:30px}
+.public-experience .desk-v2 .desk-toast .nc-close-control {width:28px;height:28px}
+/* Do not override the desktop menu's display:none. */
+@media(max-width:600px) {
+  .public-experience .nc-home .mobile-menu.nc-close-control {display:grid;place-items:center;padding:0;width:44px;height:44px;line-height:1;flex-shrink:0}
+}

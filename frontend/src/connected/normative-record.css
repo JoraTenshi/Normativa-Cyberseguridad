@@ -1,0 +1,27 @@
+/* Scoped to the connected workspace; does not style the public landing. */
+.desk-v2 .norm-record {display:grid;gap:20px;min-width:0;font-size:14px;line-height:1.65}
+.desk-v2 .norm-record-heading,.desk-v2 .norm-section {padding:22px;background:var(--paper,#fff);border:1px solid var(--border,#e2e1db);border-radius:8px;min-width:0}
+.desk-v2 .norm-record-heading h2 {font-size:24px;line-height:1.35;margin:8px 0 12px}
+.desk-v2 .norm-overline {font-size:11px;letter-spacing:.08em;color:var(--muted,#63686d)}
+.desk-v2 .norm-reference {font-size:12px;color:var(--muted,#63686d);margin-top:10px;overflow-wrap:anywhere}
+.desk-v2 .norm-dimensions {display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:0}
+.desk-v2 .norm-dimensions>div {border:1px solid var(--border,#e2e1db);border-radius:8px;padding:16px;background:#f4f2ec}
+.desk-v2 .norm-dimensions dt {font-size:12px;font-weight:600;margin-bottom:8px}
+.desk-v2 .norm-dimensions dd {margin:0}
+.desk-v2 .norm-dimensions strong {font-size:16px;display:block;line-height:1.45}
+.desk-v2 .norm-dimensions dd p {font-size:12px;margin-top:10px}
+.desk-v2 .norm-dimensions [data-state=warning],.desk-v2 .norm-warning {background:#fff3df;border:1px solid #dbc395}
+.desk-v2 .norm-warning,.desk-v2 .norm-boundary {padding:15px 18px;border-radius:6px}
+.desk-v2 .norm-boundary {background:#eeeff1;border-left:3px solid #7d8490}
+.desk-v2 .norm-section h3 {font-size:19px;margin-bottom:12px}
+.desk-v2 .norm-section h4 {font-size:15px;margin:0 0 8px}
+.desk-v2 .norm-criteria,.desk-v2 .norm-actions,.desk-v2 .norm-evidence {padding-left:22px;margin:18px 0 0}
+.desk-v2 .norm-criteria>li,.desk-v2 .norm-actions>li,.desk-v2 .norm-evidence>li {padding:16px 0;border-top:1px solid var(--border,#e2e1db)}
+.desk-v2 .norm-precepts {list-style:none;padding:0;margin:10px 0 0;font-size:12px}
+.desk-v2 .norm-precepts li {display:flex;gap:8px 12px;flex-wrap:wrap;margin:6px 0}
+.desk-v2 .norm-precepts span {color:var(--muted,#63686d)}
+.desk-v2 .norm-criterion-review {padding:12px;margin-top:12px;border-left:3px solid #9d8a74;background:#f7f3ed}
+.desk-v2 .norm-hash {font:11px/1.6 monospace;overflow-wrap:anywhere}
+.desk-v2 .norm-source {padding:14px 0;border-bottom:1px solid var(--border,#e2e1db)}
+.desk-v2 .norm-record summary {cursor:pointer;font-size:16px;font-weight:600}
+@media(max-width:600px) {.desk-v2 .norm-record-heading,.desk-v2 .norm-section {padding:16px}.desk-v2 .norm-dimensions {grid-template-columns:1fr}.desk-v2 .norm-record-heading h2 {font-size:21px}}

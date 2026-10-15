@@ -18,7 +18,7 @@ const { generateJti } = require('../middleware/auth');
 const { cargarNormativas } = require('../seed/seed');
 
 const USER_ID = '64b000000000000000000001';
-const app = createApp({ rateLimits: false });
+const app = createApp({ rateLimits:false, politicaSesiones:'legado_pruebas' });
 
 // Normativa real del seed: LSSI-CE (5 bloques, 11 preguntas)
 const lssi = cargarNormativas().find(n => n.id === 'lssi_ce');
@@ -149,9 +149,9 @@ test('v2: el Resultado guardado incluye versión, valor exacto, nivel y desglose
   assert.equal(com.porcentaje, 100);
 });
 
-test('el modelo Resultado exige algoritmo_version y acepta los niveles del contrato', () => {
+test('el modelo Resultado conserva los históricos sin versión y valida los niveles', () => {
   const base = { normativa: 'lssi_ce', normativa_nombre: 'LSSI-CE', respuestas: [] };
-  assert.ok(new Resultado(base).validateSync().errors.algoritmo_version);
+  assert.equal(new Resultado(base).validateSync(), undefined);
   assert.equal(new Resultado({ ...base, algoritmo_version: '2', nivel: 'Crítico' }).validateSync(), undefined);
   assert.ok(new Resultado({ ...base, algoritmo_version: '2', nivel: 'Excelente' }).validateSync().errors.nivel);
 });
@@ -165,9 +165,7 @@ test('el Resultado guarda la copia de lo calculado: nombre, cuestionario, remedi
     const r = creados[0];
 
     assert.equal(r.normativa_nombre, lssi.nombre);
-    assert.deepEqual(r.cuestionario, lssi.bloques.map(b => ({
-      id: b.id, nombre: b.nombre, preguntas: b.preguntas.map(p => ({ id: p.id, texto: p.texto, peso: p.peso }))
-    })));
+    assert.deepEqual(r.normativa_snapshot, require('../utils/normativaSnapshot').crearSnapshotNormativa(lssi));
     assert.equal(r.remediaciones.length, ids.length - 3, 'todas menos las 3 de LSSI-COM');
     assert.deepEqual(r.remediaciones, body.data.remediaciones);
     assert.equal(r.cobertura_estimada.length, 1);
@@ -177,9 +175,9 @@ test('el Resultado guarda la copia de lo calculado: nombre, cuestionario, remedi
   }
 });
 
-test('el Resultado del modelo exige el nombre de la normativa', () => {
+test('el modelo permite leer históricos que no guardaban el nombre', () => {
   const r = new Resultado({ normativa: 'lssi_ce', respuestas: [], algoritmo_version: '2' });
-  assert.ok(r.validateSync().errors.normativa_nombre);
+  assert.equal(r.validateSync(), undefined);
 });
 
 test('MongoDB no disponible: 503 (no 500) y no se crea ningún Resultado', async () => {

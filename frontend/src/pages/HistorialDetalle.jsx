@@ -136,8 +136,8 @@ const HistorialDetalle = () => {
         <button className="btn-secondary" onClick={() => navigate('/historial')}>
           ← Volver al historial
         </button>
-        <button className="btn-secondary" onClick={() => navigate(`/cuestionario/${detalle.normativa}`)}>
-          Repetir evaluación
+        <button className="btn-secondary" onClick={() => navigate('/espacio-de-trabajo')}>
+          Ir a mi espacio
         </button>
         <button className="btn-primary" onClick={() => navigate(`/pds/${id}`)}>
           Generar Plan Director

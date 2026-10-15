@@ -1,0 +1,13 @@
+.company-profile .profile-question { padding: 20px 0; border-bottom: 1px solid var(--border); max-width: 900px; }
+.company-profile .profile-question h3 { font-size: 16px; margin: 0 0 12px; }
+.company-profile .profile-question label { max-width: 650px; }
+.company-profile .profile-question small { display: block; line-height: 1.6; color: var(--muted); }
+.company-profile .profile-activities, .company-profile .profile-space { background: #f3f5ed; padding: 18px; margin: 14px 0; border-radius: 8px; }
+.company-profile .profile-candidate { border: 1px solid var(--border); padding: 16px; border-radius: 8px; background: var(--paper); }
+.company-profile .profile-check, .company-profile .profile-checks label { flex-direction: row; align-items: flex-start; gap: 10px; }
+.company-profile .profile-check input, .company-profile .profile-checks input { width: auto; min-width: 18px; margin-top: 4px; }
+.company-profile .profile-checks { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+.company-profile .profile-checks label { margin: 4px 0; }
+.company-profile h3, .company-profile p, .company-profile li, .company-profile summary { overflow-wrap: anywhere; }
+.company-profile ul { padding-left: 22px; }
+.company-profile .api-tabs { gap: 8px; }

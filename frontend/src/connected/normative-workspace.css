@@ -1,0 +1,30 @@
+.desk-v2 .norm-workspace {max-width:1180px;margin-inline:auto}
+.desk-v2 .norm-workspace .api-intro:focus {outline:none}
+.desk-v2 .norm-workspace .api-tabs {flex-wrap:wrap;gap:8px;margin-block:24px}
+.desk-v2 .norm-workspace .api-tabs button {min-height:44px}
+.desk-v2 .norm-workspace .api-panel {margin-block:24px}
+.desk-v2 .norm-workspace .api-panel>p {line-height:1.7}
+.desk-v2 .norm-workspace .api-row {gap:24px}
+.desk-v2 .norm-workspace .api-row strong {font-size:18px;line-height:1.45}
+.desk-v2 .norm-workspace .api-row small {display:block;line-height:1.6;margin-top:6px}
+.desk-v2 .norm-workspace .api-row p {margin-block:6px}
+.desk-v2 .norm-workspace fieldset {min-width:0}
+.desk-v2 .norm-workspace form>fieldset {border:0;padding:0}
+.desk-v2 .norm-workspace label {display:flex;flex-direction:column;gap:8px;margin-block:16px;font-weight:600}
+.desk-v2 .norm-workspace input,.desk-v2 .norm-workspace select,.desk-v2 .norm-workspace textarea {box-sizing:border-box;max-width:100%;font:inherit;font-weight:400;padding:12px;border:1px solid #cdbdb0;border-radius:8px;background:#fffdf9;color:#293c35}
+.desk-v2 .norm-workspace textarea {min-height:100px;resize:vertical}
+.desk-v2 .norm-workspace label small {font-size:13px;font-weight:400;line-height:1.5}
+.desk-v2 .norm-picker {background:#f4f0e9;border:1px solid #ddd2c5;padding:16px 20px;margin-block:22px;border-radius:12px}
+.desk-v2 .norm-selected {padding:0;list-style:none}
+.desk-v2 .norm-selected li {display:flex;align-items:center;gap:18px;justify-content:space-between;margin-block:12px;padding-block:10px;border-top:1px solid #ddd2c5}
+.desk-v2 .norm-selected small {display:block;overflow-wrap:anywhere;margin-top:6px}
+.desk-v2 .norm-question-group,.desk-v2 .norm-review-criteria>li {margin-block:18px;padding:20px;border:1px solid #d9cbbd;border-radius:12px;background:#fffdf9}
+.desk-v2 .norm-workspace summary {font-size:17px;line-height:1.5;font-weight:600;cursor:pointer;padding-block:8px}
+.desk-v2 .norm-review-criteria {padding-left:24px}
+.desk-v2 .norm-workspace .norm-check {flex-direction:row;align-items:flex-start;gap:12px;font-weight:400}
+.desk-v2 .norm-check input {width:20px;height:20px;flex-shrink:0;margin-top:3px}
+.desk-v2 .norm-workspace .norm-hash {overflow-wrap:anywhere;font-size:13px}
+.desk-v2 .norm-workspace .api-actions {display:flex;flex-wrap:wrap;gap:12px;margin-block:18px}
+.desk-v2 .norm-workspace .api-actions button {min-height:44px}
+.desk-v2 .norm-workspace button:focus-visible,.desk-v2 .norm-workspace summary:focus-visible {outline:3px solid #ad6b42;outline-offset:4px}
+@media(max-width:700px){.desk-v2 .norm-selected li,.desk-v2 .norm-workspace .api-row {flex-direction:column;align-items:stretch}.desk-v2 .norm-picker{padding:14px}.desk-v2 .norm-review-criteria{padding-left:18px}.desk-v2 .norm-question-group,.desk-v2 .norm-review-criteria>li{padding:14px}}

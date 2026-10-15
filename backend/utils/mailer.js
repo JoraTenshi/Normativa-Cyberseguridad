@@ -29,11 +29,11 @@ async function enviarEmailRecuperacion(to, resetUrl) {
   const text =
     `Has solicitado restablecer tu contraseña en NormativaCheck.\n\n` +
     `Abre el siguiente enlace para elegir una nueva contraseña ` +
-    `(válido durante 30 minutos):\n\n${resetUrl}\n\n` +
+    `(válido durante 10 minutos):\n\n${resetUrl}\n\n` +
     `Si no has solicitado este cambio, ignora este mensaje: tu contraseña no se modificará.`;
   const html =
     `<p>Has solicitado restablecer tu contraseña en <strong>NormativaCheck</strong>.</p>` +
-    `<p>Pulsa el siguiente enlace para elegir una nueva contraseña (válido durante 30 minutos):</p>` +
+    `<p>Pulsa el siguiente enlace para elegir una nueva contraseña (válido durante 10 minutos):</p>` +
     `<p><a href="${resetUrl}">${resetUrl}</a></p>` +
     `<p>Si no has solicitado este cambio, ignora este mensaje: tu contraseña no se modificará.</p>`;
   return enviarEmail({ to, subject, text, html });

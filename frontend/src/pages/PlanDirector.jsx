@@ -257,8 +257,8 @@ const PlanDirector = () => {
         <button className="btn-secondary" onClick={() => navigate('/historial')}>
           ← Historial
         </button>
-        <button className="btn-primary" onClick={() => navigate(`/cuestionario/${pds.normativa}`)}>
-          Repetir evaluación
+        <button className="btn-primary" onClick={() => navigate('/espacio-de-trabajo')}>
+          Ir a mi espacio
         </button>
       </div>
     </div>

@@ -18,7 +18,7 @@ const { generateJti } = require('../middleware/auth');
 
 const USER_ID = '64b000000000000000000001';
 const RESULTADO_ID = '64b0000000000000000000aa';
-const app = createApp({ rateLimits: false });
+const app = createApp({ rateLimits:false, politicaSesiones:'legado_pruebas' });
 
 // Resultado guardado en el límite (se muestra 30 % pero el nivel exacto es Crítico), con su copia
 // de cuestionario, remediaciones y cobertura tal como estaban al enviarlo.
@@ -86,7 +86,7 @@ test('GET /me/pds/:id construye el plan con las remediaciones guardadas', async 
   assert.equal(d.plan[0].acciones[0].descripcion, 'Texto al enviar');
 });
 
-test('GET /me/pds/:id agrupa las acciones sin fase en "Sin fase asignada", al final y sin inventar fase', async () => {
+test('GET /me/pds/:id agrupa las acciones sin fase en "Sin etapa asignada", al final y sin inventar fase', async () => {
   const conSinFase = {
     ...guardado,
     remediaciones: [
@@ -101,7 +101,7 @@ test('GET /me/pds/:id agrupa las acciones sin fase en "Sin fase asignada", al fi
     assert.equal(res.status, 200);
     const plan = res.body.data.plan;
     assert.deepEqual(plan.map(f => f.fase), [1, null]);
-    assert.equal(plan[1].nombre, 'Sin fase asignada');
+    assert.equal(plan[1].nombre, 'Sin etapa asignada');
     assert.deepEqual(plan[1].acciones.map(a => a.accion), ['Sin fase']);
     assert.equal(plan.some(f => f.fase === 2), false, 'no debe acabar en la fase 2');
   } finally {

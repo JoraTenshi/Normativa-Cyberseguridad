@@ -63,6 +63,7 @@ Usuario.findById = id => ({
 
 // ── Test app ──────────────────────────────────────────────────────────────────
 const app = express();
+  app.locals.politicaSesiones = 'legado_pruebas';
 app.use(cookieParser());
 app.use(express.json());
 app.use('/auth', authRouter);
@@ -133,8 +134,7 @@ test('bypass: el token pendiente de 2FA puesto en la cookie de acceso se rechaza
   assert.equal(privado.status, 401);
 
   const opcional = await pedir('/opcional', { cookies: { [ACCESS_COOKIE]: pendiente } });
-  assert.equal(opcional.status, 200);
-  assert.equal((await opcional.json()).id, null, 'optionalAuth debe tratarlo como anónimo');
+  assert.equal(opcional.status, 401);
 });
 
 test('/2fa/verify rechaza un token de acceso en la cookie de verificación', async () => {
@@ -185,6 +185,8 @@ for (const [caso, token] of [
   test(`requireAuth rechaza un token ${caso}`, async () => {
     const res = await pedir('/privado', { cookies: { [ACCESS_COOKIE]: token() } });
     assert.equal(res.status, 401);
+    const opcional = await pedir('/opcional', { cookies: { [ACCESS_COOKIE]: token() } });
+    assert.equal(opcional.status, 401);
   });
 }
 
@@ -210,11 +212,12 @@ test('Mongo caído: requireAuth y optionalAuth responden 503 (no 500 ni anónimo
   assert.equal((await pedir('/opcional', { cookies })).status, 503);
 });
 
-test('optionalAuth sin cookie o con token inválido sigue siendo anónimo aunque Mongo esté caído', async () => {
+test('optionalAuth solo permite anonimato sin cookie, incluso con Mongo caído', async () => {
   mongoCaido = true;
-  for (const cookies of [{}, { [ACCESS_COOKIE]: 'no-es-un-jwt' }]) {
-    const res = await pedir('/opcional', { cookies });
-    assert.equal(res.status, 200);
-    assert.equal((await res.json()).id, null);
+  const anonimo = await pedir('/opcional');
+  assert.equal(anonimo.status, 200);
+  assert.equal((await anonimo.json()).id, null);
+  for (const token of ['no-es-un-jwt', '']) {
+    assert.equal((await pedir('/opcional', { cookies: { [ACCESS_COOKIE]: token } })).status, 401);
   }
 });

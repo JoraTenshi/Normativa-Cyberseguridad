@@ -55,7 +55,7 @@ De la evaluación a la planificación
 
 Mediante cuestionarios estructurados y un cálculo ponderado de sus respuestas, podrá consultar indicadores por áreas y detectar aspectos que requieren atención.
 
-El módulo de Plan Director de Seguridad (PDS) complementa estos resultados con una propuesta de acciones priorizadas, elaborada a partir de la información facilitada. Su finalidad es proporcionar una base de trabajo para planificar mejoras y someterlas a revisión y aprobación por los responsables correspondientes. Asimismo, podrá consultar sus evaluaciones guardadas en el historial.
+La propuesta inicial de acciones complementa estos resultados con recomendaciones ordenadas según las respuestas facilitadas. Sirve como base de trabajo para planificar mejoras y someterlas a revisión y aprobación por los responsables correspondientes. Asimismo, podrá consultar sus evaluaciones guardadas en el historial.
 
 
 Información útil para quienes asumen la responsabilidad de la seguridad
@@ -70,7 +70,7 @@ El equipo de NormativaCheck
 
 El enlace de confirmación es personal, de un solo uso y tiene una vigencia limitada. Si no ha solicitado esta cuenta, puede ignorar este mensaje.
 
-La autoevaluación y el PDS generado se basan en la información facilitada. Constituyen instrumentos de apoyo a la gestión, no una auditoría independiente ni una certificación de cumplimiento.`;
+La autoevaluación y la propuesta de acciones se basan en la información facilitada. Constituyen instrumentos de apoyo a la gestión, no una auditoría independiente ni una certificación de cumplimiento.`;
 
 	const html = `<div style="font-family: Arial, sans-serif; color: #132238; line-height: 1.6; max-width: 640px; margin: 0 auto; background-color: #f6f8fb; padding: 32px; border: 1px solid #e3e8ef; border-radius: 8px; box-sizing: border-box;">
   <h1 style="font-size: 24px; margin-bottom: 24px;">
@@ -174,10 +174,10 @@ La autoevaluación y el PDS generado se basan en la información facilitada. Con
 </p>
 
 <p>
-  El módulo de <strong>Plan Director de Seguridad (PDS)</strong>
-  complementa estos resultados con una propuesta de acciones priorizadas,
-  elaborada a partir de la información facilitada. Su finalidad es
-  proporcionar una base de trabajo para planificar mejoras y someterlas
+  La <strong>propuesta inicial de acciones</strong>
+  complementa estos resultados con recomendaciones ordenadas según las
+  respuestas facilitadas. Sirve como base de trabajo para planificar
+  mejoras y someterlas
   a revisión y aprobación por los responsables correspondientes.
   Asimismo, podrá consultar sus evaluaciones guardadas en el historial.
 </p>
@@ -212,7 +212,7 @@ La autoevaluación y el PDS generado se basan en la información facilitada. Con
 </p>
 
 <p style="font-size: 13px; color: #5b6777;">
-  La autoevaluación y el PDS generado se basan en la información
+  La autoevaluación y la propuesta de acciones se basan en la información
   facilitada. Constituyen instrumentos de apoyo a la gestión, no una
   auditoría independiente ni una certificación de cumplimiento.
 </p>

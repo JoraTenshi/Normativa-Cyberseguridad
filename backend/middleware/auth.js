@@ -3,6 +3,7 @@ const crypto       = require('crypto');
 const mongoose     = require('mongoose');
 const RevokedToken = require('../models/RevokedToken');
 const Usuario      = require('../models/Usuario');
+const accesoSesion = require('../services/accesoSesion');
 
 const JWT_SECRET  = process.env.JWT_SECRET;
 const JWT_EXPIRES = '1d';
@@ -14,6 +15,24 @@ function generateJti() {
 async function requireAuth(req, res, next) {
   const token = extractToken(req);
   if (!token) return res.status(401).json({ ok: false, error: 'Autenticación requerida' });
+
+  if (accesoSesion.esPersistente(req)) {
+    try {
+      const acceso = await accesoSesion.comprobar(token);
+      if (!acceso) return res.status(401).json({ ok:false, codigo:'SESION_NO_VALIDA', error:'Sesión caducada o no válida. Inicia sesión de nuevo.' });
+      const esperado = req.get('X-Session-User');
+      if (esperado && esperado !== acceso.usuario.id) return res.status(409).json({
+        ok:false, codigo:'CUENTA_CAMBIADA', error:'La cuenta cambió en otra pestaña. Revisa la sesión antes de continuar.'
+      });
+      req.usuarioActual = acceso.usuario;
+      req.user = acceso.payload;
+      req.token = token;
+      req.estadoSesion = acceso.estado;
+      req.claveSesion = acceso.clave;
+      res.set('Cache-Control','no-store');
+      return next();
+    } catch { return serviceUnavailable(res); }
+  }
 
   let payload;
   try {
@@ -36,24 +55,10 @@ async function requireAuth(req, res, next) {
 }
 
 async function optionalAuth(req, res, next) {
-  const token = extractToken(req);
-  if (!token) return next();
-
-  let payload;
-  try {
-    payload = jwt.verify(token, JWT_SECRET, { algorithms: ['HS256'] });
-  } catch {
-    return next();
-  }
-
-  try {
-    if (await isCurrentSession(payload)) {
-      req.user = payload; req.token = token;
-    }
-  } catch {
-    return serviceUnavailable(res);
-  }
-  next();
+  // Solo la ausencia de cookie permite un envío anónimo. Una sesión inválida
+  // debe avisar: de lo contrario el usuario cree que se guardó su evaluación.
+  if (extractToken(req) === null) return next();
+  return requireAuth(req, res, next);
 }
 
 async function isCurrentSession(payload) {

@@ -186,7 +186,7 @@
           "type": "integer",
           "minimum": 1,
           "maximum": 5,
-          "description": "Fase del Plan Director de Seguridad (modelo INCIBE): 1=Análisis inicial, 2=Análisis de riesgos, 3=Definición del plan, 4=Implantación, 5=Mejora continua."
+          "description": "Etapa orientativa de NormativaCheck para agrupar propuestas de acción: 1=Análisis inicial, 2=Análisis de riesgos, 3=Planificación de mejoras, 4=Implantación, 5=Mejora continua. No reproduce las fases oficiales de INCIBE."
         },
         "remediacion": {
           "type": "string",

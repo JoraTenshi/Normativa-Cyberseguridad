@@ -19,7 +19,7 @@ const { generateJti } = require('../middleware/auth');
 
 const USER_ID = '64b000000000000000000001';
 const usuario = { _id: USER_ID, nombre: 'Ana', email: 'ana@example.com', emailVerifiedAt: new Date(), sessionVersion: 0 };
-const app = createApp({ rateLimits: false });
+const app = createApp({ rateLimits:false, politicaSesiones:'legado_pruebas' });
 
 RevokedToken.exists = async () => null;
 // middleware/auth.js usa findById(...).select(...); routes/me.js hace await findById(...) directamente
@@ -61,7 +61,7 @@ test('GET /me con token de acceso válido da 200', async () => {
 });
 
 test('los límites de peticiones siguen activos por defecto (2FA: 10 fallos y luego 429)', async () => {
-  const conLimites = createApp();
+  const conLimites = createApp({ politicaSesiones:'legado_pruebas' });
   const estados = [];
   for (let i = 0; i < 11; i++) estados.push((await request(conLimites).post('/auth/2fa/verify').set('X-Requested-With', 'XMLHttpRequest')).status);
 
