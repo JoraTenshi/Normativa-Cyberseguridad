@@ -87,7 +87,7 @@ function Connected({ api, organization, selector }) {
   const heading = React.useRef(null), first = React.useRef(true);
   const admin = organization.rol === 'administrador';
   const navigate = (next,id = null) => { if ((next !== section || id !== null) && confirmLeave()) { setOperationId(id); setSection(next); } };
-  useEffect(() => { if (first.current) first.current = false; else heading.current?.focus(); }, [section]);
+  useEffect(() => { if (first.current) first.current = false; else if(!(section==='tasks'&&operationId?.id))heading.current?.focus({preventScroll:true}); }, [section,operationId]);
   return <div className="desk-shell"><aside className="desk-nav">
     <span className="desk-overline">GESTIÓN DEL TRABAJO</span>
     <nav aria-label="Secciones del Workspace">{Object.entries(sections).map(([id,name]) => <button key={id} aria-current={section === id ? 'page' : undefined} onClick={() => navigate(id)} disabled={['profile','context','operations','regulations','tasks','rat','units','rights','eipd'].includes(id) && !admin} title={['profile','context','operations','regulations','tasks','rat','units','rights','eipd'].includes(id) && !admin ? 'Disponible para el administrador de la organización' : undefined}><Glyph type={icons[id]}/><span>{name}</span></button>)}</nav>
@@ -106,7 +106,7 @@ function Connected({ api, organization, selector }) {
     {section === 'documents' && <DocumentsPage api={api} base={base} admin={admin}/>}
     {section === 'activity' && <ActivityPage api={api} base={base}/>}
     {section === 'regulations' && admin && <NormativeWorkspace key={JSON.stringify(operationId)} api={api} base={base} onNavigate={navigate} initialKind={operationId?.kind || 'requisitos'} initialId={operationId?.id || null}/>}
-    {section === 'tasks' && admin && <NormativeWorkspace api={api} base={base} onNavigate={navigate} initialKind="actuaciones" workOnly/>}
+    {section === 'tasks' && admin && <NormativeWorkspace key={operationId?.id || 'tasks'} api={api} base={base} onNavigate={navigate} initialKind="actuaciones" initialId={operationId?.id || null} workOnly/>}
     <footer className="desk-footer"><span>NormativaCheck · Espacio de empresa</span><span>Las cifras de actividad no acreditan cumplimiento normativo.</span></footer>
   </section></div>;
 }

@@ -14,8 +14,11 @@ export function actionRows(records, responsibles) {
     owner:names.get(r.contenido.responsableMembresiaId) || 'Responsable fuera de esta página del directorio',
   }));
 }
-export default function ActionList({api,base,onOpen,onCreate,filter={}}) {
-  const [before,setBefore]=useState(null), [archived,setArchived]=useState(false), [filters,setFilters]=useState(DEFAULT_FILTERS);
+export default function ActionList({api,base,onOpen,onCreate,filter={},view,onViewChange}) {
+  const [localView,setLocalView]=useState({before:null,archived:false,filters:DEFAULT_FILTERS});
+  const {before,archived,filters} = view || localView;
+  const changeView = patch => { const next={...(view || localView),...patch}; if(onViewChange)onViewChange(next);else setLocalView(next); };
+  const setBefore=before=>changeView({before}),setArchived=archived=>changeView({archived}),setFilters=filters=>changeView({filters});
   const [memberCursor,setMemberCursor]=useState(null), [knownMembers,setKnownMembers]=useState([]);
   const remote=useRemote(api,normativePath(base,'actuaciones')+queryString({limite:20,antes:before,...filter}));
   const directory=useRemote(api,base+'/normativa/responsables'+queryString({limite:20,antes:memberCursor}));

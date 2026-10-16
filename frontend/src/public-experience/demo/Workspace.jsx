@@ -12,6 +12,7 @@ import { caseTask } from './case-content';
 import { CompanyContext, CaseSummary, DiagnosticPanel, TaskContext, SampleReader, ContextualBasis, ScopeReport } from './CasePanels';
 import EntryFocus from '../EntryFocus';
 import CloseIcon from '../CloseIcon';
+import useTaskArrival from '../../product/useTaskArrival';
 
 const SECTIONS = {
   overview: ['Vista general', 'Prioridades y trabajo pendiente de este alcance.'],
@@ -41,7 +42,7 @@ function readWorkspace(legacy) {
   catch { return { data: createWorkspace(legacy), error: 'No se ha podido recuperar B.06. El estado anterior se conserva; no se sobrescribirá. Puedes explorar o reiniciar B explícitamente.' }; }
 }
 
-export default function Workspace({ legacy, entryFocus = null, initialScope = 'saas', initialSection = 'overview', initialPanel = 'work', initialModal = null, initialTask = 'proveedor' }) {
+export default function Workspace({ legacy, taskJump = null, entryFocus = null, initialScope = 'saas', initialSection = 'overview', initialPanel = 'work', initialModal = null, initialTask = 'proveedor' }) {
   const [entryDismissed,setEntryDismissed]=useState(false);
   const [initial] = useState(() => readWorkspace(legacy));
   const [data, setData] = useState(initial.data);
@@ -75,6 +76,9 @@ export default function Workspace({ legacy, entryFocus = null, initialScope = 's
   const [failSave, setFailSave] = useState(false);
   const [saveError, setSaveError] = useState('');
   const panelHeading = useRef(null);
+  const [taskArrival,setTaskArrival]=useState(null);
+  const [taskOrigin,setTaskOrigin]=useState(null);
+  const lastTaskJump=useRef(null);
   const pageHeading = useRef(null);
   const allRows = rowsFor(data, scope);
   const counts = countsFor(data, scope);
@@ -83,9 +87,10 @@ export default function Workspace({ legacy, entryFocus = null, initialScope = 's
   const candidates = priorityView ? panelRows.filter(t => overdue(t) || ['Bloqueada', 'Por revisar'].includes(t.status)) : panelRows;
   const visible = sortTasks(filterTasks(candidates, { filter, owner, query }), sortOrder);
   const visibleIds = visible.map(t => t.id).join(',');
-  const showDetail = section === 'activity' && historyView === 'archive' ? archivedTasks(allRows, historyFilters).some(t => t.id === selected) : !['overview', 'tasks'].includes(section) || visible.some(t => t.id === selected);
   const task = allRows.find(t => t.id === selected);
-  const reference = REFERENCES[activeRef || task.refs[0]];
+  const showDetail = !!task && (taskArrival?.id===selected || (section === 'activity' && historyView === 'archive' ? archivedTasks(allRows, historyFilters).some(t => t.id === selected) : !['overview', 'tasks'].includes(section) || visible.some(t => t.id === selected)));
+  const arrival=useTaskArrival(scope+':'+selected,taskArrival?.nonce,showDetail&&!modal);
+  const reference = REFERENCES[activeRef || task?.refs[0]];
   const exportSelection = modal === 'history-report' ? historySelection(data, scope, historyFilters, historyView, reportMode) : null;
 
   useEffect(() => {
@@ -95,18 +100,28 @@ export default function Workspace({ legacy, entryFocus = null, initialScope = 's
   }, [data, blockedStorage]);
   useEffect(() => { if (!toast) return; const timer = setTimeout(() => setToast(''), 4500); return () => clearTimeout(timer); }, [toast]);
   useEffect(() => {
-    if (['overview', 'tasks'].includes(section) && visible.length && !visible.some(t => t.id === selected)) {
+    if (!taskArrival && ['overview', 'tasks'].includes(section) && visible.length && !visible.some(t => t.id === selected)) {
       setSelected(visible[0].id); setPanel('work'); setActiveRef(null); setSaveError('');
     }
-  }, [section, visibleIds, selected]);
+  }, [section, visibleIds, selected, taskArrival]);
   useEffect(() => {
-    if (section !== 'activity' || historyView !== 'archive') return;
+    if (taskArrival || section !== 'activity' || historyView !== 'archive') return;
     const archived = archivedTasks(allRows, historyFilters);
     if (archived.length && !archived.some(t => t.id === selected)) { setSelected(archived[0].id); setPanel('work'); setActiveRef(null); }
-  }, [section, historyView, historyFilters, scope, data, selected]);
-  function navigate(next) { setSection(next); setFilter('all'); setQuery(''); setOwner('Todos'); requestAnimationFrame(() => pageHeading.current?.focus({ preventScroll: true })); }
-  function chooseScope(next) { setScope(next); setSelected('proveedor'); setPanel('work'); setActiveRef(null); setFilter('all'); setQuery(''); setOwner('Todos'); setSaveError(''); }
-  function pick(id, tab = 'work', ref = null) { setSelected(id); setPanel(tab); setActiveRef(ref); setSaveError(''); requestAnimationFrame(() => panelHeading.current?.focus({ preventScroll: window.matchMedia('(min-width: 761px)').matches })); }
+  }, [section, historyView, historyFilters, scope, data, selected, taskArrival]);
+  function navigate(next) { setTaskArrival(null);setTaskOrigin(null);setSection(next); setFilter('all'); setQuery(''); setOwner('Todos'); requestAnimationFrame(() => pageHeading.current?.focus({ preventScroll: true })); }
+  function chooseScope(next) { setTaskArrival(null);setTaskOrigin(null);setScope(next); setSelected('proveedor'); setPanel('work'); setActiveRef(null); setFilter('all'); setQuery(''); setOwner('Todos'); setSaveError(''); }
+  function pick(id, tab = 'work', ref = null, targetScope = scope) {
+    if(!rowsFor(data,targetScope).some(row=>row.id===id)){setToast('No se ha encontrado la tarea solicitada. No se ha seleccionado otra tarea.');return;}
+    setTaskOrigin({scope,selected,panel,activeRef,arrival:taskArrival,element:document.activeElement,scroll:window.scrollY});
+    setScope(targetScope);setSelected(id);setPanel(tab);setActiveRef(ref);setSaveError('');setModal(null);setEntryDismissed(true);
+    setTaskArrival(previous=>({id,nonce:(previous?.nonce||0)+1}));
+  }
+  function returnToTaskOrigin(){
+    if(!taskOrigin)return;const previous=taskOrigin;setScope(previous.scope);setSelected(previous.selected);setPanel(previous.panel);setActiveRef(previous.activeRef);setTaskArrival(previous.arrival?{...previous.arrival,nonce:0}:null);setTaskOrigin(null);
+    requestAnimationFrame(()=>{window.scrollTo({top:previous.scroll,behavior:'instant'});if(previous.element?.isConnected)previous.element.focus({preventScroll:true});else pageHeading.current?.focus({preventScroll:true});});
+  }
+  useEffect(()=>{if(taskJump&&lastTaskJump.current!==taskJump){lastTaskJump.current=taskJump;pick(taskJump.id,'work',null,taskJump.scope);}});
   function update(patch) {
     if (failSave) { setSaveError('Error simulado: el cambio no se ha aplicado. Desactiva el fallo en «Qué está simulado» y vuelve a intentarlo.'); return; }
     setData(previous => changeTask(previous, scope, selected, patch)); setSaveError(''); setToast('Cambio guardado en B.06 · no acredita cumplimiento.');
@@ -115,7 +130,7 @@ export default function Workspace({ legacy, entryFocus = null, initialScope = 's
   function openProfile() { setDraftProfile(structuredClone(data.profile)); setProfileError(''); setModal('profile'); }
   function saveProfile(e) { e.preventDefault(); if (!draftProfile.activities.length || !draftProfile.legalName.trim()) { setProfileError('Indica una denominación y al menos una actividad.'); return; } setData(previous => ({ ...previous, profile: draftProfile })); setModal(null); setToast('Perfil declarado actualizado. Las referencias del ejemplo no se recalculan.'); }
   function openDocument(id, section = null) { setReader({ id, section }); setModal('sample'); }
-  function openCaseTask(id) { setModal(null); setSection(data.scopes[scope][id].archivedAt ? 'activity' : 'tasks'); setHistoryView('archive'); setHistoryFilters({ ...INITIAL_HISTORY_FILTERS }); setFilter('all'); setQuery(''); setOwner('Todos'); pick(id); }
+  function openCaseTask(id) { pick(id); }
   function archiveTask(archived) {
     if (failSave) { setSaveError('Error simulado: no se ha cambiado el archivo.'); return; }
     setData(previous => setTaskArchived(previous, scope, selected, archived));
@@ -220,7 +235,8 @@ export default function Workspace({ legacy, entryFocus = null, initialScope = 's
             {section === 'activity' && <TaskHistory data={data} scope={scope} rows={allRows} selected={selected} view={historyView} onView={setHistoryView} filters={historyFilters} onFilters={setHistoryFilters} onPick={pick} onReport={openHistoryReport} />}
           </section>
 
-          {showDetail ? <aside id="demo-task" className="desk-detail" aria-label="Detalle de la tarea seleccionada"><header data-guide="detail"><div><span className="desk-overline">Tarea seleccionada / {task.code}</span><h2 ref={panelHeading} tabIndex={-1}>{task.title}</h2></div><Status value={task.status} /></header>
+          {showDetail ? <aside id="demo-task" className="desk-detail" aria-label="Detalle de la tarea seleccionada"><header data-guide="detail" ref={arrival.target} tabIndex={-1} aria-label={'Tarea: '+task.title} data-task-arrival={String(arrival.active)} data-task-id={task.id}><div>{arrival.active&&<span className="task-arrival-label" role="status">Tarea localizada</span>}<span className="desk-overline">Tarea seleccionada / {task.code}</span><h2 ref={panelHeading} tabIndex={-1}>{task.title}</h2></div><Status value={task.status} /></header>
+            {taskOrigin&&<div className="desk-detail-body"><button onClick={returnToTaskOrigin}>← Volver a la vista anterior</button>{!visible.some(row=>row.id===selected)&&['overview','tasks'].includes(section)&&<p>Detalle abierto desde un enlace. Los filtros de la lista se mantienen.</p>}</div>}
             <div className="desk-detail-tabs" role="group" aria-label="Contenido del detalle"><button aria-pressed={panel === 'work'} onClick={() => setPanel('work')}>Trabajo y documentos</button><button aria-pressed={panel === 'basis'} onClick={() => setPanel('basis')}>Fundamento <span>{task.refs.length}</span></button></div>
             {panel === 'work' ? <div className="desk-detail-body">
               <section className="desk-next"><span className="desk-overline">Qué falta para avanzar</span><p>{task.gap}</p></section>
