@@ -1,0 +1,603 @@
+{
+  "ficha": {
+    "schemaVersion": 2,
+    "paqueteId": "DP_E1_20261016",
+    "id": "RGPD44_49_TRANSFERENCIA_FLUJO",
+    "version": 2,
+    "reglaId": "RGPD44_49_TRANSFERENCIA_FLUJO",
+    "versionRegla": 2,
+    "titulo": "Condiciones de un flujo internacional de datos personales",
+    "explicacion": "Califica un flujo y organiza revisión de su mecanismo por rutas. Seleccionar vía no demuestra validez ni aprueba automáticamente la transferencia.",
+    "fuentes": [
+      {
+        "id": "RGPD_2016_679",
+        "version": 1,
+        "titulo": "Reglamento (UE) 2016/679",
+        "url": "https://www.boe.es/buscar/doc.php?id=DOUE-L-2016-80807",
+        "localizador": "Arts.3,4,44–49; vínculos13–15,28,30,32",
+        "editor": "Legislador UE; publicación BOE",
+        "consultadaEn": "2026-10-15T22:22:16.000Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "EDPB_05_2021",
+        "version": 1,
+        "titulo": "Directrices 05/2021, versión 2.0",
+        "url": "https://www.edpb.europa.eu/system/files/2023-02/edpb_guidelines_05-2021_interplay_between_the_application_of_art3-chapter_v_of_the_gdpr_v2_en_0.pdf",
+        "localizador": "Apartados9–30; interpretación, no norma autónoma",
+        "editor": "Comité Europeo de Protección de Datos",
+        "consultadaEn": "2026-10-15T22:22:16.000Z",
+        "estadoRevision": "revisada"
+      }
+    ],
+    "criterios": [
+      {
+        "id": "TR_DELIMITACION",
+        "descripcion": "Identificar exportador, importador y función, tratamiento, categorías de personas/datos, finalidad, destino, acceso y periodo. Examinar calificación del flujo y transferencias ulteriores, no solo alojamiento.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.44"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "TR_RESTO_RGPD",
+        "descripcion": "El mecanismo del capítulo V no sustituye licitud, transparencia, minimización, encargo ni seguridad. Enlazar esas revisiones sin otorgarles aprobación.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.44"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "TR_CADENA",
+        "descripcion": "Examinar destinatarios posteriores y continuidad de protección. Revisar proveedor principal no cubre por sí solo toda la cadena.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.44"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "TR_ART48",
+        "descripcion": "Si existen exigencias de autoridad o tribunal extranjero, examinar fundamento y vía pertinente del capítulo V; una orden extranjera no basta por sí sola. Ausencia debe motivarse, no suponerse.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.48"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "TR_ACTUALIDAD",
+        "descripcion": "Evidencia vigente del instrumento para destino, receptor y periodo. Cambios o pérdida de eficacia exigen revisar continuidad y actuaciones; adjuntar documento no acredita vigencia.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.44–46"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "TR_ADECUACION",
+        "descripcion": "Identificar decisión, vigencia y ámbito territorial, sectorial y personal que cubre al receptor/flujo. Verificar condiciones y, si procede, adhesión pertinente. Sin lista eterna de países/proveedores.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.45"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "TR_GARANTIAS",
+        "descripcion": "Identificar garantía concreta, instrumento, partes, alcance, derechos exigibles y recursos efectivos. Demostrar autorizaciones cuando procedan; cláusulas de encargo no equivalen a cláusulas de transferencia.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.46–47"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "TR_EFECTIVIDAD",
+        "descripcion": "Examinar efectividad de garantías en el destino, legislación/práctica relevante y medidas complementarias necesarias. No favorable por adjuntar cláusulas o marcar cifrado.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.46"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "TR_EXCEPCION",
+        "descripcion": "Precisar supuesto excepcional y acreditar condiciones y necesidad en el caso; no consentimiento genérico ni conveniencia empresarial. Examinar apartados2–5 y ausencia de vías previas cuando corresponda.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.49.1"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "TR_RESIDUAL49",
+        "descripcion": "Si se invoca vía residual de intereses legítimos imperiosos, revisar todos sus límites, evaluación, garantías, información a autoridad/personas y documentación. Si no, motivar no pertinencia. No comunicaciones automáticas.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.49.1 párrafo segundo;49.6"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      }
+    ],
+    "fuentesYCalendario": {
+      "consultaVigencia": "2026-10-16",
+      "limiteVerificacion": "Reglamento y directrices consultados. No verifica en tiempo real decisiones/adhesiones ni decisiones sectoriales. Revisión del instrumento concreto necesaria."
+    },
+    "usoContenido": {
+      "tipo": "legislacion_y_explicacion_original",
+      "atribucion": "Basado en datos de la Agencia Estatal Boletín Oficial del Estado. Explicación propia, sin respaldo oficial.",
+      "urlCondiciones": "https://www.boe.es/informacion/aviso_legal/index.php",
+      "advertencia": "Solo legislación y explicación propia; referencias a estándares no incorporan texto protegido.",
+      "incluyeISOoCCNProtegido": false
+    },
+    "revisionEditorial": {
+      "actor": "Codex Normativa",
+      "tipo": "revision_editorial_asistida_IA",
+      "fecha": "2026-10-15T22:22:16.000Z",
+      "dictamenJuridicoProfesional": false,
+      "publicacion": "Paquete de desarrollo; integración y QA pendientes. Sin dictamen profesional."
+    },
+    "actuacionesSugeridas": [
+      {
+        "id": "TR_MAPA",
+        "titulo": "Delimitar flujo y accesos",
+        "funcionSugerida": "Responsable/encargado y asesoramiento especializado",
+        "criterioCierreTarea": "Actuación y soportes identificados; no conclusión favorable automática.",
+        "dependeDe": []
+      },
+      {
+        "id": "TR_INSTRUMENTO",
+        "titulo": "Justificar mecanismo",
+        "funcionSugerida": "Responsable/encargado y asesoramiento especializado",
+        "criterioCierreTarea": "Actuación y soportes identificados; no conclusión favorable automática.",
+        "dependeDe": []
+      },
+      {
+        "id": "TR_REVISION",
+        "titulo": "Revisar eficacia y cambios",
+        "funcionSugerida": "Responsable/encargado y asesoramiento especializado",
+        "criterioCierreTarea": "Actuación y soportes identificados; no conclusión favorable automática.",
+        "dependeDe": []
+      }
+    ],
+    "condicionesRevision": {
+      "unidadContada": "Un flujo delimitado por tratamiento y destinatario; no toda empresa ni cada criterio.",
+      "favorable": "Revisión motivada de todos los criterios de la ruta justificada, con evidencia exacta y no pertinencia fundamentada. Datos desconocidos decisivos impiden favorable. No autorización de la app.",
+      "evidencia": "Flujo, instrumento, partes, destinos, evaluación y comprobaciones de alcance/eficacia; minimizar datos y secretos.",
+      "aprobacionAutomatica": false,
+      "revisor": "Miembro autorizado; tipo de revisión, límites, motivación y evidencia examinada identificados. No dictamen profesional por defecto.",
+      "caducidadUniversal": null,
+      "desencadenantes": [
+        "cambio de destinatario, destino, tratamiento o acceso",
+        "cambio de instrumento, decisión o adhesión",
+        "pérdida de eficacia",
+        "requerimiento extranjero pertinente",
+        "nuevo flujo ulterior"
+      ],
+      "preservarHistorico": true
+    },
+    "limites": [
+      "Detección declarada no es determinación definitiva.",
+      "No transferencia bajo capítulo V no significa ausencia de otros riesgos/obligaciones.",
+      "Alojamiento EEE no descarta acceso de otra entidad desde país tercero.",
+      "No catálogo vivo de países ni validación de adhesiones.",
+      "Operación prevista requiere preparación, no favorable actual.",
+      "Guía solo referenciada y síntesis propia; sin reproducción íntegra ni RAG.",
+      "UI/API deben conservar identidad y versión del flujo/operación/evidencia; no requisito universal agregado."
+    ],
+    "satisfaccion": {
+      "tipo": "rutas_cerradas",
+      "hechos": [
+        {
+          "clave": "tr_via",
+          "tipo": "texto",
+          "pregunta": {
+            "id": "TR_P_VIA",
+            "texto": "¿Qué vía se propone justificar para este flujo?",
+            "grupo": "Mecanismo a revisar",
+            "motivo": "adecuacion, garantias o excepcion; propuesta, no aprobación. Si falta examen, desconocido."
+          }
+        }
+      ],
+      "rutas": [
+        {
+          "id": "TR_VIA45",
+          "titulo": "Decisión de adecuación",
+          "explicacion": "Examinar condiciones y soportes de esta vía; no aprobación por selección.",
+          "requiereTodos": [
+            "TR_DELIMITACION",
+            "TR_RESTO_RGPD",
+            "TR_CADENA",
+            "TR_ART48",
+            "TR_ACTUALIDAD",
+            "TR_ADECUACION"
+          ],
+          "hechosRequeridos": [
+            {
+              "clave": "tr_via",
+              "valor": "adecuacion"
+            }
+          ]
+        },
+        {
+          "id": "TR_VIA46",
+          "titulo": "Garantías adecuadas",
+          "explicacion": "Examinar condiciones y soportes de esta vía; no aprobación por selección.",
+          "requiereTodos": [
+            "TR_DELIMITACION",
+            "TR_RESTO_RGPD",
+            "TR_CADENA",
+            "TR_ART48",
+            "TR_ACTUALIDAD",
+            "TR_GARANTIAS",
+            "TR_EFECTIVIDAD"
+          ],
+          "hechosRequeridos": [
+            {
+              "clave": "tr_via",
+              "valor": "garantias"
+            }
+          ]
+        },
+        {
+          "id": "TR_VIA49",
+          "titulo": "Excepción para situación específica",
+          "explicacion": "Examinar condiciones y soportes de esta vía; no aprobación por selección.",
+          "requiereTodos": [
+            "TR_DELIMITACION",
+            "TR_RESTO_RGPD",
+            "TR_CADENA",
+            "TR_ART48",
+            "TR_ACTUALIDAD",
+            "TR_EXCEPCION",
+            "TR_RESIDUAL49"
+          ],
+          "hechosRequeridos": [
+            {
+              "clave": "tr_via",
+              "valor": "excepcion"
+            }
+          ]
+        }
+      ]
+    },
+    "sustituyeVersionPreparacion": 1
+  },
+  "regla": {
+    "contratoVersion": 2,
+    "id": "RGPD44_49_TRANSFERENCIA_FLUJO",
+    "version": 2,
+    "estado": "revisada",
+    "revision": {
+      "revisorRef": "Codex-revision-editorial-no-dictamen-profesional",
+      "fecha": "2026-10-15T22:22:16.000Z"
+    },
+    "naturaleza": "ley_reglamento",
+    "origenes": [
+      "legal"
+    ],
+    "tiposObjeto": [
+      "flujo_transferencia"
+    ],
+    "fuentes": [
+      {
+        "id": "RGPD_2016_679",
+        "version": 1,
+        "titulo": "Reglamento (UE) 2016/679",
+        "url": "https://www.boe.es/buscar/doc.php?id=DOUE-L-2016-80807",
+        "localizador": "Arts.3,4,44–49; vínculos13–15,28,30,32",
+        "editor": "Legislador UE; publicación BOE",
+        "consultadaEn": "2026-10-15T22:22:16.000Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "EDPB_05_2021",
+        "version": 1,
+        "titulo": "Directrices 05/2021, versión 2.0",
+        "url": "https://www.edpb.europa.eu/system/files/2023-02/edpb_guidelines_05-2021_interplay_between_the_application_of_art3-chapter_v_of_the_gdpr_v2_en_0.pdf",
+        "localizador": "Apartados9–30; interpretación, no norma autónoma",
+        "editor": "Comité Europeo de Protección de Datos",
+        "consultadaEn": "2026-10-15T22:22:16.000Z",
+        "estadoRevision": "revisada"
+      }
+    ],
+    "vigencia": {
+      "estado": "definida",
+      "tipo": "fecha_civil",
+      "calendario": "gregoriano",
+      "jurisdiccion": "ES",
+      "zonaEvaluacion": "Europe/Madrid",
+      "desde": "2018-05-25",
+      "hasta": null
+    },
+    "cobertura": {
+      "descripcion": "Flujo activo o residual delimitado de operación vinculada a establecimiento español; no examen global de todos los flujos.",
+      "condicion": {
+        "op": "and",
+        "args": [
+          {
+            "op": "and",
+            "args": [
+              {
+                "op": "eq",
+                "hecho": "dp_establecimiento_es",
+                "valor": true
+              },
+              {
+                "op": "eq",
+                "hecho": "dp_regimen_general",
+                "valor": true
+              },
+              {
+                "op": "or",
+                "args": [
+                  {
+                    "op": "eq",
+                    "hecho": "dp_rol",
+                    "valor": "responsable"
+                  },
+                  {
+                    "op": "eq",
+                    "hecho": "dp_rol",
+                    "valor": "encargado"
+                  },
+                  {
+                    "op": "eq",
+                    "hecho": "dp_rol",
+                    "valor": "corresponsable_delimitado"
+                  },
+                  {
+                    "op": "eq",
+                    "hecho": "dp_rol",
+                    "valor": "subencargado_delimitado"
+                  }
+                ]
+              },
+              {
+                "op": "or",
+                "args": [
+                  {
+                    "op": "eq",
+                    "hecho": "dp_fase",
+                    "valor": "activa"
+                  },
+                  {
+                    "op": "eq",
+                    "hecho": "dp_fase",
+                    "valor": "residual"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "eq",
+            "hecho": "tr_flujo_delimitado",
+            "valor": true
+          }
+        ]
+      },
+      "periodo": {
+        "desde": "2023-02-14",
+        "hasta": null,
+        "motivo": "Cobertura metodológica con Directrices05/2021 versión2; no fecha inicial de obligación legal. Casos anteriores requieren revisión histórica."
+      }
+    },
+    "hechos": [
+      {
+        "clave": "dp_ambito_rgpd",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "SEG_P_dp_ambito_rgpd",
+          "texto": "Resultado de la valoración del ámbito RGPD para este tratamiento",
+          "grupo": "Operación de tratamiento",
+          "motivo": "Si no se ha analizado o falta fundamento, indica desconocido. La ubicación por sí sola no determina el ámbito. Este campo recoge una conclusión; no sustituye la valoración."
+        }
+      },
+      {
+        "clave": "dp_establecimiento_es",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "SEG_P_dp_establecimiento_es",
+          "texto": "¿Este tratamiento se realiza en el contexto de las actividades de un establecimiento de la entidad en España?",
+          "grupo": "Operación de tratamiento",
+          "motivo": "No equivale a que el servidor o los datos estén en España. Si no lo sabes, conserva desconocido. Un no no excluye por sí solo el RGPD."
+        }
+      },
+      {
+        "clave": "dp_regimen_general",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "SEG_P_dp_regimen_general",
+          "texto": "Resultado de la valoración del régimen aplicable: ¿esta operación puede analizarse por el itinerario general de protección de datos cubierto por la app?",
+          "grupo": "Operación de tratamiento",
+          "motivo": "Una respuesta «no» significa que necesita otro itinerario o análisis, no una exención. Si todavía no se ha valorado, indica desconocido."
+        }
+      },
+      {
+        "clave": "dp_rol",
+        "tipo": "texto",
+        "pregunta": {
+          "id": "SEG_P_dp_rol",
+          "texto": "Papel de la entidad en este tratamiento",
+          "grupo": "Operación de tratamiento",
+          "motivo": "Delimita quién decide fines y medios y si actúa por cuenta de otro. No se deduce de poseer el software ni de los permisos de la app. Si hay funciones mezcladas, revisa la delimitación de operaciones."
+        }
+      },
+      {
+        "clave": "dp_fase",
+        "tipo": "texto",
+        "pregunta": {
+          "id": "SEG_P_dp_fase",
+          "texto": "Situación actual del tratamiento",
+          "grupo": "Operación de tratamiento",
+          "motivo": "Prevista: no iniciada. Activa: se realizan operaciones. Residual: cesó la actividad principal pero se conservan o tratan datos. Finalizada exige comprobar conservación residual; no cierra obligaciones automáticamente."
+        }
+      },
+      {
+        "clave": "tr_flujo_delimitado",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "TR_P_tr_flujo_delimitado",
+          "texto": "¿Se ha delimitado un flujo concreto con emisor, destinatario, datos y destino?",
+          "grupo": "Flujo internacional delimitado",
+          "motivo": "No evaluar todas las transferencias de una empresa mediante un único sí."
+        }
+      },
+      {
+        "clave": "tr_otro_destinatario",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "TR_P_tr_otro_destinatario",
+          "texto": "¿La entidad pone datos personales de este tratamiento a disposición de otra entidad responsable o encargada?",
+          "grupo": "Flujo internacional delimitado",
+          "motivo": "Incluye acceso remoto; la propia persona que facilita sus datos y el procesamiento interno requieren distinguirse. Si falta analizarlo, desconocido."
+        }
+      },
+      {
+        "clave": "tr_destino_tercero_oi",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "TR_P_tr_destino_tercero_oi",
+          "texto": "¿El destinatario está en un país fuera del EEE o es una organización internacional?",
+          "grupo": "Flujo internacional delimitado",
+          "motivo": "No basta el país del servidor ni que el proveedor tenga marca extranjera; identificar destinatario y acceso real."
+        }
+      }
+    ],
+    "condicion": {
+      "op": "and",
+      "args": [
+        {
+          "op": "eq",
+          "hecho": "dp_ambito_rgpd",
+          "valor": true
+        },
+        {
+          "op": "eq",
+          "hecho": "tr_otro_destinatario",
+          "valor": true
+        },
+        {
+          "op": "eq",
+          "hecho": "tr_destino_tercero_oi",
+          "valor": true
+        }
+      ]
+    },
+    "excepciones": []
+  }
+}

@@ -122,7 +122,7 @@ function valor(v, tipo) {
     unicos(v);
   }
 }
-const TIPOS_OBJETO = ['organizacion', 'operacion', 'servicio', 'producto', 'sistema', 'contrato'];
+const TIPOS_OBJETO = ['organizacion', 'operacion', 'servicio', 'producto', 'sistema', 'contrato', 'finalidad_tratamiento', 'flujo_transferencia', 'unidad_informativa', 'solicitud_derechos', 'pretension_derecho'];
 function procedencia(p) {
   objeto(p, ['tipo', 'referencia']);
   exigir(['declarado', 'documentado', 'revisado'].includes(p.tipo), 'procedencia');

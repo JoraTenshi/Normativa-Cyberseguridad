@@ -1,7 +1,7 @@
 'use strict';
 // Contenido sintético, no requisito jurídico ni catálogo publicado.
 const { entradaCivil } = require('./aplicabilidadC2');
-const { evaluarAplicabilidadContextual } = require('../../services/aplicabilidadContextual');
+const { evaluarAplicabilidadContextual, reproducirSnapshot } = require('../../services/aplicabilidadContextual');
 const { contextualizarRequisito } = require('../../services/revisionRequisito');
 const { huella } = require('../../validation/aplicabilidadContextual');
 const oid = n => n.toString(16).padStart(24, '0');
@@ -41,4 +41,17 @@ function revision() {
         motivo: 'Comprobación sintética razonada, no basta nombre del PDF', evidenciaIds: [evidencia.id] })),
       conclusion: 'favorable', motivo: 'Los criterios ficticios han sido examinados expresamente' } };
 }
-module.exports = { paquete, revision, oid, huella };
+function revisionHistorica() {
+  // Golden fixture recorded under ICU78.3/tzdb2026a. Replay that reference,
+  // not today's runtime metadata; do not change the protected historical hash.
+  const x = revision(), snapshot = structuredClone(x.requisito.resultado.snapshot);
+  snapshot.referenciaTemporal = { fechaCivil: '2026-10-14', desplazamientoSegundos: 7200,
+    zonaEvaluacion: 'Europe/Madrid', jurisdiccion: 'ES', calendario: 'gregoriano',
+    versionTzdb: '2026a', versionIcu: '78.3' };
+  x.requisito = contextualizarRequisito({ id: x.requisito.id, version: x.requisito.version,
+    organizacionId: x.requisito.organizacionId, alcance: x.requisito.alcance,
+    decisionId: x.requisito.decisionId, resultado: reproducirSnapshot(snapshot), ficha: x.ficha });
+  x.datos.requisito.sha256 = x.requisito.sha256;
+  return x;
+}
+module.exports = { paquete, revision, revisionHistorica, oid, huella };

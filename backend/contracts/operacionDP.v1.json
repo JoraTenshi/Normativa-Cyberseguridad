@@ -1,0 +1,151 @@
+{
+  "id": "OPERACION_DP_E11",
+  "version": 1,
+  "revisionEditorial": 5,
+  "estado": "desarrollo_aislado_no_publicado",
+  "entidadPersistida": "operacion",
+  "estadosHecho": [
+    "conocido",
+    "desconocido",
+    "conflictivo"
+  ],
+  "motivosDesconocido": [
+    "no_aportado",
+    "no_sabe",
+    "por_consultar"
+  ],
+  "campos": [
+    {
+      "clave": "rat_fecha_personas_empleadas",
+      "tipo": "texto",
+      "formato": "fecha_civil",
+      "requiereAnalisis": false,
+      "pregunta": "¿A qué fecha corresponde el número de personas empleadas?",
+      "ayuda": "Fecha YYYY-MM-DD del dato de plantilla de la entidad. No usar automáticamente la fecha de guardado. Si falta, indica desconocido."
+    },
+    {
+      "clave": "dp_ambito_rgpd",
+      "tipo": "booleano",
+      "requiereAnalisis": true,
+      "pregunta": "Resultado de la valoración del ámbito RGPD para este tratamiento",
+      "etiquetasBooleanas": {
+        "true": "Incluido según la valoración",
+        "false": "Excluido según valoración justificada"
+      },
+      "ayuda": "Si no se ha analizado o falta fundamento, indica desconocido. La ubicación por sí sola no determina el ámbito. Este campo recoge una conclusión; no sustituye la valoración."
+    },
+    {
+      "clave": "dp_establecimiento_es",
+      "tipo": "booleano",
+      "requiereAnalisis": false,
+      "pregunta": "¿Este tratamiento se realiza en el contexto de las actividades de un establecimiento de la entidad en España?",
+      "ayuda": "No equivale a que el servidor o los datos estén en España. Si no lo sabes, conserva desconocido. Un no no excluye por sí solo el RGPD."
+    },
+    {
+      "clave": "dp_regimen_general",
+      "tipo": "booleano",
+      "requiereAnalisis": true,
+      "pregunta": "Resultado de la valoración del régimen aplicable: ¿esta operación puede analizarse por el itinerario general de protección de datos cubierto por la app?",
+      "ayuda": "Una respuesta «no» significa que necesita otro itinerario o análisis, no una exención. Si todavía no se ha valorado, indica desconocido."
+    },
+    {
+      "clave": "dp_entidad_privada",
+      "tipo": "booleano",
+      "requiereAnalisis": true,
+      "pregunta": "¿Se ha confirmado que la entidad pertenece al ámbito privado cubierto por este itinerario?",
+      "ayuda": "No se deduce del establecimiento en España, del régimen general ni de prestar software. Conserva desconocido si falta la calificación. Una entidad pública puede estar sujeta al RGPD, aunque este detector privado no cubra su caso."
+    },
+    {
+      "clave": "dp_rol",
+      "tipo": "texto",
+      "valores": [
+        "responsable",
+        "encargado",
+        "corresponsable_delimitado",
+        "subencargado_delimitado"
+      ],
+      "requiereAnalisis": true,
+      "pregunta": "Papel de la entidad en este tratamiento",
+      "ayuda": "Delimita quién decide fines y medios y si actúa por cuenta de otro. No se deduce de poseer el software ni de los permisos de la app. Si hay funciones mezcladas, revisa la delimitación de operaciones."
+    },
+    {
+      "clave": "dp_fase",
+      "tipo": "texto",
+      "valores": [
+        "prevista",
+        "activa",
+        "residual",
+        "finalizada"
+      ],
+      "requiereAnalisis": false,
+      "pregunta": "Situación actual del tratamiento",
+      "ayuda": "Prevista: no iniciada. Activa: se realizan operaciones. Residual: cesó la actividad principal pero se conservan o tratan datos. Finalizada exige comprobar conservación residual; no cierra obligaciones automáticamente."
+    },
+    {
+      "clave": "rat_personas_empleadas",
+      "tipo": "numero",
+      "entero": true,
+      "minimo": 0,
+      "maximo": 1000000000000,
+      "requiereAnalisis": false,
+      "pregunta": "¿Cuántas personas emplea la entidad en la fecha de referencia?",
+      "ambitoDato": "entidad; declarado expresamente en esta versión de la operación, sin herencia automática",
+      "ayuda": "No son usuarios, licencias ni solo la plantilla del servicio. Indica desconocido si falta el dato. El máximo es técnico, no legal. Declara su fecha en rat_fecha_personas_empleadas; guardar no sustituye esa fecha."
+    },
+    {
+      "clave": "rat_no_ocasional",
+      "tipo": "booleano",
+      "requiereAnalisis": true,
+      "pregunta": "¿Este tratamiento se realiza de forma habitual, recurrente o continuada, y no como una actuación meramente ocasional?",
+      "ayuda": "No se aplica una frecuencia numérica automática. Si no se ha analizado o hay dudas, indica desconocido."
+    },
+    {
+      "clave": "rat_riesgo_derechos",
+      "tipo": "booleano",
+      "requiereAnalisis": true,
+      "pregunta": "Según la valoración realizada, ¿este tratamiento puede entrañar un riesgo para los derechos y libertades de las personas?",
+      "ayuda": "No se limita a alto riesgo ni a riesgo empresarial. Si no está valorado o faltan datos, indica desconocido."
+    },
+    {
+      "clave": "rat_art9",
+      "tipo": "booleano",
+      "requiereAnalisis": true,
+      "pregunta": "¿Se tratan categorías especiales de datos personales?",
+      "ayuda": "Comprueba las categorías del artículo 9.1. No haberlo comprobado es desconocido, no no. La biometría exige considerar su finalidad de identificación unívoca."
+    },
+    {
+      "clave": "rat_art10",
+      "tipo": "booleano",
+      "requiereAnalisis": true,
+      "pregunta": "¿Se tratan datos personales relativos a condenas o infracciones penales, o a medidas de seguridad conexas?",
+      "ayuda": "No confundir con sanciones administrativas. Si no se ha evaluado, indica desconocido."
+    }
+  ],
+  "limites": {
+    "hechosPorOperacion": 200,
+    "cambiosPorPeticion": 50,
+    "alternativasPorHecho": {
+      "minimo": 2,
+      "maximo": 5
+    },
+    "cuerpoHttpBytes": 10240,
+    "nota": "El límite HTTP existente de 10 KiB incluye metadatos y hechos; no anunciar los 40 KiB del validador interno como capacidad HTTP."
+  },
+  "cobertura": {
+    "inventarioTipado": "primer_incremento",
+    "ratPersistido": "api_mongo_sintetico_verificado_no_publicado",
+    "rgpd32EnCatalogo": "v2_desarrollo_aislado_no_publicado",
+    "otrosModulosE1": "pendientes",
+    "evaluacionAutomatica": false,
+    "revisionFavorableAutomatica": false
+  },
+  "avisos": [
+    "Un rol de tratamiento no concede permisos en la aplicación.",
+    "Cada operación conserva sus hechos, autor y versión; no asignar un rol único a toda la empresa.",
+    "Desconocido y conflictivo se conservan; no convertirlos en false ni en no aplicable.",
+    "Finalizada no acredita ausencia de conservación o de obligaciones residuales.",
+    "Estas preguntas recogen declaraciones; las que requieren análisis no sustituyen una determinación fundada.",
+    "Preguntas contrastadas editorialmente con Normativa; no dictamen jurídico. La falta de análisis se declara desconocido, no false.",
+    "La agregación RAT usa la fecha de referencia y conserva discrepancias de empleados entre operaciones; no elige el menor valor ni propone exención con esa incidencia pendiente. Un motivo positivo decisivo de inclusión no queda anulado por datos no decisivos."
+  ]
+}

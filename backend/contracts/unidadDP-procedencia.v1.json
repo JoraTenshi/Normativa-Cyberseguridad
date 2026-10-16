@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "paquetes": [
+    {
+      "id": "RGPD6_7_LICITUD_FINALIDAD",
+      "clase": "finalidad_tratamiento",
+      "version": 2,
+      "source": "outputs/dp-e1-20261015/paquetes/RGPD6_7_LICITUD_FINALIDAD.v1.json",
+      "sourceSha256": "4e3e4327c589252228b8c26cf86830d20b601e55dffc2934cc4277238677dd36",
+      "delta": [
+        "ficha.version 1->2",
+        "ficha.versionRegla 1->2",
+        "ficha.sustituyeVersionPreparacion=1",
+        "regla.version 1->2",
+        "regla.tiposObjeto=[finalidad_tratamiento]"
+      ],
+      "criteriosSinCambios": true
+    },
+    {
+      "id": "RGPD44_49_TRANSFERENCIA_FLUJO",
+      "clase": "flujo_transferencia",
+      "version": 2,
+      "source": "outputs/dp-e1-20261015/paquetes/RGPD44_49_TRANSFERENCIA_FLUJO.v1.json",
+      "sourceSha256": "a8b35c6af54cf09b63bc4a34ae64cf785f75a9ad9ed52f369565ce7ab0747ac7",
+      "delta": [
+        "ficha.version 1->2",
+        "ficha.versionRegla 1->2",
+        "ficha.sustituyeVersionPreparacion=1",
+        "regla.version 1->2",
+        "regla.tiposObjeto=[flujo_transferencia]"
+      ],
+      "criteriosSinCambios": true
+    },
+    {
+      "id": "RGPD12_14_TRANSPARENCIA_UNIDAD",
+      "clase": "unidad_informativa",
+      "version": 2,
+      "source": "outputs/dp-e1-20261015/paquetes/RGPD12_14_TRANSPARENCIA_UNIDAD.v1.json",
+      "sourceSha256": "75006d550bdeb60a5d821686f5e57ec92ec2482de779a1f468bbfadd1830c27b",
+      "delta": [
+        "ficha.version 1->2",
+        "ficha.versionRegla 1->2",
+        "ficha.sustituyeVersionPreparacion=1",
+        "regla.version 1->2",
+        "regla.tiposObjeto=[unidad_informativa]"
+      ],
+      "criteriosSinCambios": true
+    },
+    {
+      "id": "RGPD12_SOLICITUD_DERECHOS",
+      "clase": "solicitud_derechos",
+      "version": 2,
+      "source": "outputs/dp-e1-20261015/paquetes/RGPD12_SOLICITUD_DERECHOS.v1.json",
+      "sourceSha256": "65d3f9ca7dfe6146b49a6b6c2f802a100f49ec0ffdf9926aa6d1e8c3fe2182fb",
+      "delta": [
+        "ficha.version 1->2",
+        "ficha.versionRegla 1->2",
+        "ficha.sustituyeVersionPreparacion=1",
+        "regla.version 1->2",
+        "regla.tiposObjeto=[solicitud_derechos]"
+      ],
+      "criteriosSinCambios": true
+    }
+  ],
+  "estado": "Integración E1 aislada; no publicación ni dictamen."
+}

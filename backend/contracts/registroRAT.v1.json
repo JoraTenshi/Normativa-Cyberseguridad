@@ -1,0 +1,171 @@
+{
+  "id": "REGISTRO_RAT_E11",
+  "version": 1,
+  "estado": "implementacion_aislada_en_curso",
+  "rutas": {
+    "contrato": "/normativa/rat/contrato",
+    "registros": "/normativa/registros-rat",
+    "revisiones": "/normativa/revisiones-rat",
+    "actuaciones": "/normativa/actuaciones-rat"
+  },
+  "prefijo": "/organizaciones/:organizacionId",
+  "permisos": "Administrador de la organización, sin conceder acceso por figurar como responsable/encargado/DPD.",
+  "identidad": "Una cabecera por organización, función y alcance estable. PATCH conserva esos identificadores; las entradas tienen id estable dentro del registro.",
+  "funciones": [
+    "responsable",
+    "encargado"
+  ],
+  "campo": {
+    "estados": [
+      "conocido",
+      "pendiente",
+      "conflictivo",
+      "no_corresponde",
+      "imposible_motivado"
+    ],
+    "forma": {
+      "estado": "pendiente",
+      "contenido": "",
+      "motivo": "Por consultar"
+    },
+    "reglas": "Conocido requiere contenido; los demás requieren motivo. No_corresponde solo en condicionales; imposible_motivado solo supresion/medidas. No es aprobación."
+  },
+  "contacto": {
+    "nombre": "Entidad ficticia",
+    "contacto": "Canal profesional ficticio"
+  },
+  "registro": {
+    "alcance": "ref exacta {id,version,sha256}",
+    "funcion": "responsable|encargado",
+    "nombre": "texto 120",
+    "fechaReferencia": "YYYY-MM-DD",
+    "inventarioCompleto": "boolean declarado, no comprobado",
+    "entidad": "contacto",
+    "representante": "campo condicional",
+    "dpd": "campo condicional",
+    "sujeto77": "campo: conocido identifica entidad incluida en art.77.1 (inventario público fuera de esta cobertura); no_corresponde exige exclusión motivada; pendiente no significa privado",
+    "comunicacionDPD": "campo condicional, identifica cambio/versión y soporte",
+    "disponibilidadAutoridad": "campo",
+    "entradas": "0–50 entradas; vacío conserva pendiente",
+    "evidencias": "0–50 referencias exactas",
+    "motivo": "texto 300",
+    "version": "solo PATCH: versión actual"
+  },
+  "entrada": {
+    "id": "identificador estable alfanumérico/guion 1–80, no índice de lista",
+    "titulo": "texto 120",
+    "operaciones": "1–20 referencias exactas; máximo 200 distintas por registro",
+    "campos": "según función",
+    "responsables": "solo encargado: 0–20 correspondencias; vacío queda pendiente",
+    "evidencias": "0–50 refs exactas"
+  },
+  "camposResponsable": [
+    "finalidades",
+    "interesados",
+    "datos",
+    "destinatarios",
+    "transferencias",
+    "supresion",
+    "medidas",
+    "corresponsables"
+  ],
+  "camposEncargado": [
+    "transferencias",
+    "medidas"
+  ],
+  "correspondenciaEncargado": {
+    "id": "id estable local",
+    "responsable": "contacto",
+    "representante": "campo condicional",
+    "dpd": "campo condicional",
+    "categorias": "campo",
+    "finalidades": "campo"
+  },
+  "condicionales": [
+    "representante",
+    "dpd",
+    "sujeto77",
+    "comunicacionDPD",
+    "transferencias",
+    "corresponsables"
+  ],
+  "cuandoSeaPosible": [
+    "supresion",
+    "medidas"
+  ],
+  "revision": {
+    "registro": "ref exacta RAT",
+    "revisionAnterior": "ref exacta o null si no existe",
+    "evidencias": "refs exactas de version_documento/constatacion_documento/constatacion_revision; todas usadas por criterios, periodo compatible y no posteriores al examen",
+    "criterios": "todos los de su función: {id,resultado,motivo,evidenciaIds}",
+    "conclusion": "favorable|desfavorable|no_determinado coherente con criterios",
+    "periodoExaminado": {
+      "desde": "YYYY-MM-DD inclusive",
+      "hasta": "YYYY-MM-DD inclusive; la evidencia C2 tiene hasta exclusivo y debe cubrir este día"
+    },
+    "examinadaEn": "UTC ISO",
+    "motivo": "texto 300"
+  },
+  "criterios": {
+    "responsable": [
+      "RAT_PERIMETRO",
+      "RAT_R_IDENTIDAD",
+      "RAT_R_FIN",
+      "RAT_R_DATOS",
+      "RAT_R_DESTINATARIOS",
+      "RAT_R_TRANSFERENCIAS",
+      "RAT_R_SUPRESION",
+      "RAT_R_MEDIDAS",
+      "RAT_ESCRITO",
+      "RAT_AUTORIDAD",
+      "RAT_DPD_CAMBIOS",
+      "RAT_ACTUALIDAD"
+    ],
+    "encargado": [
+      "RAT_PERIMETRO",
+      "RAT_E_IDENTIDAD",
+      "RAT_E_CATEGORIAS",
+      "RAT_E_TRANSFERENCIAS",
+      "RAT_E_MEDIDAS",
+      "RAT_ESCRITO",
+      "RAT_AUTORIDAD",
+      "RAT_DPD_CAMBIOS",
+      "RAT_ACTUALIDAD"
+    ]
+  },
+  "actuacion": {
+    "registro": "ref exacta RAT",
+    "titulo": "texto 120",
+    "descripcion": "texto 2000",
+    "responsableMembresiaId": "id de membresía activa",
+    "estado": "pendiente|en_curso|terminada|archivada",
+    "motivo": "texto 300",
+    "version": "solo PATCH"
+  },
+  "dto": "Mismo envoltorio C2: id,tipo,version,versionActual,referencia,contenido,revision,permisos,horaServidor. contenido.registroRAT contiene el registro y diagnóstico; estadoRAT distingue conclusión histórica y revisión actual. Listado y versiones paginados como C2.",
+  "limites": {
+    "entradas": 50,
+    "operaciones": 200,
+    "cuerpoHttpBytes": 131072,
+    "nodosJSON": 6000
+  },
+  "garantias": [
+    "No credenciales ni datos individuales de personas afectadas: categorías y contactos profesionales necesarios.",
+    "Referencias resueltas por servidor dentro de organización y alcance.",
+    "Sin exención por muestra parcial o datos de empleados discrepantes o sin fecha.",
+    "No se migra ni reescribe el histórico al actualizar bases.",
+    "No enviar a AEPD/DPD automáticamente ni publicar el registro.",
+    "Describir seguridad no acredita eficacia RGPD32. Una tarea terminada no aprueba el RAT."
+  ],
+  "fuentes": [
+    {
+      "url": "https://www.boe.es/buscar/doc.php?id=DOUE-L-2016-80807",
+      "preceptos": "30.1–5"
+    },
+    {
+      "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2018-16673",
+      "preceptos": "31 y 77.1"
+    }
+  ],
+  "incidenciaLiteral": "La remisión de art.30.2.d en versión española no se corrige silenciosamente; descripción general de medidas no es una revisión de eficacia."
+}

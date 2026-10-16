@@ -1,6 +1,7 @@
 'use strict';
 const { copiarJSON, objeto, ErrorAplicabilidad } = require('./aplicabilidadContextual');
 const base = require('./contextoEmpresa');
+const { validarHechosDP } = require('./operacionDP');
 const { ErrorOrganizacion, fallo, id, texto } = require('../services/datosOrganizacion');
 const tiene = (o, k) => Object.hasOwn(o, k);
 function preparar(datos, actualizacion, clave) {
@@ -22,6 +23,7 @@ function preparar(datos, actualizacion, clave) {
       ? { version: d.version, cambios: d.cambios, motivo: d.motivo }
       : { hechos: actualizacion ? [] : d.hechos, motivo: d.motivo },
     actualizacion && tiene(d, 'cambios'), clave);
+    validarHechosDP(actualizacion ? b.cambios || [] : b.hechos);
     return { ...metadatos, motivo: b.motivo, clave: b.clave,
       ...(actualizacion ? { version: base.numero(d.version), cambios: b.cambios || [] } : { hechos: b.hechos }) };
   } catch (e) {

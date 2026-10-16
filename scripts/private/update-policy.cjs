@@ -5,11 +5,18 @@ const {validate,compose,PROJECT}=require('../../infra/private/profile.cjs');
 const sha=s=>typeof s==='string'&&/^[a-f0-9]{64}$/.test(s);
 function check(ok,code){if(!ok)throw Object.assign(Error(code),{code});}
 function same(a,b,code){try{assert.deepEqual(a,b);}catch{check(false,code);}}
-function buildPlan({currentProfile,nextProfile,currentCompose,images,compatibility}){
+function buildPlan({currentProfile,nextProfile,currentCompose,images,compatibility,privatePortTransition}){
  const old=validate(currentProfile),next=validate(nextProfile);
  check(old.releaseRoot!==next.releaseRoot,'RELEASE_MUST_BE_NEW');
- same([old.stateRoot,old.port,old.wireguardUnit,old.smtpMode],
-      [next.stateRoot,next.port,next.wireguardUnit,next.smtpMode],'STATE_OR_NETWORK_OR_MAIL_CHANGE');
+ same([old.stateRoot,old.wireguardUnit,old.smtpMode],
+      [next.stateRoot,next.wireguardUnit,next.smtpMode],'STATE_OR_NETWORK_OR_MAIL_CHANGE');
+ // Only the explicit requested private 9443 -> 8443 transition is supported.
+ // This descriptor is NOT proof of human authorization, a free port or live TLS.
+ // The operator must independently verify those before any mutation.
+ if(old.port!==next.port){
+  check(old.port===9443&&next.port===8443,'STATE_OR_NETWORK_OR_MAIL_CHANGE');
+  same(privatePortTransition,{fromOrigin:old.origin,toOrigin:next.origin},'EXPLICIT_PRIVATE_PORT_TRANSITION_REQUIRED');
+ }else check(privatePortTransition===undefined,'UNEXPECTED_PORT_TRANSITION');
  // Drift in the inspected effective configuration must be investigated, not overwritten.
  same(currentCompose,compose(currentProfile),'CURRENT_CONFIG_DRIFT');
  check(images&&Object.keys(images).sort().join(',')==='backend,web'&&
@@ -31,6 +38,7 @@ function buildPlan({currentProfile,nextProfile,currentCompose,images,compatibili
   retainedRelease:old.releaseRoot,
   retainedReason:'Mongo /private still references this release; retain until a separately tested configuration relocation.',
   compatibility:structuredClone(compatibility),
+  ...(privatePortTransition?{privatePortTransition:structuredClone(privatePortTransition)}:{}),
   activationArgs:['up','--detach','--no-deps','--no-build','--pull','never','--wait','--wait-timeout','180','backend','web'],
   automaticRollbackAllowed:false};
 }

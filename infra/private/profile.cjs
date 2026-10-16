@@ -8,7 +8,7 @@ function validate(p){
  guard(Object.keys(p).sort().join(',')==='port,releaseRoot,smtpMode,stateRoot,wireguardUnit','PROFILE_KEYS');
  for(const key of ['releaseRoot','stateRoot'])guard(typeof p[key]==='string'&&/^\/(srv|opt|home\/jose)\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*$/.test(p[key]),'PROFILE_PATH');
  guard(p.releaseRoot!==p.stateRoot&&!p.stateRoot.startsWith(p.releaseRoot+'/')&&!p.releaseRoot.startsWith(p.stateRoot+'/'),'STATE_INSIDE_CODE');
- guard([443,9443].includes(p.port),'PRIVATE_PORT');
+ guard([443,8443,9443].includes(p.port),'PRIVATE_PORT');
  guard(/^wg-quick@[A-Za-z0-9_-]+\.service$/.test(p.wireguardUnit),'WIREGUARD_UNIT');
  guard(['disabled','smtp465'].includes(p.smtpMode),'SMTP_MODE');
  return{...p,origin:'https://'+IP+(p.port===443?'':':'+p.port),authority:IP+(p.port===443?'':':'+p.port)};

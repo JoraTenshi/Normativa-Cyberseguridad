@@ -13,9 +13,12 @@ import CompanyProfile from './CompanyProfile';
 import NormativeWorkspace from './NormativeWorkspace';
 import { EnrollmentAccessLink } from './EnrollmentPortal';
 import { Brand } from '../product/ProductFrame';
+import RatWorkspace from './RatWorkspace';
+import DPUnitWorkspace from './DPUnitWorkspace';
+import DPCaseWorkspace from './DPCaseWorkspace';
 
-const sections = { overview:'Vista general', profile:'Perfil y alcance', operations:'Operaciones y cuestiones', tasks:'Tareas y responsables', documents:'Documentación', regulations:'Normativa del alcance', activity:'Historial de actividad', spaces:'Servicios y productos', context:'Contexto de empresa' };
-const icons = {overview:'grid',profile:'book',operations:'tasks',tasks:'check',documents:'file',regulations:'book',activity:'clock',spaces:'grid',context:'book'};
+const sections = { overview:'Vista general', profile:'Perfil y alcance', operations:'Operaciones y cuestiones', rat:'Registro de actividades (RAT)', units:'Finalidades, flujos y privacidad', rights:'Solicitudes de derechos', eipd:'Detección EIPD', tasks:'Tareas y responsables', documents:'Documentación', regulations:'Normativa del alcance', activity:'Historial de actividad', spaces:'Servicios y productos', context:'Contexto de empresa' };
+const icons = {overview:'grid',profile:'book',operations:'tasks',rat:'book',units:'book',rights:'book',eipd:'book',tasks:'check',documents:'file',regulations:'book',activity:'clock',spaces:'grid',context:'book'};
 export default function ApiWorkspace() {
   const api = useMemo(() => createApi(), []);
   const { user, phase, generation, logout } = useAuth();
@@ -87,7 +90,7 @@ function Connected({ api, organization, selector }) {
   useEffect(() => { if (first.current) first.current = false; else heading.current?.focus(); }, [section]);
   return <div className="desk-shell"><aside className="desk-nav">
     <span className="desk-overline">GESTIÓN DEL TRABAJO</span>
-    <nav aria-label="Secciones del Workspace">{Object.entries(sections).map(([id,name]) => <button key={id} aria-current={section === id ? 'page' : undefined} onClick={() => navigate(id)} disabled={['profile','context','operations','regulations','tasks'].includes(id) && !admin} title={['profile','context','operations','regulations','tasks'].includes(id) && !admin ? 'Disponible para el administrador de la organización' : undefined}><Glyph type={icons[id]}/><span>{name}</span></button>)}</nav>
+    <nav aria-label="Secciones del Workspace">{Object.entries(sections).map(([id,name]) => <button key={id} aria-current={section === id ? 'page' : undefined} onClick={() => navigate(id)} disabled={['profile','context','operations','regulations','tasks','rat','units','rights','eipd'].includes(id) && !admin} title={['profile','context','operations','regulations','tasks','rat','units','rights','eipd'].includes(id) && !admin ? 'Disponible para el administrador de la organización' : undefined}><Glyph type={icons[id]}/><span>{name}</span></button>)}</nav>
     <div className="desk-scope-note"><strong>{organization.nombre}</strong><small>{admin ? 'Administrador empresarial' : 'Acceso según membresía'}</small><p>Los permisos se comprueban en el servidor en cada consulta y cambio.</p></div>
     <details className="desk-help"><summary>Cómo usar este espacio</summary><p>Describe una operación, aclara sus datos y conserva su documentación. El historial permite seguir los cambios.</p><p>Las actuaciones conservan responsables y cambios. Su cierre no sustituye la revisión del requisito.</p></details>
   </aside><section id="workspace-main" className="desk-main" aria-labelledby="workspace-title"><header className="desk-page-header"><div><span className="desk-overline">{organization.nombre}</span><h1 id="workspace-title" ref={heading} tabIndex={-1}>{sections[section]}</h1><p>{section === 'overview' ? 'Tu actividad, documentación y siguientes pasos, en un mismo lugar.' : 'Datos y cambios de tu organización, conectados al servidor.'}</p></div>{selector}</header>
@@ -95,6 +98,10 @@ function Connected({ api, organization, selector }) {
     {section === 'profile' && admin && <CompanyProfile api={api} base={base}/>}
     {section === 'context' && admin && <ContextPage api={api} base={base}/>}
     {section === 'operations' && admin && <OperationsPage api={api} base={base} initialOperationId={operationId}/>}
+    {section === 'rat' && admin && <RatWorkspace api={api} base={base} onNavigate={navigate}/>}
+    {section === 'units' && admin && <DPUnitWorkspace api={api} base={base}/>}
+    {section === 'rights' && admin && <DPCaseWorkspace api={api} base={base}/>}
+    {section === 'eipd' && admin && <DPCaseWorkspace api={api} base={base} mode="eipd"/>}
     {section === 'spaces' && <SpacesPage api={api} base={base} admin={admin}/>}
     {section === 'documents' && <DocumentsPage api={api} base={base} admin={admin}/>}
     {section === 'activity' && <ActivityPage api={api} base={base}/>}

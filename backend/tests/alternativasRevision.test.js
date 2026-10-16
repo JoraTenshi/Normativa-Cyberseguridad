@@ -8,7 +8,7 @@ const { crearRevisionRequisito: crear, vigenciaRevision, validarEvidencia } = re
 const { preparar } = require('../validation/registroNormativo');
 const key = 'clave_prueba_alternativas';
 test('R3/contrato1 conserva hash y representación anterior sin rutas implícitas', () => {
-  const r = crear(legacy.revision()); assert.equal(r.schemaVersion, 1);
+  const r = crear(legacy.revisionHistorica()); assert.equal(r.schemaVersion, 1);
   assert.equal(r.sha256, '5cc52b6d1cc4b5c9fcd77e4cc8824d112ebe4d75bbc28f3eec5e0687144709d0');
   assert.equal(Object.hasOwn(r, 'ruta'), false);
   assert.throws(() => crear({ ...legacy.revision(), datos: { ...legacy.revision().datos, ruta: { id: 'A', motivo: 'B' } } }));

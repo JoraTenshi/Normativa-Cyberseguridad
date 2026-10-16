@@ -1,0 +1,549 @@
+{
+  "ficha": {
+    "schemaVersion": 1,
+    "paqueteId": "NORM_ENS_DP_20261015",
+    "id": "RGPD32_SEGURIDAD_OPERACION",
+    "version": 2,
+    "reglaId": "RGPD32_SEGURIDAD_OPERACION",
+    "versionRegla": 1,
+    "titulo": "Seguridad adecuada al riesgo de la operación de tratamiento",
+    "explicacion": "Examina riesgos para las personas, medidas implantadas y eficacia en la operación delimitada. No certifica toda la empresa ni sustituye ENS, EIPD o notificación de brechas. Las condiciones de cada criterio se motivan; cerrar tareas no equivale a cumplimiento.",
+    "fuentes": [
+      {
+        "id": "RGPD_2016_679",
+        "version": 1,
+        "editor": "Agencia Estatal Boletín Oficial del Estado / legislador identificado en publicación",
+        "titulo": "Reglamento (UE) 2016/679",
+        "url": "https://www.boe.es/buscar/doc.php?id=DOUE-L-2016-80807",
+        "localizador": "Arts.2,3,4.7/8,29,32,99",
+        "consultadaEn": "2026-10-15T16:12:00.000Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "LOPDGDD_3_2018",
+        "version": 1,
+        "editor": "Agencia Estatal Boletín Oficial del Estado / legislador identificado en publicación",
+        "titulo": "Ley Orgánica 3/2018",
+        "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2018-16673",
+        "localizador": "DA1: medidas ENS en ámbito público; art.77.1",
+        "consultadaEn": "2026-10-15T16:12:00.000Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "ENS_311_2022",
+        "version": 1,
+        "editor": "Agencia Estatal Boletín Oficial del Estado / legislador identificado en publicación",
+        "titulo": "Real Decreto 311/2022",
+        "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2022-7191",
+        "localizador": "Art.3: relación con protección de datos; art.2 ámbito",
+        "consultadaEn": "2026-10-15T16:12:00.000Z",
+        "estadoRevision": "revisada"
+      }
+    ],
+    "criterios": [
+      {
+        "id": "SEG_PERIMETRO",
+        "descripcion": "Identificar entidad, función, tratamientos, información, personas afectadas, sistemas y dependencias cubiertos; explicar limitaciones. El alcance incompleto impide extrapolar la revisión.",
+        "origen": "metodologia",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.32.1"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "SEG_RIESGOS",
+        "descripcion": "Valorar probabilidad y gravedad para derechos y libertades, incluida destrucción, pérdida, alteración, divulgación y acceso no autorizado, accidental o ilícito. La ausencia de riesgo alto no elimina la seguridad.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.32.1"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.32.2"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "SEG_SELECCION",
+        "descripcion": "Motivar medidas técnicas y organizativas apropiadas considerando estado de la técnica, costes, naturaleza, alcance, contexto y fines. Coste no autoriza un nivel inadecuado. Separar medidas propuestas de implementadas y demostrar cobertura de riesgos.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.32.1"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "SEG_PSEUDO_CIFRADO",
+        "descripcion": "Examinar pertinencia de seudonimización y cifrado, su alcance y efectividad. Si se necesitan, comprobar implementación y condiciones de funcionamiento, incluidos accesos y gestión de claves cuando corresponda. No imponer ambas medidas idénticas en todo tratamiento, ni considerar datos seudonimizados como anónimos.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.32.1.a"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "SEG_CAPACIDADES",
+        "descripcion": "Comprobar capacidades de confidencialidad, integridad, disponibilidad y resiliencia de sistemas/servicios según el tratamiento. Evaluar continuidad de su efectividad, no una captura aislada ni promesa de seguridad absoluta.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.32.1.b"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "SEG_RECUPERACION",
+        "descripcion": "Examinar capacidad de restablecer disponibilidad y acceso con rapidez adecuada al riesgo ante incidentes físicos o técnicos. Una copia creada no prueba restauración. Definir objetivo y medir inicio/fin/nivel de servicio de la prueba; no inventar RTO/RPO universal ni confundir pérdida de datos con duración de recuperación.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.32.1.c"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "SEG_EFICACIA",
+        "descripcion": "Examinar un proceso regular de comprobación de eficacia proporcionado al tratamiento, con cobertura, resultados y respuesta a fallos. Motivar periodicidad interna y cambios; no imponer por defecto auditoría anual o pentest para todo cliente.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.32.1.d"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "SEG_PERSONAS_INSTRUCCIONES",
+        "descripcion": "Medidas para que quienes estén bajo autoridad y accedan a datos los traten conforme a instrucciones del responsable, salvo obligación legal pertinente identificada. Examinar autorizaciones, instrucciones y controles; un NDA o nombramiento aislado no basta.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.32.4"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.29"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "SEG_APOYO_APROBADO",
+        "descripcion": "Solo si se invoca código o certificación como elemento demostrativo: comprobar aprobación conforme a artículos 40/42, sujeto, alcance, vigencia y qué acredita. ISO o ENS no son automáticamente mecanismos aprobados por artículo 42. No penalizar a quien no se certifique.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.32.3"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "SEG_NEXO_ENS",
+        "descripcion": "Si entra en ámbito ENS/sector público pertinente, vincular medidas de protección de datos y ENS, conservar razones de aplicación y medidas más exigentes resultantes. No rebajar protección por categoría ENS ni aplicar ENS a toda pyme. Causa indirecta o incierta requiere análisis visible.",
+        "origen": "norma",
+        "fuenteIds": [
+          "LOPDGDD_3_2018",
+          "ENS_311_2022"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "LOPDGDD_3_2018",
+            "localizador": "Disposición adicional primera"
+          },
+          {
+            "fuenteId": "ENS_311_2022",
+            "localizador": "Art.3"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "SEG_ACTUALIDAD",
+        "descripcion": "La evidencia corresponde a las medidas actuales y al periodo; cambios materiales, fallos o nuevas dependencias pueden exigir revisión. No declarar incumplimiento solo por incidente ni adecuación solo por ausencia de incidentes. Conservar resultados anteriores sin trasladarlos automáticamente a otra versión.",
+        "origen": "metodologia",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.32.1"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.32.1.d"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      }
+    ],
+    "fuentesYCalendario": {
+      "consultaVigencia": "2026-10-15",
+      "limiteVerificacion": "Arts.29/32 RGPD, DA1 LOPDGDD y art.3 ENS contrastados. Contenido condicional preservado. No revisión independiente ni certificación. Versión histórica anterior a RD311/2022 fuera de cobertura de este paquete."
+    },
+    "usoContenido": {
+      "tipo": "legislacion_y_explicacion_original",
+      "atribucion": "Basado en datos de la Agencia Estatal Boletín Oficial del Estado. Explicación propia, sin respaldo oficial.",
+      "urlCondiciones": "https://www.boe.es/informacion/aviso_legal/index.php",
+      "advertencia": "Solo legislación y explicación propia; referencias a estándares no incorporan texto protegido.",
+      "incluyeISOoCCNProtegido": false
+    },
+    "revisionEditorial": {
+      "actor": "Codex Normativa",
+      "tipo": "revision_editorial_asistida_IA",
+      "fecha": "2026-10-15T16:15:00.000Z",
+      "dictamenJuridicoProfesional": false,
+      "publicacion": "Pendiente integración explícita por Backend, pruebas API/Mongo/UI y activación; generar no publica."
+    },
+    "actuacionesSugeridas": [
+      {
+        "id": "SEG_A_CONTEXTO",
+        "titulo": "Delimitar tratamientos y riesgos para las personas con soporte y hechos pendientes visibles.",
+        "funcionSugerida": "Responsable o encargado según la operación; apoyo de seguridad y DPD cuando proceda.",
+        "criterioCierreTarea": "Resultado y soporte registrados para los criterios SEG_PERIMETRO, SEG_RIESGOS. Cierre de tarea no aprueba requisito.",
+        "dependeDe": []
+      },
+      {
+        "id": "SEG_A_IMPLANTAR",
+        "titulo": "Seleccionar e implantar medidas justificadas; tareas con responsable, dependencias y evidencia esperada.",
+        "funcionSugerida": "Responsable o encargado según la operación; apoyo de seguridad y DPD cuando proceda.",
+        "criterioCierreTarea": "Resultado y soporte registrados para los criterios SEG_SELECCION, SEG_PSEUDO_CIFRADO, SEG_CAPACIDADES. Cierre de tarea no aprueba requisito.",
+        "dependeDe": []
+      },
+      {
+        "id": "SEG_A_PROBAR",
+        "titulo": "Ejecutar comprobaciones adecuadas, registrar resultado y corregir fallos; no lanzar pruebas técnicas en sistemas reales desde este encargo.",
+        "funcionSugerida": "Responsable o encargado según la operación; apoyo de seguridad y DPD cuando proceda.",
+        "criterioCierreTarea": "Resultado y soporte registrados para los criterios SEG_RECUPERACION, SEG_EFICACIA. Cierre de tarea no aprueba requisito.",
+        "dependeDe": []
+      },
+      {
+        "id": "SEG_A_INSTRUCCIONES",
+        "titulo": "Concretar autorizaciones/instrucciones y verificar controles efectivos para personas con acceso.",
+        "funcionSugerida": "Responsable o encargado según la operación; apoyo de seguridad y DPD cuando proceda.",
+        "criterioCierreTarea": "Resultado y soporte registrados para los criterios SEG_PERSONAS_INSTRUCCIONES. Cierre de tarea no aprueba requisito.",
+        "dependeDe": []
+      },
+      {
+        "id": "SEG_A_CORRESPONDENCIAS",
+        "titulo": "Verificar alegaciones de certificación/códigos y correspondencias con ENS sin equivalencia total ni textos protegidos.",
+        "funcionSugerida": "Responsable o encargado según la operación; apoyo de seguridad y DPD cuando proceda.",
+        "criterioCierreTarea": "Resultado y soporte registrados para los criterios SEG_APOYO_APROBADO, SEG_NEXO_ENS. Cierre de tarea no aprueba requisito.",
+        "dependeDe": []
+      },
+      {
+        "id": "SEG_A_REVISAR",
+        "titulo": "Revisar ante cambios relevantes preservando versión y conclusión anterior.",
+        "funcionSugerida": "Responsable o encargado según la operación; apoyo de seguridad y DPD cuando proceda.",
+        "criterioCierreTarea": "Resultado y soporte registrados para los criterios SEG_ACTUALIDAD. Cierre de tarea no aprueba requisito.",
+        "dependeDe": []
+      }
+    ],
+    "condicionesRevision": {
+      "unidadContada": "Una unidad por operación y perímetro delimitado. No sumar sus11criterios ni duplicar por cada vínculo ENS; no extrapolar a empresa completa.",
+      "favorable": "Revisión motivada de todos los criterios con valoración explícita de pertinencia de los condicionales. Ausencia de dato no demuestra que no proceda. La evidencia tiene que cubrir operación, versiones y periodo; no se hereda favorable de ENS.",
+      "evidencia": "Riesgos y decisiones, medidas realmente implementadas, comprobaciones de eficacia, instrucciones y correspondencias pertinentes. Referencias externas verificables admisibles; no exigir secretos ni expedientes completos.",
+      "aprobacionAutomatica": false,
+      "revisor": "Miembro autorizado; tipo de revisión, límites, motivación y evidencia examinada identificados. No dictamen profesional por defecto.",
+      "caducidadUniversal": null,
+      "desencadenantes": [
+        "cambio de tratamiento, rol, alcance o proveedor",
+        "nuevas amenazas o riesgos para las personas",
+        "fallos de comprobación o incidentes relevantes",
+        "cambio material de medidas o evidencias",
+        "cambio normativo pertinente"
+      ],
+      "preservarHistorico": true
+    },
+    "limites": [
+      "Ficha acotada a seguridad del tratamiento; no cumplimiento de todo RGPD ni ENS.",
+      "La referencia de un usuario a un certificado no valida su aprobación, alcance ni vigencia.",
+      "No certificación obligatoria ni auditoría anual universal.",
+      "Una operación prevista requiere preparación antes del inicio, no evaluación favorable actual ni no aplicación definitiva.",
+      "La exclusión del ámbito RGPD exige fundamento; otros regímenes no se eliminan.",
+      "No sumar criterios o tareas como obligaciones independientes.",
+      "Registro de evidencia no demuestra su autenticidad o suficiencia por sí solo."
+    ]
+  },
+  "regla": {
+    "contratoVersion": 2,
+    "id": "RGPD32_SEGURIDAD_OPERACION",
+    "version": 1,
+    "estado": "revisada",
+    "revision": {
+      "revisorRef": "Codex-revision-editorial-no-dictamen-profesional",
+      "fecha": "2026-10-15T16:15:00.000Z"
+    },
+    "naturaleza": "ley_reglamento",
+    "origenes": [
+      "legal"
+    ],
+    "tiposObjeto": [
+      "operacion"
+    ],
+    "fuentes": [
+      {
+        "id": "RGPD_2016_679",
+        "version": 1,
+        "editor": "Agencia Estatal Boletín Oficial del Estado / legislador identificado en publicación",
+        "titulo": "Reglamento (UE) 2016/679",
+        "url": "https://www.boe.es/buscar/doc.php?id=DOUE-L-2016-80807",
+        "localizador": "Arts.2,3,4.7/8,29,32,99",
+        "consultadaEn": "2026-10-15T16:12:00.000Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "LOPDGDD_3_2018",
+        "version": 1,
+        "editor": "Agencia Estatal Boletín Oficial del Estado / legislador identificado en publicación",
+        "titulo": "Ley Orgánica 3/2018",
+        "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2018-16673",
+        "localizador": "DA1: medidas ENS en ámbito público; art.77.1",
+        "consultadaEn": "2026-10-15T16:12:00.000Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "ENS_311_2022",
+        "version": 1,
+        "editor": "Agencia Estatal Boletín Oficial del Estado / legislador identificado en publicación",
+        "titulo": "Real Decreto 311/2022",
+        "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2022-7191",
+        "localizador": "Art.3: relación con protección de datos; art.2 ámbito",
+        "consultadaEn": "2026-10-15T16:12:00.000Z",
+        "estadoRevision": "revisada"
+      }
+    ],
+    "vigencia": {
+      "estado": "definida",
+      "tipo": "fecha_civil",
+      "calendario": "gregoriano",
+      "jurisdiccion": "ES",
+      "zonaEvaluacion": "Europe/Madrid",
+      "desde": "2018-05-25",
+      "hasta": null
+    },
+    "cobertura": {
+      "descripcion": "Seguridad de operación activa o residual vinculada a establecimiento español y régimen general RGPD; cuatro funciones delimitadas. Operación prevista requiere preparación separada, no favorable actual.",
+      "condicion": {
+        "op": "and",
+        "args": [
+          {
+            "op": "eq",
+            "hecho": "dp_establecimiento_es",
+            "valor": true
+          },
+          {
+            "op": "eq",
+            "hecho": "dp_regimen_general",
+            "valor": true
+          },
+          {
+            "op": "or",
+            "args": [
+              {
+                "op": "eq",
+                "hecho": "dp_rol",
+                "valor": "responsable"
+              },
+              {
+                "op": "eq",
+                "hecho": "dp_rol",
+                "valor": "encargado"
+              },
+              {
+                "op": "eq",
+                "hecho": "dp_rol",
+                "valor": "corresponsable_delimitado"
+              },
+              {
+                "op": "eq",
+                "hecho": "dp_rol",
+                "valor": "subencargado_delimitado"
+              }
+            ]
+          },
+          {
+            "op": "or",
+            "args": [
+              {
+                "op": "eq",
+                "hecho": "dp_fase",
+                "valor": "activa"
+              },
+              {
+                "op": "eq",
+                "hecho": "dp_fase",
+                "valor": "residual"
+              }
+            ]
+          }
+        ]
+      },
+      "periodo": {
+        "desde": "2022-05-05",
+        "hasta": null,
+        "motivo": "Esta versión integra nexo con RD311/2022 desde su entrada en vigor; situaciones anteriores requieren versión histórica, no ausencia de obligación RGPD32."
+      }
+    },
+    "hechos": [
+      {
+        "clave": "dp_ambito_rgpd",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "SEG_P_dp_ambito_rgpd",
+          "texto": "¿Esta operación entra en el ámbito material y territorial del RGPD? Si falta análisis, registra desconocido.",
+          "grupo": "Operación de tratamiento",
+          "motivo": "Reutilizar evaluación de datos personales, medios y ámbito; una respuesta no verifica por sí sola esos hechos."
+        }
+      },
+      {
+        "clave": "dp_establecimiento_es",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "SEG_P_dp_establecimiento_es",
+          "texto": "¿Esta operación está vinculada a las actividades de un establecimiento en España?",
+          "grupo": "Operación de tratamiento",
+          "motivo": "Delimita el itinerario español; otros supuestos no son exenciones."
+        }
+      },
+      {
+        "clave": "dp_regimen_general",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "SEG_P_dp_regimen_general",
+          "texto": "¿Esta operación está sometida al régimen general del RGPD contemplado en este itinerario? Si falta análisis, registra desconocido.",
+          "grupo": "Operación de tratamiento",
+          "motivo": "LO7/2021 y otros regímenes específicos requieren análisis visible, no exclusión silenciosa."
+        }
+      },
+      {
+        "clave": "dp_rol",
+        "tipo": "texto",
+        "pregunta": {
+          "id": "SEG_P_dp_rol",
+          "texto": "¿Qué papel ejerce realmente la entidad en esta operación?",
+          "grupo": "Operación de tratamiento",
+          "motivo": "responsable, encargado, corresponsable_delimitado o subencargado_delimitado; no confundir con permisos de cuenta."
+        }
+      },
+      {
+        "clave": "dp_fase",
+        "tipo": "texto",
+        "pregunta": {
+          "id": "SEG_P_dp_fase",
+          "texto": "¿La operación está activa, prevista, conserva datos residuales o ha finalizado realmente?",
+          "grupo": "Operación de tratamiento",
+          "motivo": "activa, residual, prevista o finalizada; cese del servicio no demuestra desaparición de tratamiento."
+        }
+      }
+    ],
+    "condicion": {
+      "op": "eq",
+      "hecho": "dp_ambito_rgpd",
+      "valor": true
+    },
+    "excepciones": []
+  }
+}

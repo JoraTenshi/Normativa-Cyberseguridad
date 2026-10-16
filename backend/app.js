@@ -45,7 +45,17 @@ function createApp({ rateLimits = true, politicaSesiones = 'persistente' } = {})
   app.use(cors({ origin: ALLOWED_ORIGIN, credentials: true }));
   app.use(comprobarOrigen(ALLOWED_ORIGIN));
   app.use(cookieParser());
-  app.use(express.json({ limit: '10kb' }));
+  // ENS and RAT inventories carry bounded structured, justified entries.
+  // Expand only these authenticated write routes; auth and other APIs retain 10kb.
+  const ensWritePath = /^\/organizaciones\/[a-f0-9]{24}\/normativa\/(categorizaciones-ens|determinaciones-ens|revisiones-categorizacion-ens|registros-rat|revisiones-rat|unidades-dp|solicitudes-derechos|pretensiones-derechos|detecciones-eipd)(\/[a-f0-9]{24})?\/?$/;
+  const ensJSON = express.json({ limit: '128kb' });
+  const normalJSON = express.json({ limit: '10kb' });
+  const escrituraEns = req => ['POST','PATCH'].includes(req.method) && ensWritePath.test(req.path);
+  app.use((req, res, next) => {
+    // Defer the larger inventory parser until after the global request limiter.
+    if (escrituraEns(req)) return next();
+    return normalJSON(req, res, next);
+  });
 
   if (rateLimits) {
     app.use(rateLimit({
@@ -57,6 +67,11 @@ function createApp({ rateLimits = true, politicaSesiones = 'persistente' } = {})
       message: { ok: false, error: 'Demasiadas peticiones, inténtalo más tarde.' }
     }));
   }
+
+  app.use((req, res, next) => {
+    if (!escrituraEns(req)) return next();
+    return require('./middleware/auth').requireAuth(req, res, error => error ? next(error) : ensJSON(req, res, next));
+  });
 
   const limitar = opciones => (rateLimits ? rateLimit(opciones) : sinLimite);
 

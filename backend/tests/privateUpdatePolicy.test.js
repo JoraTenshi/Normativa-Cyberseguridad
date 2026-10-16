@@ -8,6 +8,36 @@ const compatibility={schema:1,baselineManifestSha256:h,targetSourceSha256:j,mode
 const input=()=>({currentProfile:old,nextProfile:next,currentCompose:compose(old),images:{backend:'sha256:'+h,web:'sha256:'+j},compatibility});
 const snapshot=()=>({database:'nc_private',replica:'nc-private-rs',collections:[{name:'usuarios',count:1,contentSha256:h,indexSha256:h,optionsSha256:h}]});
 const gate=()=>({plan:buildPlan(input()),maintenanceConfirmed:true,oldContainerIdentityUnchanged:true,backup:{private:true,exclusive:true,restoreVerified:true,custodyConfirmed:true,sha256:h,bytes:300},before:snapshot(),restored:snapshot(),current:snapshot()});
+const transition={fromOrigin:'https://10.77.77.1:9443',toOrigin:'https://10.77.77.1:8443'};
+const portInput=()=>({...input(),nextProfile:{...next,port:8443},privatePortTransition:{...transition}});
+
+test('explicit private 9443 to 8443 preserves full Mongo and all persistent state',()=>{
+ const i=portInput(),before=structuredClone(i),plan=buildPlan(i);
+ assert.deepEqual(i,before);assert.deepEqual(plan.privatePortTransition,transition);
+ for(const key of ['secrets','volumes','networks'])assert.deepEqual(plan.config[key],i.currentCompose[key]);
+ assert.deepEqual(plan.config.services.mongodb,i.currentCompose.services.mongodb);
+ assert.deepEqual(plan.config.services.web.ports,[{target:8443,published:'8443',host_ip:'10.77.77.1',protocol:'tcp'}]);
+ assert.equal(plan.config.services.backend.environment.CORS_ORIGIN,transition.toOrigin);
+ assert.equal(plan.config.services.backend.environment.APP_URL,transition.toOrigin);
+ assert.equal(plan.config.services.backend.environment.NC_HTTPS_ORIGIN,transition.toOrigin);
+ assert.equal(plan.config.services.backend.ports,undefined);assert.equal(plan.config.services.mongodb.ports,undefined);
+});
+
+test('8443 cannot be switched silently or with an approximate transition descriptor',()=>{
+ for(const t of [undefined,null,true,{}, {...transition,toOrigin:'https://0.0.0.0:8443'}, {...transition,fromOrigin:'https://10.77.77.1'}, {...transition,approved:true}])assert.throws(()=>buildPlan({...portInput(),privatePortTransition:t}),/EXPLICIT_PRIVATE_PORT_TRANSITION_REQUIRED/);
+ assert.throws(()=>buildPlan({...input(),privatePortTransition:transition}),/UNEXPECTED_PORT_TRANSITION/);
+});
+
+test('transition does not bypass original config drift or publish other services',()=>{
+ for(const mutate of [i=>i.currentCompose.services.web.ports[0].host_ip='0.0.0.0',i=>i.currentCompose.services.mongodb.ports=['27017:27017'],i=>i.currentCompose.services.backend.ports=['5000:5000']]){
+  const i=portInput();mutate(i);assert.throws(()=>buildPlan(i),/CURRENT_CONFIG_DRIFT/);
+ }
+});
+
+test('transition never admits CAT model changes, secret rotation or other changes',()=>{
+ for(const key of ['modelsAndIndexesUnchanged','runtimeSecretsUnchanged'])assert.throws(()=>buildPlan({...portInput(),compatibility:{...compatibility,[key]:false}}),/MIGRATION_REQUIRES_SEPARATE_PLAN/);
+ for(const delta of [{smtpMode:'smtp465'},{stateRoot:'/srv/other/state'},{wireguardUnit:'wg-quick@wg1.service'},{port:443}])assert.throws(()=>buildPlan({...portInput(),nextProfile:{...next,port:8443,...delta}}),/STATE_OR_NETWORK_OR_MAIL_CHANGE/);
+});
 test('plan preserves exact Mongo mount, secrets, volumes and networks',()=>{const i=input(),p=buildPlan(i);assert.deepEqual(p.config.services.mongodb,i.currentCompose.services.mongodb);assert.deepEqual(p.config.secrets,i.currentCompose.secrets);assert.equal(p.retainedRelease,old.releaseRoot);assert.equal(p.automaticRollbackAllowed,false);});
 test('activation targets backend/web only, immutable and no dependencies',()=>{const p=buildPlan(input());assert.equal(p.config.services.backend.build,undefined);assert.equal(p.config.services.web.build,undefined);assert.deepEqual(p.activationArgs.slice(-2),['backend','web']);for(const term of ['--no-deps','--no-build','never'])assert.ok(p.activationArgs.includes(term));});
 test('profile drift does not silently rewrite configuration',()=>{const i=input();i.currentCompose.services.mongodb.volumes[0]='other:/data/db';assert.throws(()=>buildPlan(i),/CURRENT_CONFIG_DRIFT/);});

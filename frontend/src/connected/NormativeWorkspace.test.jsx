@@ -19,6 +19,22 @@ let root,container;
 beforeEach(()=>{global.IS_REACT_ACT_ENVIRONMENT=true;Object.defineProperty(global,'crypto',{configurable:true,value:{randomUUID:()=>id}});container=document.createElement('div');document.body.appendChild(container);root=createRoot(container);});
 afterEach(()=>{act(()=>root.unmount());container.remove();delete global.IS_REACT_ACT_ENVIRONMENT;});
 const button=text=>[...container.querySelectorAll('button')].find(b=>b.textContent===text);
+test('record conflict adoption synchronizes parent and editor only after explicit acceptance',async()=>{
+  const first={id,version:1,versionActual:1,referencia:{id,version:1,sha256:hash},permisos:{actualizar:true},revision:{registradoEn:'2026-10-15T10:00:00Z',motivo:'Original'},contenido:{nombre:'Sistema original',descripcion:'Descripción original',alcance:{id:org,version:1,sha256:hash},hechos:[]}};
+  const latest={...first,version:2,versionActual:2,referencia:{id,version:2,sha256:hash},contenido:{...first.contenido,nombre:'Sistema A actualizado'}};
+  let reads=0;const api={get:jest.fn(path=>Promise.resolve(path.endsWith('/catalogo')?{paquetes:[]}:path===base+'/normativa/sistemas/'+id?(++reads===1?first:latest):{alcances:[],registros:[],versiones:[],paginacion:{hayMas:false}})),write:jest.fn().mockRejectedValue({status:409,message:'Conflicto'})};
+  const click=async text=>act(async()=>Simulate.click(button(text)));
+  const input=text=>[...container.querySelectorAll('label')].find(x=>x.textContent.startsWith(text)).querySelector('input,textarea');
+  await act(async()=>root.render(<NormativeWorkspace api={api} base={base} initialKind="sistemas" initialId={id}/>));
+  await click('Editar este registro');await act(async()=>{input('Nombre del sistema').value='Borrador B';Simulate.change(input('Nombre del sistema'));input('Motivo del registro').value='Cambio B';Simulate.change(input('Motivo del registro'));});
+  await act(async()=>Simulate.submit(container.querySelector('form')));await click('Consultar versión actual para comparar');
+  const confirm=jest.spyOn(window,'confirm').mockReturnValueOnce(false).mockReturnValueOnce(true);
+  try {
+    await click('Reabrir la versión actual y descartar este borrador');expect(input('Nombre del sistema').value).toBe('Borrador B');expect(container.textContent).toContain('Versión consultada 1 · versión actual 1');
+    await click('Reabrir la versión actual y descartar este borrador');expect(input('Nombre del sistema').value).toBe('Sistema A actualizado');expect(input('Motivo del registro').value).toBe('');expect(container.textContent).toContain('Versión consultada 2 · versión actual 2');expect(container.textContent).not.toContain('Tu borrador sigue aquí');expect(api.write).toHaveBeenCalledTimes(1);
+    await click('Cerrar editor');expect(container.textContent).toContain('Versión consultada 2 · versión actual 2');
+  } finally {confirm.mockRestore();}
+});
 test('native date input events persist both civil dates across rerenders',async()=>{function Draft(){const [dates,setDates]=React.useState({desde:'',hasta:''});return <><PeriodFields value={dates} onChange={setDates}/><output>{JSON.stringify(dates)}</output></>;}await act(async()=>root.render(<Draft/>));const inputs=container.querySelectorAll('input');await act(async()=>{inputs[0].value='2026-10-14';Simulate.input(inputs[0]);});await act(async()=>{inputs[1].value='2026-10-15';Simulate.input(inputs[1]);});expect(container.querySelector('output').textContent).toBe('{"desde":"2026-10-14","hasta":"2026-10-15"}');});
 test('scope labels use the consulted scope name',()=>expect(recordLabel({id,contenido:{alcance:{nombre:'Servicio SaaS'}}})).toBe('Servicio SaaS'));
 test('review status never presents revision record version as requirement version',async()=>{await act(async()=>root.render(<CurrentStatus dto={{versionActual:1,contenido:{revision:{}},estadoRevision:{satisfaccionActual:'requiere_revision',conclusionHistorica:'favorable'}}}/>));expect(container.textContent).toContain('Estado de esta revisión frente a las bases actuales');expect(container.textContent).not.toContain('versión actual 1');});

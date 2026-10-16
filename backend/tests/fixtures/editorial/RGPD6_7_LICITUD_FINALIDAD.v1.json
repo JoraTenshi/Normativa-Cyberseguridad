@@ -1,0 +1,816 @@
+{
+  "ficha": {
+    "schemaVersion": 2,
+    "paqueteId": "DP_E1_20261016",
+    "id": "RGPD6_7_LICITUD_FINALIDAD",
+    "version": 1,
+    "reglaId": "RGPD6_7_LICITUD_FINALIDAD",
+    "versionRegla": 1,
+    "titulo": "Licitud por finalidad y condiciones del consentimiento",
+    "explicacion": "Revisión del fundamento de una finalidad delimitada. Seis rutas alternativas de revisión, no seis obligaciones ni una puntuación. Declarar una base no demuestra su validez.",
+    "fuentes": [
+      {
+        "id": "RGPD_2016_679",
+        "version": 1,
+        "titulo": "Reglamento (UE) 2016/679",
+        "url": "https://www.boe.es/buscar/doc.php?id=DOUE-L-2016-80807",
+        "localizador": "Arts.4.11,5–7",
+        "editor": "Legislador UE; BOE",
+        "consultadaEn": "2026-10-15T22:28:23.393Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "LOPDGDD_3_2018",
+        "version": 1,
+        "titulo": "Ley Orgánica 3/2018",
+        "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2018-16673",
+        "localizador": "Arts.6 y 8",
+        "editor": "Legislador español; BOE",
+        "consultadaEn": "2026-10-15T22:28:23.393Z",
+        "estadoRevision": "revisada"
+      }
+    ],
+    "criterios": [
+      {
+        "id": "L01_FINALIDAD",
+        "descripcion": "La finalidad y el tratamiento evaluados están delimitados; no se acepta una base global para operaciones heterogéneas sin justificación.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.5.1.b"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.6.1"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "L02_BASE_MOTIVADA",
+        "descripcion": "La base invocada se relaciona con hechos, necesidad y alcance revisados. No basta el nombre de la base, la existencia de una política o una tarea terminada.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.5.2"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.6.1"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "L03_CONTRATO",
+        "descripcion": "Se acredita necesidad para contrato en que el interesado es parte o medidas precontractuales a petición de este. Un contrato B2B no hace automáticamente parte contractual a todos los empleados del cliente; la mera inclusión de una cláusula no prueba necesidad.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.6.1.b"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "L04_OBLIGACION_LEGAL",
+        "descripcion": "La obligación es exigible al responsable y se identifica su norma habilitante aplicable y el tratamiento necesario. En España se contrasta Derecho UE o norma con rango de ley; no basta una obligación contractual privada. Contrastar además finalidad determinada o necesaria para la misión, límites específicos de la habilitación, objetivo de interés público y proporcionalidad de la base en los términos6.3; el selector no resuelve su validez.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679",
+          "LOPDGDD_3_2018"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.6.1.c"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.6.3"
+          },
+          {
+            "fuenteId": "LOPDGDD_3_2018",
+            "localizador": "Art.8.1"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "L05_INTERESES_VITALES",
+        "descripcion": "La necesidad de proteger intereses vitales de personas está motivada. No equiparar automáticamente seguridad de la empresa o urgencia comercial con este supuesto.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.6.1.d"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "L06_MISION_PUBLICA",
+        "descripcion": "Se identifica misión o poderes conferidos al responsable, habilitación y necesidad. En España se contrasta competencia atribuida por norma con rango de ley; tener un cliente público no basta. Contrastar además finalidad determinada o necesaria para la misión, límites específicos de la habilitación, objetivo de interés público y proporcionalidad de la base en los términos6.3; el selector no resuelve su validez.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679",
+          "LOPDGDD_3_2018"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.6.1.e"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.6.3"
+          },
+          {
+            "fuenteId": "LOPDGDD_3_2018",
+            "localizador": "Art.8.2"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "L07_INTERES_LEGITIMO",
+        "descripcion": "Se acredita interés legítimo identificado, necesidad y ponderación de intereses/derechos/libertades de personas, con especial atención a menores. No se usa esta letra por autoridades públicas en el ejercicio de sus funciones. No se fija una fórmula de puntos ni una aprobación por ausencia de quejas.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.6.1.f"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "L08_OTRO_FIN",
+        "descripcion": "Se determina qué vía jurídica procede. Cuando corresponde6.4, se examinan relación de fines, contexto, naturaleza de datos, consecuencias y garantías, sin transformar cifrado o seudonimización en aprobación automática. La evaluación de compatibilidad se distingue de la vía de consentimiento específico para el nuevo fin y de la habilitación legal necesaria y proporcionada que salvaguarde objetivos23.1. No exigir los cinco factores como test universal de esas vías ni convertirlos en puntuación. Si no existe otro fin, documentar no pertinencia motivada, sin inventar análisis de compatibilidad.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.5.1.b"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.6.4"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "C01_CUALIDADES",
+        "descripcion": "Manifestación libre, específica, informada e inequívoca mediante declaración o acción afirmativa. Se prueba el recorrido real y no se equipara silencio, lectura de política o aceptación general de condiciones con consentimiento válido.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679",
+          "LOPDGDD_3_2018"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.6.1.a"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.7"
+          },
+          {
+            "fuenteId": "LOPDGDD_3_2018",
+            "localizador": "Art.6.1"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "C02_VARIAS_FINALIDADES",
+        "descripcion": "Consta de forma específica e inequívoca para qué fines se otorgó. No autoriza finalidades o tecnologías futuras de forma genérica.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679",
+          "LOPDGDD_3_2018"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.6.1.a"
+          },
+          {
+            "fuenteId": "LOPDGDD_3_2018",
+            "localizador": "Art.6.2"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "C03_DEMOSTRACION",
+        "descripcion": "El responsable puede demostrar el consentimiento concreto y su alcance. La app distingue la evidencia del mecanismo de la prueba individual cuando sea necesaria; no exige subir indiscriminadamente todos los datos de interesados.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.7.1"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "C04_RETIRADA",
+        "descripcion": "Se informa antes de consentir, es posible retirar en cualquier momento con facilidad equivalente y el efecto real concuerda con esa elección. La retirada no invalida retroactivamente lo tratado lícitamente antes ni permite cambiar automáticamente a otra base para mantener el mismo uso. Debe cesar el tratamiento basado en ese consentimiento para ese fin; otras finalidades con fundamento válido se examinan separadamente. No automatiza la eliminación de toda la cuenta.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.7.3"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "C05_SEPARACION_LIBERTAD",
+        "descripcion": "La solicitud escrita se distingue de otros asuntos y usa lenguaje accesible. Se revisa si condicionar el servicio a usos innecesarios impide la libertad; no forzar consentimiento ajeno a la relación contractual.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679",
+          "LOPDGDD_3_2018"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.7.2"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.7.4"
+          },
+          {
+            "fuenteId": "LOPDGDD_3_2018",
+            "localizador": "Art.6.3"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "L09_CICLO_CONTRATO",
+        "descripcion": "La necesidad se examina durante el ciclo real. La terminación no justifica seguir todos los usos, ni obliga a borrar indiscriminadamente datos necesarios para liquidar la relación o sujetos a conservación con fundamento distinto. Separar esas finalidades y motivaciones sin sustituir retrospectivamente la base.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.6.1.b"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.5.1.e"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "C06_INFORMACION",
+        "descripcion": "La información permite comprender quién solicita, para qué fines, qué datos se usan y cómo retirar. Añadir información de decisiones automatizadas o transferencias cuando sea exigible en el supuesto. Consentimiento informado no equivale al cumplimiento íntegro de artículos13/14.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.4.11"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.6.1.a"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.7.2"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.7.3"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "C07_CAMBIO_CONTEXTO",
+        "descripcion": "Se conserva el alcance consentido y se revisan cambios materiales de finalidad o tratamiento. No se atribuye al RGPD una caducidad general de365días ni se extiende una autorización anterior a usos distintos. Una renovación periódica como buena práctica debe etiquetarse como tal, no como plazo legal universal.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.5.1.b"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.6.1.a"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "Art.7.1"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      }
+    ],
+    "fuentesYCalendario": {
+      "consultaVigencia": "2026-10-16",
+      "limiteVerificacion": "Núcleo6–7 y LOPDGDD6/8, explicación propia; no cubre por sí solo categorías especiales, menores, decisiones automatizadas, terminales ni toda protección de datos."
+    },
+    "usoContenido": {
+      "tipo": "legislacion_y_explicacion_original",
+      "atribucion": "Basado en datos de la Agencia Estatal Boletín Oficial del Estado. Explicación propia, sin respaldo oficial.",
+      "urlCondiciones": "https://www.boe.es/informacion/aviso_legal/index.php",
+      "advertencia": "Solo legislación y explicación propia; referencias a estándares no incorporan texto protegido.",
+      "incluyeISOoCCNProtegido": false
+    },
+    "revisionEditorial": {
+      "actor": "Codex Normativa",
+      "tipo": "revision_editorial_asistida_IA",
+      "fecha": "2026-10-15T22:28:23.393Z",
+      "dictamenJuridicoProfesional": false,
+      "publicacion": "Paquete de desarrollo; integración y QA pendientes. Sin dictamen profesional."
+    },
+    "actuacionesSugeridas": [
+      {
+        "id": "LA01",
+        "titulo": "Delimitar tratamientos, finalidades y papel de la empresa",
+        "funcionSugerida": "Responsable del tratamiento y asesoramiento competente",
+        "criterioCierreTarea": "Hechos y versiones documentados; no decisión favorable automática.",
+        "dependeDe": []
+      },
+      {
+        "id": "LA02",
+        "titulo": "Justificar la base de cada finalidad",
+        "funcionSugerida": "Responsable del tratamiento y asesoramiento competente",
+        "criterioCierreTarea": "Motivación y soportes disponibles para revisión competente.",
+        "dependeDe": []
+      },
+      {
+        "id": "LA03",
+        "titulo": "Verificar y corregir el consentimiento cuando sea la base elegida",
+        "funcionSugerida": "Responsable del tratamiento y asesoramiento competente",
+        "criterioCierreTarea": "Elección, registro, rechazo/retirada y efectos probados; revisión del requisito separada.",
+        "dependeDe": []
+      },
+      {
+        "id": "LA04",
+        "titulo": "Resolver cambios de finalidad y supuestos especiales",
+        "funcionSugerida": "Responsable del tratamiento y asesoramiento competente",
+        "criterioCierreTarea": "Decisión motivada y vínculos a revisiones adicionales; no sustitución de histórico.",
+        "dependeDe": []
+      }
+    ],
+    "condicionesRevision": {
+      "unidadContada": "Una finalidad delimitada, versión de tratamiento, entidad y papel. Criterios y mecanismo de consentimiento no se suman como obligaciones independientes.",
+      "favorable": "Conclusión motivada sobre todos los criterios pertinentes de la ruta justificada y soportes exactos. Una base seleccionada, tarea cerrada o archivo subido no basta. Desconocido decisivo bloquea favorable; cambio material abre revisión.",
+      "evidencia": "Finalidad, necesidad, base motivada, hechos y soportes de la vía; para consentimiento probar información, elección, registro y retirada reales mediante muestras minimizadas.",
+      "aprobacionAutomatica": false,
+      "revisor": "Miembro autorizado; tipo de revisión, límites, motivación y evidencia examinada identificados. No dictamen profesional por defecto.",
+      "caducidadUniversal": null,
+      "desencadenantes": [
+        "cambio de finalidad, base, operación o papel",
+        "cambio de mecanismo o alcance del consentimiento",
+        "retirada o incompatibilidad detectada",
+        "cambio normativo o de evidencia"
+      ],
+      "preservarHistorico": true
+    },
+    "limites": [
+      "Seguridad del tratamiento, base de licitud e información al interesado son dimensiones relacionadas, no sustitutas.",
+      "No imponer consentimiento para todos los tratamientos ni contrato como valor predeterminado.",
+      "Un checkbox que indique una base es una declaración del usuario, no una calificación jurídica probada.",
+      "Las seis letras de6.1 son condiciones alternativas, no seis obligaciones simultáneas ni una clasificación por puntos.",
+      "El resultado de este requisito no permite afirmar conformidad RGPD global ni levantar restricciones de otros preceptos.",
+      "Una finalidad nueva o un cambio material debe conservar la decisión anterior y abrir revisión; no sobrescribir retrospectivamente su fundamento.",
+      "No cambiar automáticamente de consentimiento a interés legítimo para eludir una retirada.",
+      "La evaluación6.4 no se presenta como una séptima base jurídica autónoma ni como autorización universal para reutilizar datos.",
+      "Principios5.1.c–f, información12–14, derechos,9–10,22, transferencias y leyes especiales no quedan cubiertos por este borrador; conservar relaciones y revisión pendiente cuando sean relevantes.",
+      "El consentimiento para acceso/almacenamiento en terminales de LSSI22.2 tiene una evaluación diferenciada. No toda operación de almacenamiento exige consentimiento ni toda excepción técnica prueba licitud del posterior tratamiento personal.",
+      "El selector acepta una vía propuesta por ejecución por sencillez técnica; no afirma que el Derecho prohíba toda concurrencia de fundamentos. El contrato productivo debe permitir motivaciones diferenciadas y revisión de cualquier combinación, sin selección automática ni saneamiento retrospectivo.",
+      "No preguntar al cliente por todas las letras6.1 como examen. Recoger hechos y mostrar las vías justificadas o pendientes.",
+      "Un plazo de revisión interno o una recomendación CEPD no se convierte en caducidad legal universal.",
+      "E1 representa una vía propuesta por evaluación. Si concurren bases, documentar delimitación y revisión; no prohibición legal de concurrencia ni saneamiento retrospectivo.",
+      "El consentimiento adicional9/22/49 exige condiciones propias fuera de esta ruta6.1.a.",
+      "Personas encargadas no eligen ni acreditan por defecto la base del cliente; su asistencia e instrucciones se revisan separadamente.",
+      "Identidad/versiones de finalidad y mecanismo deben persistir. No repetir la misma obligación por cada base o criterio.",
+      "Los criterios de consentimiento se integran en ruta6.1.a; no contarlos como otro requisito independiente en el mismo denominador."
+    ],
+    "satisfaccion": {
+      "tipo": "rutas_cerradas",
+      "hechos": [
+        {
+          "clave": "lic_base6",
+          "tipo": "texto",
+          "pregunta": {
+            "id": "LIC_P_BASE",
+            "texto": "¿Qué fundamento se propone justificar para esta finalidad?",
+            "grupo": "Fundamento a revisar",
+            "motivo": "a, b, c, d, e o f de6.1; registrar motivación y hechos, no elegir por defecto ni aprobar por la selección."
+          }
+        }
+      ],
+      "rutas": [
+        {
+          "id": "LIC_VIA_A",
+          "titulo": "Consentimiento",
+          "explicacion": "Revisar presupuesto, necesidad y alcance; propuesta sin aprobación automática.",
+          "requiereTodos": [
+            "L01_FINALIDAD",
+            "L02_BASE_MOTIVADA",
+            "L08_OTRO_FIN",
+            "C01_CUALIDADES",
+            "C02_VARIAS_FINALIDADES",
+            "C03_DEMOSTRACION",
+            "C04_RETIRADA",
+            "C05_SEPARACION_LIBERTAD",
+            "C06_INFORMACION",
+            "C07_CAMBIO_CONTEXTO"
+          ],
+          "hechosRequeridos": [
+            {
+              "clave": "lic_base6",
+              "valor": "a"
+            }
+          ]
+        },
+        {
+          "id": "LIC_VIA_B",
+          "titulo": "Contrato o medidas precontractuales",
+          "explicacion": "Revisar presupuesto, necesidad y alcance; propuesta sin aprobación automática.",
+          "requiereTodos": [
+            "L01_FINALIDAD",
+            "L02_BASE_MOTIVADA",
+            "L08_OTRO_FIN",
+            "L03_CONTRATO",
+            "L09_CICLO_CONTRATO"
+          ],
+          "hechosRequeridos": [
+            {
+              "clave": "lic_base6",
+              "valor": "b"
+            }
+          ]
+        },
+        {
+          "id": "LIC_VIA_C",
+          "titulo": "Obligación legal",
+          "explicacion": "Revisar presupuesto, necesidad y alcance; propuesta sin aprobación automática.",
+          "requiereTodos": [
+            "L01_FINALIDAD",
+            "L02_BASE_MOTIVADA",
+            "L08_OTRO_FIN",
+            "L04_OBLIGACION_LEGAL"
+          ],
+          "hechosRequeridos": [
+            {
+              "clave": "lic_base6",
+              "valor": "c"
+            }
+          ]
+        },
+        {
+          "id": "LIC_VIA_D",
+          "titulo": "Intereses vitales",
+          "explicacion": "Revisar presupuesto, necesidad y alcance; propuesta sin aprobación automática.",
+          "requiereTodos": [
+            "L01_FINALIDAD",
+            "L02_BASE_MOTIVADA",
+            "L08_OTRO_FIN",
+            "L05_INTERESES_VITALES"
+          ],
+          "hechosRequeridos": [
+            {
+              "clave": "lic_base6",
+              "valor": "d"
+            }
+          ]
+        },
+        {
+          "id": "LIC_VIA_E",
+          "titulo": "Misión pública o poderes públicos",
+          "explicacion": "Revisar presupuesto, necesidad y alcance; propuesta sin aprobación automática.",
+          "requiereTodos": [
+            "L01_FINALIDAD",
+            "L02_BASE_MOTIVADA",
+            "L08_OTRO_FIN",
+            "L06_MISION_PUBLICA"
+          ],
+          "hechosRequeridos": [
+            {
+              "clave": "lic_base6",
+              "valor": "e"
+            }
+          ]
+        },
+        {
+          "id": "LIC_VIA_F",
+          "titulo": "Interés legítimo",
+          "explicacion": "Revisar presupuesto, necesidad y alcance; propuesta sin aprobación automática.",
+          "requiereTodos": [
+            "L01_FINALIDAD",
+            "L02_BASE_MOTIVADA",
+            "L08_OTRO_FIN",
+            "L07_INTERES_LEGITIMO"
+          ],
+          "hechosRequeridos": [
+            {
+              "clave": "lic_base6",
+              "valor": "f"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "regla": {
+    "contratoVersion": 2,
+    "id": "RGPD6_7_LICITUD_FINALIDAD",
+    "version": 1,
+    "estado": "revisada",
+    "revision": {
+      "revisorRef": "Codex-revision-editorial-no-dictamen-profesional",
+      "fecha": "2026-10-15T22:28:23.393Z"
+    },
+    "naturaleza": "ley_reglamento",
+    "origenes": [
+      "legal"
+    ],
+    "tiposObjeto": [
+      "operacion"
+    ],
+    "fuentes": [
+      {
+        "id": "RGPD_2016_679",
+        "version": 1,
+        "titulo": "Reglamento (UE) 2016/679",
+        "url": "https://www.boe.es/buscar/doc.php?id=DOUE-L-2016-80807",
+        "localizador": "Arts.4.11,5–7",
+        "editor": "Legislador UE; BOE",
+        "consultadaEn": "2026-10-15T22:28:23.393Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "LOPDGDD_3_2018",
+        "version": 1,
+        "titulo": "Ley Orgánica 3/2018",
+        "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2018-16673",
+        "localizador": "Arts.6 y 8",
+        "editor": "Legislador español; BOE",
+        "consultadaEn": "2026-10-15T22:28:23.393Z",
+        "estadoRevision": "revisada"
+      }
+    ],
+    "vigencia": {
+      "estado": "definida",
+      "tipo": "fecha_civil",
+      "calendario": "gregoriano",
+      "jurisdiccion": "ES",
+      "zonaEvaluacion": "Europe/Madrid",
+      "desde": "2018-05-25",
+      "hasta": null
+    },
+    "cobertura": {
+      "descripcion": "Finalidad delimitada de tratamiento activo o residual bajo régimen general y establecimiento español, responsable o corresponsable delimitado.",
+      "condicion": {
+        "op": "and",
+        "args": [
+          {
+            "op": "eq",
+            "hecho": "dp_establecimiento_es",
+            "valor": true
+          },
+          {
+            "op": "eq",
+            "hecho": "dp_regimen_general",
+            "valor": true
+          },
+          {
+            "op": "or",
+            "args": [
+              {
+                "op": "eq",
+                "hecho": "dp_fase",
+                "valor": "activa"
+              },
+              {
+                "op": "eq",
+                "hecho": "dp_fase",
+                "valor": "residual"
+              }
+            ]
+          },
+          {
+            "op": "or",
+            "args": [
+              {
+                "op": "eq",
+                "hecho": "dp_rol",
+                "valor": "responsable"
+              },
+              {
+                "op": "eq",
+                "hecho": "dp_rol",
+                "valor": "corresponsable_delimitado"
+              }
+            ]
+          },
+          {
+            "op": "eq",
+            "hecho": "lic_finalidad_delimitada",
+            "valor": true
+          }
+        ]
+      },
+      "periodo": {
+        "desde": "2018-12-07",
+        "hasta": null,
+        "motivo": "Cobertura conjunta RGPD y LOPDGDD; no fecha inicial de vigencia del RGPD."
+      }
+    },
+    "hechos": [
+      {
+        "clave": "dp_ambito_rgpd",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "SEG_P_dp_ambito_rgpd",
+          "texto": "Resultado de la valoración del ámbito RGPD para este tratamiento",
+          "grupo": "Operación de tratamiento",
+          "motivo": "Si no se ha analizado o falta fundamento, indica desconocido. La ubicación por sí sola no determina el ámbito. Este campo recoge una conclusión; no sustituye la valoración."
+        }
+      },
+      {
+        "clave": "dp_establecimiento_es",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "SEG_P_dp_establecimiento_es",
+          "texto": "¿Este tratamiento se realiza en el contexto de las actividades de un establecimiento de la entidad en España?",
+          "grupo": "Operación de tratamiento",
+          "motivo": "No equivale a que el servidor o los datos estén en España. Si no lo sabes, conserva desconocido. Un no no excluye por sí solo el RGPD."
+        }
+      },
+      {
+        "clave": "dp_regimen_general",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "SEG_P_dp_regimen_general",
+          "texto": "Resultado de la valoración del régimen aplicable: ¿esta operación puede analizarse por el itinerario general de protección de datos cubierto por la app?",
+          "grupo": "Operación de tratamiento",
+          "motivo": "Una respuesta «no» significa que necesita otro itinerario o análisis, no una exención. Si todavía no se ha valorado, indica desconocido."
+        }
+      },
+      {
+        "clave": "dp_rol",
+        "tipo": "texto",
+        "pregunta": {
+          "id": "SEG_P_dp_rol",
+          "texto": "Papel de la entidad en este tratamiento",
+          "grupo": "Operación de tratamiento",
+          "motivo": "Delimita quién decide fines y medios y si actúa por cuenta de otro. No se deduce de poseer el software ni de los permisos de la app. Si hay funciones mezcladas, revisa la delimitación de operaciones."
+        }
+      },
+      {
+        "clave": "dp_fase",
+        "tipo": "texto",
+        "pregunta": {
+          "id": "SEG_P_dp_fase",
+          "texto": "Situación actual del tratamiento",
+          "grupo": "Operación de tratamiento",
+          "motivo": "Prevista: no iniciada. Activa: se realizan operaciones. Residual: cesó la actividad principal pero se conservan o tratan datos. Finalizada exige comprobar conservación residual; no cierra obligaciones automáticamente."
+        }
+      },
+      {
+        "clave": "lic_finalidad_delimitada",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "LIC_P_FINALIDAD",
+          "texto": "¿Esta evaluación identifica una finalidad concreta y la versión del tratamiento?",
+          "grupo": "Finalidad",
+          "motivo": "No una base global para todas las operaciones. Sin delimitación, pendiente de análisis."
+        }
+      }
+    ],
+    "condicion": {
+      "op": "eq",
+      "hecho": "dp_ambito_rgpd",
+      "valor": true
+    },
+    "excepciones": []
+  }
+}

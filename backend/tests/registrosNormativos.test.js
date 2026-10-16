@@ -20,9 +20,9 @@ test('edición exige versión positiva y revisión no admite edición', () => {
 test('la procedencia de hechos solo la genera servidor', () => assert.throws(() => preparar('sistema', {
   ...sistema(), hechos: [{ clave: 'a', estado: 'conocido', valor: true, procedencia: { tipo: 'declarado', referencia: 'inventada' } }]
 }, key)));
-test('catálogo de cinco fichas conserva las dos R3 con fuente y cobertura, no fixtures', () => {
-  const ps = catalogoNormativo.listar(); assert.equal(ps.length, 5);
-  assert.deepEqual(ps.filter(p => p.ficha.schemaVersion === 1).map(p => [p.ficha.version, p.regla.version, p.ficha.criterios.length]), [[3,3,10],[3,4,14]]);
+test('catálogo E1 añade RGPD32 conservando R3 con fuente y cobertura, no fixtures', () => {
+  const ps = catalogoNormativo.listar(); assert.equal(ps.length, 10);
+  assert.deepEqual(ps.filter(p => p.ficha.schemaVersion === 1).map(p => [p.ficha.version, p.regla.version, p.ficha.criterios.length]), [[3,3,10],[3,4,14],[2,1,11]]);
   assert.ok(ps.every(p => p.regla.cobertura.periodo && !p.ficha.usoContenido.incluyeISOoCCNProtegido));
   assert.throws(() => crearCatalogoNormativo([ps[0], ps[0]]));
 });

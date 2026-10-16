@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "revisionEditorial": 2,
+  "tipoRegistro": "unidad_dp",
+  "ruta": "unidades-dp",
+  "clases": {
+    "finalidad_tratamiento": {
+      "titulo": "Finalidad de tratamiento",
+      "campos": ["finalidad", "datos", "personas", "relacion", "fundamento", "cambioFinalidad"],
+      "camposDelimitacion": ["finalidad", "datos", "personas", "relacion"],
+      "hechos": [{"clave":"lic_finalidad_delimitada","tipo":"booleano"},{"clave":"lic_base6","tipo":"texto","valores":["a","b","c","d","e","f"]}],
+      "hechoDelimitacion": "lic_finalidad_delimitada",
+      "relaciones": []
+    },
+    "unidad_informativa": {
+      "titulo": "Unidad informativa",
+      "campos": ["finalidad", "datos", "personas", "fuente", "canal", "textoAviso", "versionAviso", "momentoObtencion", "primeraComunicacion", "primeraRevelacion", "nuevoFin", "excepcionesInvocadas"],
+      "camposDelimitacion": ["finalidad", "datos", "personas", "fuente", "canal"],
+      "hechos": [{"clave":"tra_unidad_delimitada","tipo":"booleano"},{"clave":"tra_origen","tipo":"texto","valores":["directa","indirecta"]}],
+      "hechoDelimitacion": "tra_unidad_delimitada",
+      "relaciones": ["finalidad_tratamiento", "flujo_transferencia"]
+    },
+    "flujo_transferencia": {
+      "titulo": "Flujo de transferencia",
+      "campos": ["exportador", "destinatario", "destino", "datos", "personas", "finalidad", "modalidadAcceso", "mecanismo", "transferenciasUlteriores"],
+      "camposDelimitacion": ["exportador", "destinatario", "destino", "datos", "personas", "finalidad", "modalidadAcceso"],
+      "hechos": [{"clave":"tr_flujo_delimitado","tipo":"booleano"},{"clave":"tr_otro_destinatario","tipo":"booleano"},{"clave":"tr_destino_tercero_oi","tipo":"booleano"},{"clave":"tr_via","tipo":"texto","valores":["adecuacion","garantias","excepcion"]}],
+      "hechoDelimitacion": "tr_flujo_delimitado",
+      "relaciones": ["finalidad_tratamiento"]
+    }
+  },
+  "campos": {"estados":["conocido","pendiente","conflictivo"],"forma":["estado","contenido","motivo"],"maxTexto":2000,"descripcion":"Conocido exige contenido; pendiente o conflictivo exige motivo. No equivale a acreditación ni revisión favorable."},
+  "identidad": {"inmutables":["clase","operacion.id","alcance.id"],"referencia":["id","version","sha256"],"actualizacion":"Cuerpo completo y versión actual. Cambiar las versiones de las bases exige confirmarBases=true; confirmarBases=false en otro caso. Nunca reenvío automático tras 409."},
+  "contexto": {"desdeOperacion":["dp_ambito_rgpd","dp_establecimiento_es","dp_regimen_general","dp_rol","dp_fase"],"confirmacion":"contextoOperacion: confirmado o pendiente; motivoContexto siempre explícito. Confirmado declara que esas cinco circunstancias corresponden a esta unidad, no que se haya cumplido la norma. Si hay funciones mezcladas, delimitar otra operación, no falsear su rol.","autoridad":"El servidor obtiene los hechos de la versión exacta de la operación; el payload no puede asignar estos hechos. Pendiente no hereda valores. Evidencias y juicios nunca se heredan.","hechosPropios":"Lista completa, solo las claves de su clase, incluidos desconocidos; no coerción. Guardar un borrador incompleto está permitido, evaluarlo como delimitado no."},
+  "limites": {"relaciones":20,"evidencias":20,"bytes":65536,"permisos":"Solo administrador de la organización en esta primera versión.","automatico":"Sin conclusiones favorables automáticas, comunicaciones externas, listas de países ni porcentajes globales."}
+}

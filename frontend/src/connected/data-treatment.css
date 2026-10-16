@@ -1,0 +1,9 @@
+.dp-steps { display: flex; flex-wrap: wrap; gap: .65rem; margin: 1.25rem 0; }
+.dp-steps button { display: flex; align-items: center; gap: .6rem; min-height: 48px; flex: 1 1 180px; text-align: left; }
+.dp-steps button[aria-current="step"] { background: #194f43; color: #fff; border-color: #194f43; }
+.dp-steps span { border: 1px solid currentColor; border-radius: 50%; min-width: 1.65em; text-align: center; }
+.dp-fact { margin: 1.25rem 0; padding: 1rem 1.25rem; border: 1px solid #b7c8bf !important; border-radius: 12px; min-width: 0; }
+.dp-fact legend { font-size: 1.05rem; font-weight: 650; padding: 0 .4rem; max-width: 100%; }
+.dp-fact .api-why { margin-top: .25rem; line-height: 1.6; }
+.dp-alternative { margin: .6rem 0; }
+@media (max-width: 600px) { .dp-fact { padding: .8rem; } .dp-steps button { flex-basis: 100%; } }

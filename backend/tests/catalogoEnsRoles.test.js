@@ -17,11 +17,11 @@ test('publicación acotada conserva los dos R3 y las tres entregas editoriales e
     assert.equal(hash(bytes), exactos[file], file);
     return JSON.parse(bytes);
   });
-  assert.deepEqual(catalogoNormativo.listar().map(p => p.ficha.id).sort(), entradas.map(p => p.ficha.id).sort());
+  assert.deepEqual(catalogoNormativo.listar().map(p => p.ficha.id).sort(), [...entradas.map(p => p.ficha.id),'RGPD32_SEGURIDAD_OPERACION','RGPD6_7_LICITUD_FINALIDAD','RGPD44_49_TRANSFERENCIA_FLUJO','RGPD12_14_TRANSPARENCIA_UNIDAD','RGPD12_SOLICITUD_DERECHOS'].sort());
   for (const p of entradas) assert.deepEqual(catalogoNormativo.obtener(p.ficha.id), validarPaquete(p));
 });
 test('las siete alternativas pertenecen a tres requisitos, no a siete requisitos', () => {
-  const ps = catalogoNormativo.listar().filter(p => p.ficha.schemaVersion === 2);
+  const ps = catalogoNormativo.listar().filter(p => p.ficha.schemaVersion === 2 && p.ficha.id.startsWith('ENS_'));
   assert.equal(ps.length, 3);
   assert.deepEqual(ps.map(p => p.ficha.satisfaccion.rutas.length), [1, 2, 4]);
   for (const p of ps) {

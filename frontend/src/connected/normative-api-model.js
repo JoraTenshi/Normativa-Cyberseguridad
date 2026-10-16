@@ -22,6 +22,13 @@ export function canReview(dto) {
 }
 export function recordLabel(dto) {
   const c = dto.contenido;
+  if(c?.solicitudDerechos)return 'Solicitud de derechos · '+dto.id.slice(-6);
+  if(c?.pretensionDerecho)return 'Petición de '+c.pretensionDerecho.derecho.replaceAll('_',' ')+' · '+dto.id.slice(-6);
+  if(c?.deteccionEIPD)return 'Detección EIPD · '+c.deteccionEIPD.fechaEvaluacion;
+  if(c?.unidadDP)return c.unidadDP.nombre;
+  if(c?.determinacion)return 'Determinación '+c.determinacion.categoria+' · expediente v'+c.determinacion.categorizacion.version;
+  if(c?.revisionCategorizacion)return 'Revisión de categorización: '+(RESULTS[c.revisionCategorizacion.conclusion]||c.revisionCategorizacion.conclusion)+' · '+c.revisionCategorizacion.examinadaEn;
+  if(c?.categorizacion)return 'Categorización ENS · sistema v'+c.categorizacion.sistema.version;
   return c?.paquete?.ficha?.titulo || c?.nombre || c?.titulo || c?.sujeto?.nombre || (c?.designacion ? 'Designación: '+c.designacion.funcionId.replaceAll('_',' ') : null) || c?.alcance?.nombre || c?.evidencia?.titulo || (c?.revision ? 'Revisión '+(RESULTS[c.revision.conclusion] || c.revision.conclusion) : dto.nombre || dto.titulo || dto.operacion?.nombre || dto.id);
 }
 export function viewProps(dto, reviewDto = null) {

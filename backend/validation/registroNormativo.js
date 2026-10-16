@@ -3,7 +3,12 @@ const { copiarJSON, ErrorAplicabilidad } = require('./aplicabilidadContextual');
 const { campos, id, texto, clave, fallo, ErrorOrganizacion } = require('../services/datosOrganizacion');
 const { numero, numeroURL, preparar: prepararHechos } = require('./contextoEmpresa');
 const { validarDocumentoExaminado } = require('./constatacionDocumento');
-const tipos = ['sistema', 'requisito', 'actuacion', 'evidencia', 'revision', 'sujeto_funcional', 'designacion'];
+const ens = require('./categorizacionEns');
+const rat = require('./registroRAT');
+const unidadDP = require('./unidadDP');
+const derechos = require('./solicitudDerechos');
+const deteccionEIPD = require('./deteccionEIPD');
+const tipos = ['sistema', 'requisito', 'actuacion', 'evidencia', 'revision', 'sujeto_funcional', 'designacion', 'unidad_dp', 'deteccion_eipd', ...derechos.TIPOS, ...ens.TIPOS, ...rat.TIPOS];
 function instrumento(d, documental = false) {
   if (d?.tipo === 'version_documento') {
     campos(d, ['tipo', 'documentoId', 'versionDocumentoId']);
@@ -22,6 +27,11 @@ function refs(a, min = 0) {
 function preparar(tipo, entrada, k, editar = false) {
   if (!tipos.includes(tipo) || (editar && tipo === 'revision')) fallo('DATOS_INVALIDOS');
   try {
+    if (ens.TIPOS.includes(tipo)) return { ...ens.validar(tipo, entrada, editar), clave: clave(k) };
+    if (rat.TIPOS.includes(tipo)) return { ...rat.validar(tipo, entrada, editar), clave: clave(k) };
+    if (tipo==='unidad_dp') return {...unidadDP.validar(entrada,editar),clave:clave(k)};
+    if (tipo==='deteccion_eipd') return {...deteccionEIPD.validar(entrada,editar),clave:clave(k)};
+    if (derechos.TIPOS.includes(tipo)) return {...derechos.validar(tipo,entrada,editar),clave:clave(k)};
     const d = copiarJSON(entrada), extra = editar ? ['version'] : [];
     const comunes = ['motivo', ...extra];
     const permitidos = {
@@ -41,7 +51,7 @@ function preparar(tipo, entrada, k, editar = false) {
       r.hechos = prepararHechos({ hechos: d.hechos, motivo: r.motivo }, false, k).hechos;
     } else if (tipo === 'requisito') {
       r.alcance = ref(d.alcance); campos(d.objeto, ['tipo', 'id', 'version']);
-      if (!['sistema', 'operacion'].includes(d.objeto.tipo)) fallo('DATOS_INVALIDOS');
+      if (!['sistema', 'operacion', ...unidadDP.CLASES, ...derechos.TIPOS].includes(d.objeto.tipo)) fallo('DATOS_INVALIDOS');
       r.objeto = { tipo: d.objeto.tipo, id: id(d.objeto.id), version: numero(d.objeto.version) };
       campos(d.ficha, ['id', 'version']);
       if (typeof d.ficha.id !== 'string' || !/^[A-Z][A-Z0-9_]{0,79}$/.test(d.ficha.id)) fallo('DATOS_INVALIDOS');
@@ -69,10 +79,11 @@ function preparar(tipo, entrada, k, editar = false) {
   } catch (e) { if (e instanceof ErrorAplicabilidad) throw new ErrorOrganizacion('DATOS_INVALIDOS', e); throw e; }
 }
 function filtros(d = {}, historial = false) {
-  campos(d, historial ? ['limite', 'antes'] : ['limite', 'antes', 'alcanceId', 'requisitoId']);
+  campos(d, historial ? ['limite', 'antes'] : ['limite', 'antes', 'alcanceId', 'requisitoId', 'sistemaId', 'categorizacionId']);
   const limite = d.limite === undefined ? 20 : numeroURL(d.limite);
   if (limite > 50) fallo('DATOS_INVALIDOS');
   return { limite, antes: d.antes === undefined ? null : historial ? numeroURL(d.antes) : id(d.antes),
-    alcanceId: d.alcanceId === undefined ? null : id(d.alcanceId), requisitoId: d.requisitoId === undefined ? null : id(d.requisitoId) };
+    alcanceId: d.alcanceId === undefined ? null : id(d.alcanceId), requisitoId: d.requisitoId === undefined ? null : id(d.requisitoId),
+    sistemaId: d.sistemaId === undefined ? null : id(d.sistemaId), categorizacionId: d.categorizacionId === undefined ? null : id(d.categorizacionId) };
 }
 module.exports = { preparar, filtros, ref, tipos };

@@ -4,6 +4,7 @@ COPY package.json package-lock.json ./
 RUN npm ci --omit=dev --ignore-scripts --no-audit --no-fund
 COPY app.js ./
 COPY constants ./constants
+COPY contracts ./contracts
 COPY middleware ./middleware
 COPY models ./models
 COPY routes ./routes

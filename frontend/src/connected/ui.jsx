@@ -21,7 +21,9 @@ export function useRemote(api, path) {
     if (path) api.get(path).then(data => active && set({ data, loading: false, error: null }), error => active && set(previous => ({ ...previous, loading:false, error })));
     return () => { active = false; };
   }, [api, path, tick]);
-  return { ...state, refresh: () => update(t => t + 1) };
+  // Adopt only a response already fetched from this resource (for an explicit
+  // conflict resolution). Parent metadata and editor must share that snapshot.
+  return { ...state, refresh: () => update(t => t + 1), adopt: data => set({data,loading:false,error:null}) };
 }
 export function RemoteStatus({ remote }) { return <>{remote.loading && <p role="status">Consultando el servidor…</p>}<ErrorBox error={remote.error} /></>; }
 export function useWriter(api, onSaved) {

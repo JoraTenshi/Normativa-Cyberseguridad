@@ -4,7 +4,23 @@ const profile={releaseRoot:'/srv/normativacheck/releases/candidate_qa4286',state
 const env={NC_HTTPS_ORIGIN:'https://10.77.77.1:9443',APP_URL:'https://10.77.77.1:9443',CORS_ORIGIN:'https://10.77.77.1:9443',NC_MAIL_MODE:'disabled'};
 const values={mongo_app_password:'a'.repeat(64),jwt_secret:'b'.repeat(64),totp_key:'c'.repeat(64)},read=n=>values[n];
 const {nginx}=require('../../infra/private/nginx-template.cjs');
-test('solo dos puertos privados y un origen coherente',()=>{assert.equal(p.validate(profile).origin,env.APP_URL);assert.equal(p.validate({...profile,port:443}).origin,'https://10.77.77.1');for(const port of[80,5000,'9443',0])assert.throws(()=>p.validate({...profile,port}));});
+test('solo puertos privados previstos y un origen coherente',()=>{assert.equal(p.validate(profile).origin,env.APP_URL);assert.equal(p.validate({...profile,port:443}).origin,'https://10.77.77.1');assert.equal(p.validate({...profile,port:8443}).origin,'https://10.77.77.1:8443');for(const port of[80,5000,'9443','8443',8444,0])assert.throws(()=>p.validate({...profile,port}));});
+
+test('8443 conserva IP WireGuard y alinea backend, CORS, APP_URL y Host Nginx',()=>{
+ const target={...profile,port:8443},c=p.compose(target),e=c.services.backend.environment;
+ assert.deepEqual(c.services.web.ports,[{target:8443,published:'8443',host_ip:'10.77.77.1',protocol:'tcp'}]);
+ assert.equal(e.NC_HTTPS_ORIGIN,'https://10.77.77.1:8443');assert.equal(e.CORS_ORIGIN,e.NC_HTTPS_ORIGIN);assert.equal(e.APP_URL,e.NC_HTTPS_ORIGIN);
+ assert.equal(loadConfig(read,e).origin,e.NC_HTTPS_ORIGIN);
+ assert.ok(nginx(target).includes('$http_host != "10.77.77.1:8443"'));
+ assert.deepEqual(c.services.mongodb,p.compose(profile).services.mongodb);
+ assert.equal(c.services.backend.ports,undefined);
+});
+
+test('8443 no admite enlace publico ni origen parecido o CORS heredado',()=>{
+ for(const ip of ['0.0.0.0','188.245.182.69','::'])assert.throws(()=>p.validate({...profile,port:8443,host_ip:ip}));
+ for(const origin of ['https://0.0.0.0:8443','https://188.245.182.69:8443','http://10.77.77.1:8443','https://10.77.77.1:8443/','https://10.77.77.1:8443.evil.invalid'])assert.throws(()=>loadConfig(read,{...env,NC_HTTPS_ORIGIN:origin,APP_URL:origin,CORS_ORIGIN:origin}),/PRIVATE_ORIGIN/);
+ assert.throws(()=>loadConfig(read,{...env,NC_HTTPS_ORIGIN:'https://10.77.77.1:8443',APP_URL:'https://10.77.77.1:8443'}),/ORIGIN_MISMATCH/);
+});
 test('rutas sin shell, traversal ni estado dentro de código',()=>{for(const releaseRoot of['/','/srv/x/../y','/srv/x;id','/srv/with space','/tmp/x','/home/root/x'])assert.throws(()=>p.validate({...profile,releaseRoot}));assert.throws(()=>p.validate({...profile,stateRoot:profile.releaseRoot+'/state'}));});
 test('no acepta opciones externas ni unidad arbitraria',()=>{assert.throws(()=>p.validate({...profile,publicIP:'0.0.0.0'}));for(const wireguardUnit of['docker.service','wg-quick@wg0.service\nOther=x','wg-quick@wg0'])assert.throws(()=>p.validate({...profile,wireguardUnit}));});
 test('Mongo y backend sin puertos, web solo WireGuard',()=>{const c=p.compose(profile);assert.ok(!c.services.mongodb.ports);assert.ok(!c.services.backend.ports);assert.equal(c.services.web.ports[0].host_ip,'10.77.77.1');assert.equal(c.networks.database.internal,true);assert.ok(!JSON.stringify(c).includes('/var/run/docker.sock'));});

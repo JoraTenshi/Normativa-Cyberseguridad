@@ -175,4 +175,7 @@ async function listarVersiones(entrada) {
       paginacion: { limite: f.limite, hayMas, siguienteAntes: hayMas ? filas.at(-1).numero : null } };
   });
 }
-module.exports = { guardarOperacion, obtenerOperacion, listarOperaciones, listarVersiones, contextoDeRevisionOperacion };
+async function consultarContratoDP(entrada) {
+  return leer(entrada, async () => require('../validation/operacionDP').obtenerContratoDP());
+}
+module.exports = { guardarOperacion, obtenerOperacion, listarOperaciones, listarVersiones, contextoDeRevisionOperacion, consultarContratoDP };

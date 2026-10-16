@@ -4,7 +4,7 @@ const fs=require('node:fs');
 function guard(ok,code){if(!ok)throw Object.assign(Error(code),{code});}
 function loadConfig(read=n=>fs.readFileSync('/run/secrets/'+n,'utf8').trim(),env=process.env){
  const origin=env.NC_HTTPS_ORIGIN;
- guard(['https://10.77.77.1','https://10.77.77.1:9443'].includes(origin),'PRIVATE_ORIGIN');
+ guard(['https://10.77.77.1','https://10.77.77.1:8443','https://10.77.77.1:9443'].includes(origin),'PRIVATE_ORIGIN');
  guard(env.APP_URL===origin&&env.CORS_ORIGIN===origin,'ORIGIN_MISMATCH');
  const password=read('mongo_app_password'),jwt=read('jwt_secret'),totp=read('totp_key');
  for(const s of [password,jwt,totp])guard(typeof s==='string'&&/^[a-f0-9]{64}$/.test(s),'SECRET_FORMAT');

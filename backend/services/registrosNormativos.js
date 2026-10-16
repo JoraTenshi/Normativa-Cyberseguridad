@@ -20,6 +20,17 @@ const dominio = require('./revisionRequisito');
 const { validarSujeto, validarDesignacion } = require('../validation/designacionFuncional');
 const { catalogoNormativo } = require('./catalogoNormativoC2');
 const { obtenerCatalogo: catalogoOrientacion } = require('../catalogo/orientacionC1');
+const { TIPOS: TIPOS_ENS, INMUTABLES: INMUTABLES_ENS } = require('../validation/categorizacionEns');
+const { crearExtensionEns } = require('./expedienteCategorizacionEns');
+const contratoEns = require('../contracts/categorizacionEns.v1.json');
+const {TIPOS: TIPOS_RAT,INMUTABLES: INMUTABLES_RAT,contrato: contratoRAT}=require('../validation/registroRAT');
+const {crearExtensionRAT}=require('./expedienteRAT');
+const {CLASES: CLASES_DP, contrato: contratoUnidadDP}=require('../validation/unidadDP');
+const {crearExtensionUnidadDP}=require('./expedienteUnidadDP');
+const {TIPOS: TIPOS_DERECHOS, contrato: contratoDerechos}=require('../validation/solicitudDerechos');
+const {crearExtensionDerechos}=require('./expedienteDerechos');
+const {crearExtensionDeteccionEIPD}=require('./expedienteDeteccionEIPD');
+const {contrato:contratoEIPD}=require('../validation/deteccionEIPD');
 const INDICES = [
   [H, 'registro_normativo_identidad_unica', { organizacion: 1, tipo: 1, clave_negocio: 1 }],
   [V, 'registro_normativo_version_unica', { registro: 1, numero: 1 }],
@@ -68,7 +79,7 @@ async function alcance(org, ref, session, estricto = true) {
   if (estricto && motivos.length) fallo('VERSION_DESACTUALIZADA');
   return { a, r, actual, motivos };
 }
-async function contextoObjeto(org, objeto, ar, session) {
+async function contextoObjetoBase(org, objeto, ar, session) {
   if (objeto.tipo === 'operacion') {
     if (!ar.r.contenido.origen.operaciones.some(o => o.id === objeto.id)) fallo('RECURSO_NO_DISPONIBLE');
     const o = await q(O.findOne({ _id: objeto.id, organizacion: org }), session);
@@ -77,6 +88,7 @@ async function contextoObjeto(org, objeto, ar, session) {
     if (o.version_actual !== objeto.version) fallo('VERSION_DESACTUALIZADA');
     return { contexto: contextoDeRevisionOperacion(o, r), objetoSha256: r.sha256 };
   }
+  if(objeto.tipo!=='sistema')fallo('DATOS_INVALIDOS');
   const { h, v } = await registro(org, 'sistema', objeto.id, session);
   if (h.version_actual !== objeto.version) fallo('VERSION_DESACTUALIZADA');
   compararRef(v.contenido.alcance, ar.actual);
@@ -92,6 +104,14 @@ async function soporteDocumento(org, soporte, session) {
   return { tipo: 'version_documento', documentoId: String(d._id), versionDocumentoId: String(v._id), numero: v.numero, sha256: v.sha256 };
 }
 function crearServicioRegistros({ catalogo = catalogoNormativo, reloj = () => new Date() } = {}) {
+  const ens = crearExtensionEns({ alcance, referenciado, registro, designacionActual, evidenciaActual, referencia, compararRef, q, reloj });
+  const rat = crearExtensionRAT({alcance,referenciado,registro,evidenciaActual,referencia,compararRef,q,reloj});
+  const unidadDP = crearExtensionUnidadDP({alcance,referenciado,registro,evidenciaActual,referencia,compararRef,q});
+  const derechos = crearExtensionDerechos({alcance,referenciado,registro,evidenciaActual,referencia,compararRef,q,reloj});
+  const deteccionEIPD = crearExtensionDeteccionEIPD({alcance,registro,evidenciaActual,referencia,compararRef,q,reloj});
+  const contextoObjeto=(org,objeto,ar,session)=>CLASES_DP.includes(objeto.tipo)
+    ? unidadDP.contexto(org,objeto,ar,session) : TIPOS_DERECHOS.includes(objeto.tipo)
+      ? derechos.contexto(org,objeto,ar,session) : contextoObjetoBase(org,objeto,ar,session);
   async function admin(e) { const p = await obtenerContextoOrganizacion(e); if (p.rol !== 'administrador') fallo('GESTION_DENEGADA'); return p; }
   async function leer(e, fn) {
     try {
@@ -196,7 +216,8 @@ function crearServicioRegistros({ catalogo = catalogoNormativo, reloj = () => ne
       referencia: referencia(h, v), contenido: copiarJSON(v.contenido), repetida,
       revision: { id: String(v._id), numero: v.numero, actorId: String(v.actor), membresiaId: String(v.membresia_actor),
         registradoEn: new Date(v.createdAt).toISOString(), motivo: v.motivo },
-      permisos: { consultar: true, crear: true, actualizar: h.tipo !== 'revision', revisar: h.tipo === 'requisito' },
+      permisos: { consultar: true, crear: true, actualizar: h.tipo !== 'revision' && !INMUTABLES_ENS.includes(h.tipo) && !INMUTABLES_RAT.includes(h.tipo), revisar: ['requisito','categorizacion_ens','registro_rat'].includes(h.tipo),
+        ...(TIPOS_ENS.includes(h.tipo) ? {determinar:h.tipo==='categorizacion_ens'} : {}) },
       horaServidor: reloj().toISOString() };
     if (h.tipo === 'requisito') {
       const actual = v.numero === h.version_actual ? { h, v } : await registro(org, 'requisito', h._id, session);
@@ -211,11 +232,21 @@ function crearServicioRegistros({ catalogo = catalogoNormativo, reloj = () => ne
     } else if (h.tipo === 'sistema') r.vigencia = await alcance(org, v.contenido.alcance, session, false).then(a => ({ requiereRevision: !!a.motivos.length, motivos: a.motivos }));
     else if (h.tipo === 'evidencia') r.vigencia = await evidenciaActual(org, { id: String(h._id) }, session).then(e => ({ requiereRevision: !!e.motivos.length, motivos: e.motivos, seRefiereAVersionActual: h.version_actual }));
     else if (h.tipo === 'designacion') r.vigencia = await designacionActual(org, { id: String(h._id) }, session).then(d => ({ requiereRevision: !!d.motivos.length, motivos: d.motivos, seRefiereAVersionActual: h.version_actual }));
+    else if (TIPOS_ENS.includes(h.tipo)) Object.assign(r, await ens.estado(org,h,v,session));
+    else if (TIPOS_RAT.includes(h.tipo)) Object.assign(r, await rat.estado(org,h,v,session));
+    else if (h.tipo==='unidad_dp') Object.assign(r, await unidadDP.estado(org,h,v,session));
+    else if (TIPOS_DERECHOS.includes(h.tipo)) Object.assign(r, await derechos.estado(org,h,v,session));
+    else if (h.tipo==='deteccion_eipd') Object.assign(r,await deteccionEIPD.estado(org,h,v,session));
     return r;
   }
   async function construir(tipo, d, ctx, h, versionId, n) {
     const org = ctx.contexto.organizacionId, session = ctx.session, registroId = String(h._id);
     const ahora = reloj().toISOString();
+    if (TIPOS_ENS.includes(tipo)) return ens.construir(tipo,d,ctx,h,n);
+    if (TIPOS_RAT.includes(tipo)) return rat.construir(tipo,d,ctx,h,n);
+    if (tipo==='unidad_dp') return unidadDP.construir(d,ctx,h,n);
+    if (TIPOS_DERECHOS.includes(tipo)) return derechos.construir(tipo,d,ctx,h,n);
+    if (tipo==='deteccion_eipd') return deteccionEIPD.construir(d,ctx,h,n);
     if (tipo === 'sujeto_funcional') {
       if (d.membresiaId !== null && !await q(M.findOne({ _id: d.membresiaId, organizacion: org, estado: 'activa' }), session)) fallo('RECURSO_NO_DISPONIBLE');
       if (n > 1) {
@@ -333,7 +364,7 @@ function crearServicioRegistros({ catalogo = catalogoNormativo, reloj = () => ne
         let h = editar ? (await registro(org, tipo, registroId, session)).h : { _id: oid(), organizacion: org, tipo };
         if (editar && h.version_actual !== d.version) fallo('VERSION_DESACTUALIZADA');
         if (editar && h.version_actual >= 999999999) fallo('SERVICIO_NO_DISPONIBLE');
-        const identidad = ['requisito', 'designacion'].includes(tipo) ?
+        const identidad = tipo === 'registro_rat' ? 'rat:'+d.funcion+':'+d.alcance.id : tipo === 'categorizacion_ens' ? 'sistema:'+d.sistema.id : ['requisito', 'designacion'].includes(tipo) ?
           [d.alcance.id, d.objeto.tipo, d.objeto.id, tipo === 'requisito' ? d.ficha.id : d.funcionId].join(':') : String(h._id);
         if (editar && h.clave_negocio !== identidad) fallo('DATOS_INVALIDOS');
         if (!editar && await q(H.findOne({ organizacion: org, tipo, clave_negocio: identidad }), session)) fallo('CLAVE_REUTILIZADA');
@@ -343,7 +374,8 @@ function crearServicioRegistros({ catalogo = catalogoNormativo, reloj = () => ne
           alcance_ids: construido.alcanceIds, requisito_ids: construido.requisitoIds };
         if (editar) h = await q(H.findOneAndUpdate({ _id: h._id, organizacion: org, tipo, version_actual: d.version },
           { $set: cabecera, $inc: { __v: 1 } }, { session, new: true, runValidators: true }), session);
-        else { [h] = await H.create([{ _id: h._id, organizacion: org, tipo, clave_negocio: identidad, ...cabecera }], { session }); h = h.toObject(); }
+        else { [h] = await H.create([{ _id: h._id, organizacion: org, tipo, clave_negocio: identidad, ...cabecera,
+          ...(construido.sistemaId ? {sistema_id:construido.sistemaId,categorizacion_id:construido.categorizacionId} : {}) }], { session }); h = h.toObject(); }
         if (!h) fallo('VERSION_DESACTUALIZADA');
         const [v] = await V.create([{ _id: versionId, organizacion: org, registro: h._id, numero: n,
           contenido: construido.contenido, sha256: huella(construido.contenido), actor: ctx.contexto.usuarioId,
@@ -370,7 +402,8 @@ function crearServicioRegistros({ catalogo = catalogoNormativo, reloj = () => ne
     return leer(e, async (p, s) => {
       const docs = await q(H.find({ organizacion: p.organizacionId, tipo,
         ...(f.antes ? { _id: { $lt: f.antes } } : {}), ...(f.alcanceId ? { alcance_ids: f.alcanceId } : {}),
-        ...(f.requisitoId ? { requisito_ids: f.requisitoId } : {}) }).sort({ _id: -1 }).limit(f.limite + 1), s);
+        ...(f.requisitoId ? { requisito_ids: f.requisitoId } : {}),
+        ...(f.sistemaId ? {sistema_id:f.sistemaId} : {}), ...(f.categorizacionId ? {categorizacion_id:f.categorizacionId} : {}) }).sort({ _id: -1 }).limit(f.limite + 1), s);
       const filas = docs.slice(0, f.limite), registros = [];
       for (const h of filas) { const v = await q(V.findOne({ organizacion: p.organizacionId, registro: h._id, numero: h.version_actual }), s); registros.push(await dto(h, v, s)); }
       return { registros, paginacion: { limite: f.limite, hayMas: docs.length > f.limite,
@@ -422,6 +455,14 @@ function crearServicioRegistros({ catalogo = catalogoNormativo, reloj = () => ne
         aviso: 'Asignar una actuación no concede permisos ni sustituye la gestión de unidades.' };
     });
   }
-  return { guardar, obtener, listar, versiones, fichas, responsables };
+  async function contratoCategorizacion(e) {
+    await admin(e);
+    return {contrato:copiarJSON(contratoEns),permisos:{consultar:true,crear:true,actualizar:true,determinar:true,revisar:true}};
+  }
+  async function contratoRegistroRAT(e){const p=await admin(e);const actual=await admin(e);if(actual.membresiaId!==p.membresiaId)fallo('GESTION_DENEGADA');return {contrato:copiarJSON(contratoRAT),permisos:{consultar:true,crear:true,actualizar:true,revisar:true}};}
+  async function contratoUnidadesDP(e) {const p=await admin(e);const actual=await admin(e);if(actual.membresiaId!==p.membresiaId)fallo('GESTION_DENEGADA');return {contrato:copiarJSON(contratoUnidadDP),permisos:{consultar:true,crear:true,actualizar:true}};}
+  async function contratoSolicitudesDerechos(e) {const p=await admin(e);const actual=await admin(e);if(actual.membresiaId!==p.membresiaId)fallo('GESTION_DENEGADA');return {contrato:copiarJSON(contratoDerechos),permisos:{consultar:true,crear:true,actualizar:true}};}
+  async function contratoDeteccionesEIPD(e) {const p=await admin(e);const actual=await admin(e);if(actual.membresiaId!==p.membresiaId)fallo('GESTION_DENEGADA');return {contrato:copiarJSON(contratoEIPD),permisos:{consultar:true,crear:true,actualizar:true}};}
+  return { guardar, obtener, listar, versiones, fichas, responsables, contratoCategorizacion, contratoRegistroRAT, contratoUnidadesDP, contratoSolicitudesDerechos, contratoDeteccionesEIPD };
 }
 module.exports = { ...crearServicioRegistros(), crearServicioRegistros };

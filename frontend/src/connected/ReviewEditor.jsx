@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Field, Notice} from './ui';
+import {Field, Notice, textValue} from './ui';
 import {RecordPicker, PeriodFields, Reason, SaveForm} from './NormativeControls';
 import {canReview, evidenceEligible, normativePath, recordLabel, reviewBody, reviewConclusion, reviewCriteria, routeFacts, RESULTS} from './normative-api-model';
 
@@ -7,7 +7,7 @@ export const ROUTE_STATES={coincide:'Dato compatible con esta alternativa',no_co
 export function RouteFacts({requirement,route}) {
   const ficha=requirement.contenido.paquete.ficha;
   const facts=routeFacts(requirement,route);
-  return <section className="norm-route-facts" aria-label="Datos de la alternativa"><h3>Datos fijados en esta contextualización</h3>{!facts.length?<p>Esta alternativa no requiere hechos adicionales.</p>:facts.map(f=><div key={f.clave}><strong>{ficha.satisfaccion.hechos.find(h=>h.clave===f.clave)?.pregunta.texto||f.clave}</strong><p>{ROUTE_STATES[f.state]} · respuesta requerida: {f.valor?'sí':'no'}.</p></div>)}{facts.some(f=>f.state!=='coincide')&&<Notice tone="warning">Puedes documentar una valoración no determinada o desfavorable. Para una favorable, aclara los datos del sistema u operación y actualiza explícitamente la contextualización. Lo desconocido no es una exención.</Notice>}</section>;
+  return <section className="norm-route-facts" aria-label="Datos de la alternativa"><h3>Datos fijados en esta contextualización</h3>{!facts.length?<p>Esta alternativa no requiere hechos adicionales.</p>:facts.map(f=><div key={f.clave}><strong>{ficha.satisfaccion.hechos.find(h=>h.clave===f.clave)?.pregunta.texto||f.clave}</strong><p>{ROUTE_STATES[f.state]} · respuesta requerida: {textValue(f.valor)}.</p></div>)}{facts.some(f=>f.state!=='coincide')&&<Notice tone="warning">Puedes documentar una valoración no determinada o desfavorable. Para una favorable, aclara los datos del sistema u operación y actualiza explícitamente la contextualización. Lo desconocido no es una exención.</Notice>}</section>;
 }
 function CriterionDetails({children}) {
   const [open,setOpen]=useState(true);

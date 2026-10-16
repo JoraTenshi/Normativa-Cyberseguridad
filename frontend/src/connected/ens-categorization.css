@@ -1,0 +1,17 @@
+.ens-categorization {max-width:1100px; margin-inline:auto;}
+.ens-category-inventory {margin-block:1.5rem;}
+.ens-category-element {padding:1.25rem; border:1px solid #8ba8a1; border-radius:16px; background:#f1f6f2;}
+.ens-category-element h4 {font-size:1.2rem; margin-top:1.8rem;}
+.ens-category-inventory .api-actions {flex-wrap:wrap; gap:.6rem;}
+.ens-category-inventory [aria-pressed=true] {background:#235648; color:white;}
+.ens-dimension {border:1px solid #a9bbb2; border-radius:12px; margin-block:.8rem; padding:1rem; background:#fff;}
+.ens-dimension summary {font-size:1.05rem; font-weight:650; cursor:pointer; padding:.25rem;}
+.ens-dimension[open] summary {margin-bottom:1rem;}
+.ens-proposal {background:#e9f1e4; border:1px solid #95ad89; border-radius:18px; padding:1.5rem; margin-block:1.5rem; color:#183e34;}
+.ens-category-result {font-size:1.8rem; font-weight:650;}
+.ens-vector {display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:.7rem;}
+.ens-vector>div {border-radius:10px; padding:.9rem; background:#fff; border:1px solid #bdcdb5;}
+.ens-vector dt {font-weight:600; overflow-wrap:anywhere;}
+.ens-vector dd {margin:.5rem 0; font-size:1.1rem;}
+.ens-categorization button:focus-visible,.ens-categorization summary:focus-visible {outline:3px solid #8e641c; outline-offset:3px;}
+@media(max-width:600px) {.ens-category-element,.ens-proposal {padding:.85rem;}.ens-vector {grid-template-columns:1fr 1fr;}}

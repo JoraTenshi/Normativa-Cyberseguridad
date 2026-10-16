@@ -1,0 +1,934 @@
+{
+  "ficha": {
+    "schemaVersion": 2,
+    "paqueteId": "DP_E1_20261016",
+    "id": "RGPD12_SOLICITUD_DERECHOS",
+    "version": 1,
+    "reglaId": "RGPD12_SOLICITUD_DERECHOS",
+    "versionRegla": 1,
+    "titulo": "Tramitación de una solicitud de derechos",
+    "explicacion": "Gestiona recepción, verificación proporcional, plazos, respuesta y actuaciones por pretensión. Cerrar expediente no demuestra satisfacción del derecho material ni permite denegar automáticamente.",
+    "fuentes": [
+      {
+        "id": "RGPD_2016_679",
+        "version": 1,
+        "titulo": "Reglamento (UE) 2016/679",
+        "url": "https://www.boe.es/buscar/doc.php?id=DOUE-L-2016-80807",
+        "localizador": "Arts.5,11–12,15–23,26.3,28.3.e,32",
+        "editor": "Legislador UE; BOE",
+        "consultadaEn": "2026-10-15T22:41:44.732Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "LOPDGDD_3_2018",
+        "version": 1,
+        "titulo": "Ley Orgánica 3/2018",
+        "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2018-16673",
+        "localizador": "Arts.12–13",
+        "editor": "Legislador español; BOE",
+        "consultadaEn": "2026-10-15T22:41:44.732Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "CORRECCION2021",
+        "version": 1,
+        "titulo": "Corrección de errores RGPD2021",
+        "url": "https://www.boe.es/buscar/doc.php?id=DOUE-L-2021-80264",
+        "localizador": "Apartados3 y14",
+        "editor": "Fuente oficial enlazada; explicación propia",
+        "consultadaEn": "2026-10-15T22:41:44.732Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "CEPD_ACCESO_01_2022",
+        "version": 1,
+        "titulo": "CEPD Directrices01/2022 versión2.1",
+        "url": "https://www.edpb.europa.eu/documents/guideline/guidelines-012022-on-data-subject-rights-right-of-access_en",
+        "localizador": "Identidad y párrafo159: orientación de acceso, no suspensión universal",
+        "editor": "Fuente oficial enlazada; explicación propia",
+        "consultadaEn": "2026-10-15T22:41:44.732Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "TJUE_C526_24",
+        "version": 1,
+        "titulo": "TJUE C526/24,19marzo2026, ECLI:EU:C:2026:216",
+        "url": "https://eur-lex.europa.eu/legal-content/ES/TXT/?uri=CELEX:62024CJ0526",
+        "localizador": "Apartados21–45; textoESprovisional capturado15oct y revisado16oct; comunicado oficial38/26 contrastado",
+        "editor": "Fuente oficial enlazada; explicación propia",
+        "consultadaEn": "2026-10-15T22:41:44.732Z",
+        "estadoRevision": "revisada"
+      }
+    ],
+    "criterios": [
+      {
+        "id": "S01_CONTEXTO",
+        "descripcion": "Identificar organizacion, tratamiento, papel, personas y pretensiones. Separar cuentas propias de datos tratados por cuenta de clientes; conocido/desconocido/conflicto no se sustituyen por no.",
+        "origen": "metodologia",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "12.2"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "28.3.e"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "S02_RECEPCION",
+        "descripcion": "Medios accesibles. Conservar recepcion real y canal, distinguiendolos de lectura, alta en app y asignacion. No rechazar solo por usar otro medio ni exigir cuenta nueva como unica via.",
+        "origen": "metodologia",
+        "fuenteIds": [
+          "RGPD_2016_679",
+          "LOPDGDD_3_2018"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "12.2-3"
+          },
+          {
+            "fuenteId": "LOPDGDD_3_2018",
+            "localizador": "12.2"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "S03_PRETENSIONES",
+        "descripcion": "Interpretar contenido sin exigir nombre juridico del derecho. Registrar varias pretensiones y pedir aclaracion proporcionada si necesaria; no acotar arbitrariamente solicitud. Aclaracion del acceso con gran cantidad de datos exige su supuesto propio; no pausa general.",
+        "origen": "metodologia",
+        "fuenteIds": [
+          "RGPD_2016_679",
+          "LOPDGDD_3_2018"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "12.2"
+          },
+          {
+            "fuenteId": "LOPDGDD_3_2018",
+            "localizador": "13.1"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "S04_IDENTIDAD",
+        "descripcion": "Comprobacion proporcional a contexto y riesgo; usar autenticacion existente cuando sea suficiente. Ante dudas razonables de identidad15-21, documentar motivos y pedir solo lo necesario. No DNI por defecto ni considerar login de administrador como autorizacion para datos ajenos.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "12.6"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "5.1.c"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "32"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "S05_REPRESENTACION",
+        "descripcion": "Admitir representante legal o voluntario y comprobar alcance de facultades, incluida recepcion de datos. Menores de14: patria potestad en su supuesto, no presuncion por apellido. No exigir poder notarial universal. Fallecidos y otros casos especiales requieren ruta propia.",
+        "origen": "norma",
+        "fuenteIds": [
+          "LOPDGDD_3_2018"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "LOPDGDD_3_2018",
+            "localizador": "12.1"
+          },
+          {
+            "fuenteId": "LOPDGDD_3_2018",
+            "localizador": "12.6"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "S06_NO_IDENTIFICABLE",
+        "descripcion": "Distinguir fines que no requieren identificar e imposibilidad demostrada de identificacion de una simple duda12.6. No crear identificacion adicional solo por RGPD; informar si posible. Revisar informacion adicional que permita identificar; no extender11.2 automaticamente a21/22 ni equiparar seudonimo a anonimato.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "11.1-2"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "12.2"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "S07_PLAZO",
+        "descripcion": "Actuar sin dilacion indebida y como maximo un mes desde recepcion conforme al regimen aplicable. No30dias, no mes desde importacion. Identificar calendario, precision y fundamento; si faltan, mostrar pendiente junto a aviso preventivo, no en_plazo acreditado.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679",
+          "CORRECCION2021"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "12.3"
+          },
+          {
+            "fuenteId": "CORRECCION2021",
+            "localizador": ".3"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "S08_PRORROGA",
+        "descripcion": "Hasta otros dos meses cuando sea necesario, con motivacion del caso e informacion al interesado dentro del primer mes indicando razones. No ampliacion automatica por acumulacion, vacaciones o marcar un boton; no aplicar a aviso de no actuacion12.4. Conservar fechas original, decision y comunicacion. Condición: Necesidad de ampliar por complejidad y numero de solicitudes. Si no se invoca, documentar no pertinencia; no activar excepción desde un campo vacío.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "12.3"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "S09_INCIDENCIA_COMPUTO",
+        "descripcion": "CEPD159 admite supuestos acotados de acceso; registrar necesidad, requerimiento sin dilacion, contenido, inicio y fin efectivos. No suspender automaticamente por estado pendiente, consulta interna, carga de DNI o peticion indiscriminada. No trasladar sin analisis a otros derechos. Mantener propuesta separada del vencimiento validado y alerta conservadora mientras se revisa. Condición: Se alega suspension por identidad o aclaracion del acceso. Si no se invoca, documentar no pertinencia; no activar excepción desde un campo vacío.",
+        "origen": "metodologia",
+        "fuenteIds": [
+          "RGPD_2016_679",
+          "LOPDGDD_3_2018",
+          "CEPD_ACCESO_01_2022"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "12.3"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "12.6"
+          },
+          {
+            "fuenteId": "LOPDGDD_3_2018",
+            "localizador": "13.1"
+          },
+          {
+            "fuenteId": "CEPD_ACCESO_01_2022",
+            "localizador": "159"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "S10_GRATUIDAD",
+        "descripcion": "Gratuidad general. Canon o negativa solo con supuesto y prueba correspondientes; costes razonables no beneficio. Repeticion de acceso en seis meses no rechazo automatico: examinar causa legitima. Copias adicionales15.3 y medio desproporcionado13.4 son supuestos distintos; requieren desarrollo sustantivo. No cobrar ni facturar desde selector. En acceso, una primera solicitud tambien puede exigir examen excepcional de exceso: aplicar C526/24, apartados21-45, con carga probatoria del responsable, elementos objetivo y subjetivo y valoracion integral. No inferir abuso solo por cantidad, suscripcion reciente, reclamacion de indemnizacion o informacion publica no corroborada. No exigir al solicitante una justificacion general de sus motivos como filtro de admision. La app registra alegacion, pruebas y revision motivada por separado; no declara abuso, cobra o rechaza automaticamente.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679",
+          "LOPDGDD_3_2018",
+          "TJUE_C526_24"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "12.5"
+          },
+          {
+            "fuenteId": "LOPDGDD_3_2018",
+            "localizador": "12.7"
+          },
+          {
+            "fuenteId": "LOPDGDD_3_2018",
+            "localizador": "13.3-4"
+          },
+          {
+            "fuenteId": "TJUE_C526_24",
+            "localizador": ".21-45_fallo1"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "S11_NO_ACTUACION",
+        "descripcion": "Si no se actua, informar sin dilacion y a mas tardar un mes desde recepcion, razones y posibilidad de reclamacion y acciones judiciales. Examinar imposibilidad11.2 e informacion si posible. Negativa parcial no borra pretensiones atendibles. No cerrar por silencio ni por no usar formulario.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "12.4"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "11.2"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "S12_FORMA",
+        "descripcion": "Respuesta clara, comprensible, accesible y apropiada al publico. Solicitud electronica: medios electronicos si posible salvo peticion distinta. Respuesta oral solicitada requiere identidad demostrada por otros medios; no imponer PDF universal.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "12.1"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "12.3"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "S13_SEGURIDAD",
+        "descripcion": "Acceso al expediente segun necesidad, separacion de organizaciones y entrega al destinatario autorizado. Minimizar adjuntos de identidad, registros y notificaciones; no secretos ni contenido de expedientes en logs generales o correos de aviso. URL conocida no autoriza descarga.",
+        "origen": "metodologia",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "5.1.f"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "32"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "S14_ACTUACION_MATERIAL",
+        "descripcion": "Vincular cada pretension al examen sustantivo correspondiente y a la actuacion real, no solo al texto de respuesta. No dar satisfechos acceso/supresion/portabilidad/etc por cerrar ticket; si modulo no cubierto, requiere analisis fuera de cobertura sin perder plazo. Este bloque no define todos esos criterios sustantivos.",
+        "origen": "metodologia",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "12.3"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "15-22_segun_pretension"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "S15_PRUEBA_RESPUESTA",
+        "descripcion": "Acreditar respuesta exacta, destinatario, momento, canal y resultado de comunicacion. Borrador, tarea completada, subida de archivo o simple estado enviado no bastan. Conservar fallo de entrega y actuaciones posteriores; no exigir acuse universal si evidencia suficiente por otro medio.",
+        "origen": "metodologia",
+        "fuenteIds": [
+          "LOPDGDD_3_2018",
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "LOPDGDD_3_2018",
+            "localizador": "12.4"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "5.2"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "S16_COLABORACION",
+        "descripcion": "Corresponsabilidad no impide ejercicio frente a cada responsable. Encargado asiste segun naturaleza y medios, y tramita por cuenta del responsable si pacto lo establece; no decide por defecto fines, denegacion o ampliacion. Distinguir remitida al responsable de respuesta acreditada al interesado; no reiniciar plazo sin fundamento.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679",
+          "CORRECCION2021",
+          "LOPDGDD_3_2018"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "26.3"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "28.3.e"
+          },
+          {
+            "fuenteId": "CORRECCION2021",
+            "localizador": ".14"
+          },
+          {
+            "fuenteId": "LOPDGDD_3_2018",
+            "localizador": "12.3"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "S17_RESTRICCIONES",
+        "descripcion": "Identificar disposicion concreta, version temporal y alcance por pretension. No fabricar excepcion desde NDA, politica interna o cliente B2B. Derivar a analisis competente si incierto, mantener vencimientos y restantes deberes visibles. Condición: Regimen especial o limitacion invocados. Si no se invoca, documentar no pertinencia; no activar excepción desde un campo vacío.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679",
+          "LOPDGDD_3_2018"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "23"
+          },
+          {
+            "fuenteId": "LOPDGDD_3_2018",
+            "localizador": "12.5"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "S18_HISTORIAL_CONSERVACION",
+        "descripcion": "Conservar trazabilidad suficiente con minimizacion, acceso limitado y periodo justificado. No retencion eterna ni plazo universal inventado. Respuesta tardia no borra retraso; cambio de evidencia o correccion del reloj conserva antes/despues, motivo y autor. Caso cerrado no certifica cumplimiento global.",
+        "origen": "metodologia",
+        "fuenteIds": [
+          "RGPD_2016_679",
+          "LOPDGDD_3_2018"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "5.1.c/e"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "5.2"
+          },
+          {
+            "fuenteId": "LOPDGDD_3_2018",
+            "localizador": "12.4"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      }
+    ],
+    "fuentesYCalendario": {
+      "consultaVigencia": "2026-10-16",
+      "limiteVerificacion": "Procedimiento general12/LOPD12–13, no todos los presupuestos sustantivos15–22. C526/24 texto provisional capturado y leído; consulta web actual limitada, comunicado oficial corroborado. No calculadora legal universal ni validación automática de excepciones."
+    },
+    "usoContenido": {
+      "tipo": "legislacion_y_explicacion_original",
+      "atribucion": "Basado en datos de la Agencia Estatal Boletín Oficial del Estado. Explicación propia, sin respaldo oficial.",
+      "urlCondiciones": "https://www.boe.es/informacion/aviso_legal/index.php",
+      "advertencia": "Solo legislación y explicación propia; referencias a estándares no incorporan texto protegido.",
+      "incluyeISOoCCNProtegido": false
+    },
+    "revisionEditorial": {
+      "actor": "Codex Normativa",
+      "tipo": "revision_editorial_asistida_IA",
+      "fecha": "2026-10-15T22:41:44.732Z",
+      "dictamenJuridicoProfesional": false,
+      "publicacion": "Paquete de desarrollo; integración y QA pendientes. Sin dictamen profesional."
+    },
+    "actuacionesSugeridas": [
+      {
+        "id": "SA01",
+        "titulo": "Preparar canales, responsabilidades y acceso",
+        "funcionSugerida": "Responsable y asistencia del encargado según el caso",
+        "criterioCierreTarea": "Ejecución y evidencia identificadas; no aprobación automática del expediente o derecho.",
+        "dependeDe": []
+      },
+      {
+        "id": "SA02",
+        "titulo": "Registrar y examinar solicitud y solicitante",
+        "funcionSugerida": "Responsable y asistencia del encargado según el caso",
+        "criterioCierreTarea": "Ejecución y evidencia identificadas; no aprobación automática del expediente o derecho.",
+        "dependeDe": []
+      },
+      {
+        "id": "SA03",
+        "titulo": "Controlar plazo y decisiones excepcionales",
+        "funcionSugerida": "Responsable y asistencia del encargado según el caso",
+        "criterioCierreTarea": "Ejecución y evidencia identificadas; no aprobación automática del expediente o derecho.",
+        "dependeDe": []
+      },
+      {
+        "id": "SA04",
+        "titulo": "Ejecutar, responder y revisar evidencia",
+        "funcionSugerida": "Responsable y asistencia del encargado según el caso",
+        "criterioCierreTarea": "Ejecución y evidencia identificadas; no aprobación automática del expediente o derecho.",
+        "dependeDe": []
+      }
+    ],
+    "condicionesRevision": {
+      "unidadContada": "Solicitud versionada, entidad/papel y conjunto de pretensiones delimitadas. No contar cada evento/documento/criterio como otra obligación.",
+      "favorable": "Todas las pretensiones y criterios pertinentes examinados y soportados. Resultado de tramitación no equivale a estimación material ni conformidad global. Incógnitas decisivas/actuaciones pendientes impiden cierre favorable completo.",
+      "evidencia": "Recepción real, comprobaciones minimizadas, decisiones, respuesta exacta, actuaciones materiales y prueba de comunicación al destinatario autorizado.",
+      "aprobacionAutomatica": false,
+      "revisor": "Miembro autorizado; tipo de revisión, límites, motivación y evidencia examinada identificados. No dictamen profesional por defecto.",
+      "caducidadUniversal": null,
+      "desencadenantes": [
+        "nueva pretensión o aclaración",
+        "corrección de recepción/identidad motivada",
+        "cambio de tratamiento, evidencia o respuesta",
+        "fallo de entrega",
+        "nueva decisión sobre cómputo/limitación"
+      ],
+      "preservarHistorico": true
+    },
+    "limites": [
+      "Ninguna alta, carga, tarea terminada o envio produce favorable automaticamente.",
+      "Cierre requiere examen de todas las pretensiones, actuaciones/respuestas y evidencia; documentar pendientes que impidan cierre completo.",
+      "Una no_actuacion fundada puede resolver tramitacion, pero no se cuenta como derecho material estimado.",
+      "Cero solicitudes no significa100%: revisar preparacion del procedimiento y mostrar sin casos evaluados.",
+      "No confundir porcentaje de expedientes respondidos, puntualidad y satisfaccion normativa.",
+      "Cambio de contexto no reescribe recepcion ni conclusion historica.",
+      "Identidad desconocida protege acceso a datos, pero no elimina solicitud ni deber de examinarla.",
+      "Decision de prorroga/suspension exige persona autorizada y motivacion; el rol admin no equivale a responsable/DPD.",
+      "Idempotencia, concurrencia, autenticacion, CSRF y aislamiento se reutilizan del backend y se verifican; no se presumen desde esta ficha.",
+      "No envio, cobro, supresion ni notificacion externa automaticos autorizados por este documento.",
+      "El hecho primera_solicitud no determina automaticamente ni inexistencia ni existencia de abuso.",
+      "Un contador, score IA, noticia, pertenencia a una lista o reclamacion economica no decide una denegacion.",
+      "No crear un registro compartido entre clientes de personas calificadas como abusivas, ni realizar scraping de personas para este bloque.",
+      "La alegacion es un dato atribuido al responsable, no un hecho juridico probado. Conservar evidencia, contradicciones y decision identificada.",
+      "Examinar una alegacion de exceso no suspende automaticamente el plazo de respuesta ni elimina las vias de reclamacion.",
+      "Primera copia, copias adicionales, repeticion y medio desproporcionado son supuestos distintos; conservar reglas anteriores de gratuidad y LOPDGDD13.",
+      "La sentencia prejudicial no resuelve que el interesado concreto fuera abusivo; no convertir los antecedentes alegados en hechos declarados por el TJUE.",
+      "No calcular canon, indemnizacion, multa, pago o cierre automaticos; el bloque estructura revision, no adjudica controversias.",
+      "No suspensión automática por pendiente_informacion, análisis de exceso, consulta interna o ausencia de DNI.",
+      "La solicitud y pretensiones necesitan identificadores/versiones y relaciones exactas propias; no campo global de empresa.",
+      "Una respuesta estimatoria en carta sin actuación material no satisface derecho.",
+      "La ruta del encargado solo acredita asistencia en su ámbito, no respuesta del responsable.",
+      "La ley no obliga a usar esta app ni un formato de expediente específico; organización es metodología propia.",
+      "Respuestas tardías no borran retraso; todas las fechas reales permanecen auditadas."
+    ],
+    "satisfaccion": {
+      "tipo": "rutas_cerradas",
+      "hechos": [
+        {
+          "clave": "dp_rol",
+          "tipo": "texto",
+          "pregunta": {
+            "id": "SEG_P_dp_rol",
+            "texto": "Papel de la entidad en este tratamiento",
+            "grupo": "Operación de tratamiento",
+            "motivo": "Delimita quién decide fines y medios y si actúa por cuenta de otro. No se deduce de poseer el software ni de los permisos de la app. Si hay funciones mezcladas, revisa la delimitación de operaciones."
+          }
+        }
+      ],
+      "rutas": [
+        {
+          "id": "SOL_ROL_0",
+          "titulo": "Tramitación por responsable",
+          "explicacion": "Revisión acotada al papel efectivamente desempeñado, no permiso técnico ni traslado de responsabilidad.",
+          "requiereTodos": [
+            "S01_CONTEXTO",
+            "S02_RECEPCION",
+            "S03_PRETENSIONES",
+            "S04_IDENTIDAD",
+            "S05_REPRESENTACION",
+            "S06_NO_IDENTIFICABLE",
+            "S07_PLAZO",
+            "S08_PRORROGA",
+            "S09_INCIDENCIA_COMPUTO",
+            "S10_GRATUIDAD",
+            "S11_NO_ACTUACION",
+            "S12_FORMA",
+            "S13_SEGURIDAD",
+            "S14_ACTUACION_MATERIAL",
+            "S15_PRUEBA_RESPUESTA",
+            "S16_COLABORACION",
+            "S17_RESTRICCIONES",
+            "S18_HISTORIAL_CONSERVACION"
+          ],
+          "hechosRequeridos": [
+            {
+              "clave": "dp_rol",
+              "valor": "responsable"
+            }
+          ]
+        },
+        {
+          "id": "SOL_ROL_1",
+          "titulo": "Tramitación por responsable",
+          "explicacion": "Revisión acotada al papel efectivamente desempeñado, no permiso técnico ni traslado de responsabilidad.",
+          "requiereTodos": [
+            "S01_CONTEXTO",
+            "S02_RECEPCION",
+            "S03_PRETENSIONES",
+            "S04_IDENTIDAD",
+            "S05_REPRESENTACION",
+            "S06_NO_IDENTIFICABLE",
+            "S07_PLAZO",
+            "S08_PRORROGA",
+            "S09_INCIDENCIA_COMPUTO",
+            "S10_GRATUIDAD",
+            "S11_NO_ACTUACION",
+            "S12_FORMA",
+            "S13_SEGURIDAD",
+            "S14_ACTUACION_MATERIAL",
+            "S15_PRUEBA_RESPUESTA",
+            "S16_COLABORACION",
+            "S17_RESTRICCIONES",
+            "S18_HISTORIAL_CONSERVACION"
+          ],
+          "hechosRequeridos": [
+            {
+              "clave": "dp_rol",
+              "valor": "corresponsable_delimitado"
+            }
+          ]
+        },
+        {
+          "id": "SOL_ROL_2",
+          "titulo": "Asistencia por encargado",
+          "explicacion": "Revisión acotada al papel efectivamente desempeñado, no permiso técnico ni traslado de responsabilidad.",
+          "requiereTodos": [
+            "S01_CONTEXTO",
+            "S02_RECEPCION",
+            "S03_PRETENSIONES",
+            "S13_SEGURIDAD",
+            "S16_COLABORACION",
+            "S18_HISTORIAL_CONSERVACION"
+          ],
+          "hechosRequeridos": [
+            {
+              "clave": "dp_rol",
+              "valor": "encargado"
+            }
+          ]
+        },
+        {
+          "id": "SOL_ROL_3",
+          "titulo": "Asistencia por encargado",
+          "explicacion": "Revisión acotada al papel efectivamente desempeñado, no permiso técnico ni traslado de responsabilidad.",
+          "requiereTodos": [
+            "S01_CONTEXTO",
+            "S02_RECEPCION",
+            "S03_PRETENSIONES",
+            "S13_SEGURIDAD",
+            "S16_COLABORACION",
+            "S18_HISTORIAL_CONSERVACION"
+          ],
+          "hechosRequeridos": [
+            {
+              "clave": "dp_rol",
+              "valor": "subencargado_delimitado"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "regla": {
+    "contratoVersion": 2,
+    "id": "RGPD12_SOLICITUD_DERECHOS",
+    "version": 1,
+    "estado": "revisada",
+    "revision": {
+      "revisorRef": "Codex-revision-editorial-no-dictamen-profesional",
+      "fecha": "2026-10-15T22:41:44.732Z"
+    },
+    "naturaleza": "ley_reglamento",
+    "origenes": [
+      "legal"
+    ],
+    "tiposObjeto": [
+      "operacion"
+    ],
+    "fuentes": [
+      {
+        "id": "RGPD_2016_679",
+        "version": 1,
+        "titulo": "Reglamento (UE) 2016/679",
+        "url": "https://www.boe.es/buscar/doc.php?id=DOUE-L-2016-80807",
+        "localizador": "Arts.5,11–12,15–23,26.3,28.3.e,32",
+        "editor": "Legislador UE; BOE",
+        "consultadaEn": "2026-10-15T22:41:44.732Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "LOPDGDD_3_2018",
+        "version": 1,
+        "titulo": "Ley Orgánica 3/2018",
+        "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2018-16673",
+        "localizador": "Arts.12–13",
+        "editor": "Legislador español; BOE",
+        "consultadaEn": "2026-10-15T22:41:44.732Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "CORRECCION2021",
+        "version": 1,
+        "titulo": "Corrección de errores RGPD2021",
+        "url": "https://www.boe.es/buscar/doc.php?id=DOUE-L-2021-80264",
+        "localizador": "Apartados3 y14",
+        "editor": "Fuente oficial enlazada; explicación propia",
+        "consultadaEn": "2026-10-15T22:41:44.732Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "CEPD_ACCESO_01_2022",
+        "version": 1,
+        "titulo": "CEPD Directrices01/2022 versión2.1",
+        "url": "https://www.edpb.europa.eu/documents/guideline/guidelines-012022-on-data-subject-rights-right-of-access_en",
+        "localizador": "Identidad y párrafo159: orientación de acceso, no suspensión universal",
+        "editor": "Fuente oficial enlazada; explicación propia",
+        "consultadaEn": "2026-10-15T22:41:44.732Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "TJUE_C526_24",
+        "version": 1,
+        "titulo": "TJUE C526/24,19marzo2026, ECLI:EU:C:2026:216",
+        "url": "https://eur-lex.europa.eu/legal-content/ES/TXT/?uri=CELEX:62024CJ0526",
+        "localizador": "Apartados21–45; textoESprovisional capturado15oct y revisado16oct; comunicado oficial38/26 contrastado",
+        "editor": "Fuente oficial enlazada; explicación propia",
+        "consultadaEn": "2026-10-15T22:41:44.732Z",
+        "estadoRevision": "revisada"
+      }
+    ],
+    "vigencia": {
+      "estado": "definida",
+      "tipo": "fecha_civil",
+      "calendario": "gregoriano",
+      "jurisdiccion": "ES",
+      "zonaEvaluacion": "Europe/Madrid",
+      "desde": "2018-05-25",
+      "hasta": null
+    },
+    "cobertura": {
+      "descripcion": "Solicitud delimitada bajo régimen general, establecimiento español y papel conocido; no denegar por régimen no cubierto.",
+      "condicion": {
+        "op": "and",
+        "args": [
+          {
+            "op": "eq",
+            "hecho": "dp_establecimiento_es",
+            "valor": true
+          },
+          {
+            "op": "eq",
+            "hecho": "dp_regimen_general",
+            "valor": true
+          },
+          {
+            "op": "eq",
+            "hecho": "sol_expediente_delimitado",
+            "valor": true
+          },
+          {
+            "op": "or",
+            "args": [
+              {
+                "op": "eq",
+                "hecho": "dp_rol",
+                "valor": "responsable"
+              },
+              {
+                "op": "eq",
+                "hecho": "dp_rol",
+                "valor": "corresponsable_delimitado"
+              },
+              {
+                "op": "eq",
+                "hecho": "dp_rol",
+                "valor": "encargado"
+              },
+              {
+                "op": "eq",
+                "hecho": "dp_rol",
+                "valor": "subencargado_delimitado"
+              }
+            ]
+          }
+        ]
+      },
+      "periodo": {
+        "desde": "2018-12-07",
+        "hasta": null,
+        "motivo": "Itinerario conjuntoRGPD/LOPDGDD. No inicio general del RGPD."
+      }
+    },
+    "hechos": [
+      {
+        "clave": "dp_ambito_rgpd",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "SEG_P_dp_ambito_rgpd",
+          "texto": "Resultado de la valoración del ámbito RGPD para este tratamiento",
+          "grupo": "Operación de tratamiento",
+          "motivo": "Si no se ha analizado o falta fundamento, indica desconocido. La ubicación por sí sola no determina el ámbito. Este campo recoge una conclusión; no sustituye la valoración."
+        }
+      },
+      {
+        "clave": "dp_establecimiento_es",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "SEG_P_dp_establecimiento_es",
+          "texto": "¿Este tratamiento se realiza en el contexto de las actividades de un establecimiento de la entidad en España?",
+          "grupo": "Operación de tratamiento",
+          "motivo": "No equivale a que el servidor o los datos estén en España. Si no lo sabes, conserva desconocido. Un no no excluye por sí solo el RGPD."
+        }
+      },
+      {
+        "clave": "dp_regimen_general",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "SEG_P_dp_regimen_general",
+          "texto": "Resultado de la valoración del régimen aplicable: ¿esta operación puede analizarse por el itinerario general de protección de datos cubierto por la app?",
+          "grupo": "Operación de tratamiento",
+          "motivo": "Una respuesta «no» significa que necesita otro itinerario o análisis, no una exención. Si todavía no se ha valorado, indica desconocido."
+        }
+      },
+      {
+        "clave": "dp_rol",
+        "tipo": "texto",
+        "pregunta": {
+          "id": "SEG_P_dp_rol",
+          "texto": "Papel de la entidad en este tratamiento",
+          "grupo": "Operación de tratamiento",
+          "motivo": "Delimita quién decide fines y medios y si actúa por cuenta de otro. No se deduce de poseer el software ni de los permisos de la app. Si hay funciones mezcladas, revisa la delimitación de operaciones."
+        }
+      },
+      {
+        "clave": "sol_expediente_delimitado",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "SOL_P_DELIMITACION",
+          "texto": "¿Se identifica una solicitud recibida, el tratamiento y las pretensiones que contiene?",
+          "grupo": "Solicitud de derechos",
+          "motivo": "Registrar recepción real distinta del alta. Si faltan datos, conservar solicitud y advertencias, no denegar."
+        }
+      }
+    ],
+    "condicion": {
+      "op": "eq",
+      "hecho": "dp_ambito_rgpd",
+      "valor": true
+    },
+    "excepciones": []
+  }
+}

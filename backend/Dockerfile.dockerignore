@@ -5,6 +5,8 @@
 !app.js
 !constants/
 !constants/**
+!contracts/
+!contracts/**
 !middleware/
 !middleware/**
 !models/

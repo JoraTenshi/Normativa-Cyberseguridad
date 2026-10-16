@@ -1,0 +1,1041 @@
+{
+  "ficha": {
+    "schemaVersion": 2,
+    "paqueteId": "DP_E1_20261016",
+    "id": "RGPD12_14_TRANSPARENCIA_UNIDAD",
+    "version": 1,
+    "reglaId": "RGPD12_14_TRANSPARENCIA_UNIDAD",
+    "versionRegla": 1,
+    "titulo": "Información a las personas por origen y tratamiento",
+    "explicacion": "Revisa contenido, momento y forma de informar por unidad homogénea. Un aviso en la web no acredita entrega ni contenido correcto para toda actividad.",
+    "fuentes": [
+      {
+        "id": "RGPD_2016_679",
+        "version": 1,
+        "titulo": "Reglamento (UE) 2016/679",
+        "url": "https://www.boe.es/buscar/doc.php?id=DOUE-L-2016-80807",
+        "localizador": "Arts.5.2,12–14,23",
+        "editor": "Legislador UE; BOE",
+        "consultadaEn": "2026-10-15T22:31:45.879Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "LOPDGDD_3_2018",
+        "version": 1,
+        "titulo": "Ley Orgánica 3/2018",
+        "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2018-16673",
+        "localizador": "Arts.11–12",
+        "editor": "Legislador español; BOE",
+        "consultadaEn": "2026-10-15T22:31:45.879Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "CORRECCION2021",
+        "version": 1,
+        "titulo": "Corrección de errores RGPD2021",
+        "url": "https://www.boe.es/buscar/doc.php?id=DOUE-L-2021-80264",
+        "localizador": "Apartados3–8 y11",
+        "editor": "Fuente oficial enlazada; explicación propia",
+        "consultadaEn": "2026-10-15T22:31:45.879Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "TJUE_C169_23",
+        "version": 1,
+        "titulo": "TJUE C-169/23,28noviembre2024",
+        "url": "https://eur-lex.europa.eu/legal-content/ES/TXT/HTML/?uri=CELEX:62023CJ0169",
+        "localizador": "Datos generados y excepción14.5.c; no generalizar régimen sanitario",
+        "editor": "Fuente oficial enlazada; explicación propia",
+        "consultadaEn": "2026-10-15T22:31:45.879Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "TJUE_C422_24",
+        "version": 1,
+        "titulo": "TJUE C-422/24,18diciembre2025",
+        "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:62024CJ0422",
+        "localizador": "Apartados29–45. Texto inglés provisional; fuente de datos, no participación activa",
+        "editor": "Fuente oficial enlazada; explicación propia",
+        "consultadaEn": "2026-10-15T22:31:45.879Z",
+        "estadoRevision": "revisada"
+      }
+    ],
+    "criterios": [
+      {
+        "id": "T01_ALCANCE",
+        "descripcion": "Relacionar personas, categorias, operaciones, fines, papel, fuente y modo de obtencion: aportado, observado, tercero/publico o generado. Datos nuevos inferidos se distinguen de entradas. Determinar fuente desde hechos, no formulario/etiqueta telemetria. Es contexto del examen, no suficiencia de todoRGPD.",
+        "origen": "metodologia",
+        "fuenteIds": [
+          "RGPD_2016_679",
+          "TJUE_C169_23"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "13.1"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "14.1"
+          },
+          {
+            "fuenteId": "TJUE_C169_23",
+            "localizador": "Apartados47–49,53–55,64–66"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "T02_IDENTIDAD",
+        "descripcion": "Identidad y contacto reales del responsable y representante cuando proceda, coherentes con el tratamiento. No suplir datos ausentes con nombre de academia o cliente.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "13.1.a"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "14.1.a"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "T03_DPD",
+        "descripcion": "Contacto del DPD correcto; no llamar DPD al contacto general sin nombramiento. Si necesidad de DPD esta pendiente, no resolverla ocultando el campo. Condición: DPD cuando proceda. Motivar si no concurre; desconocido no equivale a ausencia.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "13.1.b"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "14.1.b"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "T04_FINES_BASE",
+        "descripcion": "Fines y bases juridicas identificados y coherentes por finalidad; no base contractual o consentimiento universal. Este criterio informa la base, no sustituye su examen sustantivo.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "13.1.c"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "14.1.c"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "T05_INTERES_LEGITIMO",
+        "descripcion": "Identificar intereses del responsable o tercero pertinentes; no basta la etiqueta interes legitimo ni se presume favorable la ponderacion. Condición: Se invoca6.1.f. Motivar si no concurre; desconocido no equivale a ausencia.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "13.1.d"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "14.2.b"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "T06_DESTINATARIOS",
+        "descripcion": "Destinatarios o categorias informados conforme al flujo real. Examinar proveedores y accesos, sin equiparar automaticamente destinatario y tercero ni inferir ausencia por alojar en Espana. Condición: Cuando proceda. Motivar si no concurre; desconocido no equivale a ausencia.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "13.1.e"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "14.1.e"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "T07_TRANSFERENCIAS",
+        "descripcion": "Informar transferencia, existencia o ausencia de adecuacion y garantias cuando correspondan con medio para copia o lugar de puesta a disposicion. No certificar licitud de la transferencia desde este texto. Condición: Intencion de transferir a tercer pais u organizacion internacional. Motivar si no concurre; desconocido no equivale a ausencia.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679",
+          "CORRECCION2021"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "13.1.f"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "14.1.f"
+          },
+          {
+            "fuenteId": "CORRECCION2021",
+            "localizador": ".4"
+          },
+          {
+            "fuenteId": "CORRECCION2021",
+            "localizador": ".7"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "T08_CONSERVACION",
+        "descripcion": "Plazos o, si no es posible precisarlos, criterios para determinarlos, coherentes con fines y conservaciones separadas. No inventar borrado universal en30dias.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "13.2.a"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "14.2.a"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "T09_DERECHOS",
+        "descripcion": "Informar acceso, rectificacion, supresion, limitacion, oposicion y portabilidad con sus condiciones, por medios accesibles; no prometer ejercicio incondicionado de todos ni imponer exclusivamente un canal. Operativa de respuesta se revisa aparte.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679",
+          "LOPDGDD_3_2018"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "13.2.b"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "14.2.c"
+          },
+          {
+            "fuenteId": "LOPDGDD_3_2018",
+            "localizador": "12.2"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "T10_RETIRADA",
+        "descripcion": "Informar retirada en cualquier momento y efecto no retroactivo sobre licitud previa. No confundir aceptar aviso con otorgar consentimiento. Condición: Base6.1.a o9.2.a. Motivar si no concurre; desconocido no equivale a ausencia.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "13.2.c"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "14.2.d"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "T11_RECLAMACION",
+        "descripcion": "Informar derecho a reclamar ante autoridad de control. No sustituirlo por soporte comercial ni asumir que contactar primero con la empresa es condicion general.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "13.2.d"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "14.2.e"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "T12_APORTACION_DIRECTA",
+        "descripcion": "Informar si aportar datos es requisito legal/contractual o necesario para contratar, obligatoriedad y consecuencias de no hacerlo, diferenciando campos opcionales. Condición: Ruta directa. Motivar si no concurre; desconocido no equivale a ausencia.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679",
+          "CORRECCION2021"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "13.2.e"
+          },
+          {
+            "fuenteId": "CORRECCION2021",
+            "localizador": ".5"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "T13_DECISION_AUTOMATIZADA",
+        "descripcion": "Informar existencia y, al menos en esos supuestos, logica significativa, importancia y consecuencias previstas. No exigir codigo fuente por defecto ni declarar cubierto el articulo22 entero. Condición: Decisiones del22.1/4; examinar contexto, no toda automatizacion. Motivar si no concurre; desconocido no equivale a ausencia.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679",
+          "CORRECCION2021"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "13.2.f"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "14.2.g"
+          },
+          {
+            "fuenteId": "CORRECCION2021",
+            "localizador": ".6"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "T14_CATEGORIAS_INDIRECTA",
+        "descripcion": "Informar categorias de datos reales; no sustituirlas por una descripcion vaga de informacion. Condición: Ruta indirecta. Motivar si no concurre; desconocido no equivale a ausencia.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "14.1.d"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "T15_ORIGEN_INDIRECTA",
+        "descripcion": "Informar fuente y, cuando proceda, acceso publico. Identificar generacion/inferencia y fuentes de entrada sin fingir que toda informacion fue entregada por la persona. Publicidad de fuente no exime14. No revelar datos de terceros innecesarios al documentar linaje. Condición: Ruta indirecta. Motivar si no concurre; desconocido no equivale a ausencia.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679",
+          "TJUE_C169_23"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "14.2.f"
+          },
+          {
+            "fuenteId": "TJUE_C169_23",
+            "localizador": "Apartados47–49,53–55,64–66"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "T16_MOMENTO_DIRECTA",
+        "descripcion": "Facilitar al obtener datos, incluidos supuestos de observacion directa. No asignar mes por falta de formulario ni por recogida pasiva. Un enlace que solo aparece despues del registro o de la captacion no demuestra cumplimiento del momento exigido. Condición: Ruta directa. Motivar si no concurre; desconocido no equivale a ausencia.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679",
+          "TJUE_C422_24"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "13.1"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "13.2"
+          },
+          {
+            "fuenteId": "TJUE_C422_24",
+            "localizador": "Apartados29–45"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "T17_MOMENTO_INDIRECTA",
+        "descripcion": "Plazo razonable atendiendo circunstancias, como maximo un mes; controlar primera comunicacion al interesado y primera revelacion a otro destinatario cuando correspondan. No elegir el evento mas tardio ni convertir mes en30dias. Calculo civil y reglas generales de plazos requieren contrato y pruebas propios antes de activar un calculador. Condición: Ruta indirecta sin excepcion acreditada para esa informacion. Motivar si no concurre; desconocido no equivale a ausencia.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "14.3.a-c"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "T18_NUEVO_FIN",
+        "descripcion": "Informar antes del nuevo tratamiento del fin y restantes extremos pertinentes; no considerar que informar legitima por si solo el nuevo uso. Condición: Se proyecta finalidad ulterior distinta. Motivar si no concurre; desconocido no equivale a ausencia.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "13.3"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "14.4"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "T19_FORMA_ACCESO",
+        "descripcion": "Informacion concisa, transparente, comprensible y accesible, lenguaje claro especialmente para ninos, gratuita. Admitir medios apropiados, no soloPDF; informacion oral solicitada exige identidad demostrada por otros medios. Iconos son complemento opcional; si electronicos, legibles mecanicamente.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "12.1"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "12.5"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "12.7"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "T20_CAPAS",
+        "descripcion": "Primera capa con identidad y representante cuando proceda, finalidad y posibilidad de derechos; perfiles y derecho referido22 cuando proceda. En indirecta sumar categorias y fuentes. Acceso sencillo e inmediato al resto completo; una capa breve no sustituye el contenido total. El esquema es posibilidad, no formato obligatorio universal. Condición: Se opta por informacion por capas. Motivar si no concurre; desconocido no equivale a ausencia.",
+        "origen": "norma",
+        "fuenteIds": [
+          "LOPDGDD_3_2018"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "LOPDGDD_3_2018",
+            "localizador": "11.1-3"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "T21_INFORMACION_PREVIA",
+        "descripcion": "Acreditar cuales elementos posee y su correspondencia con version y tratamiento. Una politica visible en la web o una casilla no prueban por si solas que ya dispone de todo. No extender una excepcion parcial al resto. Condición: Se invoca que la persona ya dispone de informacion. Motivar si no concurre; desconocido no equivale a ausencia.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "13.4"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "14.5.a"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "T22_EXCEPCIONES_INDIRECTA",
+        "descripcion": "Solo ruta14 y elementos/personas cubiertos. Examinar imposibilidad/esfuerzo desproporcionado u obstaculo grave y salvaguardas, incluida informacion publica14.5.b; o obtencion/comunicacion expresamente establecida en Derecho aplicable con proteccion equivalente y acceso efectivo a informacion14.5.c; o secreto profesional de base legal14.5.d. No basta pocos empleados, fuente publica, NDA, cifrado o seguridad32. No trasladar estas excepciones a13. En14.5.c documentar precepto preciso, datos cubiertos y como la persona accede a informacion; no aprobar por mera base6.1.c/e. Condición: Se invoca excepcion indirecta. Motivar si no concurre; desconocido no equivale a ausencia.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679",
+          "CORRECCION2021",
+          "TJUE_C169_23"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "14.5.b-d"
+          },
+          {
+            "fuenteId": "CORRECCION2021",
+            "localizador": ".8"
+          },
+          {
+            "fuenteId": "TJUE_C169_23",
+            "localizador": "Apartados47–49,53–55,64–66"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "T23_RESTRICCION_LEGISLATIVA",
+        "descripcion": "Identificar medida legislativa aplicable y limites, necesidad/proporcionalidad y garantias pertinentes; la empresa no crea excepciones por sus condiciones privadas. Pendiente de revision especializada si no queda fundamentada. Condición: Se invoca limitacion sectorial. Motivar si no concurre; desconocido no equivale a ausencia.",
+        "origen": "norma",
+        "fuenteIds": [
+          "RGPD_2016_679",
+          "CORRECCION2021"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "23.1-2"
+          },
+          {
+            "fuenteId": "CORRECCION2021",
+            "localizador": ".11"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      },
+      {
+        "id": "T24_PRUEBA_VERSION",
+        "descripcion": "Vincular texto exacto, canales, publico, fecha/evento y evidencia de que se facilita. Aprobar contenido y comprobar entrega son dimensiones distintas. Conservar historial sin recolectar datos personales excesivos para probarlo.",
+        "origen": "metodologia",
+        "fuenteIds": [
+          "RGPD_2016_679"
+        ],
+        "preceptos": [
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "5.2"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "13"
+          },
+          {
+            "fuenteId": "RGPD_2016_679",
+            "localizador": "14"
+          }
+        ],
+        "tiposEvidencia": [
+          "version_documento",
+          "constatacion_documento",
+          "constatacion_revision"
+        ],
+        "exigeConclusionMotivada": true
+      }
+    ],
+    "fuentesYCalendario": {
+      "consultaVigencia": "2026-10-16",
+      "limiteVerificacion": "Revisión editorial del núcleo12–14 y fuentes enlazadas. C422/24 texto inglés provisional consultado, no afirmar versión auténtica española. Cómputo civil requiere motor y pruebas propios; no calculadora implícita."
+    },
+    "usoContenido": {
+      "tipo": "legislacion_y_explicacion_original",
+      "atribucion": "Basado en datos de la Agencia Estatal Boletín Oficial del Estado. Explicación propia, sin respaldo oficial.",
+      "urlCondiciones": "https://www.boe.es/informacion/aviso_legal/index.php",
+      "advertencia": "Solo legislación y explicación propia; referencias a estándares no incorporan texto protegido.",
+      "incluyeISOoCCNProtegido": false
+    },
+    "revisionEditorial": {
+      "actor": "Codex Normativa",
+      "tipo": "revision_editorial_asistida_IA",
+      "fecha": "2026-10-15T22:31:45.879Z",
+      "dictamenJuridicoProfesional": false,
+      "publicacion": "Paquete de desarrollo; integración y QA pendientes. Sin dictamen profesional."
+    },
+    "actuacionesSugeridas": [
+      {
+        "id": "TRA_ORIGEN",
+        "titulo": "Delimitar fuentes, datos y grupos de personas",
+        "funcionSugerida": "Responsable del tratamiento",
+        "criterioCierreTarea": "Acción y soporte documentados, revisión independiente pendiente.",
+        "dependeDe": []
+      },
+      {
+        "id": "TRA_CONTENIDO",
+        "titulo": "Preparar información ajustada al tratamiento",
+        "funcionSugerida": "Responsable del tratamiento",
+        "criterioCierreTarea": "Acción y soporte documentados, revisión independiente pendiente.",
+        "dependeDe": []
+      },
+      {
+        "id": "TRA_ENTREGA",
+        "titulo": "Comprobar momento, canal y entrega real",
+        "funcionSugerida": "Responsable del tratamiento",
+        "criterioCierreTarea": "Acción y soporte documentados, revisión independiente pendiente.",
+        "dependeDe": []
+      },
+      {
+        "id": "TRA_CAMBIOS",
+        "titulo": "Revisar cambios y excepciones invocadas",
+        "funcionSugerida": "Responsable del tratamiento",
+        "criterioCierreTarea": "Acción y soporte documentados, revisión independiente pendiente.",
+        "dependeDe": []
+      }
+    ],
+    "condicionesRevision": {
+      "unidadContada": "Una unidad homogénea de origen, tratamiento/finalidad, grupo de personas y canal/versionado. No duplicar automáticamente el padre por cada origen.",
+      "favorable": "Conclusión por criterio sobre información realmente facilitada, momento/forma y/o excepción legal motivada por elementos/personas cubiertos. No favorable si hay incógnitas decisivas. Ninguna excepción se activa automáticamente.",
+      "evidencia": "Aviso exacto/versionado, contexto, grupo, canal, evento y prueba minimizada de entrega/acceso; motivación y soportes de no pertinencia/excepción cuando se invoquen.",
+      "aprobacionAutomatica": false,
+      "revisor": "Miembro autorizado; tipo de revisión, límites, motivación y evidencia examinada identificados. No dictamen profesional por defecto.",
+      "caducidadUniversal": null,
+      "desencadenantes": [
+        "cambio de finalidad o base",
+        "cambio de origen, destinatario, transferencia o DPD",
+        "cambio de aviso o canal",
+        "nueva información o excepción",
+        "evidencia modificada"
+      ],
+      "preservarHistorico": true
+    },
+    "limites": [
+      "No acreditar licitud ni transferencia por redactar el aviso.",
+      "No decidir por presencia de formulario: observación directa puede estar en13, datos recibidos/generados requieren su análisis.",
+      "Origen mixto debe descomponerse antes de revisar, conservando vínculo sin doble conteo.",
+      "No excepciones14.5.b-d para ruta13 ni excepción general por información pública o empresa pequeña.",
+      "Cada contenido omitido necesita fundamento y alcance específicos, no casilla global de exención.",
+      "Condiciones no concurrentes deben constar con soporte motivado; el motor no infiere no pertinencia por vacío.",
+      "El DPD desconocido no se omite como si no existiera.",
+      "No calcula automáticamente plazos14.3: guardar recepción/eventos y vencimiento con fundamento; nunca mes=30días.",
+      "La consulta de fuentes no constituye aprobación jurídica profesional.",
+      "Fuera de régimen/rol/origen cubierto permanece pendiente, no exento."
+    ],
+    "satisfaccion": {
+      "tipo": "rutas_cerradas",
+      "hechos": [
+        {
+          "clave": "tra_origen",
+          "tipo": "texto",
+          "pregunta": {
+            "id": "TRA_P_ORIGEN",
+            "texto": "¿La información procede de la propia persona o de otra fuente en esta unidad?",
+            "grupo": "Origen de los datos",
+            "motivo": "directa o indirecta tras examinar fuente real. Si mixto, separar unidades; si falta análisis, desconocido."
+          }
+        }
+      ],
+      "rutas": [
+        {
+          "id": "TRA_DIRECTA",
+          "titulo": "Información de recogida directa, art.13",
+          "explicacion": "Examinar cada contenido, evento y excepción pertinente sin aprobación automática.",
+          "requiereTodos": [
+            "T01_ALCANCE",
+            "T02_IDENTIDAD",
+            "T03_DPD",
+            "T04_FINES_BASE",
+            "T05_INTERES_LEGITIMO",
+            "T06_DESTINATARIOS",
+            "T07_TRANSFERENCIAS",
+            "T08_CONSERVACION",
+            "T09_DERECHOS",
+            "T10_RETIRADA",
+            "T11_RECLAMACION",
+            "T12_APORTACION_DIRECTA",
+            "T13_DECISION_AUTOMATIZADA",
+            "T16_MOMENTO_DIRECTA",
+            "T18_NUEVO_FIN",
+            "T19_FORMA_ACCESO",
+            "T20_CAPAS",
+            "T21_INFORMACION_PREVIA",
+            "T23_RESTRICCION_LEGISLATIVA",
+            "T24_PRUEBA_VERSION"
+          ],
+          "hechosRequeridos": [
+            {
+              "clave": "tra_origen",
+              "valor": "directa"
+            }
+          ]
+        },
+        {
+          "id": "TRA_INDIRECTA",
+          "titulo": "Información de obtención indirecta, art.14",
+          "explicacion": "Examinar cada contenido, evento y excepción pertinente sin aprobación automática.",
+          "requiereTodos": [
+            "T01_ALCANCE",
+            "T02_IDENTIDAD",
+            "T03_DPD",
+            "T04_FINES_BASE",
+            "T05_INTERES_LEGITIMO",
+            "T06_DESTINATARIOS",
+            "T07_TRANSFERENCIAS",
+            "T08_CONSERVACION",
+            "T09_DERECHOS",
+            "T10_RETIRADA",
+            "T11_RECLAMACION",
+            "T13_DECISION_AUTOMATIZADA",
+            "T14_CATEGORIAS_INDIRECTA",
+            "T15_ORIGEN_INDIRECTA",
+            "T17_MOMENTO_INDIRECTA",
+            "T18_NUEVO_FIN",
+            "T19_FORMA_ACCESO",
+            "T20_CAPAS",
+            "T21_INFORMACION_PREVIA",
+            "T22_EXCEPCIONES_INDIRECTA",
+            "T23_RESTRICCION_LEGISLATIVA",
+            "T24_PRUEBA_VERSION"
+          ],
+          "hechosRequeridos": [
+            {
+              "clave": "tra_origen",
+              "valor": "indirecta"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "regla": {
+    "contratoVersion": 2,
+    "id": "RGPD12_14_TRANSPARENCIA_UNIDAD",
+    "version": 1,
+    "estado": "revisada",
+    "revision": {
+      "revisorRef": "Codex-revision-editorial-no-dictamen-profesional",
+      "fecha": "2026-10-15T22:31:45.879Z"
+    },
+    "naturaleza": "ley_reglamento",
+    "origenes": [
+      "legal"
+    ],
+    "tiposObjeto": [
+      "operacion"
+    ],
+    "fuentes": [
+      {
+        "id": "RGPD_2016_679",
+        "version": 1,
+        "titulo": "Reglamento (UE) 2016/679",
+        "url": "https://www.boe.es/buscar/doc.php?id=DOUE-L-2016-80807",
+        "localizador": "Arts.5.2,12–14,23",
+        "editor": "Legislador UE; BOE",
+        "consultadaEn": "2026-10-15T22:31:45.879Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "LOPDGDD_3_2018",
+        "version": 1,
+        "titulo": "Ley Orgánica 3/2018",
+        "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2018-16673",
+        "localizador": "Arts.11–12",
+        "editor": "Legislador español; BOE",
+        "consultadaEn": "2026-10-15T22:31:45.879Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "CORRECCION2021",
+        "version": 1,
+        "titulo": "Corrección de errores RGPD2021",
+        "url": "https://www.boe.es/buscar/doc.php?id=DOUE-L-2021-80264",
+        "localizador": "Apartados3–8 y11",
+        "editor": "Fuente oficial enlazada; explicación propia",
+        "consultadaEn": "2026-10-15T22:31:45.879Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "TJUE_C169_23",
+        "version": 1,
+        "titulo": "TJUE C-169/23,28noviembre2024",
+        "url": "https://eur-lex.europa.eu/legal-content/ES/TXT/HTML/?uri=CELEX:62023CJ0169",
+        "localizador": "Datos generados y excepción14.5.c; no generalizar régimen sanitario",
+        "editor": "Fuente oficial enlazada; explicación propia",
+        "consultadaEn": "2026-10-15T22:31:45.879Z",
+        "estadoRevision": "revisada"
+      },
+      {
+        "id": "TJUE_C422_24",
+        "version": 1,
+        "titulo": "TJUE C-422/24,18diciembre2025",
+        "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:62024CJ0422",
+        "localizador": "Apartados29–45. Texto inglés provisional; fuente de datos, no participación activa",
+        "editor": "Fuente oficial enlazada; explicación propia",
+        "consultadaEn": "2026-10-15T22:31:45.879Z",
+        "estadoRevision": "revisada"
+      }
+    ],
+    "vigencia": {
+      "estado": "definida",
+      "tipo": "fecha_civil",
+      "calendario": "gregoriano",
+      "jurisdiccion": "ES",
+      "zonaEvaluacion": "Europe/Madrid",
+      "desde": "2018-05-25",
+      "hasta": null
+    },
+    "cobertura": {
+      "descripcion": "Unidad homogénea delimitada, responsable/corresponsable, tratamiento activo/residual en establecimiento español y régimen general.",
+      "condicion": {
+        "op": "and",
+        "args": [
+          {
+            "op": "eq",
+            "hecho": "dp_establecimiento_es",
+            "valor": true
+          },
+          {
+            "op": "eq",
+            "hecho": "dp_regimen_general",
+            "valor": true
+          },
+          {
+            "op": "or",
+            "args": [
+              {
+                "op": "eq",
+                "hecho": "dp_fase",
+                "valor": "activa"
+              },
+              {
+                "op": "eq",
+                "hecho": "dp_fase",
+                "valor": "residual"
+              }
+            ]
+          },
+          {
+            "op": "or",
+            "args": [
+              {
+                "op": "eq",
+                "hecho": "dp_rol",
+                "valor": "responsable"
+              },
+              {
+                "op": "eq",
+                "hecho": "dp_rol",
+                "valor": "corresponsable_delimitado"
+              }
+            ]
+          },
+          {
+            "op": "eq",
+            "hecho": "tra_unidad_delimitada",
+            "valor": true
+          }
+        ]
+      },
+      "periodo": {
+        "desde": "2018-12-07",
+        "hasta": null,
+        "motivo": "Cobertura conjunta RGPD y LOPDGDD; no fecha inicial de vigencia del RGPD."
+      }
+    },
+    "hechos": [
+      {
+        "clave": "dp_ambito_rgpd",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "SEG_P_dp_ambito_rgpd",
+          "texto": "Resultado de la valoración del ámbito RGPD para este tratamiento",
+          "grupo": "Operación de tratamiento",
+          "motivo": "Si no se ha analizado o falta fundamento, indica desconocido. La ubicación por sí sola no determina el ámbito. Este campo recoge una conclusión; no sustituye la valoración."
+        }
+      },
+      {
+        "clave": "dp_establecimiento_es",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "SEG_P_dp_establecimiento_es",
+          "texto": "¿Este tratamiento se realiza en el contexto de las actividades de un establecimiento de la entidad en España?",
+          "grupo": "Operación de tratamiento",
+          "motivo": "No equivale a que el servidor o los datos estén en España. Si no lo sabes, conserva desconocido. Un no no excluye por sí solo el RGPD."
+        }
+      },
+      {
+        "clave": "dp_regimen_general",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "SEG_P_dp_regimen_general",
+          "texto": "Resultado de la valoración del régimen aplicable: ¿esta operación puede analizarse por el itinerario general de protección de datos cubierto por la app?",
+          "grupo": "Operación de tratamiento",
+          "motivo": "Una respuesta «no» significa que necesita otro itinerario o análisis, no una exención. Si todavía no se ha valorado, indica desconocido."
+        }
+      },
+      {
+        "clave": "dp_rol",
+        "tipo": "texto",
+        "pregunta": {
+          "id": "SEG_P_dp_rol",
+          "texto": "Papel de la entidad en este tratamiento",
+          "grupo": "Operación de tratamiento",
+          "motivo": "Delimita quién decide fines y medios y si actúa por cuenta de otro. No se deduce de poseer el software ni de los permisos de la app. Si hay funciones mezcladas, revisa la delimitación de operaciones."
+        }
+      },
+      {
+        "clave": "dp_fase",
+        "tipo": "texto",
+        "pregunta": {
+          "id": "SEG_P_dp_fase",
+          "texto": "Situación actual del tratamiento",
+          "grupo": "Operación de tratamiento",
+          "motivo": "Prevista: no iniciada. Activa: se realizan operaciones. Residual: cesó la actividad principal pero se conservan o tratan datos. Finalizada exige comprobar conservación residual; no cierra obligaciones automáticamente."
+        }
+      },
+      {
+        "clave": "tra_unidad_delimitada",
+        "tipo": "booleano",
+        "pregunta": {
+          "id": "TRA_P_UNIDAD",
+          "texto": "¿Se han delimitado tratamiento, finalidad, grupo de personas, fuente y canal de información?",
+          "grupo": "Unidad informativa",
+          "motivo": "Si hay fuentes mezcladas, descomponer antes de revisar. Sin delimitación no declarar satisfecho."
+        }
+      }
+    ],
+    "condicion": {
+      "op": "eq",
+      "hecho": "dp_ambito_rgpd",
+      "valor": true
+    },
+    "excepciones": []
+  }
+}

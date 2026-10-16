@@ -53,8 +53,8 @@ function packagedLoad(omitConstants=false) {
     const original=Module._resolveFilename;
     Module._resolveFilename=function(...args) {
       const file=original.apply(this,args);
-      if(typeof file==='string'&&file.startsWith(root+'/')&&!file.includes('/node_modules/')) {
-        const rel=path.relative(root,file);
+      const rel=typeof file==='string'&&path.isAbsolute(file)?path.relative(root,file).split(path.sep).join('/'):null;
+      if(rel&&!path.isAbsolute(rel)&&rel!=='..'&&!rel.startsWith('../')&&!rel.startsWith('node_modules/')) {
         if(!sources.some(s=>rel===s||rel.startsWith(s+'/'))) {
           const e=Error('BUILD_CONTEXT_OMISSION: '+rel);e.code='MODULE_NOT_FOUND';throw e;
         }

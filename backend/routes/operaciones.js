@@ -9,6 +9,10 @@ const ejecutar = fn => async (req, res, next) => {
 };
 // Autenticación/no-store heredados del router de organizaciones; CSRF en app.
 router.get('/', ejecutar(req => servicio.listarOperaciones({ ...entrada(req), filtros: req.query })));
+// Antes de /:operacionId: no es un identificador de operación ni una evaluación.
+router.get('/contrato-dp', ejecutar(req => {
+  campos(req.query, []); return servicio.consultarContratoDP(entrada(req));
+}));
 router.get('/:operacionId', ejecutar(req => {
   campos(req.query, []); return servicio.obtenerOperacion(entrada(req));
 }));

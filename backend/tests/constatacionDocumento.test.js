@@ -51,7 +51,7 @@ test('campos extra, texto excesivo y actor inyectado son rechazados',()=>{
 });
 test('soporte PDF exacto y comprobación genérica mantienen contrato anterior',()=>{
   const e=f.revision().evidencias[0];e.tipo='constatacion_documento';assert.equal(validarEvidencia(e).soporte.tipo,'version_documento');
-  const r=crearRevisionRequisito(f.revision());assert.equal(r.sha256,'5cc52b6d1cc4b5c9fcd77e4cc8824d112ebe4d75bbc28f3eec5e0687144709d0');
+  const r=crearRevisionRequisito(f.revisionHistorica());assert.equal(r.sha256,'5cc52b6d1cc4b5c9fcd77e4cc8824d112ebe4d75bbc28f3eec5e0687144709d0');
   const generica=fixture().evidencias[0];generica.tipo='constatacion_revision';delete generica.soporte.documentoExaminado;assert.deepEqual(validarEvidencia(generica),generica);
 });
 test('revisión histórica antigua legible conserva su conclusión pero requiere nueva revisión',()=>{

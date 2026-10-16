@@ -6,7 +6,9 @@ Aplicación web para organizar la revisión de requisitos, responsables, documen
 
 Esta es la fuente común de la nueva interfaz verde y su backend real. La integración se está verificando; compilarla no equivale a tenerla desplegada. La demo pública utiliza ejemplos ficticios y debe permanecer separada de la cuenta real.
 
-El backend dispone de sesiones persistentes, MFA, solicitudes de alta de organizaciones, permisos, contexto empresarial, operaciones, subespacios, PDF privados versionados, historial filtrable y registros normativos. El catálogo concreto de este corte incluye cinco fichas: política ENS, contrato de encargado RGPD28 y tres fichas de funciones/separación/POC ENS. No significa cubrir toda esa normativa. La cobertura editorial futura no está activada por existir un documento de propuesta.
+El backend dispone de sesiones persistentes, MFA, solicitudes de alta de organizaciones, permisos, contexto empresarial, operaciones, subespacios, PDF privados versionados, historial filtrable y registros normativos. El catálogo de este candidato incluye diez fichas activas, cuatro de ENS. No significa cubrir toda esa normativa. La cobertura editorial futura no está activada por existir un documento de propuesta.
+
+El corte del 16 de octubre de 2026 incorpora RAT, finalidades y flujos, información de privacidad, solicitudes y peticiones de derechos, y detección orientativa de EIPD. Las nuevas pantallas están implementadas y compiladas; la validación final conjunta en navegador sigue pendiente. Consulta el [estado y los límites del candidato](docs/cierre-candidato-20261016.md). Su publicación en una rama de GitHub no acredita despliegue en Hetzner ni aceptación de producción.
 
 Las actuaciones normativas permiten asignar una membresía responsable, registrar cuatro estados, enlazar evidencias, revisar y conservar versiones. **No son todavía el gestor colaborativo de tareas por equipos**. Votaciones, notificaciones en tiempo real, nuevas métricas, PDS del nuevo modelo e IA siguen pendientes. Consulta [la matriz de implementación](docs/integracion-verde.md).
 

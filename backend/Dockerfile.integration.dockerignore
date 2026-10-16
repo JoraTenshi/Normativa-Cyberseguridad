@@ -19,6 +19,8 @@
 !app.js
 !constants/
 !constants/**
+!contracts/
+!contracts/**
 !seed/
 !seed/schema_normativa.json
 !scripts/

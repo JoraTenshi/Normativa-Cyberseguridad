@@ -1,0 +1,21 @@
+import { newUnitDraft, unitBody, unitPath, validateUnitContract } from './dp-unit-model';
+import { storedRef } from './rat-model';
+const contract=require('../../../backend/contracts/unidadDP.v1.json');
+const opRef={id:'a'.repeat(24),version:1,sha256:'b'.repeat(64)},arRef={id:'c'.repeat(24),version:1,sha256:'d'.repeat(64)};
+function input(clase='finalidad_tratamiento'){
+  const draft=newUnitDraft(contract,clase);Object.assign(draft,{nombre:'Finalidad sintética',descripcion:'Datos de prueba sin personas reales',motivoContexto:'Todavía no se ha contrastado esta delimitación'});
+  Object.values(draft.campos).forEach(f=>{f.motivo='Pendiente de recabar datos concretos';});
+  return {contract,draft,operation:storedRef(opRef),scope:storedRef(arRef),reason:'QA de la unidad'};
+}
+test('uses published contract and refuses incompatible version',()=>{expect(validateUnitContract(contract)).toBe(contract);expect(()=>validateUnitContract({...contract,version:2})).toThrow();});
+test('new unit does not assume base, role, jurisdiction or factual knowledge',()=>{const d=newUnitDraft(contract,'finalidad_tratamiento');expect(d.contextoOperacion).toBe('pendiente');expect(d.hechos.every(f=>f.estado==='desconocido')).toBe(true);expect(d.hechos.some(f=>f.clave==='dp_rol')).toBe(false);expect(d.campos.finalidad).toEqual({estado:'pendiente',contenido:'',motivo:''});});
+test('saves motivated pending unit using exact references and closed fact list',()=>{const b=unitBody(input());expect(b.operacion).toEqual(opRef);expect(b.alcance).toEqual(arRef);expect(b.confirmarBases).toBe(false);expect(b).not.toHaveProperty('diagnostico');expect(b).not.toHaveProperty('conclusion');});
+test('pending narrative fields require explicit reason',()=>{const i=input();i.draft.campos.finalidad.motivo='';expect(()=>unitBody(i)).toThrow('Para qué');});
+test('known and pending narratives cannot hide incompatible content',()=>{const i=input();i.draft.campos.finalidad.contenido='Contenido incompatible';expect(()=>unitBody(i)).toThrow('no conserves');i.draft.campos.finalidad.estado='conocido';expect(()=>unitBody(i)).toThrow('motivo pendiente');i.draft.campos.finalidad.motivo='';expect(unitBody(i).campos.finalidad.contenido).toBe('Contenido incompatible');});
+test.each([true,'interes_legitimo','g'])('legal basis %s is not silently coerced to a valid letter',value=>{const i=input();i.draft.hechos[1]={clave:'lic_base6',estado:'conocido',valor:value};expect(()=>unitBody(i)).toThrow('valor válido');});
+test('distinct enum conflicts are preserved without choosing legal basis',()=>{const i=input();i.draft.hechos[1]={clave:'lic_base6',estado:'conflictivo',alternativas:[{valor:'a'},{valor:'b'}]};expect(unitBody(i).hechos[1].alternativas).toEqual([{valor:'a'},{valor:'b'}]);});
+test('context facts cannot be supplied from client and own facts cannot be omitted',()=>{const i=input();i.draft.hechos.push({clave:'dp_rol',estado:'conocido',valor:'responsable'});expect(()=>unitBody(i)).toThrow('solo y todas');i.draft.hechos=[];expect(()=>unitBody(i)).toThrow('solo y todas');});
+test('updating parent versions requires opt-in but not identity changes',()=>{const i=input();i.original=unitBody(i);i.operation=storedRef({...opRef,version:2});expect(()=>unitBody(i)).toThrow('confirma expresamente');i.confirmBases=true;expect(unitBody(i).confirmarBases).toBe(true);i.operation=storedRef({...opRef,id:'e'.repeat(24),version:2});expect(()=>unitBody(i)).toThrow('identidad');});
+test('confirming unchanged bases is rejected and new unit cannot confirm rebase',()=>{const i=input();i.confirmBases=true;expect(()=>unitBody(i)).toThrow('No hay un cambio');});
+test('transfer flow relation must share class-compatible operation and scope',()=>{const i=input('flujo_transferencia'),r={...storedRef({...opRef,id:'f'.repeat(24)}),contenido:{unidadDP:{clase:'finalidad_tratamiento',operacion:opRef,alcance:arRef}}};i.relations=[r];expect(unitBody(i).relaciones).toHaveLength(1);r.contenido.unidadDP.operacion={...opRef,id:'e'.repeat(24)};expect(()=>unitBody(i)).toThrow('no pertenece');});
+test('duplicate evidence is rejected and unknown endpoint segments cannot be injected',()=>{const i=input();i.evidence=[storedRef(opRef),storedRef(opRef)];expect(()=>unitBody(i)).toThrow('repetida');expect(()=>unitPath('/organizaciones/a','../secret')).toThrow();});

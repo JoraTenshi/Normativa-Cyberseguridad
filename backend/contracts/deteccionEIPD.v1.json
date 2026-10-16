@@ -1,0 +1,16 @@
+{
+  "id":"DETECCION_EIPD_PERSISTENTE_E1","version":1,
+  "tipo":"deteccion_eipd","ruta":"detecciones-eipd","contrato":"detecciones-eipd/contrato",
+  "unidad":"Una operación y alcance exactos; no agrupa operaciones ni sustituye una EIPD completa.",
+  "campos":["contextoCompleto","evaluacionSistematicaExhaustiva","baseAutomatizada","efectosSignificativos","granEscala","datos9","datos10","observacionSistematica","accesoPublico","altoRiesgoProbable","lista35_4","baseLegal6ce","leyEspecifica","eipdLegislativa","noExigenciaNacional","lista35_5"],
+  "estados":["si","no","desconocido","conflicto"],
+  "declaracion":{"campos":["estado","motivo","evidencias","fundamento"],"motivo":"Siempre obligatorio. La atribución al miembro autenticado se realiza en servidor.","evidencias":"Referencias exactas incluidas en el inventario del registro. Su existencia no acredita que el juicio sea correcto.","fundamento":"Para si/no de los campos calificados: referencia de la fuente, localizador y fechaVersion civil. Para los demás, null. El servidor comprueba estructura y trazabilidad, no verdad jurídica ni vigencia material."},
+  "camposCalificados":["lista35_4","baseLegal6ce","leyEspecifica","eipdLegislativa","noExigenciaNacional","lista35_5"],
+  "contexto":"Régimen, ámbito privado (dp_entidad_privada) y rol se obtienen exclusivamente de la operación versionada, con contextoOperacion confirmado. Lo desconocido o conflictivo permanece pendiente. El rol de administrador no es el rol jurídico. Admite fase prevista, sin exigir tratamiento activo.",
+  "fecha":"fechaEvaluacion civil explícita, no futura. No es recepción, conocimiento de incidente ni vencimiento legal.",
+  "limites":{"bytes":65536,"evidencias":20,"motivoCampo":2000},
+  "guardias":"Las afirmaciones de excepciones/listas, riesgo y calificaciones normativas son declaraciones motivadas, no comprobaciones legales del servidor. No se ofrece revisión favorable ni cumplimiento por esta salida.",
+  "operaciones":["crear","consultar","actualizar_con_version_y_confirmacion_de_bases","historial"],
+  "permisos":"Solo administrador de la organización en esta primera versión.",
+  "pendientes":["EIPD completa","consulta previa","detección global DPD","incidente de brecha delimitado","revisión profesional de hechos y excepciones"]
+}

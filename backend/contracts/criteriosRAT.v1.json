@@ -1,0 +1,216 @@
+{
+  "version": 1,
+  "fuentes": {
+    "informe": "pruebas/rgpd-rat-fuentes.v1.json",
+    "sha256": "ddecf5db6126060ec985b821b56534d0ff29927648d4e8d084b1b73a21b651b1",
+    "principal": "https://www.boe.es/buscar/doc.php?id=DOUE-L-2016-80807",
+    "nacional": "https://www.boe.es/buscar/act.php?id=BOE-A-2018-16673#a3-3",
+    "preceptos": [
+      "RGPD30.1–5",
+      "LOPDGDD31.1–2",
+      "LOPDGDD77.1 como delimitador de publicidad"
+    ],
+    "relacionesNoCubiertasPorEstaFicha": [
+      "RGPD2–3 ámbito general",
+      "RGPD4.7–8 funciones",
+      "RGPD5–6 principios y licitud",
+      "RGPD9–10 categorías protegidas",
+      "RGPD26 corresponsabilidad",
+      "RGPD28 encargo",
+      "RGPD31 cooperación",
+      "RGPD32 seguridad",
+      "RGPD35 EIPD",
+      "RGPD37 designación DPD",
+      "RGPD44–49 transferencias"
+    ],
+    "vigencia": "Al corte consultado se conserva250personas y riesgo, no solo alto riesgo. El procedimiento2025/0130(COD) sigue pendiente de primera lectura; no trasladar propuestas a obligaciones vigentes. Revalidar antes de publicar.",
+    "incidenciaLiteral": "RGPD30.2.d español en BOE y EUR-Lex original remite30.1; versión inglesa remite32.1. No se halló corrección en2018/2021. Preservar literal, avisar de discrepancia y usar explicación propia de la descripción general de medidas; no afirmar corrección oficial ni sustituir silenciosamente números.",
+    "uso": "Textos legales BOE con atribución y condiciones verificadas; orientaciones WP29/EDPB/AEPD solo como referencia y síntesis propia, sin incorporar PDFs o textos completos al producto. No ISO/CCN protegido."
+  },
+  "criterios": [
+    {
+      "id": "RAT_PERIMETRO",
+      "rutas": [
+        "responsable",
+        "encargado"
+      ],
+      "origen": "norma_y_metodologia",
+      "preceptos": [
+        "RGPD30.1/2",
+        "LOPDGDD31.1"
+      ],
+      "exige": "Actividades/categorías incluidas, roles, entidad y perímetro verificables; pendientes y exenciones motivadas visibles. Contrastar que el registro describe las actividades reales del perímetro. No favorable de toda empresa a partir de una muestra parcial."
+    },
+    {
+      "id": "RAT_R_IDENTIDAD",
+      "rutas": [
+        "responsable"
+      ],
+      "origen": "norma",
+      "preceptos": [
+        "RGPD30.1.a"
+      ],
+      "exige": "Nombre y contacto de responsable y, si procede, corresponsable, representante yDPD. No sustituirlos por el usuario que sube el archivo."
+    },
+    {
+      "id": "RAT_R_FIN",
+      "rutas": [
+        "responsable"
+      ],
+      "origen": "norma",
+      "preceptos": [
+        "RGPD30.1.b"
+      ],
+      "exige": "Finalidades específicas reconocibles de cada actividad, no una remisión genérica a cumplirRGPD."
+    },
+    {
+      "id": "RAT_R_DATOS",
+      "rutas": [
+        "responsable"
+      ],
+      "origen": "norma",
+      "preceptos": [
+        "RGPD30.1.c"
+      ],
+      "exige": "Categorías de interesados y datos; no son necesarias listas nominales de personas."
+    },
+    {
+      "id": "RAT_R_DESTINATARIOS",
+      "rutas": [
+        "responsable"
+      ],
+      "origen": "norma",
+      "preceptos": [
+        "RGPD30.1.d"
+      ],
+      "exige": "Categorías de destinatarios actuales o previstos, incluidos terceros países u organizaciones internacionales cuando existan. Vacío no equivale a ninguno constatado."
+    },
+    {
+      "id": "RAT_R_TRANSFERENCIAS",
+      "rutas": [
+        "responsable"
+      ],
+      "origen": "norma_condicional",
+      "preceptos": [
+        "RGPD30.1.e"
+      ],
+      "exige": "Si existen, destinos identificados y documentación de garantías en el supuesto concreto49.1p2. Si no, ausencia fundamentada. No aprobar legalidad del mecanismo de transferencia con esta revisión."
+    },
+    {
+      "id": "RAT_R_SUPRESION",
+      "rutas": [
+        "responsable"
+      ],
+      "origen": "norma_condicional",
+      "preceptos": [
+        "RGPD30.1.f"
+      ],
+      "exige": "Cuando sea posible, plazos previstos por categoría; examinar cualquier limitación de determinación. No inventar30días,5años o retención ilimitada ni considerar cubierto todo régimen de supresión."
+    },
+    {
+      "id": "RAT_R_MEDIDAS",
+      "rutas": [
+        "responsable"
+      ],
+      "origen": "norma_condicional",
+      "preceptos": [
+        "RGPD30.1.g"
+      ],
+      "exige": "Cuando sea posible, descripción general de medidas pertinentes al tratamiento, pudiendo referenciar un contenido identificable. No solo marcar que existeISO/ENS ni exigir revelar secretos; no prueba eficacia32."
+    },
+    {
+      "id": "RAT_E_IDENTIDAD",
+      "rutas": [
+        "encargado"
+      ],
+      "origen": "norma",
+      "preceptos": [
+        "RGPD30.2.a"
+      ],
+      "exige": "Nombre/contacto de encargado(s), cada responsable por cuenta de quien actúa y, cuando corresponda, representantes yDPD. La cadena no se resuelve copiando la identidad del proveedor inmediatamente superior como responsable si no lo es."
+    },
+    {
+      "id": "RAT_E_CATEGORIAS",
+      "rutas": [
+        "encargado"
+      ],
+      "origen": "norma",
+      "preceptos": [
+        "RGPD30.2.b",
+        "LOPDGDD31.1.p2"
+      ],
+      "exige": "Categorías de operaciones por cada responsable, con actividades delimitadas y sus finalidades cuando resulte aplicableLOPDGDD. Se pueden compartir descripciones sin perder la correspondencia individual ni mezclar tenantes."
+    },
+    {
+      "id": "RAT_E_TRANSFERENCIAS",
+      "rutas": [
+        "encargado"
+      ],
+      "origen": "norma_condicional",
+      "preceptos": [
+        "RGPD30.2.c"
+      ],
+      "exige": "Destinos de transferencias pertinentes y documentación49.1p2cuando corresponda; ausencia motivada si no existen. No equivalencia con autorización de subencargo ni validaciónCapítuloV."
+    },
+    {
+      "id": "RAT_E_MEDIDAS",
+      "rutas": [
+        "encargado"
+      ],
+      "origen": "norma_condicional",
+      "preceptos": [
+        "RGPD30.2.d"
+      ],
+      "exige": "Cuando sea posible, descripción general de medidas relativas a esas operaciones; registrar incidencia de remisiónES/ENsin falsificar literal. Criterio de contenido, no certificación de seguridad."
+    },
+    {
+      "id": "RAT_ESCRITO",
+      "rutas": [
+        "responsable",
+        "encargado"
+      ],
+      "origen": "norma",
+      "preceptos": [
+        "RGPD30.3"
+      ],
+      "exige": "Registro escrito disponible, también electrónico; contenido accesible identificable, no solo declarar que existe. Puede ser externo a la app si se verifica versión y cobertura, sin exigir copia completa innecesaria."
+    },
+    {
+      "id": "RAT_AUTORIDAD",
+      "rutas": [
+        "responsable",
+        "encargado"
+      ],
+      "origen": "norma_y_metodologia",
+      "preceptos": [
+        "RGPD30.4"
+      ],
+      "exige": "Capacidad de poner a disposición el registro y, si hay requerimiento real, constancia de atenderlo en su ámbito/plazo pertinente. Prueba interna de recuperación es método, no requerimiento legal ficticio. No envío automático ni publicación."
+    },
+    {
+      "id": "RAT_DPD_CAMBIOS",
+      "rutas": [
+        "responsable",
+        "encargado"
+      ],
+      "origen": "norma_condicional",
+      "preceptos": [
+        "LOPDGDD31.1.p3"
+      ],
+      "exige": "CuandoLOPDGDDaplique y hayaDPDdesignado, constancia de comunicarle adición/modificación/exclusión. No inventar aprobación previa delDPDni que ausencia de comunicación significa ausencia de designación."
+    },
+    {
+      "id": "RAT_ACTUALIDAD",
+      "rutas": [
+        "responsable",
+        "encargado"
+      ],
+      "origen": "norma_y_metodologia",
+      "preceptos": [
+        "RGPD30.1/2",
+        "LOPDGDD31.1"
+      ],
+      "exige": "La versión examinada corresponde al estado/periodo real del perímetro. Cambios posteriores pertinentes requieren revisar; conservar versión/conclusión anterior sin reescribirla. No vigencia automática perpetua por haber cerrado una tarea."
+    }
+  ]
+}
