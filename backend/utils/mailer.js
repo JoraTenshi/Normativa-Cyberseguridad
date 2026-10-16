@@ -1,16 +1,16 @@
 const nodemailer = require('nodemailer');
+const { opcionesSmtp, errorCorreoSeguro } = require('./smtpTransport');
 
 const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_FROM } = process.env;
 
-const smtpConfigurado = Boolean(SMTP_HOST && SMTP_PORT && SMTP_USER && SMTP_PASS);
+const smtpConfigurado = process.env.NC_MAIL_MODE !== 'disabled' &&
+  Boolean(SMTP_HOST && SMTP_PORT && SMTP_USER && SMTP_PASS);
 
 const transporter = smtpConfigurado
-  ? nodemailer.createTransport({
-      host:   SMTP_HOST,
-      port:   Number(SMTP_PORT),
-      secure: Number(SMTP_PORT) === 465,
-      auth:   { user: SMTP_USER, pass: SMTP_PASS }
-    })
+  ? nodemailer.createTransport(opcionesSmtp({
+      host: SMTP_HOST, port: Number(SMTP_PORT),
+      username: SMTP_USER, password: SMTP_PASS
+    }))
   : null;
 
 const REMITENTE = SMTP_FROM || SMTP_USER || 'no-reply@cyber-law.app';
@@ -20,7 +20,11 @@ async function enviarEmail({ to, subject, text, html }) {
     console.warn('[mailer sin configurar] correo no enviado; configure SMTP');
     return { enviado: false, simulado: true };
   }
-  await transporter.sendMail({ from: REMITENTE, to, subject, text, html });
+  try {
+    await transporter.sendMail({ from: REMITENTE, to, subject, text, html });
+  } catch (error) {
+    throw errorCorreoSeguro(error);
+  }
   return { enviado: true, simulado: false };
 }
 
