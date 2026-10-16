@@ -16,7 +16,11 @@ const TEXTOS_LEGALES = {
   privacidad: {
     titulo: 'Información sobre privacidad',
     secciones: [
-      ['Responsable de los datos de las cuentas', 'José Luis Burguera Gómez. Contacto para consultas y solicitudes de privacidad: normativacheck@gmail.com. Este contacto no identifica al remitente técnico de los correos de verificación o recuperación.'],
+      ['Responsable de los datos de las cuentas', [
+        'José Luis Burguera Gómez.',
+        'Contacto para consultas y solicitudes de privacidad: normativacheck@gmail.com.',
+        'Este contacto no identifica al remitente técnico de los correos de verificación o recuperación.',
+      ]],
       ['Qué información maneja esta versión', 'El registro solicita nombre, correo y contraseña. El espacio de empresa permite guardar solicitudes de alta, actividad declarada, documentos, actuaciones y sus versiones, de acuerdo con los permisos de cada cuenta. La infraestructura registra información técnica de acceso y seguridad. La demo, en cambio, conserva su progreso ficticio en el navegador.'],
       ['Validación restringida', 'Esta versión está destinada a pruebas controladas con información ficticia, no a incorporar documentación real de clientes. No aportes datos personales o confidenciales de terceros. Que el proyecto sea académico no elimina las obligaciones de protección de datos.'],
       ['Información pendiente antes de admitir clientes', 'Esta información no constituye una política de privacidad definitiva. Quedan por concretar y validar las finalidades y bases jurídicas por tratamiento, los proveedores y destinatarios, las transferencias que correspondan y los plazos de conservación. Los papeles respecto de datos aportados por empresas deben determinarse para cada tratamiento; no se atribuyen automáticamente al responsable de las cuentas.'],
@@ -66,7 +70,7 @@ export function ModalLegal({ tipo, onCerrar }) {
   return createPortal(<div className="green-app modal-legal-overlay" onClick={onCerrar}>
     <section ref={ref} className="modal-legal" role="dialog" aria-modal="true" aria-labelledby={titleId} onClick={e => e.stopPropagation()}>
       <div className="modal-legal-header"><h2 id={titleId} className="modal-legal-titulo">{texto.titulo}</h2><button type="button" className="modal-legal-cerrar" onClick={onCerrar} aria-label="Cerrar información"><CloseIcon/></button></div>
-      <div className="modal-legal-body">{texto.secciones.map(([heading,body]) => <section key={heading}><h3 className="modal-legal-seccion">{heading}</h3><p className="modal-legal-parrafo">{body}</p></section>)}
+      <div className="modal-legal-body">{texto.secciones.map(([heading,body]) => <section key={heading}><h3 className="modal-legal-seccion">{heading}</h3>{(Array.isArray(body) ? body : [body]).map(paragraph => <p key={paragraph} className="modal-legal-parrafo">{paragraph}</p>)}</section>)}
         {tipo === 'cookies' && <><button type="button" className="btn-secondary" onClick={() => setResultado(desactivarOpcionales() ? 'Opciones anteriores desactivadas. La demo y la sesión se conservan.' : 'El navegador no permite guardar esta preferencia. Esta versión no activa servicios opcionales; puedes gestionar los datos locales desde tu navegador.')}>Desactivar opciones del panel anterior</button>{resultado && <p role="status">{resultado}</p>}</>}
       </div>
       <div className="modal-legal-footer"><button type="button" className="btn-secondary" onClick={onCerrar}>Volver</button></div>

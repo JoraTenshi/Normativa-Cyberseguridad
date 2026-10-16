@@ -4,7 +4,7 @@ import { forgotPassword } from '../services/api';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
-  const [message, setMessage] = useState(null);
+  const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -13,8 +13,8 @@ const ForgotPassword = () => {
     setError(null);
     setLoading(true);
     try {
-      const data = await forgotPassword(email);
-      setMessage(data.message);
+      await forgotPassword(email);
+      setSubmitted(true);
     } catch (err) {
       setError(err.response?.data?.error || 'No se pudo procesar la solicitud.');
     } finally {
@@ -25,11 +25,12 @@ const ForgotPassword = () => {
   return (
     <div className="page auth-page">
       <div className="auth-card">
-        <h1 className="auth-title">Recuperar contraseña</h1>
-        <p>Introduce el correo de tu cuenta. Si está registrado, recibirás un enlace de recuperación.</p>
-        {message ? <p role="status">{message}</p> : (
+        <h1 className="auth-title">{submitted ? 'Solicitud recibida' : 'Recuperar contraseña'}</h1>
+        {submitted ? <p role="status">Si existe una cuenta asociada a ese correo electrónico, recibirás un enlace para restablecer tu contraseña. Revisa también la carpeta de correo no deseado.</p> : (
+          <>
+          <p>Introduce el correo electrónico asociado a tu cuenta para solicitar un enlace de recuperación.</p>
           <form onSubmit={handleSubmit} className="auth-form">
-            <label className="form-label" htmlFor="recovery-email">Email</label>
+            <label className="form-label" htmlFor="recovery-email">Correo electrónico</label>
             <input
               id="recovery-email"
               className="form-input"
@@ -44,6 +45,7 @@ const ForgotPassword = () => {
               {loading ? 'Solicitando...' : 'Enviar enlace'}
             </button>
           </form>
+          </>
         )}
         <p className="auth-switch"><Link to="/auth" className="auth-link">Volver al inicio de sesión</Link></p>
       </div>

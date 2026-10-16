@@ -71,3 +71,12 @@ test('remembering a session does not promise longer absolute or inactivity limit
   expect(session).toContain('8 horas desde el acceso y 30 minutos sin actividad');
   expect(session).not.toContain('amplía su duración');
 });
+test('privacy account contact separates identity, contact and sender clarification into three paragraphs',()=>{
+  render(<ModalLegal tipo="privacidad" onCerrar={()=>{}}/>);
+  const section=screen.getByRole('heading',{name:'Responsable de los datos de las cuentas'}).parentElement;
+  expect(Array.from(section.querySelectorAll('p'),p=>p.textContent)).toEqual([
+    'José Luis Burguera Gómez.',
+    'Contacto para consultas y solicitudes de privacidad: normativacheck@gmail.com.',
+    'Este contacto no identifica al remitente técnico de los correos de verificación o recuperación.',
+  ]);
+});
