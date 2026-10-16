@@ -88,7 +88,7 @@ async function cli() {
     console.log('Correo: ' + result.email);
     console.log('Contraseña (guárdala; no se volverá a mostrar): ' + result.password);
     console.log('Empresa: ' + result.organization);
-    console.log('Acceso normal: https://127.0.0.2:9443/espacio-de-trabajo');
+    console.log('Acceso normal: ' + config.origin + '/espacio-de-trabajo');
   } finally { await mongoose.disconnect(); }
 }
 
