@@ -36,7 +36,8 @@ function localDocker(){
   need(typeof endpoint==='string'&&(endpoint.startsWith('unix:///')||endpoint.startsWith('npipe:////./pipe/')),'REMOTE_DOCKER_REFUSED');
   need(docker(['info','--format','{{.OSType}}']).trim()==='linux','LINUX_DOCKER_REQUIRED');
   const version=docker(['compose','version','--short']).trim();
-  need(/^v?2\./.test(version),'COMPOSE_V2_REQUIRED');
+  // Docker Desktop also bundles Compose v5. Keep the accepted majors explicit.
+  need(/^v?(?:2|5)\./.test(version),'COMPOSE_VERSION_UNSUPPORTED');
 }
 function ordinary(file,directory=false){
   const s=fs.lstatSync(file);
@@ -175,7 +176,7 @@ async function main(){
   need(process.argv.length<=3,'NO_EXTRA_ARGUMENTS');
   if(action==='help'){
     console.log('node scripts/local-demo.cjs start|account|verify|status|stop|prepare');
-    console.log('Demo LOCAL con Docker Linux/Compose v2, Node 24 y OpenSSL. Nunca usa Hetzner ni Gmail.');
+    console.log('Demo LOCAL con Docker Linux/Compose v2 o v5, Node 24 y OpenSSL. Nunca usa Hetzner ni Gmail.');
     return;
   }
   need(['start','account','verify','status','stop','prepare'].includes(action),'UNKNOWN_ACTION');
@@ -211,7 +212,7 @@ async function main(){
 if(require.main===module)main().catch(error=>{
   const safe=safeCode(error);
   console.error('Demo detenida: '+safe+'. No se han borrado datos ni restablecido credenciales.');
-  console.error('Comprueba Docker local Linux, Compose v2, Node 24, OpenSSL, permisos y que 127.0.0.2:9445 este libre.');
+  console.error('Comprueba Docker local Linux, Compose v2/v5, Node 24, OpenSSL, permisos y que 127.0.0.2:9445 este libre.');
   process.exitCode=1;
 });
 module.exports={main,prepare,validateRuntime,scope,request,verify,localDocker,c,docker,safeCode,ROOT,RUNTIME,PROJECT};

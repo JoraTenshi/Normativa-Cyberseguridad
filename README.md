@@ -9,17 +9,17 @@ NormativaCheck es una aplicación web académica que ayuda a pequeñas empresas 
 
 ### Descargar el paquete completo
 
-**[⬇ Descargar NormativaCheck para profesores (.zip)](https://github.com/JoraTenshi/Normativa-Cyberseguridad/releases/download/v1.0-practica3/NormativaCheck-profesores-1e3a4f62-validado-kali.zip)**
+**[⬇ Descargar NormativaCheck para profesores — revisión Windows (.zip)](https://github.com/JoraTenshi/Normativa-Cyberseguridad/releases/download/v1.0-practica3-windows/NormativaCheck-profesores-windows-20261017.zip)**
 
 | Material | Enlace y contenido |
 | --- | --- |
-| **Paquete recomendado para evaluar** | [ZIP docente completo](https://github.com/JoraTenshi/Normativa-Cyberseguridad/releases/download/v1.0-practica3/NormativaCheck-profesores-1e3a4f62-validado-kali.zip): aplicación, instrucciones, memoria original, correspondencia de versiones, acta de pruebas, guion y PDF ficticio. |
-| Página de descarga | [GitHub Release v1.0-practica3](https://github.com/JoraTenshi/Normativa-Cyberseguridad/releases/tag/v1.0-practica3). También contiene la [huella SHA-256 del paquete](https://github.com/JoraTenshi/Normativa-Cyberseguridad/releases/download/v1.0-practica3/NormativaCheck-profesores-1e3a4f62-validado-kali.sha256.txt). |
+| **Paquete recomendado para evaluar** | [ZIP docente completo, revisión Windows](https://github.com/JoraTenshi/Normativa-Cyberseguridad/releases/download/v1.0-practica3-windows/NormativaCheck-profesores-windows-20261017.zip): aplicación, instrucciones, memoria original, correspondencia de versiones, actas de pruebas, guion y PDF ficticio. |
+| Página de descarga | [GitHub Release v1.0-practica3-windows](https://github.com/JoraTenshi/Normativa-Cyberseguridad/releases/tag/v1.0-practica3-windows). También contiene la [huella SHA-256 del paquete](https://github.com/JoraTenshi/Normativa-Cyberseguridad/releases/download/v1.0-practica3-windows/NormativaCheck-profesores-windows-20261017.sha256.txt). La etiqueta académica original `v1.0-practica3` permanece intacta. |
 | Guía vigente | [Este README, sección para el profesorado](https://github.com/JoraTenshi/Normativa-Cyberseguridad/blob/main/README.md#para-el-profesorado). Es la referencia para seguir los pasos siguientes. |
 
 **Todo lo necesario para esta evaluación se obtiene desde GitHub.** No hay que solicitar un ZIP por correo, recibir otro adjunto en Classroom ni esperar una autorización de alta. El paquete contiene fuentes: la primera construcción necesita Internet y los requisitos del paso 1.
 
-> **Entorno comprobado:** Kali Linux x86-64, Node 24.19.0, Docker con Compose 2.40.3-3 y Firefox. La instalación y el recorrido básico del paso 6 pasaron en ese entorno. Se documenta también la ruta Windows, pero no se ha validado su instalación completa. El recorrido normativo ampliado está explicado y sigue pendiente de aceptación integral. Utiliza únicamente datos ficticios.
+> **Entornos comprobados:** Kali Linux x86-64 con Node 24.19.0 y Compose 2.40.3-3 superó el recorrido básico con Firefox. En Windows 11 Pro x86-64, Node 24.13.0, cliente/motor Docker 29.8.2 y Compose 5.6.0 superaron construcción, arranque, HTTPS/API/Mongo, cuenta ficticia, inicio de sesión por API, servicio, persistencia y cierre de sesión. La versión de Docker Desktop y la aceptación visual de navegador de la revisión Windows no están acreditadas por ese ensayo. El recorrido normativo ampliado sigue pendiente de aceptación integral. Utiliza únicamente datos ficticios.
 
 **Orden de trabajo:** [1. Requisitos](#docentes-requisitos) → [2. Extraer y comprobar](#docentes-extraer) → [3. Arrancar](#docentes-arrancar) → [4. Certificado](#docentes-certificado) → [5. Cuenta y acceso](#docentes-cuenta) → [6. Probar](#docentes-probar) → [7. Recorrido ampliado](#docentes-ampliado) → [8. Parar y volver a entrar](#docentes-parar).
 
@@ -32,22 +32,35 @@ NormativaCheck es una aplicación web académica que ayuda a pequeñas empresas 
 | --- | --- |
 | Ordenador x86-64 | Las imágenes usan `linux/amd64`. ARM no está validado. |
 | Node.js **24.x** | [Descarga oficial de Node.js](https://nodejs.org/en/download). Selecciona la familia 24; fue la ensayada. |
-| Docker local iniciado y **Compose 2.x** | Linux: [instalación de Docker Engine](https://docs.docker.com/engine/install/). Windows: [instalación de Docker Desktop](https://docs.docker.com/desktop/setup/install/windows-install/), con contenedores Linux y sus requisitos de virtualización/WSL satisfechos. |
+| Docker local iniciado y **Compose 2.x o 5.x** | Linux: [instalación de Docker Engine](https://docs.docker.com/engine/install/). Windows: [instalación oficial de Docker Desktop](https://docs.docker.com/desktop/setup/install/windows-install/), con contenedores Linux y requisitos de virtualización/WSL satisfechos. Compose viene incluido en Docker Desktop; no instales un binario `docker-compose` independiente para esta guía. |
 | OpenSSL | En Linux, disponible en la terminal. En Windows, el operador también reconoce el incluido en [Git for Windows](https://git-scm.com/install/windows) en `C:\Program Files\Git\usr\bin\openssl.exe`. |
 | Internet, disco y memoria disponibles | La primera construcción descarga imágenes y dependencias. Como previsión, 4 GB de memoria disponibles para Docker y 10 GB de disco dan margen; no son mínimos medidos ni una garantía. Docker Desktop tiene requisitos propios adicionales. |
 | Carpeta local estable y puerto libre | Extrae fuera de OneDrive, Google Drive o una unidad de red. La aplicación usará `127.0.0.2:9445`. |
 
-Abre una terminal Linux o PowerShell en Windows y ejecuta **una línea cada vez**:
+#### Windows: instalar e iniciar Docker Desktop
+
+1. Comprueba los [requisitos oficiales de Docker Desktop para Windows](https://docs.docker.com/desktop/setup/install/windows-install/#system-requirements): versión de Windows admitida, virtualización de hardware, WSL 2 y memoria. Si tu equipo es administrado, consulta las condiciones de uso con su responsable.
+2. En esa misma página oficial, descarga **Docker Desktop for Windows - x86_64**. Abre `Docker Desktop Installer.exe`, elige la instalación por usuario cuando sea adecuada y deja seleccionado el backend WSL 2 si el instalador lo ofrece. Sigue el asistente y reinicia Windows si lo solicita. No hace falta buscar comandos de instalación de terceros ni instalar Compose por separado.
+3. Abre **Docker Desktop** desde Inicio. Completa su inicio inicial y espera a que indique que el motor está en marcha. Debe usar **contenedores Linux**; si la aplicación muestra la opción «Switch to Linux containers», selecciónala. La primera apertura y la aceptación de las condiciones de Docker son pasos del propio Docker Desktop.
+4. Abre **una ventana nueva de PowerShell**, sin privilegios de administrador, y ejecuta las comprobaciones de abajo. No continúes si `docker version` muestra solo el cliente, si `docker info` no responde o si `OSType` no es `linux`.
+
+Si Windows no cumple los requisitos de Docker Desktop, esta instalación no está validada en ese equipo; no cambies su configuración institucional a ciegas. [Docker explica la instalación interactiva, el arranque y la comprobación de WSL](https://docs.docker.com/desktop/setup/install/windows-install/).
+
+#### Comprobaciones previas: PowerShell o terminal Linux
+
+Ejecuta **una línea cada vez** y espera a que termine antes de pasar a la siguiente:
 
 ```sh
 node --version
 docker version
 docker compose version
+docker context show
+docker info --format '{{.OSType}}'
 ```
 
-**Resultado esperado:** Node `v24.x`, cliente **y servidor** Docker accesibles y Compose `v2.x`. Si acabas de instalar los requisitos en Windows, abre una nueva ventana de PowerShell.
+**Resultado esperado:** Node `v24.x`; `docker version` muestra apartados **Client** y **Server**; Compose informa `v2.x` o `v5.x`; el contexto es local (en Docker Desktop suele ser `desktop-linux`), y `docker info` imprime `linux`. El operador rechaza conexiones a Docker remoto.
 
-> **Comprueba Compose antes de continuar.** El operador de esta entrega admite únicamente la familia **2.x**; rechaza 1, 3, 4 y 5. Instalar el Docker Desktop más reciente no garantiza ese requisito. La versión del ensayo fue 2.40.3-3. Si tu equipo no cumple, prepara un entorno compatible con su administrador; esta guía no adapta el código a otras versiones.
+> **Si `docker` no se reconoce:** cierra y abre PowerShell tras instalar Docker Desktop y comprueba que la aplicación está iniciada. Si persiste, revisa la instalación con su guía oficial; no copies ejecutables de otra máquina. **Si aparece «Cannot connect» o «permission denied»**, comprueba primero que Docker Desktop está iniciado y que la misma terminal puede mostrar la sección **Server**; no cambies permisos del socket ni borres datos. **Si Compose indica `v5.x`**, esta revisión del operador la admite y se ha ensayado con 5.6.0; el ZIP anterior, identificado como «validado-kali», no la admite.
 
 <details>
 <summary><strong>Linux: si Docker requiere sudo</strong></summary>
@@ -62,11 +75,11 @@ Los pasos siguientes muestran ambas variantes cuando es necesario. En Windows se
 ### Paso 2. Descargar, extraer y comprobar el paquete
 
 1. Descarga el **ZIP docente completo** del enlace destacado al principio.
-2. Extráelo en una carpeta local nueva. En Windows: clic derecho → **Extraer todo**. No ejecutes archivos dentro del ZIP.
-3. Abre una terminal en la carpeta extraída **`NormativaCheck-profesores-1e3a4f62`**. Es la que contiene:
+2. Extráelo en una carpeta local nueva. En Windows: clic derecho → **Extraer todo** y elige, por ejemplo, una carpeta bajo `C:\Users\TU_USUARIO\NormativaCheck`. Evita **OneDrive**, Google Drive, Escritorio sincronizado y unidades de red: las rutas del runtime y los montajes Docker dependen de una ubicación local estable. No ejecutes archivos dentro del ZIP. Si ya lo extrajiste en OneDrive y todavía no has arrancado con éxito, extrae otra copia nueva fuera de OneDrive; no copies `.runtime`.
+3. Abre una terminal en la carpeta extraída **`NormativaCheck-profesores-windows-20261017`**. Es la que contiene:
 
 ```text
-NormativaCheck-profesores-1e3a4f62/
+NormativaCheck-profesores-windows-20261017/
 ├── LEEME-PRIMERO.txt
 ├── VERSION.json
 ├── MANIFEST-SHA256.json
@@ -76,6 +89,15 @@ NormativaCheck-profesores-1e3a4f62/
 ```
 
 En Windows puedes abrir esa carpeta en el Explorador, escribir `powershell` en su barra de dirección y pulsar Intro. En Linux, usa **Abrir en terminal** desde el gestor de archivos.
+
+En PowerShell, comprueba que estás en el nivel correcto antes de escribir el siguiente comando:
+
+```powershell
+Get-Location
+Test-Path .\herramientas\verificar-paquete.cjs
+```
+
+El segundo comando debe imprimir `True`. Si imprime `False`, aún estás en la carpeta exterior de extracción o ya has entrado en `aplicacion`; abre la carpeta que contiene `LEEME-PRIMERO.txt`.
 
 4. Comprueba la extracción:
 
@@ -93,25 +115,23 @@ cd aplicacion
 
 **Desde ahora, todos los comandos se ejecutan aquí**, donde aparecen `frontend`, `backend`, `infra` y `scripts`. Conserva esa carpeta en la misma ubicación después del primer arranque.
 
+En PowerShell, `Test-Path .\scripts\local-demo.cjs` debe imprimir `True`. Puedes utilizar `node .\scripts\local-demo.cjs start` o `node scripts/local-demo.cjs start`: ambas formas apuntan al mismo archivo.
+
 <details>
 <summary>Comprobación adicional: huella SHA-256 del ZIP descargado</summary>
 
-La huella del ZIP completo es:
-
-```text
-20638994c996b7cfe11113555dc1f085bd61483852bb1f3b91c16f234437564f
-```
+La huella exacta del ZIP está en el archivo `.sha256.txt` de la misma Release. No está escrita dentro del propio ZIP, pues el archivo cambiaría su propia huella.
 
 Desde la carpeta de descargas, en Linux:
 
 ```sh
-sha256sum NormativaCheck-profesores-1e3a4f62-validado-kali.zip
+sha256sum NormativaCheck-profesores-windows-20261017.zip
 ```
 
 En PowerShell:
 
 ```powershell
-Get-FileHash -Algorithm SHA256 -LiteralPath '.\NormativaCheck-profesores-1e3a4f62-validado-kali.zip'
+Get-FileHash -Algorithm SHA256 -LiteralPath '.\NormativaCheck-profesores-windows-20261017.zip'
 ```
 
 Debe coincidir, ignorando mayúsculas/minúsculas. El manifiesto y esta huella detectan cambios; no son una firma digital de identidad del autor.
@@ -121,34 +141,34 @@ Debe coincidir, ignorando mayúsculas/minúsculas. El manifiesto y esta huella d
 <details>
 <summary>Alternativa para revisar código: clonar Git o descargar solo el repositorio</summary>
 
-El [ZIP de código de v1.0-practica3](https://github.com/JoraTenshi/Normativa-Cyberseguridad/archive/refs/tags/v1.0-practica3.zip) y los enlaces automáticos **Source code** de la Release contienen el repositorio. **No incluyen los materiales adicionales del ZIP docente**. Para seguir esta guía por la ruta principal, descarga el archivo cuyo nombre empieza por `NormativaCheck-profesores`.
+El [ZIP de código de v1.0-practica3-windows](https://github.com/JoraTenshi/Normativa-Cyberseguridad/archive/refs/tags/v1.0-practica3-windows.zip) y los enlaces automáticos **Source code** de la Release contienen el repositorio. **No incluyen los materiales adicionales del ZIP docente**. Para seguir esta guía por la ruta principal, descarga el archivo `NormativaCheck-profesores-windows-20261017.zip`.
 
 Si prefieres Git:
 
 ```sh
 git clone https://github.com/JoraTenshi/Normativa-Cyberseguridad.git NormativaCheck
 cd NormativaCheck
-git switch --detach v1.0-practica3
+git switch --detach v1.0-practica3-windows
 git rev-parse HEAD
 ```
 
-El commit de esa etiqueta es `a2386e4c1b72eb2a0749f238811580099d955fe3`. En un clon o ZIP del repositorio estás directamente en la raíz de la aplicación: **no existen `herramientas/verificar-paquete.cjs` ni una subcarpeta `aplicacion`**. Continúa en el paso 3 desde donde están `frontend`, `backend`, `infra` y `scripts`.
+Comprueba que `git rev-parse HEAD` coincide con el commit de la Release Windows. En un clon o ZIP del repositorio estás directamente en la raíz de la aplicación: **no existen `herramientas/verificar-paquete.cjs` ni una subcarpeta `aplicacion`**. Continúa en el paso 3 desde donde están `frontend`, `backend`, `infra` y `scripts`.
 
-La etiqueta conserva la entrega publicada; `main` puede incorporar mejoras documentales posteriores. Esta guía online es posterior al README incluido en el ZIP docente. No se ha modificado retroactivamente el paquete ni su huella.
+La etiqueta `v1.0-practica3` conserva la entrega académica original; la revisión Windows tiene su propia etiqueta. `main` puede incorporar cambios posteriores. El ZIP docente incluye el código de la etiqueta Windows y documentación adicional; su huella es distinta de la del ZIP previo validado en Kali.
 
 </details>
 
 <a id="docentes-arrancar"></a>
 ### Paso 3. Arrancar y generar la configuración local
 
-Mantén Docker iniciado. Comprueba que el puerto está libre antes del primer arranque:
+Mantén Docker Desktop abierto y el motor iniciado. Comprueba que el puerto está libre antes del primer arranque:
 
 | Terminal | Comando |
 | --- | --- |
 | Linux | `ss -lnt 'sport = :9445'` |
 | PowerShell | `Get-NetTCPConnection -LocalPort 9445 -State Listen -ErrorAction SilentlyContinue` |
 
-No debe aparecer un proceso escuchando en ese puerto. Si aparece, identifica la colisión antes de continuar.
+No debe aparecer un proceso escuchando en ese puerto. En PowerShell, **no mostrar nada es el resultado esperado**; identifica cualquier colisión antes de continuar. Este puerto es distinto del usado por otras demos del grupo.
 
 Desde **`aplicacion`**, ejecuta:
 
@@ -162,11 +182,11 @@ Si tu Docker en Linux requiere `sudo`, utiliza **en su lugar**:
 sudo node scripts/local-demo.cjs start
 ```
 
-Espera a que termine; el primer arranque puede tardar varios minutos. **Resultado esperado: `VERIFICADO: HTTPS local...`**.
+Espera a que termine; el primer arranque descarga imágenes y dependencias, construye dos imágenes y puede tardar varios minutos. No cierres PowerShell mientras se ve progreso. **Resultado esperado: `VERIFICADO: HTTPS local...` seguido de `Abre https://127.0.0.2:9445/espacio-de-trabajo`.** Los avisos `npm warn deprecated` durante la construcción no detienen por sí solos el arranque; decide por el resultado final.
 
 El comando construye la web y la API, inicia MongoDB y crea la configuración, claves y certificado propios bajo `.runtime/local-demo/`. **No tienes que editar `.env`, introducir credenciales del grupo, configurar Gmail ni instalar las dependencias con `npm install` en el equipo.** La cuenta se crea en el paso 5.
 
-Docker mantiene la aplicación en segundo plano. Si el comando falla, conserva el mensaje y consulta [Si algo falla](#si-algo-falla); no borres datos ni generes otra configuración para ocultarlo.
+Docker mantiene la aplicación en segundo plano. Si el comando falla, conserva el **primer error relevante**, el código final y el paso exacto; consulta [Si algo falla](#si-algo-falla). No borres datos ni generes otra configuración para ocultarlo. Si el fallo ocurrió después de crear `.runtime`, conserva esa carpeta en su sitio y consulta `node scripts/local-demo.cjs status` antes de repetir `start`.
 
 <a id="docentes-certificado"></a>
 ### Paso 4. Confiar en el certificado de tu instalación
@@ -193,7 +213,14 @@ Si arrancaste sin `sudo`, puedes importar directamente `aplicacion/.runtime/loca
 <details>
 <summary><strong>Windows con Edge o Chrome — procedimiento documentado, instalación completa no validada</strong></summary>
 
-Desde **`aplicacion`**, en PowerShell:
+Desde **`aplicacion`**, en PowerShell, comprueba primero que el archivo existe y muestra la huella del certificado que vas a importar:
+
+```powershell
+Test-Path .\.runtime\local-demo\tls\ca.crt
+(Get-PfxCertificate -FilePath .\.runtime\local-demo\tls\ca.crt).Thumbprint
+```
+
+El primer resultado debe ser `True`. Anota la huella para reconocer **esta** CA en el almacén de certificados; no publiques ni abras ningún archivo `.key`. Después ejecuta:
 
 ```powershell
 Invoke-Item .\.runtime\local-demo\tls\ca.crt
@@ -227,6 +254,8 @@ sudo node scripts/local-demo.cjs account
 ```
 
 **Resultado esperado:** se crea una cuenta, una empresa ficticia y una contraseña aleatoria. **Guarda la contraseña que aparece en esa terminal: se muestra una sola vez.** No es la contraseña de Windows, Linux ni del servidor del grupo. Repetir `account` no la revela ni la restablece.
+
+En PowerShell, escríbelo **directamente** en una terminal normal, sin canalizarlo a un archivo ni ejecutarlo desde una tarea en segundo plano: el operador exige terminal interactiva. Si el resultado dice «La cuenta de prueba ya existe», la cuenta de **esa instalación** no ha cambiado y el comando no volverá a mostrar su contraseña; no pruebes contraseñas de una copia anterior.
 
 | Dato para acceder | Valor |
 | --- | --- |
@@ -336,14 +365,15 @@ Quedan fuera del cierre del MVP la ampliación normativa completa, IA integrada,
 | Referencia | Identidad | Qué acredita |
 | --- | --- | --- |
 | Memoria técnica original, 16/10/2026, 51 páginas | R3: `2f52aac139a7d606d9102d55e95005be5e58949e` | Arquitectura, alcance, antecedentes, resultados y pendientes del momento en que se redactó. |
-| Código del paquete docente probado | `1e3a4f62fd0cca6927a97fc42fb9f86e847a6eb5`; árbol `905ee9b0d947302943caf0b26c737b2d48b66a1e` | Base posterior a R3 con instalador local y correcciones integradas; recorrido básico aceptado en Kali. |
+| Base del paquete aceptado en Kali | `1e3a4f62fd0cca6927a97fc42fb9f86e847a6eb5`; árbol `905ee9b0d947302943caf0b26c737b2d48b66a1e` | Base posterior a R3 con instalador local y correcciones integradas; recorrido básico aceptado en Kali. |
 | Entrega académica en GitHub | Etiqueta [v1.0-practica3](https://github.com/JoraTenshi/Normativa-Cyberseguridad/tree/v1.0-practica3) | Referencia estable al commit final; verificar su SHA remoto y la CI, sin inferirlos del nombre de la etiqueta. |
+| Revisión de instalación Windows | Etiqueta [v1.0-practica3-windows](https://github.com/JoraTenshi/Normativa-Cyberseguridad/tree/v1.0-practica3-windows), con identidad exacta en `VERSION.json` del ZIP | Corrige el operador para Compose 5 y documenta el ensayo Windows; no cambia la memoria original ni acredita todo el recorrido visual. |
 
 R3 es antecesor de la base docente: la comparación documentada afecta a 43 archivos. Se añadieron el perfil portátil, mejoras de navegación, textos de recuperación/privacidad, transporte SMTP privado, documentación/licencia y herramientas administrativas separadas; se retiraron cuatro archivos del árbol actual. **No son el mismo commit.** El ensayo local no prueba el correo externo ni borra los hallazgos de seguridad de la memoria.
 
-La memoria original no se ha alterado. Se lee junto con la [actualización de aceptación](docs/aceptacion-docente-20261017.md), que explica qué pendientes de instalación básica se han resuelto y cuáles siguen abiertos. Las referencias RF/PR de la memoria conservan su significado. El ensayo nuevo no convierte en aprobadas todas sus pruebas PR01-PR14.
+La memoria original no se ha alterado. Se lee junto con la [actualización de aceptación Kali](docs/aceptacion-docente-20261017.md) y el [acta Windows](docs/aceptacion-docente-windows-20261017.md), que separan las pruebas y sus límites. Las referencias RF/PR de la memoria conservan su significado. Los ensayos nuevos no convierten en aprobadas todas sus pruebas PR01-PR14.
 
-Una integración que solo añada documentación producirá otro commit y otro árbol Git. El responsable de publicación debe identificarlo y verificar que las fuentes ejecutables y los lockfiles permanecen iguales a la base probada; si cambia código, deben repetirse las pruebas afectadas. No se presenta la aceptación de `1e3a4f62` como una prueba de cualquier `main` posterior.
+La revisión Windows cambia la guarda de Compose en el operador, además de la documentación. Por eso tiene otro commit y otro árbol Git, y se repitieron en Windows las pruebas de instalación afectadas. Los servicios, las rutas de negocio y los `package-lock.json` no cambian en esta revisión. La aceptación Kali del commit `1e3a4f62` y el ensayo Windows de la revisión son evidencias distintas.
 
 ## Arquitectura y estructura del repositorio
 
@@ -482,17 +512,30 @@ cd ..
 
 El build queda en `frontend/build/` y no se versiona. [canonical-checks.yml](.github/workflows/canonical-checks.yml) define las comprobaciones de CI; no arranca Docker ni ejecuta despliegue, seed o correo real. Desactivar el audit en estos comandos no equivale a una revisión de vulnerabilidades satisfactoria.
 
-| Evidencia del código base `1e3a4f62` | Resultado | Qué no demuestra |
+| Evidencia y versión | Resultado | Qué no demuestra |
 | --- | --- | --- |
 | Suite Backend en clon propio | 1.382 pruebas aprobadas. | Navegador, instalación Docker o correo externo. |
 | Ensayo adicional con réplica Mongo temporal | 15 pruebas aprobadas. | Operación del VPS ni todos los recorridos de interfaz. |
 | Ensayo SMTP/TLS local | 7 pruebas aprobadas. | Gmail, entrega de mensajes o MFA real. |
 | Front en clon propio | 525 pruebas en 47 suites y compilación satisfactorias. | La parte de smoke con API simulada no acredita persistencia real. |
 | Aceptación docente Kali, 17/10/2026 | Instalación desde ZIP, cuenta, HTTPS confiado, login, servicio, recarga/historial, stop/start, persistencia y logout. | Windows, todos los módulos, registro por correo, MFA, GitHub o Hetzner. |
+| Ensayo docente Windows, 17/10/2026 | ZIP original verificado; reproducción de `COMPOSE_V2_REQUIRED` con Compose 5.6.0; operador corregido; construcción, arranque, HTTPS/API/Mongo, cuenta, login por API, servicio, historial accesible, stop/start, persistencia y logout. | La cuenta inicial se creó mediante el mismo script backend usado por `account`, con contraseña retenida solo en memoria del arnés. No acredita el recorrido visual por navegador, la instalación de Docker Desktop desde cero ni el recorrido normativo completo. Véase [acta Windows](docs/aceptacion-docente-windows-20261017.md). |
 
 **No sumar estos recuentos como una prueba de extremo a extremo.** La [nota de aceptación](docs/aceptacion-docente-20261017.md) separa resultados delegados, verificaciones de integridad, intentos incompletos y pruebas anteriores de la memoria. La construcción pudo reutilizar capas Docker locales; no se presenta como un equipo virgen sin ninguna caché.
 
-`scripts/local-demo-qa.cjs` es un ensayo separado para mantenedores y exige una copia sin runtime. No es el acceso normal del profesor: la contraseña del automatismo vive solo en memoria. No ejecutarlo sobre la copia de uso ni emplearlo para recuperar una cuenta. La [guía técnica local](docs/prueba-local.md) conserva el detalle y los antecedentes, con actualización de estado enlazada al acta actual.
+`scripts/local-demo-qa.cjs` es un ensayo separado para mantenedores y exige una copia sin runtime. No es el acceso normal del profesor: la contraseña del automatismo vive solo en memoria. No ejecutarlo sobre la copia de uso ni emplearlo para recuperar una cuenta. La [guía técnica local](docs/prueba-local.md) conserva el detalle y los antecedentes Kali; el [acta Windows](docs/aceptacion-docente-windows-20261017.md) identifica las pruebas nuevas y sus límites.
+
+### Incidencias encontradas al seguir la ruta Windows
+
+| Paso | Observación reproducida | Corrección incluida en esta revisión |
+| --- | --- | --- |
+| 1. Requisitos | La guía enlazaba Docker Desktop, pero no explicaba instalarlo, iniciarlo, comprobar el servidor ni elegir contenedores Linux. | Procedimiento interactivo oficial, ventana nueva de PowerShell y salidas esperadas de `docker version`, Compose, contexto e `info`. |
+| 2. Extracción | Una ruta bajo OneDrive/Escritorio sincronizado puede acabar siendo la carpeta de trabajo aunque el operador usa montajes y ruta fija. | Ejemplo de carpeta local, verificación de carpeta actual y aviso de extraer una copia nueva antes del primer arranque. |
+| 3. Arranque | El ZIP `validado-kali` emitía `COMPOSE_V2_REQUIRED` con el Compose 5.6.0 incluido en Docker Desktop. | El operador acepta 2.x y 5.x; el ensayo Windows pasó construcción y arranque reales. La descarga debe ser la **revisión nueva**, no el ZIP viejo con un README nuevo. |
+| 3. Construcción | La primera ejecución muestra descargas y avisos `npm warn deprecated` antes del resultado final. | Se explica qué progreso esperar y que la decisión depende del resultado final del operador. |
+| 4-5. Acceso | Certificado y contraseña son propios de cada instalación; copiar los de Kali u otra demo produce aviso HTTPS o credenciales incorrectas. | Ruta exacta de `ca.crt`, comprobación de huella, URL, correo y advertencia de contraseña mostrada una sola vez. |
+
+La instalación interactiva de Docker Desktop se documenta con la [guía oficial de Docker](https://docs.docker.com/desktop/setup/install/windows-install/); en este ensayo ya estaba instalado, por lo que no se presenta como una reinstalación probada.
 
 <a id="si-algo-falla"></a>
 ## Si algo falla
@@ -500,14 +543,19 @@ El build queda en `frontend/build/` y no se versiona. [canonical-checks.yml](.gi
 | Mensaje o síntoma | Qué comprobar sin destruir datos |
 | --- | --- |
 | `NODE_24_REQUIRED` | Node 24 en el entorno que ejecuta el operador, también cuando se usa `sudo`. |
-| `COMPOSE_V2_REQUIRED` | `docker compose version`: esta receta solo admite la familia 2.x. No borrar Docker ni cambiar su configuración institucional para sortearlo. |
+| `COMPOSE_V2_REQUIRED` | Estás usando el **ZIP anterior, validado en Kali**, cuyo operador solo admite Compose 2. Descarga la revisión Windows indicada arriba; no basta con leer un README nuevo mientras ejecutas el script viejo. |
+| `COMPOSE_VERSION_UNSUPPORTED` | En esta revisión, `docker compose version --short` debe indicar 2.x o 5.x. No utilices el ejecutable separado `docker-compose`; Docker Desktop incluye `docker compose`. |
+| `docker` no se reconoce | Docker Desktop puede estar instalado pero no disponible aún en la ventana de PowerShell abierta antes de instalarlo. Abre Docker Desktop, espera al motor y abre una **nueva** PowerShell. Comprueba `Get-Command docker` y vuelve al paso 1. |
+| `docker version` solo muestra Client, «Cannot connect» o «permission denied» | El CLI existe, pero no llega al motor. Comprueba en Docker Desktop que el motor está iniciado y que usas contenedores Linux; vuelve a ejecutar `docker info --format '{{.OSType}}'`. No modifiques permisos de Docker ni reinstales por prueba y error. |
 | `REMOTE_DOCKER_REFUSED` / `LINUX_DOCKER_REQUIRED` | Docker debe ser local y ejecutar contenedores Linux. |
 | `OPENSSL_REQUIRED` | OpenSSL accesible; en Windows se contempla la ruta de Git for Windows indicada. |
 | `PORT_9445_BUSY` | Hay otro proceso escuchando. No pararlo sin identificar su propietario ni modificar el paquete. |
-| `COMMAND_FAILED` | Leer las líneas anteriores; comprobar Docker, permisos, red y espacio. Conservar la etapa del fallo. |
+| `COMMAND_FAILED` | Conserva las líneas **inmediatamente anteriores** al código final. Si ocurrió antes de descargar imágenes, revisa `docker version`, `docker compose version` y `docker info`. Durante una descarga, comprueba red y espacio; después, `node scripts/local-demo.cjs status`. Indica qué comando y etapa falló antes de reintentar. |
 | `ACCOUNT_TTY_REQUIRED` | Ejecutar `account` directamente en una terminal interactiva, sin redirección. |
 | Credenciales incorrectas | URL exacta, correo y contraseña de **esa** copia. No reutilizar la del VPS, otra demo o el sistema operativo. |
 | Aviso de certificado | CA de este clon importada y dirección `127.0.0.2:9445`. No desactivar la comprobación TLS. |
+| `INTEGRIDAD NO CONFIRMADA` antes del arranque | Revisa que ejecutaste el verificador desde la carpeta que contiene `herramientas`; si indica «Archivo cambiado», extrae de nuevo el ZIP **sin modificarlo** y comprueba su SHA-256. El verificador está diseñado para fallar después de editar archivos del paquete. |
+| El comando se ejecuta en la carpeta equivocada | Desde la raíz del ZIP, `Test-Path .\herramientas\verificar-paquete.cjs` debe ser `True`; desde `aplicacion`, `Test-Path .\scripts\local-demo.cjs` debe ser `True`. |
 | `INSTALLATION_MISMATCH` / `RUNTIME_OWNER` / `RUNTIME_PERMISSIONS` | Ruta y usuario originales; no copiar runtime ni abrir sus permisos como reparación. |
 | `HTTP 409` al editar | Versión desactualizada: conservar borrador, consultar y comparar antes de decidir. No repetir el guardado a ciegas. |
 | Pantalla normativa vacía o revisión no habilitada | Comprobar empresa seleccionada, alcance, datos requeridos y referencias guardadas. No equivale a cumplimiento ni autoriza inventar datos. |
