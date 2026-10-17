@@ -112,10 +112,20 @@ Solo se admite una copia sin `.runtime/local-demo`. Arranca Docker, crea cuenta/
 
 El resultado automatizado no acredita renderizado ni navegación en un navegador, envío de correo, funcionamiento en otro sistema operativo ni despliegue en Hetzner. Si falla, conserva el estado y el código de etapa; no repitas ni restablezcas la base para ocultar el fallo.
 
-## Estado de validación de este candidato
+## Antecedente de validación del candidato previo
+
+Este apartado conserva la situación anterior a la aceptación del 17/10/2026; no es el estado actual del paquete. El recorrido básico del código `1e3a4f62fd0cca6927a97fc42fb9f86e847a6eb5` fue aceptado después en Kali. Leer la actualización al final y el [README](../README.md) para la referencia que debe obtenerse; no completar un clon antiguo con archivos sueltos.
 
 La copia de ensayo anterior ha confirmado el arranque de los tres contenedores, HTTPS/API/Mongo y la conservación de la cuenta, empresa, membresía, servicio ficticio y su evento tras detener y arrancar los contenedores. Estas últimas comprobaciones proceden de la ejecución y capturas aportadas por el responsable del proyecto. La inspección de datos fue de solo lectura; no sustituye el acceso autenticado después del reinicio ni la navegación en el navegador.
 
 El candidato incorpora una red de entrada solo para la web y conexiones HTTPS nuevas en cada comprobación. No necesita los scripts de recuperación utilizados durante el desarrollo. Las pruebas unitarias no demuestran por sí solas una instalación completa.
 
 Pendiente de aceptación en esta copia limpia: completar el recorrido autenticado después del reinicio, cierre de sesión y navegación manual. Antes de entregar, repetir la receta desde el commit definitivo con el delta integrado. Una exportación del commit base con cambios superpuestos es un candidato compuesto, no la prueba de ese clon definitivo. No se ha modificado Hetzner para estas comprobaciones.
+
+## Actualización del 17/10/2026: recorrido básico aceptado en Kali
+
+La [nota de aceptación y correspondencia](aceptacion-docente-20261017.md) actualiza el pendiente histórico anterior. Se probó una extracción limpia del ZIP con los 593 archivos exactos de `1e3a4f62fd0cca6927a97fc42fb9f86e847a6eb5`: construcción y arranque mediante `start`, creación con `account` en TTY, HTTPS con CA confiada, login por interfaz, servicio ficticio, recarga y evento exacto de historial, `stop`/`start`/`verify`, nuevo login con persistencia y logout con acceso privado rechazado. Firefox se automatizó sin interfaz visible y mantuvo `acceptInsecureCerts=false`; no se afirma que fuese una instalación autónoma realizada por un profesor.
+
+El entorno comprobado fue Kali Linux amd64, Node 24.19.0, Docker Linux y Compose 2.40.3-3. El operador admite únicamente Compose de la familia 2.x; una versión mayor no cumple esa guarda. Node 24 es la versión documentada y ensayada. Windows nativo, macOS, ARM, correo externo, MFA y el recorrido normativo completo no se aceptan por extensión. Los intentos incompletos del arnés de navegador se conservan y no se modificó el código de aplicación para repetirlos.
+
+La memoria original describe R3 y se conserva sin cambios; la nota identifica la base posterior y el alcance preciso de la actualización. La integridad del ZIP documental final se comprobó y sus fuentes de aplicación son las mismas que se instalaron. No se repitió todo el ensayo por añadir documentación. La publicación de `main` y de `v1.0-practica3` requiere su propio recibo remoto: seguir el estado fechado y las instrucciones de obtención del README.
