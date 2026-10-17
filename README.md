@@ -4,7 +4,7 @@ NormativaCheck es una aplicación web académica para ayudar a pequeñas empresa
 
 No es un certificador ni un asesor jurídico automático. Su catálogo es acotado: **no cubre todo el ENS ni toda la normativa de protección de datos**. Subir un PDF o terminar una tarea no acredita cumplimiento. Debe utilizarse con datos ficticios durante la evaluación: la memoria documenta límites y hallazgos de seguridad cuya corrección no queda acreditada por instalar esta demo.
 
-**Estado documental, 17 de octubre de 2026:** el código `1e3a4f62fd0cca6927a97fc42fb9f86e847a6eb5` ha superado una instalación limpia y un recorrido básico real en Kali Linux. Esto no equivale a probar todos los módulos ni Windows. La memoria original describe R3, un commit anterior. La última consulta remota de esta revisión, a las 08:38 UTC, seguía encontrando `main` en R3 y ninguna etiqueta `v1.0-practica3`. Esta actualización debe integrarse y publicarse mediante el responsable del repositorio; no se anuncia esa publicación como terminada.
+**Referencia para la evaluación:** [v1.0-practica3](https://github.com/JoraTenshi/Normativa-Cyberseguridad/tree/v1.0-practica3). Comprueba en GitHub que la etiqueta existe y apunta al mismo commit que la entrega publicada; si no, detén la instalación. El código funcional `1e3a4f62fd0cca6927a97fc42fb9f86e847a6eb5` superó una instalación limpia y un recorrido básico real en Kali Linux. Esto no equivale a probar todos los módulos ni Windows. La memoria original describe R3, un commit anterior. La consulta remota de las 08:38 UTC del 17 de octubre, recogida en la nota de aceptación, fue una fotografía anterior a la publicación final, no su estado actual.
 
 Para evaluar: leer primero **Versiones**, después **Instalación local**, **Primer uso** y **Pruebas y límites**. La [nota de aceptación y correspondencia](docs/aceptacion-docente-20261017.md) conserva las identidades, los resultados y la relación con la memoria.
 
@@ -50,7 +50,7 @@ Quedan fuera del cierre del MVP la ampliación normativa completa, IA integrada,
 | --- | --- | --- |
 | Memoria técnica original, 16/10/2026, 51 páginas | R3: `2f52aac139a7d606d9102d55e95005be5e58949e` | Arquitectura, alcance, antecedentes, resultados y pendientes del momento en que se redactó. |
 | Código del paquete docente probado | `1e3a4f62fd0cca6927a97fc42fb9f86e847a6eb5`; árbol `905ee9b0d947302943caf0b26c737b2d48b66a1e` | Base posterior a R3 con instalador local y correcciones integradas; recorrido básico aceptado en Kali. |
-| Entrega académica en GitHub | Etiqueta requerida: `v1.0-practica3` | Debe identificar el commit final realmente publicado y comprobado. No se presume creada por aparecer en este texto. |
+| Entrega académica en GitHub | Etiqueta [v1.0-practica3](https://github.com/JoraTenshi/Normativa-Cyberseguridad/tree/v1.0-practica3) | Referencia estable al commit final; verificar su SHA remoto y la CI, sin inferirlos del nombre de la etiqueta. |
 
 R3 es antecesor de la base docente: la comparación documentada afecta a 43 archivos. Se añadieron el perfil portátil, mejoras de navegación, textos de recuperación/privacidad, transporte SMTP privado, documentación/licencia y herramientas administrativas separadas; se retiraron cuatro archivos del árbol actual. **No son el mismo commit.** El ensayo local no prueba el correo externo ni borra los hallazgos de seguridad de la memoria.
 
@@ -141,7 +141,7 @@ En un equipo administrado, la instalación de requisitos y la confianza en una C
 
 ### 4.2. Obtener una copia nueva de la versión correcta
 
-**Desde GitHub, cuando se haya publicado y verificado la etiqueta de entrega:**
+**Desde GitHub, con la etiqueta de entrega verificada:**
 
 ```sh
 git clone https://github.com/JoraTenshi/Normativa-Cyberseguridad.git NormativaCheck
@@ -150,7 +150,7 @@ git switch --detach v1.0-practica3
 git rev-parse HEAD
 ```
 
-El último comando debe coincidir con el SHA del recibo final de publicación. Esta secuencia de obtención no formó parte de la aceptación desde ZIP. **Si la etiqueta no existe, detenerse: descargar R3 `main` no reproduce el paquete probado.** No completar un clon antiguo copiando archivos de otra rama. La consulta remota y el estado de publicación quedan fechados en la [nota de aceptación](docs/aceptacion-docente-20261017.md).
+El último comando debe coincidir con el SHA del recibo final de publicación. Esta secuencia de obtención no formó parte de la aceptación desde ZIP. **Si la etiqueta no existe o no coincide con el commit publicado, detenerse.** No completar un clon antiguo copiando archivos de otra rama. La consulta remota previa a este cierre queda fechada en la [nota de aceptación](docs/aceptacion-docente-20261017.md).
 
 **Alternativa disponible para la evaluación: ZIP docente entregado por el grupo.** La revisión documental 2 se identifica como:
 

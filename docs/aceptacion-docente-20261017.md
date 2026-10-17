@@ -1,6 +1,6 @@
 # Aceptación docente y correspondencia con la memoria
 
-Actualización documental del 17 de octubre de 2026. Complementa la memoria original; **no modifica sus resultados históricos ni afirma el cierre completo del producto**. Su finalidad es identificar qué aplicación se probó, qué puede reproducir un profesor y qué falta antes de considerar final la publicación.
+Actualización documental del 17 de octubre de 2026. Complementa la memoria original; **no modifica sus resultados históricos ni afirma el cierre completo del producto**. Su finalidad es identificar qué aplicación se probó, qué puede reproducir un profesor y qué faltaba antes de considerar final la publicación. La observación remota de las 08:38 UTC es histórica; para la entrega actual, consulta la [etiqueta v1.0-practica3](https://github.com/JoraTenshi/Normativa-Cyberseguridad/tree/v1.0-practica3) y verifica su commit.
 
 ## 1. Identidad de los materiales
 
@@ -105,4 +105,4 @@ La observación remota de la sección 1 es una instantánea fechada, no un estad
 5. Reproducir la obtención desde GitHub de esa referencia sin añadir archivos de otras copias, y documentar qué parte del ensayo se repitió o se mantiene por identidad comprobada.
 6. Separar la limpieza condicional de ramas de la instalación y de los datos. Conservar trabajo útil, autores y commits recuperables antes de retirar referencias.
 
-Hasta tener ese recibo remoto, **no se afirma que clonar `main` reproduzca el paquete validado**. Tampoco se afirma que esta revisión documental cierre el resto de condiciones académicas, las incidencias de seguridad o el entorno privado.
+Esta nota documenta el estado anterior al recibo remoto; por sí sola **no acredita que clonar `main` reproduzca el paquete validado**. Comprueba el commit y la CI de `main` y de la etiqueta antes de usarla. Tampoco se afirma que esta revisión documental cierre el resto de condiciones académicas, las incidencias de seguridad o el entorno privado.
