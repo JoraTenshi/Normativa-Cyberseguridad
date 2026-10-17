@@ -1,14 +1,301 @@
-# NormativaCheck - Práctica 3
+# NormativaCheck — Práctica 3
 
-NormativaCheck es una aplicación web académica para ayudar a pequeñas empresas españolas de software y servicios de ciberseguridad a **organizar qué necesitan revisar, sobre qué actividad o sistema, con qué documentos y con qué resultado razonado**. Reúne contexto empresarial, alcances, requisitos, tareas, documentos versionados, evidencias, revisiones e historial.
+NormativaCheck es una aplicación web académica que ayuda a pequeñas empresas españolas de software y ciberseguridad a organizar actividades, alcances, requisitos, tareas, documentos, evidencias y revisiones. Permite registrar qué se ha examinado, con qué información y con qué resultado razonado. No certifica cumplimiento ni sustituye asesoramiento jurídico.
 
-No es un certificador ni un asesor jurídico automático. Su catálogo es acotado: **no cubre todo el ENS ni toda la normativa de protección de datos**. Subir un PDF o terminar una tarea no acredita cumplimiento. Debe utilizarse con datos ficticios durante la evaluación: la memoria documenta límites y hallazgos de seguridad cuya corrección no queda acreditada por instalar esta demo.
+<a id="para-el-profesorado"></a>
+## Para el profesorado: descarga, instalación y prueba local
 
-**Referencia para la evaluación:** [v1.0-practica3](https://github.com/JoraTenshi/Normativa-Cyberseguridad/tree/v1.0-practica3). Comprueba en GitHub que la etiqueta existe y apunta al mismo commit que la entrega publicada; si no, detén la instalación. El código funcional `1e3a4f62fd0cca6927a97fc42fb9f86e847a6eb5` superó una instalación limpia y un recorrido básico real en Kali Linux. Esto no equivale a probar todos los módulos ni Windows. La memoria original describe R3, un commit anterior. La consulta remota de las 08:38 UTC del 17 de octubre, recogida en la nota de aceptación, fue una fotografía anterior a la publicación final, no su estado actual.
+**Empieza aquí.** Esta sección contiene los pasos para ejecutar una copia propia de la aplicación. La web, la API y la base de datos funcionarán en tu ordenador; no necesitas conectarte a los equipos del grupo ni al servidor privado.
 
-Para evaluar: leer primero **Versiones**, después **Instalación local**, **Primer uso** y **Pruebas y límites**. La [nota de aceptación y correspondencia](docs/aceptacion-docente-20261017.md) conserva las identidades, los resultados y la relación con la memoria.
+### Descargar el paquete completo
 
-## 1. Qué problema resuelve y qué contiene
+**[⬇ Descargar NormativaCheck para profesores (.zip)](https://github.com/JoraTenshi/Normativa-Cyberseguridad/releases/download/v1.0-practica3/NormativaCheck-profesores-1e3a4f62-validado-kali.zip)**
+
+| Material | Enlace y contenido |
+| --- | --- |
+| **Paquete recomendado para evaluar** | [ZIP docente completo](https://github.com/JoraTenshi/Normativa-Cyberseguridad/releases/download/v1.0-practica3/NormativaCheck-profesores-1e3a4f62-validado-kali.zip): aplicación, instrucciones, memoria original, correspondencia de versiones, acta de pruebas, guion y PDF ficticio. |
+| Página de descarga | [GitHub Release v1.0-practica3](https://github.com/JoraTenshi/Normativa-Cyberseguridad/releases/tag/v1.0-practica3). También contiene la [huella SHA-256 del paquete](https://github.com/JoraTenshi/Normativa-Cyberseguridad/releases/download/v1.0-practica3/NormativaCheck-profesores-1e3a4f62-validado-kali.sha256.txt). |
+| Guía vigente | [Este README, sección para el profesorado](https://github.com/JoraTenshi/Normativa-Cyberseguridad/blob/main/README.md#para-el-profesorado). Es la referencia para seguir los pasos siguientes. |
+
+**Todo lo necesario para esta evaluación se obtiene desde GitHub.** No hay que solicitar un ZIP por correo, recibir otro adjunto en Classroom ni esperar una autorización de alta. El paquete contiene fuentes: la primera construcción necesita Internet y los requisitos del paso 1.
+
+> **Entorno comprobado:** Kali Linux x86-64, Node 24.19.0, Docker con Compose 2.40.3-3 y Firefox. La instalación y el recorrido básico del paso 6 pasaron en ese entorno. Se documenta también la ruta Windows, pero no se ha validado su instalación completa. El recorrido normativo ampliado está explicado y sigue pendiente de aceptación integral. Utiliza únicamente datos ficticios.
+
+**Orden de trabajo:** [1. Requisitos](#docentes-requisitos) → [2. Extraer y comprobar](#docentes-extraer) → [3. Arrancar](#docentes-arrancar) → [4. Certificado](#docentes-certificado) → [5. Cuenta y acceso](#docentes-cuenta) → [6. Probar](#docentes-probar) → [7. Recorrido ampliado](#docentes-ampliado) → [8. Parar y volver a entrar](#docentes-parar).
+
+---
+
+<a id="docentes-requisitos"></a>
+### Paso 1. Preparar el equipo y comprobar los requisitos
+
+| Necesitas | Qué comprobar / dónde obtenerlo |
+| --- | --- |
+| Ordenador x86-64 | Las imágenes usan `linux/amd64`. ARM no está validado. |
+| Node.js **24.x** | [Descarga oficial de Node.js](https://nodejs.org/en/download). Selecciona la familia 24; fue la ensayada. |
+| Docker local iniciado y **Compose 2.x** | Linux: [instalación de Docker Engine](https://docs.docker.com/engine/install/). Windows: [instalación de Docker Desktop](https://docs.docker.com/desktop/setup/install/windows-install/), con contenedores Linux y sus requisitos de virtualización/WSL satisfechos. |
+| OpenSSL | En Linux, disponible en la terminal. En Windows, el operador también reconoce el incluido en [Git for Windows](https://git-scm.com/install/windows) en `C:\Program Files\Git\usr\bin\openssl.exe`. |
+| Internet, disco y memoria disponibles | La primera construcción descarga imágenes y dependencias. Como previsión, 4 GB de memoria disponibles para Docker y 10 GB de disco dan margen; no son mínimos medidos ni una garantía. Docker Desktop tiene requisitos propios adicionales. |
+| Carpeta local estable y puerto libre | Extrae fuera de OneDrive, Google Drive o una unidad de red. La aplicación usará `127.0.0.2:9445`. |
+
+Abre una terminal Linux o PowerShell en Windows y ejecuta **una línea cada vez**:
+
+```sh
+node --version
+docker version
+docker compose version
+```
+
+**Resultado esperado:** Node `v24.x`, cliente **y servidor** Docker accesibles y Compose `v2.x`. Si acabas de instalar los requisitos en Windows, abre una nueva ventana de PowerShell.
+
+> **Comprueba Compose antes de continuar.** El operador de esta entrega admite únicamente la familia **2.x**; rechaza 1, 3, 4 y 5. Instalar el Docker Desktop más reciente no garantiza ese requisito. La versión del ensayo fue 2.40.3-3. Si tu equipo no cumple, prepara un entorno compatible con su administrador; esta guía no adapta el código a otras versiones.
+
+<details>
+<summary><strong>Linux: si Docker requiere sudo</strong></summary>
+
+Comprueba `sudo docker version` y `sudo docker compose version`. Si funcionan así, utiliza **`sudo node scripts/local-demo.cjs ...` en todos los comandos del operador**, incluidos `start`, `account`, `status`, `verify` y `stop`. Node 24 debe estar disponible también con `sudo`. No cambies los permisos del socket de Docker.
+
+Los pasos siguientes muestran ambas variantes cuando es necesario. En Windows se utiliza `node`, sin `sudo`.
+
+</details>
+
+<a id="docentes-extraer"></a>
+### Paso 2. Descargar, extraer y comprobar el paquete
+
+1. Descarga el **ZIP docente completo** del enlace destacado al principio.
+2. Extráelo en una carpeta local nueva. En Windows: clic derecho → **Extraer todo**. No ejecutes archivos dentro del ZIP.
+3. Abre una terminal en la carpeta extraída **`NormativaCheck-profesores-1e3a4f62`**. Es la que contiene:
+
+```text
+NormativaCheck-profesores-1e3a4f62/
+├── LEEME-PRIMERO.txt
+├── VERSION.json
+├── MANIFEST-SHA256.json
+├── aplicacion/
+├── documentacion/
+└── herramientas/
+```
+
+En Windows puedes abrir esa carpeta en el Explorador, escribir `powershell` en su barra de dirección y pulsar Intro. En Linux, usa **Abrir en terminal** desde el gestor de archivos.
+
+4. Comprueba la extracción:
+
+```sh
+node herramientas/verificar-paquete.cjs
+```
+
+**Resultado esperado: `INTEGRIDAD CORRECTA`.** Si falla, no arranques esa copia: vuelve a descargar y extraer el paquete en una carpeta nueva.
+
+5. Entra en la carpeta de la aplicación:
+
+```sh
+cd aplicacion
+```
+
+**Desde ahora, todos los comandos se ejecutan aquí**, donde aparecen `frontend`, `backend`, `infra` y `scripts`. Conserva esa carpeta en la misma ubicación después del primer arranque.
+
+<details>
+<summary>Comprobación adicional: huella SHA-256 del ZIP descargado</summary>
+
+La huella del ZIP completo es:
+
+```text
+20638994c996b7cfe11113555dc1f085bd61483852bb1f3b91c16f234437564f
+```
+
+Desde la carpeta de descargas, en Linux:
+
+```sh
+sha256sum NormativaCheck-profesores-1e3a4f62-validado-kali.zip
+```
+
+En PowerShell:
+
+```powershell
+Get-FileHash -Algorithm SHA256 -LiteralPath '.\NormativaCheck-profesores-1e3a4f62-validado-kali.zip'
+```
+
+Debe coincidir, ignorando mayúsculas/minúsculas. El manifiesto y esta huella detectan cambios; no son una firma digital de identidad del autor.
+
+</details>
+
+<details>
+<summary>Alternativa para revisar código: clonar Git o descargar solo el repositorio</summary>
+
+El [ZIP de código de v1.0-practica3](https://github.com/JoraTenshi/Normativa-Cyberseguridad/archive/refs/tags/v1.0-practica3.zip) y los enlaces automáticos **Source code** de la Release contienen el repositorio. **No incluyen los materiales adicionales del ZIP docente**. Para seguir esta guía por la ruta principal, descarga el archivo cuyo nombre empieza por `NormativaCheck-profesores`.
+
+Si prefieres Git:
+
+```sh
+git clone https://github.com/JoraTenshi/Normativa-Cyberseguridad.git NormativaCheck
+cd NormativaCheck
+git switch --detach v1.0-practica3
+git rev-parse HEAD
+```
+
+El commit de esa etiqueta es `a2386e4c1b72eb2a0749f238811580099d955fe3`. En un clon o ZIP del repositorio estás directamente en la raíz de la aplicación: **no existen `herramientas/verificar-paquete.cjs` ni una subcarpeta `aplicacion`**. Continúa en el paso 3 desde donde están `frontend`, `backend`, `infra` y `scripts`.
+
+La etiqueta conserva la entrega publicada; `main` puede incorporar mejoras documentales posteriores. Esta guía online es posterior al README incluido en el ZIP docente. No se ha modificado retroactivamente el paquete ni su huella.
+
+</details>
+
+<a id="docentes-arrancar"></a>
+### Paso 3. Arrancar y generar la configuración local
+
+Mantén Docker iniciado. Comprueba que el puerto está libre antes del primer arranque:
+
+| Terminal | Comando |
+| --- | --- |
+| Linux | `ss -lnt 'sport = :9445'` |
+| PowerShell | `Get-NetTCPConnection -LocalPort 9445 -State Listen -ErrorAction SilentlyContinue` |
+
+No debe aparecer un proceso escuchando en ese puerto. Si aparece, identifica la colisión antes de continuar.
+
+Desde **`aplicacion`**, ejecuta:
+
+```sh
+node scripts/local-demo.cjs start
+```
+
+Si tu Docker en Linux requiere `sudo`, utiliza **en su lugar**:
+
+```sh
+sudo node scripts/local-demo.cjs start
+```
+
+Espera a que termine; el primer arranque puede tardar varios minutos. **Resultado esperado: `VERIFICADO: HTTPS local...`**.
+
+El comando construye la web y la API, inicia MongoDB y crea la configuración, claves y certificado propios bajo `.runtime/local-demo/`. **No tienes que editar `.env`, introducir credenciales del grupo, configurar Gmail ni instalar las dependencias con `npm install` en el equipo.** La cuenta se crea en el paso 5.
+
+Docker mantiene la aplicación en segundo plano. Si el comando falla, conserva el mensaje y consulta [Si algo falla](#si-algo-falla); no borres datos ni generes otra configuración para ocultarlo.
+
+<a id="docentes-certificado"></a>
+### Paso 4. Confiar en el certificado de tu instalación
+
+El navegador necesita confiar en la CA que acaba de generar **tu copia**. El arranque comprueba HTTPS, pero no instala automáticamente esa confianza. Importa únicamente `ca.crt`, nunca archivos `.key`.
+
+<details open>
+<summary><strong>Linux con Firefox — entorno usado en el ensayo</strong></summary>
+
+Si arrancaste con `sudo`, desde **`aplicacion`** exporta solo el certificado público:
+
+```sh
+sudo install -D -m 644 -- .runtime/local-demo/tls/ca.crt outputs/local-demo-ca.crt
+```
+
+1. Abre Firefox con tu usuario habitual.
+2. En **Ajustes → Privacidad y seguridad → Certificados → Ver certificados → Autoridades → Importar**, selecciona `aplicacion/outputs/local-demo-ca.crt`.
+3. Habilita la confianza para identificar sitios web y confirma. Los nombres del menú pueden variar según la versión.
+
+Si arrancaste sin `sudo`, puedes importar directamente `aplicacion/.runtime/local-demo/tls/ca.crt`; activa la visualización de archivos ocultos si no aparece `.runtime`. No abras Firefox como administrador. Puedes utilizar un perfil de navegador dedicado al ensayo.
+
+</details>
+
+<details>
+<summary><strong>Windows con Edge o Chrome — procedimiento documentado, instalación completa no validada</strong></summary>
+
+Desde **`aplicacion`**, en PowerShell:
+
+```powershell
+Invoke-Item .\.runtime\local-demo\tls\ca.crt
+```
+
+En la ventana que se abre:
+
+1. **Instalar certificado → Usuario actual → Siguiente**.
+2. **Colocar todos los certificados en el siguiente almacén → Examinar**.
+3. **Entidades de certificación raíz de confianza → Aceptar → Siguiente → Finalizar**.
+4. Comprueba que es la CA recién generada por tu copia, `NormativaCheck Demo Local`, y confirma su importación.
+5. Abre o reinicia Edge/Chrome. Firefox puede utilizar un almacén propio.
+
+</details>
+
+**Resultado esperado:** al abrir la dirección del paso 5, no aparece un aviso de emisor desconocido. Si aparece, revisa el certificado y la URL; no desactives la validación HTTPS. La confianza instalada permanece al parar Docker: retira únicamente esta CA cuando termines definitivamente la evaluación. El certificado de servidor dura 90 días, exige al menos una semana restante y no se renueva automáticamente.
+
+<a id="docentes-cuenta"></a>
+### Paso 5. Crear la cuenta de prueba y entrar
+
+Desde **`aplicacion`**, en una terminal interactiva, ejecuta:
+
+```sh
+node scripts/local-demo.cjs account
+```
+
+Si has usado `sudo` en Linux, el comando es:
+
+```sh
+sudo node scripts/local-demo.cjs account
+```
+
+**Resultado esperado:** se crea una cuenta, una empresa ficticia y una contraseña aleatoria. **Guarda la contraseña que aparece en esa terminal: se muestra una sola vez.** No es la contraseña de Windows, Linux ni del servidor del grupo. Repetir `account` no la revela ni la restablece.
+
+| Dato para acceder | Valor |
+| --- | --- |
+| **Dirección, en el mismo equipo que ejecuta Docker** | **[https://127.0.0.2:9445/espacio-de-trabajo](https://127.0.0.2:9445/espacio-de-trabajo)** |
+| Correo | `admin.workspace@example.invalid` |
+| Contraseña | La generada en tu terminal por `account`. |
+| Empresa que debes seleccionar | `Empresa de prueba - NormativaCheck` |
+
+La cuenta administra esa empresa y está prevalidada para la evaluación. **Entra mediante «Iniciar sesión»; no necesitas «Crear cuenta», verificación de correo, recuperación de contraseña ni MFA para este recorrido.** No se envía correo. Si pierdes la contraseña, conserva el estado y solicita asistencia sin publicar secretos ni borrar la base.
+
+No cambies la dirección por `localhost`, HTTP u otra IP. Si usas Linux dentro de una máquina virtual, abre el navegador **dentro de esa máquina**, donde corre Docker. La configuración de acceso desde otro equipo no forma parte de esta receta.
+
+<a id="docentes-probar"></a>
+### Paso 6. Probar el recorrido básico
+
+La cuenta nueva incluye la empresa, pero **no trae un expediente completo precargado**. Las primeras vistas vacías son esperables. Este es el recorrido que se comprobó en Kali:
+
+| Orden | Qué hacer | Qué debes observar |
+| --- | --- | --- |
+| 1 | Inicia sesión y selecciona la empresa ficticia. | Se abre su Workspace. |
+| 2 | Desde los espacios de trabajo, crea un servicio/producto llamado, por ejemplo, `Servicio docente`, con una descripción ficticia. | El servicio aparece en la empresa. |
+| 3 | Recarga la página y vuelve al servicio. | Conserva el mismo nombre y datos. |
+| 4 | Consulta el historial de ese servicio. | Aparece su evento de creación. |
+| 5 | Ejecuta `stop`, después `start` y después `verify`, como explica el paso 8. | La comprobación local termina correctamente. |
+| 6 | Vuelve a iniciar sesión y consulta el servicio y su historial. | Continúan el servicio y su evento de creación. |
+| 7 | Cierra sesión, vuelve al área privada y recarga. | La aplicación vuelve a pedir identificación. |
+
+**Has completado la prueba básica cuando puedes crear, recuperar y conservar el servicio tras reiniciar, y cerrar la sesión correctamente.** Esto no acredita todos los módulos ni una conclusión normativa favorable. Los datos de este Workspace se guardan en MongoDB local.
+
+<a id="docentes-ampliado"></a>
+### Paso 7. Explorar tareas, documentos, evidencias y revisiones
+
+Continúa con el [recorrido ampliado de este README](#recorrido-ampliado). Dentro del ZIP, la carpeta **`documentacion`** incluye:
+
+| Archivo | Para qué usarlo |
+| --- | --- |
+| `Preparar_caso_docente.txt` | Preparar un caso ENS: perfil, actividad, alcance, sistema y requisito. |
+| `Recorrido_para_el_profesor.txt` | Continuar por tareas, documentos, evidencias y revisión. |
+| `Documento_ficticio_para_el_ensayo.pdf` | Probar la carga de un documento ficticio. No acredita cumplimiento. |
+| `Memoria_tecnica_original.pdf`, `Correspondencia_con_la_memoria.txt` y `Acta_de_aceptacion_Kali.txt` | Consultar el alcance académico, las versiones y las pruebas realizadas. |
+
+**Este recorrido ampliado es una guía de uso y no una prueba integral ya superada.** Para requisitos vinculados a operaciones, sigue la precisión de la guía online: la operación debe vincularse a la actividad antes de confirmar el alcance. El caso ENS del paquete utiliza un sistema, que es otro itinerario.
+
+Si solo quieres conocer la demo guiada de la portada, abre **[Explorar la demo](https://127.0.0.2:9445/#/demo)** con la instalación en marcha. Su contenido ficticio vive en el navegador; es independiente del Workspace conectado y no sirve para comprobar persistencia en MongoDB.
+
+<a id="docentes-parar"></a>
+### Paso 8. Detener la app y volver a usarla otro día
+
+Desde **la misma carpeta `aplicacion`**, ejecuta únicamente el comando de la acción que necesitas:
+
+| Acción | Comando |
+| --- | --- |
+| Consultar el estado | `node scripts/local-demo.cjs status` |
+| Comprobar HTTPS, API y MongoDB | `node scripts/local-demo.cjs verify` |
+| Detener al terminar | `node scripts/local-demo.cjs stop` |
+| Volver a arrancar | `node scripts/local-demo.cjs start` |
+
+En Linux, conserva el prefijo `sudo` si fue necesario en el primer arranque. Para probar el reinicio del paso 6, ejecuta **`stop` → espera a que termine → `start` → espera → `verify`**.
+
+`stop` conserva cuenta, documentos, claves y volúmenes. Otro día, inicia Docker, ejecuta `start` y entra con la misma cuenta. No ejecutes `account` de nuevo. No hay arranque automático garantizado tras reiniciar el ordenador: **no muevas la carpeta ni copies `.runtime`**, porque la instalación está vinculada a su ruta y usuario.
+
+---
+
+## Información de la aplicación y documentación técnica
+
+La guía anterior es la ruta de instalación para evaluar. Los apartados siguientes desarrollan finalidad, arquitectura, correspondencia con la memoria, configuración, pruebas y límites. No es necesario ejecutar sus comandos de desarrollo para seguir el recorrido docente.
+
+
+## Qué problema resuelve y qué contiene
 
 La primera versión del proyecto (P1) utilizaba cuestionarios, puntuaciones y un Plan Director de Seguridad (PDS). P3 conserva la finalidad de orientar a la empresa, pero cambia el núcleo: una valoración debe explicar los hechos examinados, el requisito, el periodo y la evidencia que la sostiene. El código y los resultados históricos anteriores se conservan; no se reinterpretan como revisiones del modelo nuevo.
 
@@ -44,7 +331,7 @@ El código incorpora también unidades de protección de datos: RAT, finalidades
 
 Quedan fuera del cierre del MVP la ampliación normativa completa, IA integrada, licitaciones, un nuevo PDS completo exportable, Trust Center y una API pública para integradores. Las rutas internas de la aplicación no equivalen a esa API pública. Tampoco se promete un gestor colaborativo completo, análisis antimalware de PDF o medidas de rendimiento no ensayadas.
 
-## 2. Versiones y correspondencia con la memoria
+## Versiones y correspondencia con la memoria
 
 | Referencia | Identidad | Qué acredita |
 | --- | --- | --- |
@@ -58,7 +345,7 @@ La memoria original no se ha alterado. Se lee junto con la [actualización de ac
 
 Una integración que solo añada documentación producirá otro commit y otro árbol Git. El responsable de publicación debe identificarlo y verificar que las fuentes ejecutables y los lockfiles permanecen iguales a la base probada; si cambia código, deben repetirse las pruebas afectadas. No se presenta la aceptación de `1e3a4f62` como una prueba de cualquier `main` posterior.
 
-## 3. Arquitectura y estructura del repositorio
+## Arquitectura y estructura del repositorio
 
 React 18, compilado mediante `react-scripts` 5, presenta la interfaz. Nginx sirve sus archivos y dirige `/api` al backend Node.js/Express 4. Mongoose 8 modela los datos en MongoDB. Los `package-lock.json` de `frontend` y `backend` fijan las dependencias; no se ha migrado esta base a Vite.
 
@@ -111,162 +398,11 @@ La base contiene contraseña con bcrypt, correo verificado, TOTP y controles de 
 
 Los registros y documentos tienen versiones. Una edición con una versión antigua puede devolver `HTTP 409`: se debe conservar el borrador, consultar el estado actual y decidir cómo resolverlo, no reenviar ciegamente ni sobrescribir trabajo ajeno. La [documentación de contratos](docs/) amplía los comportamientos concretos.
 
-## 4. Instalación local para evaluación
 
-### 4.1. Entorno comprobado y requisitos
+---
 
-El recorrido básico se ejecutó en **Kali Linux x86-64, Node 24.19.0, Docker Linux, Compose 2.40.3-3 y Firefox 140.12.0** mediante navegador automatizado sin interfaz visible, con TLS validado. No se ha acreditado instalación nativa Windows, macOS ni ARM. Kali no es un requisito del producto: es el entorno de esta evidencia.
-
-Necesitas:
-
-- Node.js **24.x** y OpenSSL en el equipo. El operador admite Node de versión mayor o igual a 24, pero esta entrega solo aporta evidencia de Node 24. En Windows también reconoce el OpenSSL de Git for Windows en `C:\Program Files\Git\usr\bin\openssl.exe`.
-- Docker **local**, iniciado, con contenedores Linux y **Compose 2.x**. El operador rechaza Compose 1, 3, 4 o 5 y los contextos remotos; no basta con instalar una versión reciente de Docker Desktop sin comprobar su Compose.
-- Arquitectura `linux/amd64`: las imágenes están fijadas a esa plataforma y a sus digest. Otras arquitecturas no están validadas.
-- Internet para la primera descarga de imágenes y dependencias. No hace falta instalar `node_modules` en el host para esta receta Docker.
-- Puerto **`127.0.0.2:9445`** libre y una carpeta local estable, fuera de sincronización con la nube. No moverla después de arrancar.
-- Recursos para Docker. Como previsión, 4 GB de memoria disponibles y varios GB de disco; reservar 10 GB de disco da margen, **no es un mínimo medido ni una garantía**. El equipo anfitrión y Docker Desktop tienen requisitos adicionales propios.
-- Git si se obtiene la entrega por clon; no hace falta Git para extraer el ZIP docente, salvo que se utilice su instalación de OpenSSL en Windows.
-
-Comprobar en la terminal:
-
-```sh
-node --version
-docker version
-docker compose version
-```
-
-Se espera Node 24.x, cliente **y servidor** Docker accesibles y Compose v2.x. Si Linux necesita `sudo` para Docker, comprobar `sudo docker version` y `sudo docker compose version` y usar **`sudo node ...` de forma consistente** en los pasos del operador. No abrir permisos del socket, cambiar arbitrariamente de usuario ni copiar secretos para evitar ese control.
-
-En un equipo administrado, la instalación de requisitos y la confianza en una CA pueden necesitar autorización. No se pide desactivar los controles del sistema. Las instrucciones Windows siguientes son una ruta documentada, **no una instalación Windows ya aceptada**.
-
-### 4.2. Obtener una copia nueva de la versión correcta
-
-**Desde GitHub, con la etiqueta de entrega verificada:**
-
-```sh
-git clone https://github.com/JoraTenshi/Normativa-Cyberseguridad.git NormativaCheck
-cd NormativaCheck
-git switch --detach v1.0-practica3
-git rev-parse HEAD
-```
-
-El último comando debe coincidir con el SHA del recibo final de publicación. Esta secuencia de obtención no formó parte de la aceptación desde ZIP. **Si la etiqueta no existe o no coincide con el commit publicado, detenerse.** No completar un clon antiguo copiando archivos de otra rama. La consulta remota previa a este cierre queda fechada en la [nota de aceptación](docs/aceptacion-docente-20261017.md).
-
-**Alternativa disponible para la evaluación: ZIP docente entregado por el grupo.** La revisión documental 2 se identifica como:
-
-```text
-NormativaCheck-profesores-1e3a4f62-validado-kali.zip
-SHA-256: 20638994c996b7cfe11113555dc1f085bd61483852bb1f3b91c16f234437564f
-```
-
-No se inventa aquí un enlace de descarga público: el grupo debe proporcionar ese archivo y su huella por el canal académico. Se puede comprobar con `sha256sum NOMBRE.zip` en Linux o `Get-FileHash -Algorithm SHA256 -LiteralPath 'NOMBRE.zip'` en PowerShell, sustituyendo `NOMBRE.zip` por el nombre anterior. La huella detecta diferencias respecto del archivo recibido; no es una firma de identidad del remitente.
-
-Extraer el ZIP en una carpeta nueva. En Windows, **Extraer todo**, no ejecutar dentro del ZIP. Abrir una terminal en `NormativaCheck-profesores-1e3a4f62`, donde están `VERSION.json`, `aplicacion`, `documentacion` y `herramientas`, y ejecutar:
-
-```sh
-node herramientas/verificar-paquete.cjs
-cd aplicacion
-```
-
-Debe aparecer `INTEGRIDAD CORRECTA`. Los 593 archivos de `aplicacion` corresponden a `1e3a4f62`; los documentos externos complementan esa base. Esta revisión del README es posterior y no se presume incluida retroactivamente en el ZIP con la huella anterior.
-
-**Desde aquí todos los comandos se ejecutan en la raíz de la aplicación**, donde están `frontend`, `backend`, `infra` y `scripts`. No copiar `.env`, `.runtime`, certificados, bases, cuentas ni dependencias de otra instalación.
-
-### 4.3. Comprobar el puerto y arrancar
-
-En Linux:
-
-```sh
-ss -lnt 'sport = :9445'
-```
-
-En PowerShell:
-
-```powershell
-Get-NetTCPConnection -LocalPort 9445 -State Listen -ErrorAction SilentlyContinue
-```
-
-Si hay un servicio escuchando, resolver la colisión antes de continuar. No detener una instalación ajena ni modificar el puerto del paquete para ocultar el conflicto.
-
-```sh
-node scripts/local-demo.cjs start
-```
-
-En Linux con Docker administrativo, el equivalente es:
-
-```sh
-sudo node scripts/local-demo.cjs start
-```
-
-El operador construye web/backend desde sus fuentes y lockfiles, genera claves y certificados propios, inicia MongoDB y verifica HTTPS/API/Mongo y varios rechazos básicos. Esperar **`VERIFICADO: HTTPS local...`** y la finalización del comando. Puede tardar varios minutos. No ejecutar `npm install`, un `seed` manual o un `docker compose up` genérico como sustitución.
-
-El origen es **https://127.0.0.2:9445**, en el mismo equipo que ejecuta Docker. No sustituirlo por `localhost`, HTTP o la dirección del servidor privado. Docker puede seguir en segundo plano al cerrar la terminal; debe continuar iniciado.
-
-### 4.4. Confiar en la CA de esta instalación
-
-La CA se genera en esta copia. El operador valida el certificado, pero **no cambia automáticamente la confianza del navegador**. Importar solo su certificado público, nunca una clave `.key` ni una CA descargada de otro usuario. Preferir un perfil de navegador dedicado al ensayo.
-
-**Linux/Firefox:** si el arranque se hizo con `sudo`, exportar únicamente el certificado público:
-
-```sh
-sudo install -D -m 644 -- .runtime/local-demo/tls/ca.crt outputs/local-demo-ca.crt
-```
-
-En el navegador de tu usuario, abrir los ajustes de certificados/autoridades e importar `outputs/local-demo-ca.crt` para identificar sitios web. Si el arranque no necesitó `sudo`, se puede importar `.runtime/local-demo/tls/ca.crt` directamente. Los nombres del menú dependen del navegador. No abrir el navegador como administrador ni cambiar permisos de toda `.runtime`.
-
-**Windows (procedimiento no aceptado de extremo a extremo en este ensayo):**
-
-```powershell
-Invoke-Item .\.runtime\local-demo\tls\ca.crt
-```
-
-Elegir **Instalar certificado → Usuario actual → Colocar todos los certificados en el siguiente almacén → Entidades de certificación raíz de confianza**. Comprobar que corresponde a la CA recién generada de esta instalación, `NormativaCheck Demo Local`. Reiniciar Edge/Chrome si no recoge el cambio; Firefox puede utilizar un almacén propio.
-
-La confianza en Windows afecta al usuario, no solo a una pestaña. No desactivar TLS, aceptar todos los certificados ni compartir `.runtime`. Al terminar definitivamente, retirar únicamente la CA de este ensayo del almacén donde se importó; detener Docker no retira esa confianza. El certificado del servidor dura 90 días y el operador exige al menos una semana restante; no hay renovación automática.
-
-### 4.5. Crear la cuenta ficticia e iniciar sesión
-
-En una terminal **interactiva**, sin redirigir la salida:
-
-```sh
-node scripts/local-demo.cjs account
-```
-
-Mantener `sudo node ...` si se utilizó en el arranque Linux. El comando crea una cuenta `admin.workspace@example.invalid`, la organización `Empresa de prueba - NormativaCheck` y una contraseña aleatoria **propia de esa instalación**, que aparece una sola vez. Guardarla localmente; no enviarla por chat, incluirla en capturas ni escribirla en GitHub.
-
-Repetir `account` no revela ni restablece la contraseña, no reactiva permisos y no sirve para completar una base con usuarios u organizaciones previos. Si se perdió, conservar el estado y pedir asistencia; no borrar datos para recuperarla.
-
-Abrir **https://127.0.0.2:9445/espacio-de-trabajo**, iniciar sesión y seleccionar la empresa ficticia. La cuenta tiene administración de esa empresa, no de la plataforma. Está prevalidada exclusivamente para el laboratorio: **no utilizar Crear cuenta, recuperación de contraseña o MFA como parte de esta receta**. No se envía correo ni se prueba el registro de producción.
-
-### 4.6. Estado, parada, reinicio y persistencia
-
-```sh
-node scripts/local-demo.cjs status
-node scripts/local-demo.cjs verify
-node scripts/local-demo.cjs stop
-node scripts/local-demo.cjs start
-```
-
-Usar el mismo usuario/permisos y la misma carpeta que en el primer arranque. `stop` conserva contenedores, volúmenes, claves, cuenta y documentos; no equivale a desinstalar. La identidad del proyecto depende de la ruta del clon: **no mover la carpeta ni copiar `.runtime`**.
-
-Después de reiniciar el ordenador, iniciar Docker y ejecutar `start`; no se promete arranque automático. `verify` comprueba infraestructura y accesos básicos, no todos los formularios ni los roles. Para comprobar persistencia hay que volver a iniciar sesión y leer los mismos datos, como indica el recorrido siguiente. Si falla, conservar mensaje y estado: no borrar volúmenes ni regenerar claves.
-
-## 5. Primer uso y recorrido docente
-
-### 5.1. Recorrido básico comprobado en Kali
-
-1. Entrar con la cuenta generada y seleccionar `Empresa de prueba - NormativaCheck`.
-2. Crear un servicio/producto ficticio desde la sección de espacios de trabajo. Usar un nombre reconocible, por ejemplo `Servicio docente`, y una descripción sin información real.
-3. Recargar y comprobar que aparece el mismo servicio. Consultar su evento de creación en el historial: no basta con que la pantalla de historial abra.
-4. Ejecutar `stop`, `start` y `verify` desde la raíz de esa copia.
-5. Volver a iniciar sesión y comprobar el mismo servicio y su evento de creación.
-6. Cerrar sesión. Volver al área privada y recargar: debe pedir identificación de nuevo.
-
-La aceptación correlacionó navegador y lecturas de API con el mismo ID de servicio y evento. Se ejecutó con Firefox automatizado y TLS confiado, no mediante respuestas simuladas. **No fue una instalación autónoma realizada por un profesor ajeno al equipo** ni acredita todo el producto.
-
-La cuenta nueva solo trae empresa y membresía. **No hay un expediente completo precargado:** faltan actividades, alcances, tareas, documentos, evidencias y revisiones hasta que se creen. Una vista vacía no significa que un requisito esté satisfecho.
-
-### 5.2. Recorrido ampliado: guía, no aceptación integral
+<a id="recorrido-ampliado"></a>
+## Recorrido ampliado: guía, no aceptación integral
 
 La siguiente cadena explica el funcionamiento implementado y cómo preparar un caso. **No se ha ejecutado completa en la aceptación Kali.** El paquete docente incluye `documentacion/Preparar_caso_docente.txt`, `Recorrido_para_el_profesor.txt` y un PDF ficticio de apoyo, fuera del código de aplicación.
 
@@ -283,7 +419,7 @@ El caso ENS del paquete estipula una empresa privada que presta un servicio a un
 
 Las unidades RAT, finalidades, flujos, información, derechos, EIPD y categorización ENS tienen sus propios editores y condiciones. Esta cadena no los cubre todos. La memoria, capítulos 6, 8 y 9, identifica sus pruebas anteriores y límites; no se trasladan a esta instalación por compartir pantallas.
 
-### 5.3. Demo guiada sin cuenta
+### Demo guiada sin cuenta
 
 Con la instalación local completa, abrir la portada del mismo origen y pulsar **Explorar la demo**, o entrar en `https://127.0.0.2:9445/#/demo`. Es un fragmento `/#/demo`, no la ruta `/demo`.
 
@@ -291,7 +427,7 @@ Seleccionar el servicio ficticio, consultar el diagnóstico, abrir **Tareas y re
 
 Los cambios de este modo pertenecen a la demo del navegador, no a la empresa autenticada. Sus contadores son tareas, no porcentajes de cumplimiento. No presentar su contenido precargado como si se hubiera creado y persistido en MongoDB durante la evaluación.
 
-## 6. Configuración y conservación de datos
+## Configuración y conservación de datos
 
 | Perfil | Configuración de entrada | Límites |
 | --- | --- | --- |
@@ -305,7 +441,7 @@ El perfil privado contiene modos `disabled`, `smtp465` y `smtp587`, con secreto 
 
 Los atajos antiguos `make up`, `seed`, `setup`, `cert`, `recert` y `clean` están deshabilitados; el Compose de raíz requiere un perfil explícito. Los scripts históricos de laboratorio no sustituyen la receta docente. Algunas de sus plantillas siguen siendo dependencias del perfil local, como muestra el mapa de carpetas.
 
-## 7. Pruebas, compilación y evidencia
+## Pruebas, compilación y evidencia
 
 La instalación para profesores construye las dependencias dentro de Docker. Los comandos siguientes son **opcionales para desarrollo y revisión del código**, no pasos adicionales obligatorios del acceso docente. Ejecutarlos en otra copia, sin URI, claves, cookies o credenciales reales y sin reutilizar `node_modules` o `NODE_PATH` de otra rama.
 
@@ -358,7 +494,8 @@ El build queda en `frontend/build/` y no se versiona. [canonical-checks.yml](.gi
 
 `scripts/local-demo-qa.cjs` es un ensayo separado para mantenedores y exige una copia sin runtime. No es el acceso normal del profesor: la contraseña del automatismo vive solo en memoria. No ejecutarlo sobre la copia de uso ni emplearlo para recuperar una cuenta. La [guía técnica local](docs/prueba-local.md) conserva el detalle y los antecedentes, con actualización de estado enlazada al acta actual.
 
-## 8. Si algo falla
+<a id="si-algo-falla"></a>
+## Si algo falla
 
 | Mensaje o síntoma | Qué comprobar sin destruir datos |
 | --- | --- |
@@ -377,7 +514,7 @@ El build queda en `frontend/build/` y no se versiona. [canonical-checks.yml](.gi
 
 Al informar de un problema, indicar sistema operativo, versión Node/Docker/Compose, commit o ZIP, paso, mensaje y resultado esperado. Omitir contraseñas, cookies, tokens, claves y datos personales. No ejecutar limpiezas de volúmenes, cambios de permisos o regeneración de secretos como primer intento.
 
-## 9. Seguridad, licencias y entrega
+## Seguridad, licencias y entrega
 
 La memoria, capítulo 7, recoge tres hallazgos prioritarios en una réplica R3: equivalencia de contraseñas largas por el límite de bcrypt, pérdida de incrementos concurrentes del contador de fallos y reutilización de un TOTP entre retos. **Esta actualización documental y la aceptación básica no acreditan su corrección.** También documenta autenticación reciente para alta MFA, distinción de cuentas en el registro y validación PDF superficial, además de avisos de dependencias. No hay certificado de seguridad ni una auditoría exhaustiva de esta instalación.
 
@@ -385,6 +522,6 @@ Usar solo datos ficticios. La presencia de módulos de protección de datos no d
 
 La licencia del código original es [MIT](LICENSE). Las dependencias y recursos ajenos conservan sus licencias y avisos: consultar [terceros](docs/terceros.md). Retirar recursos del árbol actual no elimina su presencia histórica ni concede permisos retroactivos. `.gitignore` no sanea objetos ya versionados; la revisión de secretos tiene un alcance acotado, no una garantía absoluta sobre todo el historial.
 
-El historial real del grupo debe preservarse, sin fabricar autorías o contribuciones. Antes de cerrar GitHub se debe comprobar la integración completa, la identidad remota de `main` y `v1.0-practica3`, la CI correspondiente y cualquier diferencia respecto de las fuentes aceptadas. La eliminación de ramas es una operación separada y condicionada a conservar el trabajo útil; no forma parte de instalar ni probar el README.
+El historial real del grupo debe preservarse, sin fabricar autorías o contribuciones. La entrega etiquetada `v1.0-practica3` conserva su identidad. Las mejoras posteriores de esta guía se publican en `main`, con su historial, sin mover esa etiqueta ni presentar cambios documentales como nuevas pruebas funcionales. La eliminación de ramas es una operación separada y condicionada a conservar el trabajo útil; no forma parte de instalar ni probar el README.
 
-La [cronología de entrega](docs/entrega-practica3.md) conserva resultados anteriores. La [nota del 17/10](docs/aceptacion-docente-20261017.md) actualiza únicamente la identidad y aceptación básica docente que están documentadas. No sustituye la memoria original, el vídeo, sus minutos de trazabilidad ni la entrega efectiva en el campus.
+La [cronología de entrega](docs/entrega-practica3.md) conserva resultados anteriores. La [nota del 17/10](docs/aceptacion-docente-20261017.md) actualiza únicamente la identidad y aceptación básica docente que están documentadas. La memoria original y sus referencias al vídeo se conservan como evidencia histórica. Para descargar e instalar esta aplicación basta con los enlaces públicos y los pasos para el profesorado de este README; no se requiere un nuevo adjunto en el campus.

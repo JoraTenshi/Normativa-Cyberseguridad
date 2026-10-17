@@ -1,5 +1,7 @@
 # Prueba local del Workspace con datos ficticios
 
+> **Para el profesorado:** sigue primero la [guía paso a paso del README vigente](https://github.com/JoraTenshi/Normativa-Cyberseguridad/blob/main/README.md#para-el-profesorado). Este documento conserva el detalle técnico y los antecedentes de las pruebas. El [ZIP docente completo](https://github.com/JoraTenshi/Normativa-Cyberseguridad/releases/download/v1.0-practica3/NormativaCheck-profesores-1e3a4f62-validado-kali.zip) está disponible en GitHub y no requiere recibir archivos por otro canal.
+
 Esta instalación es independiente del servidor privado, de Gmail y de WireGuard. Se ejecuta en el ordenador donde se clona el repositorio. No requiere esperar una autorización de alta: un comando administrativo local crea una cuenta y una empresa exclusivamente ficticias. No concede administración global de la plataforma.
 
 ## Requisitos y alcance
@@ -16,7 +18,7 @@ Este perfil no publica la aplicación en Internet ni sirve para producción. No 
 
 ## 1. Obtener la versión de entrega
 
-Clona la URL y selecciona la referencia exacta indicadas en el README definitivo de la entrega. Abre una terminal **en la raíz del clon**, donde están `backend`, `frontend`, `infra` y `scripts`. Estos archivos deben estar integrados en esa referencia; una propuesta o paquete de trabajo no equivale a una publicación en GitHub.
+La ruta recomendada es descargar y extraer el ZIP docente enlazado arriba y ejecutar su comprobación de integridad, como indica el README. Después abre una terminal **en la carpeta `aplicacion` del paquete**, donde están `backend`, `frontend`, `infra` y `scripts`. Si elegiste clonar Git o descargar el ZIP de código de `v1.0-practica3`, esas carpetas están directamente en la raíz del repositorio: no existe la subcarpeta `aplicacion`. La etiqueta publicada identifica `a2386e4c1b72eb2a0749f238811580099d955fe3`.
 
 Comprueba los requisitos:
 
@@ -128,4 +130,4 @@ La [nota de aceptación y correspondencia](aceptacion-docente-20261017.md) actua
 
 El entorno comprobado fue Kali Linux amd64, Node 24.19.0, Docker Linux y Compose 2.40.3-3. El operador admite únicamente Compose de la familia 2.x; una versión mayor no cumple esa guarda. Node 24 es la versión documentada y ensayada. Windows nativo, macOS, ARM, correo externo, MFA y el recorrido normativo completo no se aceptan por extensión. Los intentos incompletos del arnés de navegador se conservan y no se modificó el código de aplicación para repetirlos.
 
-La memoria original describe R3 y se conserva sin cambios; la nota identifica la base posterior y el alcance preciso de la actualización. La integridad del ZIP documental final se comprobó y sus fuentes de aplicación son las mismas que se instalaron. No se repitió todo el ensayo por añadir documentación. La publicación de `main` y de `v1.0-practica3` requiere su propio recibo remoto: seguir el estado fechado y las instrucciones de obtención del README.
+La memoria original describe R3 y se conserva sin cambios; la nota identifica la base posterior y el alcance preciso de la actualización. La integridad del ZIP documental final se comprobó y sus fuentes de aplicación son las mismas que se instalaron. No se repitió todo el ensayo por añadir documentación. La etiqueta `v1.0-practica3` ya fue publicada y comprobada mediante clones limpios. Sus tres diferencias frente a la base aceptada eran documentales; las aclaraciones posteriores de esta guía en `main` no mueven esa etiqueta. Seguir la guía vigente enlazada al principio.
