@@ -266,9 +266,25 @@ En PowerShell, escríbelo **directamente** en una terminal normal, sin canalizar
 | Contraseña | La generada en tu terminal por `account`. |
 | Empresa que debes seleccionar | `Empresa de prueba - NormativaCheck` |
 
-La cuenta administra esa empresa y está prevalidada para la evaluación. **Entra mediante «Iniciar sesión»; no necesitas «Crear cuenta», verificación de correo, recuperación de contraseña ni MFA para este recorrido.** No se envía correo. Si pierdes la contraseña, conserva el estado y solicita asistencia sin publicar secretos ni borrar la base.
+La cuenta administra **solo esa empresa ficticia** y está prevalidada para la evaluación. **Entra mediante «Iniciar sesión»; no necesitas «Crear cuenta», verificación de correo ni recuperación de contraseña.** No se envía correo. El segundo factor (2FA) es opcional y **no hace falta para el recorrido básico**: si lo activas en **Mi cuenta → Seguridad**, necesitarás tu aplicación de códigos para los siguientes inicios de sesión y se te pedirá identificarte de nuevo. Esta instalación local no ofrece recuperación por correo ni códigos de respaldo para el 2FA; consérvalo en tu aplicación. Si pierdes la contraseña o el segundo factor, conserva el estado y solicita asistencia sin publicar secretos ni borrar la base.
 
 No cambies la dirección por `localhost`, HTTP u otra IP. Si usas Linux dentro de una máquina virtual, abre el navegador **dentro de esa máquina**, donde corre Docker. La configuración de acceso desde otro equipo no forma parte de esta receta.
+
+<a id="docentes-que-pueden-hacer"></a>
+### Qué puede hacer el profesorado con la cuenta ficticia
+
+No es una visita de solo lectura: la cuenta es **administradora de la empresa de prueba**, sin permisos de administración global de la plataforma. La instalación comienza con esa empresa, pero sin un expediente normativo completo. Usa únicamente nombres, datos y archivos inventados.
+
+| Puedes... | Por dónde empezar |
+| --- | --- |
+| **Explorar el Workspace** y su vista general, perfil, operaciones, documentación, tareas, historial y secciones normativas. | Inicia sesión y selecciona `Empresa de prueba - NormativaCheck`. Las listas vacías al principio son normales. |
+| **Crear un servicio o producto ficticio**, volver a abrirlo y comprobar que persiste tras recargar o reiniciar. | Sigue el [recorrido básico](#docentes-probar); es la prueba más sencilla y ya comprobada. |
+| **Describir un caso de prueba** con perfil, actividad, alcance, sistema u operación; consultar las fichas disponibles de ENS y RGPD. | Sigue [Preparar un caso docente](#docentes-ampliado). Las fichas cubren supuestos concretos, no toda la normativa. |
+| **Registrar tareas, documentos PDF y evidencias**, y consultar los cambios guardados. | El [recorrido ampliado](#recorrido-ampliado) indica qué datos previos necesita cada paso. Usa el PDF ficticio incluido; cada versión admite hasta 5 MiB. |
+| **Explorar RAT, privacidad, solicitudes de derechos, detección EIPD y revisiones internas** con datos inventados. | Son módulos implementados con condiciones y dependencias propias. Una pantalla disponible no significa que exista ya un caso preparado ni que su flujo completo se haya aceptado en esta instalación. |
+| **Activar 2FA** para la propia cuenta, si deseas probarlo después del recorrido básico. | En **Mi cuenta → Seguridad**. No hay recuperación local ni códigos de respaldo: conserva el autenticador. Después del cambio se exige volver a iniciar sesión y aportar el código TOTP. |
+
+La demo guiada de la portada, **«Explorar la demo»**, es otra opción para mirar sin iniciar sesión: sus datos viven en el navegador y no son los que guardas en este Workspace. Esta cuenta no autoriza a aprobar altas de otros usuarios ni a administrar la plataforma. Las revisiones y diagnósticos son orientativos; la aplicación no emite certificados de cumplimiento.
 
 <a id="docentes-probar"></a>
 ### Paso 6. Probar el recorrido básico
@@ -426,7 +442,7 @@ La API distingue autenticación, membresía de organización, permisos por rol y
 
 Los roles empresariales son `administrador`, `colaborador` y `consulta`. **El recorrido normativo descrito aquí requiere administrador de la organización**, que es el rol de la cuenta docente: contexto, operaciones, requisitos, actuaciones, revisiones y unidades ENS/DP no están abiertos a cualquier miembro. La lectura documental de otros roles depende de lectores o unidades autorizadas; el historial general tampoco se concede indiscriminadamente. La coordinación de una unidad es otra relación y no convierte al usuario en administrador. La capacidad de plataforma `revision_altas` se concede por separado y exige sus controles de correo, MFA y autenticación reciente; no se crea con `account`.
 
-La base contiene contraseña con bcrypt, correo verificado, TOTP y controles de sesión. La política de sesión es de **8 horas absolutas y 30 minutos de inactividad**; «Mantener la sesión» no elimina esos límites. La cuenta docente prevalidada es una excepción explícita del laboratorio y no prueba correo ni MFA.
+La base contiene contraseña con bcrypt, correo verificado, TOTP y controles de sesión. La política de sesión es de **8 horas absolutas y 30 minutos de inactividad**; «Mantener la sesión» no elimina esos límites. La cuenta docente prevalidada es una excepción explícita del laboratorio: su creación no prueba el envío de correo ni el 2FA, aunque este último se puede activar y usar opcionalmente con la cuenta.
 
 Los registros y documentos tienen versiones. Una edición con una versión antigua puede devolver `HTTP 409`: se debe conservar el borrador, consultar el estado actual y decidir cómo resolverlo, no reenviar ciegamente ni sobrescribir trabajo ajeno. La [documentación de contratos](docs/) amplía los comportamientos concretos.
 
@@ -561,6 +577,7 @@ La instalación interactiva de Docker Desktop se documenta con la [guía oficial
 | El comando se ejecuta en la carpeta equivocada | Desde la raíz del ZIP, `Test-Path .\herramientas\verificar-paquete.cjs` debe ser `True`; desde `aplicacion`, `Test-Path .\scripts\local-demo.cjs` debe ser `True`. |
 | `INSTALLATION_MISMATCH` / `RUNTIME_OWNER` / `RUNTIME_PERMISSIONS` | Ruta y usuario originales; no copiar runtime ni abrir sus permisos como reparación. |
 | `HTTP 409` al editar | Versión desactualizada: conservar borrador, consultar y comparar antes de decidir. No repetir el guardado a ciegas. |
+| `HTTP 429` o «Sesión bloqueada» tras muchas acciones seguidas | La API limita las peticiones a 100 por cada 15 minutos, además de límites específicos para autenticación. Espera el tiempo indicado por `Retry-After` o hasta que termine esa ventana; después usa **«Volver a comprobar la sesión»**. No elijas **«Cerrar sesión y descartar el borrador»** si tienes cambios sin guardar. Evita recorrer muchas secciones rápidamente. |
 | Pantalla normativa vacía o revisión no habilitada | Comprobar empresa seleccionada, alcance, datos requeridos y referencias guardadas. No equivale a cumplimiento ni autoriza inventar datos. |
 
 Al informar de un problema, indicar sistema operativo, versión Node/Docker/Compose, commit o ZIP, paso, mensaje y resultado esperado. Omitir contraseñas, cookies, tokens, claves y datos personales. No ejecutar limpiezas de volúmenes, cambios de permisos o regeneración de secretos como primer intento.
