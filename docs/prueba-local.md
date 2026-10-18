@@ -1,6 +1,6 @@
 # Prueba local del Workspace con datos ficticios
 
-> **Para el profesorado:** sigue primero la [guía paso a paso del README vigente](https://github.com/JoraTenshi/Normativa-Cyberseguridad/blob/main/README.md#para-el-profesorado). Este documento conserva el detalle técnico y los antecedentes de las pruebas. El [ZIP docente completo](https://github.com/JoraTenshi/Normativa-Cyberseguridad/releases/download/v1.0-practica3/NormativaCheck-profesores-1e3a4f62-validado-kali.zip) está disponible en GitHub y no requiere recibir archivos por otro canal.
+> **Documento histórico de la aceptación Kali.** Para instalar y probar la revisión docente actual en Windows o Linux, sigue la [guía paso a paso del README vigente](../README.md#para-el-profesorado) y descarga desde allí el ZIP recomendado. Los comandos y requisitos que siguen describen el paquete anterior validado en Kali; no los combines con archivos de la revisión Windows.
 
 Esta instalación es independiente del servidor privado, de Gmail y de WireGuard. Se ejecuta en el ordenador donde se clona el repositorio. No requiere esperar una autorización de alta: un comando administrativo local crea una cuenta y una empresa exclusivamente ficticias. No concede administración global de la plataforma.
 
@@ -8,7 +8,7 @@ Esta instalación es independiente del servidor privado, de Gmail y de WireGuard
 
 - Git y acceso al repositorio de la entrega.
 - Node.js 24 y OpenSSL en el equipo. En Windows se admite el OpenSSL incluido con Git for Windows en su ruta habitual.
-- Docker Engine local con Docker Compose **v2**, o Docker Desktop iniciado en modo **contenedores Linux**. No se admiten contextos Docker remotos.
+- Para el paquete Kali descrito aquí, Docker Engine local con Docker Compose **v2**; la revisión Windows actual admite Compose **v2 o v5** según el README. Docker Desktop debe usar contenedores Linux. No se admiten contextos Docker remotos.
 - Conexión a Internet para descargar las imágenes y dependencias en la primera construcción. No hay que instalar las dependencias de frontend/backend en el host.
 - Puerto `127.0.0.2:9445` libre. MongoDB y el backend no publican puertos en el host.
 - Solo la web participa en la red de entrada de Docker. Las redes de base de datos y comunicación con el backend siguen siendo internas. La publicación HTTPS está vinculada a loopback, no a todas las interfaces del ordenador.
@@ -114,20 +114,10 @@ Solo se admite una copia sin `.runtime/local-demo`. Arranca Docker, crea cuenta/
 
 El resultado automatizado no acredita renderizado ni navegación en un navegador, envío de correo, funcionamiento en otro sistema operativo ni despliegue en Hetzner. Si falla, conserva el estado y el código de etapa; no repitas ni restablezcas la base para ocultar el fallo.
 
-## Antecedente de validación del candidato previo
-
-Este apartado conserva la situación anterior a la aceptación del 17/10/2026; no es el estado actual del paquete. El recorrido básico del código `1e3a4f62fd0cca6927a97fc42fb9f86e847a6eb5` fue aceptado después en Kali. Leer la actualización al final y el [README](../README.md) para la referencia que debe obtenerse; no completar un clon antiguo con archivos sueltos.
-
-La copia de ensayo anterior ha confirmado el arranque de los tres contenedores, HTTPS/API/Mongo y la conservación de la cuenta, empresa, membresía, servicio ficticio y su evento tras detener y arrancar los contenedores. Estas últimas comprobaciones proceden de la ejecución y capturas aportadas por el responsable del proyecto. La inspección de datos fue de solo lectura; no sustituye el acceso autenticado después del reinicio ni la navegación en el navegador.
-
-El candidato incorpora una red de entrada solo para la web y conexiones HTTPS nuevas en cada comprobación. No necesita los scripts de recuperación utilizados durante el desarrollo. Las pruebas unitarias no demuestran por sí solas una instalación completa.
-
-Pendiente de aceptación en esta copia limpia: completar el recorrido autenticado después del reinicio, cierre de sesión y navegación manual. Antes de entregar, repetir la receta desde el commit definitivo con el delta integrado. Una exportación del commit base con cambios superpuestos es un candidato compuesto, no la prueba de ese clon definitivo. No se ha modificado Hetzner para estas comprobaciones.
-
 ## Actualización del 17/10/2026: recorrido básico aceptado en Kali
 
-La [nota de aceptación y correspondencia](aceptacion-docente-20261017.md) actualiza el pendiente histórico anterior. Se probó una extracción limpia del ZIP con los 593 archivos exactos de `1e3a4f62fd0cca6927a97fc42fb9f86e847a6eb5`: construcción y arranque mediante `start`, creación con `account` en TTY, HTTPS con CA confiada, login por interfaz, servicio ficticio, recarga y evento exacto de historial, `stop`/`start`/`verify`, nuevo login con persistencia y logout con acceso privado rechazado. Firefox se automatizó sin interfaz visible y mantuvo `acceptInsecureCerts=false`; no se afirma que fuese una instalación autónoma realizada por un profesor.
+La [nota de aceptación y correspondencia](aceptacion-docente-20261017.md) detalla la prueba de una extracción limpia del ZIP con los 593 archivos exactos de `1e3a4f62fd0cca6927a97fc42fb9f86e847a6eb5`: construcción y arranque mediante `start`, creación con `account` en TTY, HTTPS con CA confiada, login por interfaz, servicio ficticio, recarga y evento exacto de historial, `stop`/`start`/`verify`, nuevo login con persistencia y logout con acceso privado rechazado. Firefox se automatizó sin interfaz visible y mantuvo `acceptInsecureCerts=false`; no se afirma que fuese una instalación autónoma realizada por un profesor.
 
-El entorno comprobado fue Kali Linux amd64, Node 24.19.0, Docker Linux y Compose 2.40.3-3. El operador admite únicamente Compose de la familia 2.x; una versión mayor no cumple esa guarda. Node 24 es la versión documentada y ensayada. Windows nativo, macOS, ARM, correo externo, MFA y el recorrido normativo completo no se aceptan por extensión. Los intentos incompletos del arnés de navegador se conservan y no se modificó el código de aplicación para repetirlos.
+El entorno comprobado para **ese paquete** fue Kali Linux amd64, Node 24.19.0, Docker Linux y Compose 2.40.3-3. Su operador admitía únicamente Compose 2.x; la revisión Windows posterior admite 2.x y 5.x y cuenta con un acta propia. Node 24 es la versión documentada y ensayada. Las pruebas Kali no acreditan por extensión Windows, macOS, ARM, correo externo, MFA ni el recorrido normativo completo.
 
 La memoria original describe R3 y se conserva sin cambios; la nota identifica la base posterior y el alcance preciso de la actualización. La integridad del ZIP documental final se comprobó y sus fuentes de aplicación son las mismas que se instalaron. No se repitió todo el ensayo por añadir documentación. La etiqueta `v1.0-practica3` ya fue publicada y comprobada mediante clones limpios. Sus tres diferencias frente a la base aceptada eran documentales; las aclaraciones posteriores de esta guía en `main` no mueven esa etiqueta. Seguir la guía vigente enlazada al principio.

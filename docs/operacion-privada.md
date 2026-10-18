@@ -4,7 +4,7 @@
 
 El perfil privado sirve la web a través de WireGuard en el puerto elegido por el operador. La instalación comprobada por Servidor el 16 de octubre de 2026 utiliza `https://10.77.77.1:8443/`; el puerto 9443 de las plantillas o del laboratorio histórico no identifica esa instalación vigente. Mongo y backend no publican puertos. Proyecto Compose: `normativacheck_private`; base: `nc_private`; réplica: `nc-private-rs`. La aplicación usa `nc_app` con `readWrite` solo en esa base, no la cuenta de inicialización.
 
-Esta guía conserva el alcance del perfil R3. El estado de la entrega académica, las comprobaciones acreditadas y los cambios todavía no integrados se distinguen en [entrega-practica3.md](entrega-practica3.md). No ejecutar herramientas históricas o propuestas posteriores sobre la instalación activa sin la revisión específica de Servidor.
+Esta guía conserva el alcance del perfil R3. La [correspondencia de versiones y memoria](../README.md#versiones-y-correspondencia-con-la-memoria) y las actas de aceptación [Kali](aceptacion-docente-20261017.md) y [Windows](aceptacion-docente-windows-20261017.md) identifican la entrega docente y los límites de sus pruebas. No ejecutar herramientas históricas o propuestas posteriores sobre la instalación activa sin la revisión específica de Servidor.
 
 El código pertenece a una entrega inmutable bajo `/srv/normativacheck/releases/`. Secretos y TLS están bajo `/srv/normativacheck/state/`. Los volúmenes de Mongo no pertenecen al directorio de código. Actualizar una entrega no autoriza regenerar claves, vaciar volúmenes ni crear una segunda base.
 

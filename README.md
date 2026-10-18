@@ -1,11 +1,13 @@
 # NormativaCheck — Práctica 3
 
-NormativaCheck es una aplicación web académica que ayuda a pequeñas empresas españolas de software y ciberseguridad a organizar actividades, alcances, requisitos, tareas, documentos, evidencias y revisiones. Permite registrar qué se ha examinado, con qué información y con qué resultado razonado. No certifica cumplimiento ni sustituye asesoramiento jurídico.
+NormativaCheck es una aplicación web, desarrollada en el marco académico de la Práctica 3 y con proyección de uso profesional, que ayuda a pequeñas empresas españolas de software y ciberseguridad a organizar actividades, alcances, requisitos, tareas, documentos, evidencias y revisiones. Permite registrar qué se ha examinado, con qué información y con qué resultado razonado. El producto sigue en desarrollo: no certifica cumplimiento ni sustituye asesoramiento jurídico.
 
 <a id="para-el-profesorado"></a>
 ## Para el profesorado: descarga, instalación y prueba local
 
-**Empieza aquí.** Esta sección contiene los pasos para ejecutar una copia propia de la aplicación. La web, la API y la base de datos funcionarán en tu ordenador; no necesitas conectarte a los equipos del grupo ni al servidor privado.
+**Empieza aquí.** El paquete docente instala en tu ordenador una copia funcional de la web, la API y MongoDB. Podrás iniciar sesión, crear registros ficticios y comprobar su persistencia; no es una maqueta de pantallas. La cuenta de prueba se crea ya verificada para que puedas evaluar el Workspace sin depender de un correo real, de la aprobación de altas ni del acceso al servidor del grupo.
+
+**Por qué usar esta instalación antes que Hetzner:** el servidor de Hetzner es una instalación privada distinta, con sus propios datos, cuentas y controles de acceso. El alta normal exige confirmar el correo y el acceso a una organización requiere permisos; la disponibilidad de ese circuito depende de la configuración privada. Tu contraseña local no sirve allí. El recorrido docente se completa sin entrar en el servidor. Esta ruta de evaluación simplificada **no reduce el producto a una demo**: el proyecto desarrolla funciones para un uso profesional, aunque esta entrega es un MVP académico y no acredita una puesta en producción general. [Comparación de los tres modos](#tres-modos-que-no-deben-confundirse).
 
 ### Descargar el paquete completo
 
@@ -19,7 +21,7 @@ NormativaCheck es una aplicación web académica que ayuda a pequeñas empresas 
 
 **Todo lo necesario para esta evaluación se obtiene desde GitHub.** No hay que solicitar un ZIP por correo, recibir otro adjunto en Classroom ni esperar una autorización de alta. El paquete contiene fuentes: la primera construcción necesita Internet y los requisitos del paso 1.
 
-> **Entornos comprobados:** Kali Linux x86-64 con Node 24.19.0 y Compose 2.40.3-3 superó el recorrido básico con Firefox. En Windows 11 Pro x86-64, Node 24.13.0, cliente/motor Docker 29.8.2 y Compose 5.6.0 superaron construcción, arranque, HTTPS/API/Mongo, cuenta ficticia, inicio de sesión por API, servicio, persistencia y cierre de sesión. El 18/10/2026, el usuario mostró además en PowerShell un arranque de la Release Windows que terminó en `VERIFICADO` después de una incidencia con el puerto 9445. La versión de Docker Desktop y la aceptación visual de navegador de esa revisión Windows no están acreditadas por estos ensayos. El recorrido normativo ampliado sigue pendiente de aceptación integral. Utiliza únicamente datos ficticios.
+> **Pruebas documentadas:** el recorrido básico se aceptó en Kali; en Windows se verificaron construcción, arranque, HTTPS/API/Mongo y operaciones autenticadas por API. La aceptación visual completa en Windows y el recorrido normativo ampliado no están acreditados por esas pruebas; consulta las [actas de aceptación](#pruebas-compilacion-y-evidencia). Utiliza únicamente datos ficticios.
 
 **Orden de trabajo:** [1. Requisitos](#docentes-requisitos) → [2. Extraer y comprobar](#docentes-extraer) → [3. Arrancar](#docentes-arrancar) → [4. Certificado](#docentes-certificado) → [5. Cuenta y acceso](#docentes-cuenta) → [6. Probar](#docentes-probar) → [7. Recorrido ampliado](#docentes-ampliado) → [8. Parar y volver a entrar](#docentes-parar).
 
@@ -346,15 +348,16 @@ La guía anterior es la ruta de instalación para evaluar. Los apartados siguien
 
 La primera versión del proyecto (P1) utilizaba cuestionarios, puntuaciones y un Plan Director de Seguridad (PDS). P3 conserva la finalidad de orientar a la empresa, pero cambia el núcleo: una valoración debe explicar los hechos examinados, el requisito, el periodo y la evidencia que la sostiene. El código y los resultados históricos anteriores se conservan; no se reinterpretan como revisiones del modelo nuevo.
 
+<a id="tres-modos-que-no-deben-confundirse"></a>
 ### Tres modos que no deben confundirse
 
 | Modo | Para qué sirve | Dónde guarda la información |
 | --- | --- | --- |
 | Demo pública de la portada, sin cuenta | Explicar el producto mediante una empresa y documentos ficticios, con un recorrido guiado. | Estado de demostración en el navegador; no demuestra una operación real en MongoDB. |
-| Workspace local para evaluación | Instalar web, API y MongoDB propios; crear una cuenta ficticia y probar el funcionamiento conectado. | MongoDB local en los volúmenes Docker de esa instalación. Es la receta principal de este README. |
-| Instalación privada | Uso en un entorno administrado, con identidades, configuración y permisos propios. | Servicios y datos del entorno privado. No se instala ni se actualiza mediante la receta docente. |
+| Workspace local para evaluación | Probar la aplicación conectada, con cuenta ficticia ya verificada y sin envío de correo. Es la ruta del profesorado en este README. | MongoDB local en los volúmenes Docker de esa instalación. |
+| Instalación privada en Hetzner | Operar una instancia separada, accesible solo por su circuito privado. El código contempla registro, verificación de correo y autorización de acceso a organizaciones; su disponibilidad efectiva depende de la configuración y aceptación de ese entorno. | Servicios y datos privados del servidor. La receta docente no instala, actualiza ni concede acceso a esta instancia. |
 
-La demo de portada no analiza documentos reales ni ejecuta IA. La instalación local no requiere Hetzner, WireGuard, Gmail, un dominio público ni las contraseñas del equipo del proyecto. Las pruebas de uno de estos modos no se trasladan automáticamente a los otros.
+La demo de portada no analiza documentos reales ni ejecuta IA. La instalación local no requiere Hetzner, WireGuard, Gmail, un dominio público ni las contraseñas del equipo del proyecto. La cuenta local no existe por ello en Hetzner; las pruebas de un modo no acreditan automáticamente los demás. Que haya una ruta docente simplificada de autenticación no significa que el producto previsto se reduzca a esa demo.
 
 ### Qué significa cada pieza del trabajo
 
@@ -387,11 +390,7 @@ Quedan fuera del cierre del MVP la ampliación normativa completa, IA integrada,
 | Entrega académica en GitHub | Etiqueta [v1.0-practica3](https://github.com/JoraTenshi/Normativa-Cyberseguridad/tree/v1.0-practica3) | Referencia estable al commit final; verificar su SHA remoto y la CI, sin inferirlos del nombre de la etiqueta. |
 | Revisión de instalación Windows | Etiqueta [v1.0-practica3-windows](https://github.com/JoraTenshi/Normativa-Cyberseguridad/tree/v1.0-practica3-windows), con identidad exacta en `VERSION.json` del ZIP | Corrige el operador para Compose 5 y documenta el ensayo Windows; no cambia la memoria original ni acredita todo el recorrido visual. |
 
-R3 es antecesor de la base docente: la comparación documentada afecta a 43 archivos. Se añadieron el perfil portátil, mejoras de navegación, textos de recuperación/privacidad, transporte SMTP privado, documentación/licencia y herramientas administrativas separadas; se retiraron cuatro archivos del árbol actual. **No son el mismo commit.** El ensayo local no prueba el correo externo ni borra los hallazgos de seguridad de la memoria.
-
-La memoria original no se ha alterado. Se lee junto con la [actualización de aceptación Kali](docs/aceptacion-docente-20261017.md) y el [acta Windows](docs/aceptacion-docente-windows-20261017.md), que separan las pruebas y sus límites. Las referencias RF/PR de la memoria conservan su significado. Los ensayos nuevos no convierten en aprobadas todas sus pruebas PR01-PR14.
-
-La revisión Windows cambia la guarda de Compose en el operador, además de la documentación. Por eso tiene otro commit y otro árbol Git, y se repitieron en Windows las pruebas de instalación afectadas. Los servicios, las rutas de negocio y los `package-lock.json` no cambian en esta revisión. La aceptación Kali del commit `1e3a4f62` y el ensayo Windows de la revisión son evidencias distintas.
+La memoria original describe R3 y no se ha alterado. El paquete docente es posterior: añade el instalador local y correcciones documentadas, pero no reescribe los resultados ni los hallazgos de seguridad de R3. La revisión Windows admite Compose 5; sus pruebas no acreditan por sí solas correo externo, Hetzner ni todas las pruebas PR01-PR14 de la memoria. Los cambios y los límites de cada ensayo constan en la [aceptación Kali](docs/aceptacion-docente-20261017.md) y el [acta Windows](docs/aceptacion-docente-windows-20261017.md).
 
 ## Arquitectura y estructura del repositorio
 
@@ -489,6 +488,7 @@ El perfil privado contiene modos `disabled`, `smtp465` y `smtp587`, con secreto 
 
 Los atajos antiguos `make up`, `seed`, `setup`, `cert`, `recert` y `clean` están deshabilitados; el Compose de raíz requiere un perfil explícito. Los scripts históricos de laboratorio no sustituyen la receta docente. Algunas de sus plantillas siguen siendo dependencias del perfil local, como muestra el mapa de carpetas.
 
+<a id="pruebas-compilacion-y-evidencia"></a>
 ## Pruebas, compilación y evidencia
 
 La instalación para profesores construye las dependencias dentro de Docker. Los comandos siguientes son **opcionales para desarrollo y revisión del código**, no pasos adicionales obligatorios del acceso docente. Ejecutarlos en otra copia, sin URI, claves, cookies o credenciales reales y sin reutilizar `node_modules` o `NODE_PATH` de otra rama.
@@ -543,18 +543,7 @@ El build queda en `frontend/build/` y no se versiona. [canonical-checks.yml](.gi
 
 `scripts/local-demo-qa.cjs` es un ensayo separado para mantenedores y exige una copia sin runtime. No es el acceso normal del profesor: la contraseña del automatismo vive solo en memoria. No ejecutarlo sobre la copia de uso ni emplearlo para recuperar una cuenta. La [guía técnica local](docs/prueba-local.md) conserva el detalle y los antecedentes Kali; el [acta Windows](docs/aceptacion-docente-windows-20261017.md) identifica las pruebas nuevas y sus límites.
 
-### Incidencias encontradas al seguir la ruta Windows
-
-| Paso | Observación reproducida | Corrección incluida en esta revisión |
-| --- | --- | --- |
-| 1. Requisitos | La guía enlazaba Docker Desktop, pero no explicaba instalarlo, iniciarlo, comprobar el servidor ni elegir contenedores Linux. | Procedimiento interactivo oficial, ventana nueva de PowerShell y salidas esperadas de `docker version`, Compose, contexto e `info`. |
-| 2. Extracción | Una ruta bajo OneDrive/Escritorio sincronizado puede acabar siendo la carpeta de trabajo aunque el operador usa montajes y ruta fija. | Ejemplo de carpeta local, verificación de carpeta actual y aviso de extraer una copia nueva antes del primer arranque. |
-| 3. Arranque | El ZIP `validado-kali` emitía `COMPOSE_V2_REQUIRED` con el Compose 5.6.0 incluido en Docker Desktop. | El operador acepta 2.x y 5.x; el ensayo Windows pasó construcción y arranque reales. La descarga debe ser la **revisión nueva**, no el ZIP viejo con un README nuevo. |
-| 3. Puerto en Windows, 18/10/2026 | `PORT_9445_BUSY` apareció aunque `Get-NetTCPConnection` y `netstat` no mostraban un proceso escuchando, no había contenedores activos y detener/reiniciar Docker Desktop no liberó el puerto. | Se documenta la comprobación del propietario si aparece y el reintento tras reiniciar Windows si no aparece. Después de indicar ese paso, el usuario mostró `VERIFICADO`; no quedó acreditado qué liberó el puerto ni se identificó la causa exacta. |
-| 3. Construcción | La primera ejecución muestra descargas y avisos `npm warn deprecated` antes del resultado final. | Se explica qué progreso esperar y que la decisión depende del resultado final del operador. |
-| 4-5. Acceso | Certificado y contraseña son propios de cada instalación; copiar los de Kali u otra demo produce aviso HTTPS o credenciales incorrectas. | Ruta exacta de `ca.crt`, comprobación de huella, URL, correo y advertencia de contraseña mostrada una sola vez. |
-
-La instalación interactiva de Docker Desktop se documenta con la [guía oficial de Docker](https://docs.docker.com/desktop/setup/install/windows-install/); en este ensayo ya estaba instalado, por lo que no se presenta como una reinstalación probada.
+Los errores generales de instalación y sus comprobaciones están en [Si algo falla](#si-algo-falla). El [acta Windows](docs/aceptacion-docente-windows-20261017.md) conserva el alcance de las pruebas, no una lista de pasos adicionales.
 
 <a id="si-algo-falla"></a>
 ## Si algo falla
@@ -568,7 +557,7 @@ La instalación interactiva de Docker Desktop se documenta con la [guía oficial
 | `docker version` solo muestra Client, «Cannot connect» o «permission denied» | El CLI existe, pero no llega al motor. Comprueba en Docker Desktop que el motor está iniciado y que usas contenedores Linux; vuelve a ejecutar `docker info --format '{{.OSType}}'`. No modifiques permisos de Docker ni reinstales por prueba y error. |
 | `REMOTE_DOCKER_REFUSED` / `LINUX_DOCKER_REQUIRED` | Docker debe ser local y ejecutar contenedores Linux. |
 | `OPENSSL_REQUIRED` | OpenSSL accesible; en Windows se contempla la ruta de Git for Windows indicada. |
-| `PORT_9445_BUSY` | Windows no ha permitido abrir `127.0.0.2:9445`; **no demuestra por sí solo que haya un proceso escuchando**. En PowerShell ejecuta `Get-NetTCPConnection -LocalPort 9445 -State Listen -ErrorAction SilentlyContinue`. Si aparece una fila, anota `OwningProcess` y consulta `Get-Process -Id <PID>` sustituyendo `<PID>` por ese número; no detengas un proceso ajeno a ciegas. Si no aparece nada, cierra tus trabajos, reinicia Windows, abre Docker Desktop, espera al motor Linux y repite `node scripts/local-demo.cjs start` desde la **misma** carpeta. En el ensayo del 18/10/2026 se indicó este paso y posteriormente se observó `VERIFICADO`, sin poder confirmar qué liberó el puerto. Si persiste, conserva la salida de ambos comandos y pide ayuda; no borres `.runtime`, volúmenes ni credenciales. |
+| `PORT_9445_BUSY` | Windows no ha permitido abrir `127.0.0.2:9445`; **no demuestra por sí solo que haya un proceso escuchando**. En PowerShell ejecuta `Get-NetTCPConnection -LocalPort 9445 -State Listen -ErrorAction SilentlyContinue`. Si aparece una fila, anota `OwningProcess` y consulta `Get-Process -Id <PID>` sustituyendo `<PID>` por ese número; no detengas un proceso ajeno a ciegas. Si no aparece nada, cierra tus trabajos, reinicia Windows, abre Docker Desktop, espera al motor Linux y repite `node scripts/local-demo.cjs start` desde la **misma** carpeta. Si persiste, conserva la salida de ambos comandos y pide ayuda; no borres `.runtime`, volúmenes ni credenciales. |
 | `COMMAND_FAILED` | Conserva las líneas **inmediatamente anteriores** al código final. Si ocurrió antes de descargar imágenes, revisa `docker version`, `docker compose version` y `docker info`. Durante una descarga, comprueba red y espacio; después, `node scripts/local-demo.cjs status`. Indica qué comando y etapa falló antes de reintentar. |
 | `ACCOUNT_TTY_REQUIRED` | Ejecutar `account` directamente en una terminal interactiva, sin redirección. |
 | Credenciales incorrectas | URL exacta, correo y contraseña de **esa** copia. No reutilizar la del VPS, otra demo o el sistema operativo. |
@@ -592,4 +581,4 @@ La licencia del código original es [MIT](LICENSE). Las dependencias y recursos 
 
 El historial real del grupo debe preservarse, sin fabricar autorías o contribuciones. La entrega etiquetada `v1.0-practica3` conserva su identidad. Las mejoras posteriores de esta guía se publican en `main`, con su historial, sin mover esa etiqueta ni presentar cambios documentales como nuevas pruebas funcionales. La eliminación de ramas es una operación separada y condicionada a conservar el trabajo útil; no forma parte de instalar ni probar el README.
 
-La [cronología de entrega](docs/entrega-practica3.md) conserva resultados anteriores. La [nota del 17/10](docs/aceptacion-docente-20261017.md) actualiza únicamente la identidad y aceptación básica docente que están documentadas. La memoria original y sus referencias al vídeo se conservan como evidencia histórica. Para descargar e instalar esta aplicación basta con los enlaces públicos y los pasos para el profesorado de este README; no se requiere un nuevo adjunto en el campus.
+Las [actas de aceptación Kali](docs/aceptacion-docente-20261017.md) y [Windows](docs/aceptacion-docente-windows-20261017.md) conservan evidencias fechadas, **no instrucciones vigentes de instalación ni el estado actual del servidor**. La memoria original también se conserva. Para instalar y evaluar la aplicación, sigue la sección [Para el profesorado](#para-el-profesorado) y descarga el ZIP público; no se requiere otro adjunto académico.

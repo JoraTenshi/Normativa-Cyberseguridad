@@ -1,5 +1,7 @@
 # Arranque aislado de la integración: HTTPS y MongoDB
 
+> Registro técnico del perfil de integración de octubre de 2026. No es la guía para instalar la demo docente actual; para esa instalación, usa [el README](../README.md#para-el-profesorado).
+
 Actualizado: 11 de octubre de 2026. Integración aislada arrancada: los tres contenedores Healthy y verificación Mongo/HTTPS correcta en las capturas de Jose, contrastada además por HTTPS desde Kali. Pendientes confianza del navegador, cuenta/empresa de prueba, E2E autenticado en este despliegue y persistencia tras reinicio. No es producción ni sustituye a la app del equipo.
 
 ## Qué cambia y qué permanece intacto
@@ -126,8 +128,6 @@ Siguiente recorrido: decidir y preparar una cuenta/empresa sintéticas controlad
 - Build frontend correcto con las mismas opciones usadas en el nuevo Dockerfile.
 - git diff --check correcto.
 
-Estado histórico posterior del primer intento (resuelto; véase cierre del bloque al final): las imágenes se construyeron y MongoDB quedó Healthy, con inicialización de réplica/usuario informada como correcta en la captura de Jose. El backend falló y Nginx no llegó a arrancar. Pendiente: reconstrucción corregida del backend, mongo-check, salud HTTPS del conjunto, persistencia tras reinicio, confianza del navegador y E2E autenticado. SSH no tiene permiso para /var/run/docker.sock y sudo no interactivo exige contraseña. No se ha cambiado esa política.
-
 Las 24 comprobaciones HTTP/Mongo y las 62 de frontend del bloque anterior no se han repetido aquí ni se presentan como prueba de este despliegue.
 
 ## Referencias técnicas
@@ -136,31 +136,11 @@ Las 24 comprobaciones HTTP/Mongo y las 62 de frontend del bloque anterior no se 
 - [MongoDB 7: réplica autenticada por keyfile](https://www.mongodb.com/docs/v7.0/tutorial/deploy-replica-set-with-keyfile-access-control/).
 - [Nginx: resolución dinámica de upstream](https://nginx.org/en/docs/http/ngx_http_upstream_module.html#server). Permite reencontrar el backend al recrearlo sin depender de su IP anterior.
 
-## Incidencia del primer arranque: dependencia omitida en la imagen
-
-Las capturas de Jose muestran imágenes construidas, MongoDB Healthy y backend en error. El log repetía el mensaje genérico de arranque. No demuestra que hayan fallado secretos, réplica o índices: aquel mensaje agrupaba todas las excepciones.
-
-Causa concreta identificada y reproducida en el paquete: models/Normativa.js requiere ../constants/temas, pero Dockerfile.integration y su allowlist no incluían constants. Por eso cargar app.js desde el repositorio funcionaba y la lista de archivos de la imagen provocaba MODULE_NOT_FOUND. La omisión estaba en la preparación de integración, no en un comando incorrecto de Jose.
-
-Corrección aplicada solo en este árbol:
-
-- COPY constants ./constants y permiso explícito de constants en Dockerfile.integration.dockerignore.
-- check-image.js carga la aplicación con claves aleatorias efímeras y sin Mongo/correos. Se ejecuta con USER node durante docker build; una dependencia ausente detiene la construcción antes de darla por buena. No sustituye las pruebas de conexión/runtime.
-- start.js y health.js informan etapa, tipo y código mediante diagnostic.js. Solo se permiten etiquetas conocidas y códigos acotados; no imprimen message, stack, cause, contraseñas o URI.
-- Siete pruebas específicas correctas: las tres previas y cuatro nuevas para el smoke en la imagen, importaciones incluidas en COPY, reproducción negativa de constants ausente y diagnóstico sin secretos. El simulador comprueba la lista COPY, no emula todo Docker.
-- Regresión completa repetida: 852/852 backend, cero fallos/omisiones/cancelaciones. Smoke nativo y comprobaciones estáticas Compose/Nginx correctos. Falta ejecutar el nuevo build/arranque en Docker con sudo.
-
-La imagen corregida se aplicó repitiendo únicamente el comando de arranque de esta guía. El script conserva MongoDB, sus volúmenes y credenciales; no exige down ni borrados. Sin cambios a la app del equipo, al Compose de integración o a sus secretos para resolver esta incidencia. El resultado posterior y las dos correcciones adicionales de los comprobadores se recogen en el cierre siguiente. No repetir el arranque por esta incidencia ya resuelta.
-
 ## Cierre del bloque 5: infraestructura verificada
 
 La captura final de Jose confirma que sudo bash scripts/integracion.sh verificar termina correctamente: certificado válido, usuario de aplicación sin privilegios administrativos, commit y abort reales y comprobaciones HTTPS positivas. Otra captura previa muestra MongoDB, backend y web Healthy. La comprobación HTTPS se ejecutó también desde SSH contra los contenedores reales, con CA explícita y sin desactivar TLS.
 
-Después del empaquetado se corrigieron dos errores de los comprobadores, no de los permisos de negocio:
-
-- mongo-check.js accedía a _integration_probe como propiedad de db. Se sustituyó por getCollection('_integration_probe'), compatible con ese nombre en mongosh. Se conserva el rechazo de acceso administrativo y la comprobación real de transacciones; solo se limpia el marcador sintético propio.
-- verify-https.js dejaba que Node derivase el nombre SNI del Host incorrecto de la prueba negativa. Ahora prueba por separado el rechazo del nombre TLS incorrecto y el HTTP 421 de Host incorrecto, verificando en este último caso la IP real. No se debilita la validación de certificados.
-- Ambos comprobadores identifican etapas con códigos acotados sin imprimir errores que puedan contener credenciales.
+Los comprobadores de Mongo y HTTPS verifican transacciones, nombre TLS y rechazo del `Host` incorrecto sin imprimir credenciales en sus diagnósticos.
 
 Verificación actual:
 
@@ -170,7 +150,7 @@ Verificación actual:
 - Mongo real: evidencia de ejecución de Jose con el usuario limitado y commit/abort correctos.
 - Comprobaciones estáticas Compose/Nginx y git diff --check correctos.
 
-No es necesario repetir el comando satisfactorio para cerrar esta incidencia. Siguen pendientes: confiar conscientemente en la CA pública en el navegador; túnel si se usa Windows; preparar una cuenta y organización sintéticas sin desactivar controles de la API; E2E autenticado sobre este HTTPS, prueba de persistencia tras reinicio y backup/restauración antes de datos reales. SMTP continúa deshabilitado. No se han importado cuentas ni datos del equipo, instalado certificados de confianza o realizado commit/push.
+Esta verificación histórica no sustituye la aceptación docente. En este perfil seguían pendientes la confianza de la CA en el navegador, el E2E autenticado y la prueba de persistencia tras reinicio. SMTP continuaba deshabilitado.
 
 ## Acceso desde Windows y cuenta sintética (preparado y probado)
 

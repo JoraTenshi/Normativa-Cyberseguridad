@@ -2,7 +2,7 @@
 
 Actualizado: 11 de octubre de 2026. Estado: bloques 3 y 4 implementados y bloque 5 de infraestructura arrancado y verificado. Los tres contenedores están Healthy según la captura de Jose; Mongo real y HTTPS pasan la verificación final. Pendientes acceso confiable desde navegador y E2E autenticado de este despliegue.
 
-Guía de arranque y evidencia del bloque 5: [arranque-integracion.md](arranque-integracion.md). Documenta la infraestructura verificada y sus incidencias resueltas; no da por completado el E2E ni una puesta en producción.
+Guía y evidencia histórica del bloque 5: [arranque-integracion.md](arranque-integracion.md). Documenta el perfil de integración ensayado; no es la ruta de instalación docente ni acredita una puesta en producción.
 
 ## Punto de trabajo y procedencia
 
@@ -141,11 +141,7 @@ Referencia del bloqueo de navegación: https://reactrouter.com/6.30.1/hooks/use-
 
 La captura final de Jose confirma que sudo bash scripts/integracion.sh verificar termina correctamente: certificado válido, usuario de aplicación sin privilegios administrativos, commit y abort reales y comprobaciones HTTPS positivas. Otra captura previa muestra MongoDB, backend y web Healthy. La comprobación HTTPS se ejecutó también desde SSH contra los contenedores reales, con CA explícita y sin desactivar TLS.
 
-Después del empaquetado se corrigieron dos errores de los comprobadores, no de los permisos de negocio:
-
-- mongo-check.js accedía a _integration_probe como propiedad de db. Se sustituyó por getCollection('_integration_probe'), compatible con ese nombre en mongosh. Se conserva el rechazo de acceso administrativo y la comprobación real de transacciones; solo se limpia el marcador sintético propio.
-- verify-https.js dejaba que Node derivase el nombre SNI del Host incorrecto de la prueba negativa. Ahora prueba por separado el rechazo del nombre TLS incorrecto y el HTTP 421 de Host incorrecto, verificando en este último caso la IP real. No se debilita la validación de certificados.
-- Ambos comprobadores identifican etapas con códigos acotados sin imprimir errores que puedan contener credenciales.
+Los comprobadores de Mongo y HTTPS verifican transacciones, nombre TLS y rechazo del `Host` incorrecto sin imprimir credenciales en sus diagnósticos.
 
 Verificación actual:
 
@@ -155,4 +151,4 @@ Verificación actual:
 - Mongo real: evidencia de ejecución de Jose con el usuario limitado y commit/abort correctos.
 - Comprobaciones estáticas Compose/Nginx y git diff --check correctos.
 
-No es necesario repetir el comando satisfactorio para cerrar esta incidencia. Siguen pendientes: confiar conscientemente en la CA pública en el navegador; túnel si se usa Windows; preparar una cuenta y organización sintéticas sin desactivar controles de la API; E2E autenticado sobre este HTTPS, prueba de persistencia tras reinicio y backup/restauración antes de datos reales. SMTP continúa deshabilitado. No se han importado cuentas ni datos del equipo, instalado certificados de confianza o realizado commit/push.
+Esta verificación histórica no sustituye la aceptación docente. En este perfil seguían pendientes la confianza de la CA en el navegador, el E2E autenticado y la prueba de persistencia tras reinicio. SMTP continuaba deshabilitado.
