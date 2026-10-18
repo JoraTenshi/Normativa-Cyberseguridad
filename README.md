@@ -19,7 +19,7 @@ NormativaCheck es una aplicación web académica que ayuda a pequeñas empresas 
 
 **Todo lo necesario para esta evaluación se obtiene desde GitHub.** No hay que solicitar un ZIP por correo, recibir otro adjunto en Classroom ni esperar una autorización de alta. El paquete contiene fuentes: la primera construcción necesita Internet y los requisitos del paso 1.
 
-> **Entornos comprobados:** Kali Linux x86-64 con Node 24.19.0 y Compose 2.40.3-3 superó el recorrido básico con Firefox. En Windows 11 Pro x86-64, Node 24.13.0, cliente/motor Docker 29.8.2 y Compose 5.6.0 superaron construcción, arranque, HTTPS/API/Mongo, cuenta ficticia, inicio de sesión por API, servicio, persistencia y cierre de sesión. La versión de Docker Desktop y la aceptación visual de navegador de la revisión Windows no están acreditadas por ese ensayo. El recorrido normativo ampliado sigue pendiente de aceptación integral. Utiliza únicamente datos ficticios.
+> **Entornos comprobados:** Kali Linux x86-64 con Node 24.19.0 y Compose 2.40.3-3 superó el recorrido básico con Firefox. En Windows 11 Pro x86-64, Node 24.13.0, cliente/motor Docker 29.8.2 y Compose 5.6.0 superaron construcción, arranque, HTTPS/API/Mongo, cuenta ficticia, inicio de sesión por API, servicio, persistencia y cierre de sesión. El 18/10/2026, el usuario mostró además en PowerShell un arranque de la Release Windows que terminó en `VERIFICADO` después de una incidencia con el puerto 9445. La versión de Docker Desktop y la aceptación visual de navegador de esa revisión Windows no están acreditadas por estos ensayos. El recorrido normativo ampliado sigue pendiente de aceptación integral. Utiliza únicamente datos ficticios.
 
 **Orden de trabajo:** [1. Requisitos](#docentes-requisitos) → [2. Extraer y comprobar](#docentes-extraer) → [3. Arrancar](#docentes-arrancar) → [4. Certificado](#docentes-certificado) → [5. Cuenta y acceso](#docentes-cuenta) → [6. Probar](#docentes-probar) → [7. Recorrido ampliado](#docentes-ampliado) → [8. Parar y volver a entrar](#docentes-parar).
 
@@ -35,7 +35,7 @@ NormativaCheck es una aplicación web académica que ayuda a pequeñas empresas 
 | Docker local iniciado y **Compose 2.x o 5.x** | Linux: [instalación de Docker Engine](https://docs.docker.com/engine/install/). Windows: [instalación oficial de Docker Desktop](https://docs.docker.com/desktop/setup/install/windows-install/), con contenedores Linux y requisitos de virtualización/WSL satisfechos. Compose viene incluido en Docker Desktop; no instales un binario `docker-compose` independiente para esta guía. |
 | OpenSSL | En Linux, disponible en la terminal. En Windows, el operador también reconoce el incluido en [Git for Windows](https://git-scm.com/install/windows) en `C:\Program Files\Git\usr\bin\openssl.exe`. |
 | Internet, disco y memoria disponibles | La primera construcción descarga imágenes y dependencias. Como previsión, 4 GB de memoria disponibles para Docker y 10 GB de disco dan margen; no son mínimos medidos ni una garantía. Docker Desktop tiene requisitos propios adicionales. |
-| Carpeta local estable y puerto libre | Extrae fuera de OneDrive, Google Drive o una unidad de red. La aplicación usará `127.0.0.2:9445`. |
+| Carpeta local estable y puerto libre | Extrae preferentemente en una carpeta **no sincronizada** por OneDrive, Google Drive u otro servicio y evita unidades de red. La aplicación usará `127.0.0.2:9445`. |
 
 #### Windows: instalar e iniciar Docker Desktop
 
@@ -75,7 +75,7 @@ Los pasos siguientes muestran ambas variantes cuando es necesario. En Windows se
 ### Paso 2. Descargar, extraer y comprobar el paquete
 
 1. Descarga el **ZIP docente completo** del enlace destacado al principio.
-2. Extráelo en una carpeta local nueva. En Windows: clic derecho → **Extraer todo** y elige, por ejemplo, una carpeta bajo `C:\Users\TU_USUARIO\NormativaCheck`. Evita **OneDrive**, Google Drive, Escritorio sincronizado y unidades de red: las rutas del runtime y los montajes Docker dependen de una ubicación local estable. No ejecutes archivos dentro del ZIP. Si ya lo extrajiste en OneDrive y todavía no has arrancado con éxito, extrae otra copia nueva fuera de OneDrive; no copies `.runtime`.
+2. Extráelo en una carpeta local nueva. En Windows: clic derecho → **Extraer todo** y elige, por ejemplo, `C:\Users\TU_USUARIO\NormativaCheck`, comprobando que la ruta completa **no contiene `OneDrive`**. Evita también Google Drive, Escritorio sincronizado y unidades de red. La demo genera claves y configuración bajo `aplicacion/.runtime/`, y vincula la instalación a su ruta; una carpeta sincronizada puede copiar esos archivos a la nube o cambiar su disponibilidad. No ejecutes archivos dentro del ZIP. Si aún no has arrancado correctamente en una carpeta sincronizada, es preferible extraer una copia nueva fuera de ella. Si ya arrancaste, **no muevas esa instalación ni copies `.runtime`**: puede funcionar allí, pero ese arranque no valida la sincronización. Para instalarla en otra ruta, empieza con una extracción nueva y una cuenta nueva.
 3. Abre una terminal en la carpeta extraída **`NormativaCheck-profesores-windows-20261017`**. Es la que contiene:
 
 ```text
@@ -168,7 +168,7 @@ Mantén Docker Desktop abierto y el motor iniciado. Comprueba que el puerto est�
 | Linux | `ss -lnt 'sport = :9445'` |
 | PowerShell | `Get-NetTCPConnection -LocalPort 9445 -State Listen -ErrorAction SilentlyContinue` |
 
-No debe aparecer un proceso escuchando en ese puerto. En PowerShell, **no mostrar nada es el resultado esperado**; identifica cualquier colisión antes de continuar. Este puerto es distinto del usado por otras demos del grupo.
+No debe aparecer un proceso escuchando en ese puerto. En PowerShell, **no mostrar nada permite continuar con el intento, pero no garantiza que Windows deje abrirlo**. Si `start` devuelve `PORT_9445_BUSY`, sigue el diagnóstico de [Si algo falla](#si-algo-falla). Este puerto es distinto del usado por otras demos del grupo.
 
 Desde **`aplicacion`**, ejecuta:
 
@@ -186,6 +186,8 @@ Espera a que termine; el primer arranque descarga imágenes y dependencias, cons
 
 El comando construye la web y la API, inicia MongoDB y crea la configuración, claves y certificado propios bajo `.runtime/local-demo/`. **No tienes que editar `.env`, introducir credenciales del grupo, configurar Gmail ni instalar las dependencias con `npm install` en el equipo.** La cuenta se crea en el paso 5.
 
+**Si ya ves `VERIFICADO`, continúa con el paso 4 para importar el certificado de esta instalación y después con el paso 5 para crear la cuenta.** Abrir la URL antes de importar la CA puede producir un aviso HTTPS; todavía no tienes contraseña hasta ejecutar `account`.
+
 Docker mantiene la aplicación en segundo plano. Si el comando falla, conserva el **primer error relevante**, el código final y el paso exacto; consulta [Si algo falla](#si-algo-falla). No borres datos ni generes otra configuración para ocultarlo. Si el fallo ocurrió después de crear `.runtime`, conserva esa carpeta en su sitio y consulta `node scripts/local-demo.cjs status` antes de repetir `start`.
 
 <a id="docentes-certificado"></a>
@@ -193,7 +195,7 @@ Docker mantiene la aplicación en segundo plano. Si el comando falla, conserva e
 
 El navegador necesita confiar en la CA que acaba de generar **tu copia**. El arranque comprueba HTTPS, pero no instala automáticamente esa confianza. Importa únicamente `ca.crt`, nunca archivos `.key`.
 
-<details open>
+<details>
 <summary><strong>Linux con Firefox — entorno usado en el ensayo</strong></summary>
 
 Si arrancaste con `sudo`, desde **`aplicacion`** exporta solo el certificado público:
@@ -210,7 +212,7 @@ Si arrancaste sin `sudo`, puedes importar directamente `aplicacion/.runtime/loca
 
 </details>
 
-<details>
+<details open>
 <summary><strong>Windows con Edge o Chrome — procedimiento documentado, instalación completa no validada</strong></summary>
 
 Desde **`aplicacion`**, en PowerShell, comprueba primero que el archivo existe y muestra la huella del certificado que vas a importar:
@@ -532,6 +534,7 @@ El build queda en `frontend/build/` y no se versiona. [canonical-checks.yml](.gi
 | 1. Requisitos | La guía enlazaba Docker Desktop, pero no explicaba instalarlo, iniciarlo, comprobar el servidor ni elegir contenedores Linux. | Procedimiento interactivo oficial, ventana nueva de PowerShell y salidas esperadas de `docker version`, Compose, contexto e `info`. |
 | 2. Extracción | Una ruta bajo OneDrive/Escritorio sincronizado puede acabar siendo la carpeta de trabajo aunque el operador usa montajes y ruta fija. | Ejemplo de carpeta local, verificación de carpeta actual y aviso de extraer una copia nueva antes del primer arranque. |
 | 3. Arranque | El ZIP `validado-kali` emitía `COMPOSE_V2_REQUIRED` con el Compose 5.6.0 incluido en Docker Desktop. | El operador acepta 2.x y 5.x; el ensayo Windows pasó construcción y arranque reales. La descarga debe ser la **revisión nueva**, no el ZIP viejo con un README nuevo. |
+| 3. Puerto en Windows, 18/10/2026 | `PORT_9445_BUSY` apareció aunque `Get-NetTCPConnection` y `netstat` no mostraban un proceso escuchando, no había contenedores activos y detener/reiniciar Docker Desktop no liberó el puerto. | Se documenta la comprobación del propietario si aparece y el reintento tras reiniciar Windows si no aparece. Después de indicar ese paso, el usuario mostró `VERIFICADO`; no quedó acreditado qué liberó el puerto ni se identificó la causa exacta. |
 | 3. Construcción | La primera ejecución muestra descargas y avisos `npm warn deprecated` antes del resultado final. | Se explica qué progreso esperar y que la decisión depende del resultado final del operador. |
 | 4-5. Acceso | Certificado y contraseña son propios de cada instalación; copiar los de Kali u otra demo produce aviso HTTPS o credenciales incorrectas. | Ruta exacta de `ca.crt`, comprobación de huella, URL, correo y advertencia de contraseña mostrada una sola vez. |
 
@@ -549,7 +552,7 @@ La instalación interactiva de Docker Desktop se documenta con la [guía oficial
 | `docker version` solo muestra Client, «Cannot connect» o «permission denied» | El CLI existe, pero no llega al motor. Comprueba en Docker Desktop que el motor está iniciado y que usas contenedores Linux; vuelve a ejecutar `docker info --format '{{.OSType}}'`. No modifiques permisos de Docker ni reinstales por prueba y error. |
 | `REMOTE_DOCKER_REFUSED` / `LINUX_DOCKER_REQUIRED` | Docker debe ser local y ejecutar contenedores Linux. |
 | `OPENSSL_REQUIRED` | OpenSSL accesible; en Windows se contempla la ruta de Git for Windows indicada. |
-| `PORT_9445_BUSY` | Hay otro proceso escuchando. No pararlo sin identificar su propietario ni modificar el paquete. |
+| `PORT_9445_BUSY` | Windows no ha permitido abrir `127.0.0.2:9445`; **no demuestra por sí solo que haya un proceso escuchando**. En PowerShell ejecuta `Get-NetTCPConnection -LocalPort 9445 -State Listen -ErrorAction SilentlyContinue`. Si aparece una fila, anota `OwningProcess` y consulta `Get-Process -Id <PID>` sustituyendo `<PID>` por ese número; no detengas un proceso ajeno a ciegas. Si no aparece nada, cierra tus trabajos, reinicia Windows, abre Docker Desktop, espera al motor Linux y repite `node scripts/local-demo.cjs start` desde la **misma** carpeta. En el ensayo del 18/10/2026 se indicó este paso y posteriormente se observó `VERIFICADO`, sin poder confirmar qué liberó el puerto. Si persiste, conserva la salida de ambos comandos y pide ayuda; no borres `.runtime`, volúmenes ni credenciales. |
 | `COMMAND_FAILED` | Conserva las líneas **inmediatamente anteriores** al código final. Si ocurrió antes de descargar imágenes, revisa `docker version`, `docker compose version` y `docker info`. Durante una descarga, comprueba red y espacio; después, `node scripts/local-demo.cjs status`. Indica qué comando y etapa falló antes de reintentar. |
 | `ACCOUNT_TTY_REQUIRED` | Ejecutar `account` directamente en una terminal interactiva, sin redirección. |
 | Credenciales incorrectas | URL exacta, correo y contraseña de **esa** copia. No reutilizar la del VPS, otra demo o el sistema operativo. |
