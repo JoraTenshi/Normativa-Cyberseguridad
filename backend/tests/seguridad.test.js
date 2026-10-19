@@ -138,16 +138,18 @@ test('rol: por defecto "usuario" y solo admite "usuario" o "admin"', () => {
 
 test('rol: el registro no permite elegirlo', async () => {
   let creado;
-  const findOne = Usuario.findOne, create = Usuario.create;
+  const findOne = Usuario.findOne, create = Usuario.create, updateOne = Usuario.updateOne;
   Usuario.findOne = async () => null;
   Usuario.create = async datos => { creado = datos; return { _id: USER_ID, ...datos }; };
+  Usuario.updateOne = async () => ({ matchedCount: 1 });
   try {
     const res = await request(app).post('/auth/register').set('X-Requested-With', 'XMLHttpRequest')
       .send({ nombre: 'Eva', email: 'eva@example.test', password: 'Prueba123', rol: 'admin' });
-    assert.equal(res.status, 201);
+    assert.equal(res.status, 202);
+    assert.deepEqual(res.body.data, { registrationRequested: true });
     assert.equal('rol' in creado, false);
   } finally {
-    Usuario.findOne = findOne; Usuario.create = create;
+    Usuario.findOne = findOne; Usuario.create = create; Usuario.updateOne = updateOne;
   }
 });
 

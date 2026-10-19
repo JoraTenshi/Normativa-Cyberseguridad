@@ -69,9 +69,8 @@ test('registro pendiente, enlace de correo y verificación de un solo uso', asyn
     const created = await post(`${server.url}/auth/register`, {
       nombre: 'Ana', email: 'ANA@example.test', password: 'Prueba123'
     });
-    assert.equal(created.response.status, 201);
-    assert.equal(created.body.data.pendingVerification, true);
-    assert.equal(created.body.data.emailSent, true);
+    assert.equal(created.response.status, 202);
+    assert.deepEqual(created.body.data, { registrationRequested: true });
     assert.equal(created.response.headers.get('set-cookie'), null);
     assert.equal(saved.email, 'ana@example.test');
 
@@ -173,7 +172,7 @@ test('recuperación: plazo de diez minutos y respuesta genérica para ambos corr
     assert.equal(unknown.response.status, 200);
     assert.deepEqual(known.body, {
       ok: true,
-      message: 'Si el email está registrado, recibirás un enlace de recuperación.'
+      message: 'Si la cuenta existe y el servicio de correo está disponible, se intentará enviar un enlace de recuperación. Este aviso no confirma el envío.'
     });
     assert.deepEqual(unknown.body, known.body);
     assert.equal(stored.resetPasswordExpires.getTime(), issuedAt + 10 * 60 * 1000);

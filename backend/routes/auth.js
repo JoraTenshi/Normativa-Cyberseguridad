@@ -21,6 +21,7 @@ const {
   hashTokenVerificacionEmail
 } = require('../utils/emailVerification');
 const { readTotpSecret } = require('../utils/totpEncryption');
+const { errorCorreoSeguro } = require('../utils/smtpTransport');
 
 const { JWT_SECRET, JWT_EXPIRES, generateJti, requireAuth } = require('../middleware/auth');
 
@@ -46,6 +47,12 @@ const DUMMY_HASH = bcrypt.hashSync('cyberlaw_timing_equalizer', 12);
 
 const EMAIL_RE    = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PASSWORD_RE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+const normalizarEmail = email => typeof email === 'string' ? email.trim().toLowerCase() : '';
+const registroSolicitado = res => res.status(202).json({
+  ok: true,
+  data: { registrationRequested: true },
+  message: 'Solicitud recibida. Si puedes completar el registro con esta dirección y el servicio de correo está disponible, se intentará enviar un enlace de confirmación. Este aviso no confirma la creación de una cuenta ni el envío. Si ya tenías una cuenta, inicia sesión o recupera tu contraseña.'
+});
 
 const COOKIE_NAME = 'cyberaudit_token';
 const COOKIE_BASE_OPTIONS = {
@@ -109,7 +116,8 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    if (typeof email !== 'string' || !EMAIL_RE.test(email)) {
+    const emailNormalizado = normalizarEmail(email);
+    if (!EMAIL_RE.test(emailNormalizado)) {
       return res.status(400).json({
         ok: false,
         error: 'Email inválido'
@@ -123,17 +131,15 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    const emailNormalizado = email.toLowerCase().trim();
-
     const exists = await Usuario.findOne({
       email: emailNormalizado
     });
 
     if (exists) {
-      return res.status(409).json({
-        ok: false,
-        error: 'El email ya está registrado'
-      });
+      // Do not change the existing account or send mail from a repeated signup.
+      // Match the password-hashing work of creation (SMTP latency remains external).
+      await bcrypt.hash(password, 12);
+      return registroSolicitado(res);
     }
 
     const datosVerificacion = crearTokenVerificacionEmail(
@@ -146,7 +152,8 @@ router.post('/register', async (req, res) => {
       password,
       emailVerifiedAt: null,
       emailVerificationTokenHash: datosVerificacion.tokenHash,
-      emailVerificationExpiresAt: datosVerificacion.expiresAt
+      emailVerificationExpiresAt: datosVerificacion.expiresAt,
+      emailVerificationLastSentAt: new Date()
     });
 
     const enlaceVerificacion =
@@ -156,7 +163,8 @@ router.post('/register', async (req, res) => {
 
     const plantilla = crearPlantillaBienvenida(
       usuario.nombre,
-      enlaceVerificacion
+      enlaceVerificacion,
+      { appUrl: APP_URL, vigenciaHoras: emailVerificationTtlHours }
     );
 
     let emailSent = false;
@@ -172,28 +180,27 @@ router.post('/register', async (req, res) => {
     } catch (mailErr) {
       console.error(
         'Error al enviar email de verificación:',
-        mailErr.message
+        errorCorreoSeguro(mailErr).code
       );
     }
 
-    return res.status(201).json({
-      ok: true,
-      data: {
-        pendingVerification: true,
-        email: usuario.email,
-        emailSent
-      },
-      message: emailSent
-        ? 'Cuenta creada. Revisa tu correo para confirmar la dirección.'
-        : 'Cuenta creada, pero no se pudo enviar el correo. Solicita un nuevo envío.'
-    });
+    if (!emailSent) {
+      // Keep the account pending; allow an immediate retry after a failed send.
+      // The token condition prevents overwriting a concurrent resend/verification.
+      await Usuario.updateOne(
+        { _id: usuario._id, emailVerificationTokenHash: datosVerificacion.tokenHash, emailVerifiedAt: null },
+        { $unset: { emailVerificationLastSentAt: '' } }
+      ).catch(() => console.error('No se pudo liberar el reenvío inicial tras el fallo de correo'));
+    }
+
+    return registroSolicitado(res);
 
   } catch (err) {
     if (esBDNoDisponible(err) || err.code === 'SESIONES_NO_DISPONIBLES') return res.status(503).json({ ok: false, error: 'Servicio no disponible temporalmente' });
     if (err.code === 11000) {
-      return res.status(409).json({ ok: false, error: 'El email ya está registrado' });
+      return registroSolicitado(res);
     }
-    console.error('Error durante el registro:', err.message);
+    console.error('Error durante el registro: REGISTER_FAILED');
 
     return res.status(500).json({
       ok: false,
@@ -247,7 +254,7 @@ router.post('/verify-email', async (req, res) => {
     if (esBDNoDisponible(err) || err.code === 'SESIONES_NO_DISPONIBLES') return res.status(503).json({ ok: false, error: 'Servicio no disponible temporalmente' });
     console.error(
       'Error al verificar el correo:',
-      err.stack
+      'EMAIL_VERIFICATION_FAILED'
     );
 
     return res.status(500).json({
@@ -258,9 +265,7 @@ router.post('/verify-email', async (req, res) => {
 });
 
 router.post('/resend-verification', async (req, res) => {
-  const email = typeof req.body?.email === 'string'
-    ? req.body.email.trim().toLowerCase()
-    : '';
+  const email = normalizarEmail(req.body?.email);
 
   if (!EMAIL_RE.test(email)) {
     return res.status(400).json({
@@ -271,7 +276,7 @@ router.post('/resend-verification', async (req, res) => {
 
   const respuesta = {
     ok: true,
-    message: 'Si existe una cuenta pendiente para ese correo, enviaremos un nuevo enlace.'
+    message: 'Si existe una cuenta pendiente y el servicio de correo está disponible, se intentará enviar un enlace. Este aviso no confirma el envío. Espera al menos un minuto antes de solicitar otro.'
   };
 
   try {
@@ -300,7 +305,8 @@ router.post('/resend-verification', async (req, res) => {
     if (!usuario) return res.json(respuesta);
 
     const enlace = `${APP_URL}/verify-email#token=${encodeURIComponent(token.tokenPlano)}`;
-    const plantilla = crearPlantillaBienvenida(usuario.nombre, enlace);
+    const plantilla = crearPlantillaBienvenida(usuario.nombre, enlace,
+      { appUrl: APP_URL, vigenciaHoras: emailVerificationTtlHours });
 
     try {
       const resultadoCorreo = await enviarEmail({
@@ -313,7 +319,7 @@ router.post('/resend-verification', async (req, res) => {
     } catch (errorCorreo) {
       console.error(
         'No se pudo reenviar el correo de verificación:',
-        errorCorreo.code || 'SMTP'
+        errorCorreoSeguro(errorCorreo).code
       );
 
       await Usuario.updateOne(
@@ -336,7 +342,7 @@ router.post('/resend-verification', async (req, res) => {
     return res.json(respuesta);
   } catch (error) {
     if (esBDNoDisponible(error)) return res.status(503).json({ ok: false, error: 'Servicio no disponible temporalmente' });
-    console.error('Error al preparar el reenvío:', error.message);
+    console.error('Error al preparar el reenvío: RESEND_PREPARATION_FAILED');
 
     return res.status(500).json({
       ok: false,
@@ -357,7 +363,7 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ ok: false, error: 'Email y contraseña son obligatorios' });
     }
 
-    const usuario = await Usuario.findOne({ email: email.toLowerCase().trim() });
+    const usuario = await Usuario.findOne({ email: normalizarEmail(email) });
 
     if (!usuario) {
       await bcrypt.compare(password, DUMMY_HASH);
@@ -479,19 +485,20 @@ router.post('/2fa/verify', async (req, res) => {
 router.post('/forgot-password', async (req, res) => {
   try {
     const { email } = req.body;
-    if (typeof email !== 'string' || !EMAIL_RE.test(email)) {
+    const emailNormalizado = normalizarEmail(email);
+    if (!EMAIL_RE.test(emailNormalizado)) {
       return res.status(400).json({ ok: false, error: 'Email inválido' });
     }
 
     const respuestaGenerica = {
       ok: true,
-      message: 'Si el email está registrado, recibirás un enlace de recuperación.'
+      message: 'Si la cuenta existe y el servicio de correo está disponible, se intentará enviar un enlace de recuperación. Este aviso no confirma el envío.'
     };
 
     const rawToken = crypto.randomBytes(32).toString('hex');
     const tokenHash = hashResetToken(rawToken);
     const usuario = await Usuario.findOneAndUpdate(
-      { email: email.toLowerCase().trim() },
+      { email: emailNormalizado },
       {
         $set: {
           resetPasswordToken: tokenHash,
@@ -506,7 +513,7 @@ router.post('/forgot-password', async (req, res) => {
       const resultadoCorreo = await enviarEmailRecuperacion(usuario.email, resetUrl);
       if (!resultadoCorreo.enviado) throw new Error('SMTP_NO_CONFIGURADO');
     } catch (mailErr) {
-      console.error('Error al enviar email de recuperación:', mailErr.message);
+      console.error('Error al enviar email de recuperación:', errorCorreoSeguro(mailErr).code);
       await Usuario.updateOne(
         { _id: usuario._id, resetPasswordToken: tokenHash },
         {
@@ -553,7 +560,7 @@ router.post('/reset-password', async (req, res) => {
       return res.status(400).json({ ok: false, error: 'El enlace de recuperación es inválido o ha caducado' });
     }
 
-    res.json({ ok: true, message: 'Contraseña actualizada. Ya puedes iniciar sesión.' });
+    res.json({ ok: true, message: 'Contraseña actualizada. Vuelve al inicio de sesión. Si tu correo sigue pendiente de confirmación, deberás verificarlo; el segundo factor seguirá siendo necesario si lo tenías activado.' });
   } catch (err) {
     if (esBDNoDisponible(err) || err.code === 'SESIONES_NO_DISPONIBLES') return res.status(503).json({ ok: false, error: 'Servicio no disponible temporalmente' });
     res.status(500).json({ ok: false, error: 'Error interno al restablecer la contraseña' });

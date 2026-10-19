@@ -27,7 +27,9 @@ function errorCorreoSeguro(error) {
     EDNS: 'SMTP_CONNECTION_FAILED', ETIMEDOUT: 'SMTP_TIMEOUT',
     EENVELOPE: 'SMTP_ENVELOPE_REJECTED', EMESSAGE: 'SMTP_MESSAGE_REJECTED'
   };
-  const code = Object.hasOwn(categories, error?.code) ? categories[error.code] : 'SMTP_SEND_FAILED';
+  const knownSafe = [...Object.values(categories), 'SMTP_SEND_FAILED'];
+  const code = knownSafe.includes(error?.code) ? error.code
+    : Object.hasOwn(categories, error?.code) ? categories[error.code] : 'SMTP_SEND_FAILED';
   return Object.assign(new Error(code), {code});
 }
 

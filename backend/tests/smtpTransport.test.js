@@ -46,6 +46,12 @@ test('sanitized errors keep category only, without SMTP response or nested secre
   assert.doesNotMatch(JSON.stringify(e)+e.stack,/SECRET|SENSITIVE|https:|password/);
  }
 });
+
+test('sanitization is idempotent for allowed categories, never for arbitrary SMTP-prefixed strings',()=>{
+ const first=errorCorreoSeguro({code:'EAUTH',message:'SECRET'});
+ assert.equal(errorCorreoSeguro(first).code,'SMTP_AUTH_FAILED');
+ assert.equal(errorCorreoSeguro({code:'SMTP_PASSWORD_SECRET',message:'SECRET'}).code,'SMTP_SEND_FAILED');
+});
 test('mailer sanitizes rejected delivery and disabled ignores stale env credentials',async t=>{
  const nodemailer=require('nodemailer'),p=require.resolve('../utils/mailer');
  const keys=['SMTP_HOST','SMTP_PORT','SMTP_USER','SMTP_PASS','SMTP_FROM','NC_MAIL_MODE'];const before=Object.fromEntries(keys.map(k=>[k,process.env[k]]));
