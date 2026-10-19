@@ -571,6 +571,18 @@ Los errores generales de instalación y sus comprobaciones están en [Si algo fa
 
 Al informar de un problema, indicar sistema operativo, versión Node/Docker/Compose, commit o ZIP, paso, mensaje y resultado esperado. Omitir contraseñas, cookies, tokens, claves y datos personales. No ejecutar limpiezas de volúmenes, cambios de permisos o regeneración de secretos como primer intento.
 
+<a id="recuperacion-instalacion-privada"></a>
+### Recuperación de contraseña en la instalación privada
+
+Esta sección corresponde a Hetzner, no al instalador local del profesorado. Que un correo esté registrado no confirma que la contraseña introducida sea correcta. La respuesta genérica de recuperación no confirma que la cuenta exista ni que el mensaje se haya enviado o entregado: evita revelar cuentas a terceros.
+
+- Con `NC_MAIL_MODE=disabled` no se envían correos. Disponer del código SMTP o haber autenticado una credencial de Gmail no equivale a activar el servicio. El operador debe comprobar el modo del backend **realmente en ejecución** y distinguir configuración activa, aceptación por SMTP y recepción efectiva, sin publicar secretos, tokens ni enlaces.
+- Cuando el correo esté operativo, solicita la recuperación una sola vez desde «¿Has olvidado tu contraseña?» en `/auth`. Usa el enlace más reciente: caduca a los diez minutos y es de un solo uso. Para abrirlo en el entorno privado necesitas WireGuard y confiar en el certificado de esa instalación.
+- Elige la contraseña nueva únicamente en la aplicación. El restablecimiento invalida sesiones anteriores y elimina el bloqueo por intentos fallidos; **no** verifica el correo ni concede acceso a una organización. Si después aparece `EMAIL_NOT_VERIFIED`, utiliza el reenvío de confirmación y verifica la dirección.
+- Si aparece HTTP 429, respeta la espera indicada. Inicio de sesión y recuperación tienen limitadores distintos. No insistas con contraseñas diferentes ni reinicies servicios para eludirlos; tampoco cambies contraseñas o verificaciones directamente en MongoDB.
+
+Estas indicaciones describen el comportamiento del código. Una respuesta HTTP 200 al solicitar recuperación no acredita por sí sola la entrega ni el acceso posterior.
+
 ## Seguridad, licencias y entrega
 
 La memoria, capítulo 7, recoge tres hallazgos prioritarios en una réplica R3: equivalencia de contraseñas largas por el límite de bcrypt, pérdida de incrementos concurrentes del contador de fallos y reutilización de un TOTP entre retos. **Esta actualización documental y la aceptación básica no acreditan su corrección.** También documenta autenticación reciente para alta MFA, distinción de cuentas en el registro y validación PDF superficial, además de avisos de dependencias. No hay certificado de seguridad ni una auditoría exhaustiva de esta instalación.

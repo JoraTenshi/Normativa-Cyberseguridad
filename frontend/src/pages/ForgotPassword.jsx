@@ -26,7 +26,7 @@ const ForgotPassword = () => {
     <div className="page auth-page">
       <div className="auth-card">
         <h1 className="auth-title">{submitted ? 'Solicitud recibida' : 'Recuperar contraseña'}</h1>
-        {submitted ? <p role="status">Si existe una cuenta asociada a ese correo electrónico, recibirás un enlace para restablecer tu contraseña. Revisa también la carpeta de correo no deseado.</p> : (
+        {submitted ? <p role="status">Si la cuenta existe y el servicio de correo está disponible, se intentará enviar un enlace de recuperación. Este aviso no confirma el envío. Revisa también el correo no deseado; si no llega, contacta con quien administra la aplicación.</p> : (
           <>
           <p>Introduce el correo electrónico asociado a tu cuenta para solicitar un enlace de recuperación.</p>
           <form onSubmit={handleSubmit} className="auth-form">

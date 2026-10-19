@@ -14,7 +14,7 @@ test('initial view asks for the email without displaying confirmation',()=>{
 test.each([{message:'Si el email está registrado, recibirás un enlace de recuperación.'},{}])('successful request shows one neutral confirmation independently of backend copy: %j',async response=>{
   forgotPassword.mockResolvedValue(response);show();submit();
   expect(await screen.findByRole('heading',{name:'Solicitud recibida'})).toBeInTheDocument();
-  expect(screen.getAllByRole('status')).toHaveLength(1);expect(screen.getByRole('status')).toHaveTextContent('Si existe una cuenta asociada a ese correo electrónico, recibirás un enlace para restablecer tu contraseña.');
+  expect(screen.getAllByRole('status')).toHaveLength(1);expect(screen.getByRole('status')).toHaveTextContent('Si la cuenta existe y el servicio de correo está disponible, se intentará enviar un enlace de recuperación. Este aviso no confirma el envío.');
   expect(screen.queryByText(/Introduce el correo/)).toBeNull();expect(screen.queryByLabelText('Correo electrónico')).toBeNull();expect(screen.queryByRole('button',{name:'Enviar enlace'})).toBeNull();expect(screen.queryByRole('heading',{name:'Recuperar contraseña'})).toBeNull();expect(screen.getByRole('link',{name:'Volver al inicio de sesión'})).toHaveAttribute('href','/auth');expect(forgotPassword).toHaveBeenCalledWith('qa@example.invalid');expect(forgotPassword).toHaveBeenCalledTimes(1);
 });
 test('failed request keeps entered email and form available for retry',async()=>{
