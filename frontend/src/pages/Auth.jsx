@@ -5,6 +5,7 @@ import { register, loginApi, verify2fa, resendVerification } from '../services/a
 import { PrivacyAccess } from '../components/CookieBanner';
 import { PASSWORD_HELP, validPassword, VERIFICATION_REQUESTED, REGISTRATION_REQUESTED } from './account-feedback';
 import { isLocalTeacherDemo } from '../utils/localTeacherDemo';
+import { canOfferPasswordSave, offerPasswordSave } from '../services/browserPasswordManager';
 
 const esRutaInterna = destino =>
   typeof destino === 'string' && /^\/(?![/\\])[^\\\s]*$/.test(destino);
@@ -12,8 +13,9 @@ const esRutaInterna = destino =>
 const Auth = ({ embedded = false }) => {
   const location = useLocation();
   const view = useRef({ key: location.key, mounted: true });
+  const pendingPasswordSave = useRef(null);
   view.current.key = location.key;
-  useEffect(() => { view.current.mounted = true; return () => { view.current.mounted = false; }; }, []);
+  useEffect(() => { view.current.mounted = true; return () => { view.current.mounted = false; pendingPasswordSave.current = null; }; }, []);
   const localTeacherDemo = isLocalTeacherDemo();
   const [tab, setTab]         = useState(() => !localTeacherDemo && !embedded && new URLSearchParams(location.search).get('modo') === 'registro' ? 'register' : 'login');
   const [form, setForm]       = useState({ nombre: '', email: '', password: '' });
@@ -24,6 +26,7 @@ const Auth = ({ embedded = false }) => {
   const [needs2fa, setNeeds2fa] = useState(false);
   const [totpCode, setTotpCode] = useState('');
   const [mantenerSesion, setMantenerSesion] = useState(false);
+  const [recordarPassword, setRecordarPassword] = useState(false);
   const [registrationComplete, setRegistrationComplete] = useState(false);
 
   const { user, phase, login } = useAuth();
@@ -38,6 +41,7 @@ const Auth = ({ embedded = false }) => {
     setTab(!localTeacherDemo && new URLSearchParams(location.search).get('modo') === 'registro' ? 'register' : 'login');
     setError(null); setNotice(null); setCanResend(false); setNeeds2fa(false);
     setRegistrationComplete(false); setTotpCode(''); setLoading(false);
+    pendingPasswordSave.current = null;
     setForm(prev => ({ ...prev, password: '' }));
   }, [embedded, localTeacherDemo, location.key, location.search]);
 
@@ -49,7 +53,7 @@ const Auth = ({ embedded = false }) => {
     if (e.target.name === 'email') { setCanResend(false); setNotice(null); setError(null); }
   };
 
-  const switchTab = t => { setTab(t); setError(null); setNotice(null); setCanResend(false); setNeeds2fa(false); setRegistrationComplete(false); setTotpCode(''); setForm(prev => ({ ...prev, password: '' })); };
+  const switchTab = t => { pendingPasswordSave.current = null; setTab(t); setError(null); setNotice(null); setCanResend(false); setNeeds2fa(false); setRegistrationComplete(false); setTotpCode(''); setForm(prev => ({ ...prev, password: '' })); };
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -75,17 +79,21 @@ const Auth = ({ embedded = false }) => {
         return;
       }
 
-      const data = await loginApi(form.email.trim(), form.password, mantenerSesion);
+      pendingPasswordSave.current = null;
+      const submitted = { email: form.email.trim(), password: form.password };
+      const data = await loginApi(submitted.email, submitted.password, mantenerSesion);
       if (!current()) return;
       setForm(prev => ({ ...prev, password: '' }));
 
       if (data.requires2fa) {
+        if (recordarPassword) pendingPasswordSave.current = submitted;
         setNeeds2fa(true);
         return;
       }
 
       if (!(await login())) throw new Error('No se ha podido confirmar la sesión en el servidor.');
       if (!current()) return;
+      if (recordarPassword) offerPasswordSave(submitted);
       if (!embedded) navigate(from, { replace: true });
     } catch (err) {
       if (!current()) return;
@@ -131,6 +139,8 @@ const Auth = ({ embedded = false }) => {
       setTotpCode('');
       if (!(await login())) throw new Error('No se ha podido confirmar la sesión en el servidor.');
       if (!current()) return;
+      if (pendingPasswordSave.current) offerPasswordSave(pendingPasswordSave.current);
+      pendingPasswordSave.current = null;
       if (!embedded) navigate(from, { replace: true });
     } catch (err) {
       if (!current()) return;
@@ -185,7 +195,7 @@ const Auth = ({ embedded = false }) => {
           </form>
 
           <p className="auth-switch">
-            <button className="auth-link" disabled={loading} onClick={() => { setNeeds2fa(false); setError(null); setTotpCode(''); }}>
+            <button className="auth-link" disabled={loading} onClick={() => { pendingPasswordSave.current = null; setNeeds2fa(false); setError(null); setTotpCode(''); }}>
               Volver al inicio de sesión
             </button>
           </p>
@@ -237,6 +247,12 @@ const Auth = ({ embedded = false }) => {
               onChange={e => setMantenerSesion(e.target.checked)} /> Mantener la sesión en este dispositivo</label>
             <small>Hasta 8 horas desde el acceso y 30 minutos sin actividad. No utilizar en equipos compartidos.</small>
           </div>}
+          {tab === 'login' && <div className="form-group">
+            {canOfferPasswordSave() ? <label><input type="checkbox" disabled={loading} checked={recordarPassword}
+              onChange={e => setRecordarPassword(e.target.checked)} /> Recordar contraseña en este navegador</label>
+              : <span>Tu navegador puede ofrecerte guardar la contraseña al iniciar sesión.</span>}
+            <small>Solo si lo aceptas, el navegador te ofrecerá guardarla tras iniciar sesión y completar la verificación en dos pasos. No la guarda NormativaCheck. No utilizar en equipos compartidos.</small>
+          </div>}
           {notice && <p role="status">{notice}</p>}
           {tab === 'register' && (
             <div className="form-group">
@@ -269,7 +285,7 @@ const Auth = ({ embedded = false }) => {
               value={form.email}
               onChange={handleChange}
               required
-              autoComplete="email"
+              autoComplete={tab === 'login' ? 'username' : 'email'}
             />
           </div>
 
