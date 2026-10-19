@@ -2,8 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { resendVerification, verifyEmail } from '../services/api';
 import { VERIFICATION_REQUESTED } from './account-feedback';
+import { isLocalTeacherDemo } from '../utils/localTeacherDemo';
 
 const VerifyEmail = () => {
+  const localTeacherDemo = isLocalTeacherDemo();
   const [token] = useState(() =>
     new URLSearchParams(window.location.hash.slice(1)).get('token') ||
     new URLSearchParams(window.location.search).get('token')
@@ -20,6 +22,7 @@ const VerifyEmail = () => {
 
     // El enlace es una credencial temporal: se retira de la barra y del historial.
     window.history.replaceState(window.history.state, '', '/verify-email');
+    if (localTeacherDemo) return;
     verifyEmail(token)
       .then(() => {
         setStatus('success');
@@ -29,7 +32,7 @@ const VerifyEmail = () => {
         setStatus('error');
         setMessage(err.response?.data?.error || 'No se pudo verificar el correo.');
       });
-  }, [token]);
+  }, [localTeacherDemo, token]);
 
   const handleResend = async e => {
     e.preventDefault();
@@ -48,6 +51,14 @@ const VerifyEmail = () => {
       setResendBusy(false);
     }
   };
+
+  if (localTeacherDemo) return (
+    <div className="page auth-page"><div className="auth-card">
+      <h1 className="auth-title">Demo local: correo no disponible</h1>
+      <p>La cuenta ficticia ya está verificada. Entra con la contraseña generada por el comando account; no se envían enlaces de confirmación.</p>
+      <p className="auth-switch"><Link to="/auth" className="auth-link">Iniciar sesión</Link></p>
+    </div></div>
+  );
 
   return (
     <div className="page auth-page">

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { forgotPassword } from '../services/api';
+import { isLocalTeacherDemo } from '../utils/localTeacherDemo';
 
 const ForgotPassword = () => {
+  const localTeacherDemo = isLocalTeacherDemo();
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null);
@@ -22,6 +24,14 @@ const ForgotPassword = () => {
       setLoading(false);
     }
   };
+
+  if (localTeacherDemo) return (
+    <div className="page auth-page"><div className="auth-card">
+      <h1 className="auth-title">Demo local: recuperación por correo no disponible</h1>
+      <p>Esta instalación no envía correos. La contraseña de la cuenta ficticia se mostró una sola vez al ejecutar account. Si la perdiste, conserva la instalación y solicita asistencia sin publicar secretos.</p>
+      <p className="auth-switch"><Link to="/auth" className="auth-link">Volver al inicio de sesión</Link></p>
+    </div></div>
+  );
 
   return (
     <div className="page auth-page">

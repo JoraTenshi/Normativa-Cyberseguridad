@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { resetPassword } from '../services/api';
 import { PASSWORD_HELP, validPassword } from './account-feedback';
+import { isLocalTeacherDemo } from '../utils/localTeacherDemo';
 
 const ResetPassword = () => {
+  const localTeacherDemo = isLocalTeacherDemo();
   const [token] = useState(() =>
     new URLSearchParams(window.location.hash.slice(1)).get('token') ||
     new URLSearchParams(window.location.search).get('token')
@@ -40,6 +42,14 @@ const ResetPassword = () => {
       setLoading(false);
     }
   };
+
+  if (localTeacherDemo) return (
+    <div className="page auth-page"><div className="auth-card">
+      <h1 className="auth-title">Demo local: restablecimiento por correo no disponible</h1>
+      <p>Esta instalación no envía enlaces de restablecimiento. Usa la cuenta ficticia preparada con account y conserva su contraseña.</p>
+      <p className="auth-switch"><Link to="/auth" className="auth-link">Volver al inicio de sesión</Link></p>
+    </div></div>
+  );
 
   return (
     <div className="page auth-page">

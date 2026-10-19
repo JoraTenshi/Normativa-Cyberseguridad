@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { register, loginApi, verify2fa, resendVerification } from '../services/api';
 import { PrivacyAccess } from '../components/CookieBanner';
 import { PASSWORD_HELP, validPassword, VERIFICATION_REQUESTED, REGISTRATION_REQUESTED } from './account-feedback';
+import { isLocalTeacherDemo } from '../utils/localTeacherDemo';
 
 const esRutaInterna = destino =>
   typeof destino === 'string' && /^\/(?![/\\])[^\\\s]*$/.test(destino);
@@ -13,7 +14,8 @@ const Auth = ({ embedded = false }) => {
   const view = useRef({ key: location.key, mounted: true });
   view.current.key = location.key;
   useEffect(() => { view.current.mounted = true; return () => { view.current.mounted = false; }; }, []);
-  const [tab, setTab]         = useState(() => !embedded && new URLSearchParams(location.search).get('modo') === 'registro' ? 'register' : 'login');
+  const localTeacherDemo = isLocalTeacherDemo();
+  const [tab, setTab]         = useState(() => !localTeacherDemo && !embedded && new URLSearchParams(location.search).get('modo') === 'registro' ? 'register' : 'login');
   const [form, setForm]       = useState({ nombre: '', email: '', password: '' });
   const [error, setError]     = useState(null);
   const [notice, setNotice]   = useState(null);
@@ -33,11 +35,11 @@ const Auth = ({ embedded = false }) => {
   // without resetting the embedded session-unlock form or its surrounding draft.
   useEffect(() => {
     if (embedded) return;
-    setTab(new URLSearchParams(location.search).get('modo') === 'registro' ? 'register' : 'login');
+    setTab(!localTeacherDemo && new URLSearchParams(location.search).get('modo') === 'registro' ? 'register' : 'login');
     setError(null); setNotice(null); setCanResend(false); setNeeds2fa(false);
     setRegistrationComplete(false); setTotpCode(''); setLoading(false);
     setForm(prev => ({ ...prev, password: '' }));
-  }, [embedded, location.key, location.search]);
+  }, [embedded, localTeacherDemo, location.key, location.search]);
 
   // Si ya hay sesión iniciada, no mostrar el formulario: redirigir.
   if (!embedded && user && phase === 'authenticated') return <Navigate to={from} replace />;
@@ -199,8 +201,10 @@ const Auth = ({ embedded = false }) => {
           <span className="auth-title">Tu espacio, con todo el contexto.</span>
         </div>
 
-        {!embedded && <p className="auth-intro">Accede a tu cuenta o regístrate para solicitar el espacio de tu empresa.</p>}
-        {!embedded && !registrationComplete && <div className="auth-tabs" role="group" aria-label="Acceso a tu cuenta">
+        {!embedded && <p className="auth-intro">{localTeacherDemo
+          ? 'Demo local: entra con admin.workspace@example.invalid y la contraseña que mostró una sola vez node scripts/local-demo.cjs account. Esta instalación no envía correos ni admite nuevas cuentas o recuperación por email.'
+          : 'Accede a tu cuenta o regístrate para solicitar el espacio de tu empresa.'}</p>}
+        {!embedded && !localTeacherDemo && !registrationComplete && <div className="auth-tabs" role="group" aria-label="Acceso a tu cuenta">
           <button
             disabled={loading}
             aria-pressed={tab === 'login'}
@@ -293,7 +297,7 @@ const Auth = ({ embedded = false }) => {
             </div>
           )}
 
-          {tab === 'login' && canResend && (
+          {tab === 'login' && canResend && !localTeacherDemo && (
             <button type="button" className="auth-link" onClick={handleResend} disabled={loading || !form.email}>
               Reenviar enlace de confirmación
             </button>
@@ -307,11 +311,13 @@ const Auth = ({ embedded = false }) => {
           </button>
         </form>}
 
-        <p className="auth-switch"><Link to="/forgot-password" className="auth-link" target={embedded ? '_blank' : undefined} rel={embedded ? 'noopener noreferrer' : undefined}>¿Has olvidado tu contraseña?{embedded ? ' (nueva pestaña)' : ''}</Link></p>
-        <p className="auth-switch"><Link to="/verify-email" className="auth-link" target={embedded ? '_blank' : undefined} rel={embedded ? 'noopener noreferrer' : undefined}>¿No has confirmado tu correo? Reenviar enlace{embedded ? ' (nueva pestaña)' : ''}</Link></p>
-        {embedded && <p>La ayuda se abre en otra pestaña. Conserva esta pestaña para volver a identificarte sin abandonar tu borrador.</p>}
+        {!localTeacherDemo && <>
+          <p className="auth-switch"><Link to="/forgot-password" className="auth-link" target={embedded ? '_blank' : undefined} rel={embedded ? 'noopener noreferrer' : undefined}>¿Has olvidado tu contraseña?{embedded ? ' (nueva pestaña)' : ''}</Link></p>
+          <p className="auth-switch"><Link to="/verify-email" className="auth-link" target={embedded ? '_blank' : undefined} rel={embedded ? 'noopener noreferrer' : undefined}>¿No has confirmado tu correo? Reenviar enlace{embedded ? ' (nueva pestaña)' : ''}</Link></p>
+          {embedded && <p>La ayuda se abre en otra pestaña. Conserva esta pestaña para volver a identificarte sin abandonar tu borrador.</p>}
+        </>}
 
-        {!embedded && !registrationComplete && <p className="auth-switch">
+        {!embedded && !localTeacherDemo && !registrationComplete && <p className="auth-switch">
           {tab === 'login'
             ? <>¿Sin cuenta? <button className="auth-link" disabled={loading} onClick={() => switchTab('register')}>Regístrate</button></>
             : <>¿Ya tienes cuenta? <button className="auth-link" disabled={loading} onClick={() => switchTab('login')}>Inicia sesión</button></>

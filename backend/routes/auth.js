@@ -27,6 +27,25 @@ const { JWT_SECRET, JWT_EXPIRES, generateJti, requireAuth } = require('../middle
 
 const accesoSesion = require('../services/accesoSesion');
 
+// La cuenta del paquete docente se prepara fuera de HTTP y no hay SMTP en ese
+// perfil. Rechazar estas rutas antes de tocar Mongo impide crear cuentas que
+// nunca podrán confirmar su correo o solicitar enlaces que no se enviarán.
+const rutasCorreoDemo = new Set([
+  '/register', '/verify-email', '/resend-verification',
+  '/forgot-password', '/reset-password'
+]);
+router.use((req, res, next) => {
+  const routePath = req.path.toLowerCase().replace(/\/+$/, '') || '/';
+  if (process.env.NC_LOCAL_DEMO === '1' && req.method === 'POST' && rutasCorreoDemo.has(routePath)) {
+    return res.status(403).json({
+      ok: false,
+      code: 'LOCAL_DEMO_EMAIL_DISABLED',
+      error: 'La demo local usa una cuenta ficticia creada con account y no ofrece registro ni correo de recuperación.'
+    });
+  }
+  next();
+});
+
 const RESET_TTL_MS = 10 * 60 * 1000;
 const emailVerificationTtlHours = Number(process.env.EMAIL_VERIFICATION_TTL_HOURS || 24);
 if (!Number.isSafeInteger(emailVerificationTtlHours) || emailVerificationTtlHours < 1 || emailVerificationTtlHours > 168) {

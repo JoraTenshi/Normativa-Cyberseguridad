@@ -9,6 +9,7 @@ import './journey-readability.css';
 import './marketing.css';
 import './journey-flow.css';
 import CloseIcon from './CloseIcon';
+import { isLocalTeacherDemo } from '../utils/localTeacherDemo';
 const Demo = lazy(() => import('./Demo.jsx'));
 
 export function Icon({ name = 'arrow', size = 20 }) {
@@ -66,6 +67,7 @@ function InfoDialog({ topic, onClose }) {
 }
 function Home() {
   const reduce = useReducedMotion();
+  const localTeacherDemo = isLocalTeacherDemo();
   const [topic, setTopic] = useState(null);
   const [menu, setMenu] = useState(false);
   const links = [['quienes-somos','Quiénes somos'],['producto','El producto'],['como-funciona','Cómo funciona'],['preguntas','Preguntas frecuentes']];
@@ -120,10 +122,12 @@ function Home() {
         ['¿Tengo que saber de normativa para empezar?', 'No necesitas conocer cada norma. El punto de partida es lo que hace tu empresa: sus servicios, productos, clientes y formas de trabajar. Cuando un dato no está claro, se identifica como una cuestión por resolver.'],
         ['¿Qué puedo probar en la demo?', 'Puedes consultar el caso de Linde Studio, abrir una tarea y su fundamento, leer documentación, cambiar responsables y estados, y consultar el histórico. El espacio utiliza datos ficticios y conserva los cambios en este navegador.'],
         ['¿NormativaCheck certifica el cumplimiento de mi empresa?', 'No. Te ayuda a organizar requisitos, documentación y trabajo pendiente. Esa preparación no equivale por sí sola a una evaluación de conformidad ni a una certificación.'],
-        ['¿En qué se diferencia la demo del espacio de mi empresa?', 'La demo usa datos ficticios guardados solo en este navegador. El espacio de empresa requiere una cuenta verificada y una solicitud de alta aprobada. Sus documentos y actuaciones se guardan en el servidor según tus permisos. Las fechas y herramientas colaborativas de la demo no están todas disponibles en el espacio real. No se analizan documentos con IA.'],
+        localTeacherDemo
+          ? ['¿Cómo pruebo el Workspace local?', 'La demo guiada de portada guarda cambios en este navegador. El Workspace docente usa una cuenta ficticia ya verificada y MongoDB local: ejecuta account según el README y entra con la contraseña que se muestra una sola vez. No hay registro ni correo en esta instalación.']
+          : ['¿En qué se diferencia la demo del espacio de mi empresa?', 'La demo usa datos ficticios guardados solo en este navegador. El espacio de empresa requiere una cuenta verificada y una solicitud de alta aprobada. Sus documentos y actuaciones se guardan en el servidor según tus permisos. Las fechas y herramientas colaborativas de la demo no están todas disponibles en el espacio real. No se analizan documentos con IA.'],
         ['¿Tengo que aportar documentos de mi empresa para probarlo?', 'No. La demo ya incluye documentos con los que puedes familiarizarte con el producto. No introduzcas información personal ni documentos confidenciales.'],
       ].map(([q,a]) => <details key={q}><summary>{q}<span aria-hidden="true">+</span></summary><p>{a}</p></details>)}</div></section>
-      <section className="signup-section section-shell" id="registro"><div><span className="eyebrow">SI TE HA INTERESADO</span><h2>El siguiente paso,<br/><em>con tu empresa.</em></h2><p>Crea tu cuenta, confirma tu correo y solicita el espacio de tu empresa. El acceso a la organización requiere una aprobación.</p></div><div className="signup-actions"><Link to="/auth?modo=registro" className="home-btn primary">Regístrate <Icon/></Link><Link to="/auth" className="text-link">Ya tengo cuenta →</Link></div></section>
+      <section className="signup-section section-shell" id="registro"><div><span className="eyebrow">SI TE HA INTERESADO</span><h2>{localTeacherDemo ? 'Prueba el Workspace local.' : <>El siguiente paso,<br/><em>con tu empresa.</em></>}</h2><p>{localTeacherDemo ? 'Usa la cuenta ficticia creada con account. Esta instalación no envía correos ni permite registrar una empresa real.' : 'Crea tu cuenta, confirma tu correo y solicita el espacio de tu empresa. El acceso a la organización requiere una aprobación.'}</p></div><div className="signup-actions">{localTeacherDemo ? <Link to="/auth" className="home-btn primary">Entrar en el Workspace <Icon/></Link> : <><Link to="/auth?modo=registro" className="home-btn primary">Regístrate <Icon/></Link><Link to="/auth" className="text-link">Ya tengo cuenta →</Link></>}</div></section>
     </main>
     <footer className="home-footer"><div className="footer-main">
       <div className="footer-brand"><Brand/><p>Requisitos, documentación<br/>y trabajo, conectados.</p></div>
