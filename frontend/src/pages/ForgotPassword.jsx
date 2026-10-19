@@ -10,10 +10,11 @@ const ForgotPassword = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
+    if (loading) return;
     setError(null);
     setLoading(true);
     try {
-      await forgotPassword(email);
+      await forgotPassword(email.trim());
       setSubmitted(true);
     } catch (err) {
       setError(err.response?.data?.error || 'No se pudo procesar la solicitud.');
@@ -29,10 +30,11 @@ const ForgotPassword = () => {
         {submitted ? <p role="status">Si la cuenta existe y el servicio de correo está disponible, se intentará enviar un enlace de recuperación. Este aviso no confirma el envío. Revisa también el correo no deseado; si no llega, contacta con quien administra la aplicación.</p> : (
           <>
           <p>Introduce el correo electrónico asociado a tu cuenta para solicitar un enlace de recuperación.</p>
-          <form onSubmit={handleSubmit} className="auth-form">
+          <form onSubmit={handleSubmit} className="auth-form" aria-busy={loading}>
             <label className="form-label" htmlFor="recovery-email">Correo electrónico</label>
             <input
               id="recovery-email"
+              disabled={loading}
               className="form-input"
               type="email"
               value={email}

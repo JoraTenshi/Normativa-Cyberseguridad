@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation, Navigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { register, loginApi, verify2fa, resendVerification } from '../services/api';
 import { PrivacyAccess } from '../components/CookieBanner';
+import { PASSWORD_HELP, validPassword, VERIFICATION_REQUESTED, REGISTRATION_REQUESTED } from './account-feedback';
 
 const esRutaInterna = destino =>
   typeof destino === 'string' && /^\/(?![/\\])[^\\\s]*$/.test(destino);
 
 const Auth = ({ embedded = false }) => {
   const location = useLocation();
+  const view = useRef({ key: location.key, mounted: true });
+  view.current.key = location.key;
+  useEffect(() => { view.current.mounted = true; return () => { view.current.mounted = false; }; }, []);
   const [tab, setTab]         = useState(() => !embedded && new URLSearchParams(location.search).get('modo') === 'registro' ? 'register' : 'login');
   const [form, setForm]       = useState({ nombre: '', email: '', password: '' });
   const [error, setError]     = useState(null);
@@ -18,40 +22,59 @@ const Auth = ({ embedded = false }) => {
   const [needs2fa, setNeeds2fa] = useState(false);
   const [totpCode, setTotpCode] = useState('');
   const [mantenerSesion, setMantenerSesion] = useState(false);
+  const [registrationComplete, setRegistrationComplete] = useState(false);
 
   const { user, phase, login } = useAuth();
   const navigate  = useNavigate();
   // Solo rutas internas: evita redirecciones abiertas tras iniciar sesión (//dominio, /\dominio).
   const from      = esRutaInterna(location.state?.from) ? location.state.from : '/espacio-de-trabajo';
 
+  // Header/back navigation may reuse this component. Reflect the new route,
+  // without resetting the embedded session-unlock form or its surrounding draft.
+  useEffect(() => {
+    if (embedded) return;
+    setTab(new URLSearchParams(location.search).get('modo') === 'registro' ? 'register' : 'login');
+    setError(null); setNotice(null); setCanResend(false); setNeeds2fa(false);
+    setRegistrationComplete(false); setTotpCode(''); setLoading(false);
+    setForm(prev => ({ ...prev, password: '' }));
+  }, [embedded, location.key, location.search]);
+
   // Si ya hay sesión iniciada, no mostrar el formulario: redirigir.
   if (!embedded && user && phase === 'authenticated') return <Navigate to={from} replace />;
 
-  const handleChange = e =>
+  const handleChange = e => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    if (e.target.name === 'email') { setCanResend(false); setNotice(null); setError(null); }
+  };
 
-  const switchTab = t => { setTab(t); setError(null); setNotice(null); setCanResend(false); setNeeds2fa(false); };
+  const switchTab = t => { setTab(t); setError(null); setNotice(null); setCanResend(false); setNeeds2fa(false); setRegistrationComplete(false); setTotpCode(''); setForm(prev => ({ ...prev, password: '' })); };
 
   const handleSubmit = async e => {
     e.preventDefault();
+    if (loading) return;
+    const key = location.key;
+    const current = () => view.current.mounted && view.current.key === key;
     setError(null);
     setNotice(null);
+    setCanResend(false);
+    if (tab === 'register' && !validPassword(form.password)) { setError(PASSWORD_HELP); return; }
     setLoading(true);
 
     try {
       if (tab === 'register') {
-        const result = await register(form.nombre, form.email, form.password);
+        await register(form.nombre.trim(), form.email.trim(), form.password);
+        if (!current()) return;
 
         setForm(prev => ({ ...prev, password: '' }));
         setTab('login');
         setCanResend(true);
-        setNotice(result.emailSent
-          ? 'Cuenta creada. Revisa tu correo para confirmar la dirección antes de iniciar sesión.'
-          : 'Cuenta creada, pero no se pudo enviar el correo. Solicita otro enlace más tarde.');
+        setRegistrationComplete(true);
+        setNotice(REGISTRATION_REQUESTED);
         return;
       }
 
-      const data = await loginApi(form.email, form.password, mantenerSesion);
+      const data = await loginApi(form.email.trim(), form.password, mantenerSesion);
+      if (!current()) return;
       setForm(prev => ({ ...prev, password: '' }));
 
       if (data.requires2fa) {
@@ -60,41 +83,58 @@ const Auth = ({ embedded = false }) => {
       }
 
       if (!(await login())) throw new Error('No se ha podido confirmar la sesión en el servidor.');
+      if (!current()) return;
       if (!embedded) navigate(from, { replace: true });
     } catch (err) {
-      setError(err.response?.data?.error || err.message || 'Error de conexión con el servidor');
+      if (!current()) return;
+      setError(tab === 'register' && err.response?.status === 409
+        ? 'No se ha podido completar el registro con estos datos. Puedes intentar iniciar sesión, confirmar tu correo o recuperar el acceso.'
+        : err.response?.data?.error || err.message || 'Error de conexión con el servidor');
       setCanResend(err.response?.data?.code === 'EMAIL_NOT_VERIFIED');
     } finally {
-      setLoading(false);
+      if (current()) setLoading(false);
     }
   };
 
   const handleResend = async () => {
+    if (loading) return;
+    const key = location.key;
+    const current = () => view.current.mounted && view.current.key === key;
     setError(null);
+    setNotice(null);
     setLoading(true);
     try {
-      const data = await resendVerification(form.email);
-      setNotice(data.message);
+      await resendVerification(form.email.trim());
+      if (!current()) return;
+      setNotice(VERIFICATION_REQUESTED);
+      setCanResend(false);
     } catch (err) {
+      if (!current()) return;
       setError(err.response?.data?.error || 'No se pudo solicitar otro enlace');
     } finally {
-      setLoading(false);
+      if (current()) setLoading(false);
     }
   };
 
   const handle2faSubmit = async e => {
     e.preventDefault();
+    if (loading) return;
+    const key = location.key;
+    const current = () => view.current.mounted && view.current.key === key;
     setError(null);
     setLoading(true);
     try {
       await verify2fa(totpCode);
+      if (!current()) return;
       setTotpCode('');
       if (!(await login())) throw new Error('No se ha podido confirmar la sesión en el servidor.');
+      if (!current()) return;
       if (!embedded) navigate(from, { replace: true });
     } catch (err) {
+      if (!current()) return;
       setError(err.response?.data?.error || 'Código incorrecto');
     } finally {
-      setLoading(false);
+      if (current()) setLoading(false);
     }
   };
 
@@ -106,15 +146,17 @@ const Auth = ({ embedded = false }) => {
             <span className="auth-title">NormativaCheck</span>
           </div>
 
-          <form onSubmit={handle2faSubmit} className="auth-form">
+          <form onSubmit={handle2faSubmit} className="auth-form" aria-busy={loading}>
             <div className="twofa-prompt">
               <div className="twofa-prompt-title">Verificación en dos pasos</div>
               <p className="twofa-prompt-desc">Introduce el código de tu aplicación de autenticación.</p>
             </div>
 
             <div className="form-group">
-              <label className="form-label">Código 2FA</label>
+              <label className="form-label" htmlFor="account-totp">Código 2FA</label>
               <input
+                id="account-totp"
+                disabled={loading}
                 className="form-input twofa-code-input"
                 type="text"
                 inputMode="numeric"
@@ -130,7 +172,7 @@ const Auth = ({ embedded = false }) => {
             </div>
 
             {error && (
-              <div className="error-banner">
+              <div className="error-banner" role="alert">
                 <span>⚠️</span> {error}
               </div>
             )}
@@ -141,7 +183,7 @@ const Auth = ({ embedded = false }) => {
           </form>
 
           <p className="auth-switch">
-            <button className="auth-link" onClick={() => { setNeeds2fa(false); setError(null); setTotpCode(''); }}>
+            <button className="auth-link" disabled={loading} onClick={() => { setNeeds2fa(false); setError(null); setTotpCode(''); }}>
               Volver al inicio de sesión
             </button>
           </p>
@@ -158,14 +200,18 @@ const Auth = ({ embedded = false }) => {
         </div>
 
         {!embedded && <p className="auth-intro">Accede a tu cuenta o regístrate para solicitar el espacio de tu empresa.</p>}
-        {!embedded && <div className="auth-tabs">
+        {!embedded && !registrationComplete && <div className="auth-tabs" role="group" aria-label="Acceso a tu cuenta">
           <button
+            disabled={loading}
+            aria-pressed={tab === 'login'}
             className={`auth-tab ${tab === 'login' ? 'active' : ''}`}
             onClick={() => switchTab('login')}
           >
             Iniciar sesión
           </button>
           <button
+            disabled={loading}
+            aria-pressed={tab === 'register'}
             className={`auth-tab ${tab === 'register' ? 'active' : ''}`}
             onClick={() => switchTab('register')}
           >
@@ -174,9 +220,16 @@ const Auth = ({ embedded = false }) => {
         </div>}
 
         {tab === 'register' && <div className="registration-privacy"><strong>Acceso restringido a validación</strong><p>Utiliza información de prueba. No aportes documentación real de clientes ni datos personales de terceros. La información de privacidad para admitir clientes está pendiente de completar.</p><PrivacyAccess/></div>}
-        <form onSubmit={handleSubmit} className="auth-form">
+        {registrationComplete ? <section aria-label="Solicitud de registro">
+          <h1 className="auth-title">Solicitud recibida</h1>
+          {notice && <p role="status">{notice}</p>}
+          <p>Revisa también el correo no deseado. Si no llega un enlace, contacta con quien administra la aplicación. Confirmar el correo no concede automáticamente acceso al espacio de una empresa.</p>
+          {error && <div className="error-banner" role="alert">{error}</div>}
+          {canResend && <button type="button" className="btn-primary auth-submit" onClick={handleResend} disabled={loading}>{loading ? 'Solicitando...' : 'Reenviar enlace de confirmación'}</button>}
+          <p className="auth-switch"><button className="auth-link" disabled={loading} onClick={() => switchTab('login')}>Ir al inicio de sesión</button></p>
+        </section> : <form onSubmit={handleSubmit} className="auth-form" aria-busy={loading}>
           {tab === 'login' && <div className="form-group">
-            <label><input type="checkbox" checked={mantenerSesion}
+            <label><input type="checkbox" disabled={loading} checked={mantenerSesion}
               onChange={e => setMantenerSesion(e.target.checked)} /> Mantener la sesión en este dispositivo</label>
             <small>Hasta 8 horas desde el acceso y 30 minutos sin actividad. No utilizar en equipos compartidos.</small>
           </div>}
@@ -186,6 +239,8 @@ const Auth = ({ embedded = false }) => {
               <label className="form-label" htmlFor="account-name">Nombre</label>
               <input
                 id="account-name"
+                disabled={loading}
+                maxLength={100}
                 className="form-input"
                 name="nombre"
                 type="text"
@@ -202,6 +257,7 @@ const Auth = ({ embedded = false }) => {
             <label className="form-label" htmlFor="account-email">Email</label>
             <input
               id="account-email"
+              disabled={loading}
               className="form-input"
               name="email"
               type="email"
@@ -217,6 +273,8 @@ const Auth = ({ embedded = false }) => {
             <label className="form-label" htmlFor="account-password">Contraseña</label>
             <input
               id="account-password"
+              disabled={loading}
+              aria-describedby={tab === 'register' ? 'registration-password-help' : undefined}
               className="form-input"
               name="password"
               type="password"
@@ -226,6 +284,7 @@ const Auth = ({ embedded = false }) => {
               required
               autoComplete={tab === 'register' ? 'new-password' : 'current-password'}
             />
+            {tab === 'register' && <p id="registration-password-help">{PASSWORD_HELP}</p>}
           </div>
 
           {error && (
@@ -246,16 +305,16 @@ const Auth = ({ embedded = false }) => {
               : tab === 'login' ? 'Entrar' : 'Crear cuenta'
             }
           </button>
-        </form>
+        </form>}
 
-        {tab === 'login' && (
-          <p className="auth-switch"><Link to="/forgot-password" className="auth-link">¿Has olvidado tu contraseña?</Link></p>
-        )}
+        <p className="auth-switch"><Link to="/forgot-password" className="auth-link" target={embedded ? '_blank' : undefined} rel={embedded ? 'noopener noreferrer' : undefined}>¿Has olvidado tu contraseña?{embedded ? ' (nueva pestaña)' : ''}</Link></p>
+        <p className="auth-switch"><Link to="/verify-email" className="auth-link" target={embedded ? '_blank' : undefined} rel={embedded ? 'noopener noreferrer' : undefined}>¿No has confirmado tu correo? Reenviar enlace{embedded ? ' (nueva pestaña)' : ''}</Link></p>
+        {embedded && <p>La ayuda se abre en otra pestaña. Conserva esta pestaña para volver a identificarte sin abandonar tu borrador.</p>}
 
-        {!embedded && <p className="auth-switch">
+        {!embedded && !registrationComplete && <p className="auth-switch">
           {tab === 'login'
-            ? <>¿Sin cuenta? <button className="auth-link" onClick={() => switchTab('register')}>Regístrate</button></>
-            : <>¿Ya tienes cuenta? <button className="auth-link" onClick={() => switchTab('login')}>Inicia sesión</button></>
+            ? <>¿Sin cuenta? <button className="auth-link" disabled={loading} onClick={() => switchTab('register')}>Regístrate</button></>
+            : <>¿Ya tienes cuenta? <button className="auth-link" disabled={loading} onClick={() => switchTab('login')}>Inicia sesión</button></>
           }
         </p>}
       </div>

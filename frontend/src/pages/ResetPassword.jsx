@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { resetPassword } from '../services/api';
+import { PASSWORD_HELP, validPassword } from './account-feedback';
 
 const ResetPassword = () => {
   const [token] = useState(() =>
@@ -19,18 +20,20 @@ const ResetPassword = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
+    if (loading) return;
     setError(null);
     if (password !== confirmation) {
       setError('Las contraseñas no coinciden.');
       return;
     }
+    if (!validPassword(password)) { setError(PASSWORD_HELP); return; }
     setLoading(true);
     try {
-      const data = await resetPassword(token, password);
-      setSuccess(data.message);
+      await resetPassword(token, password);
+      setSuccess(true);
       setPassword('');
       setConfirmation('');
-      localStorage.removeItem('cyberaudit_user');
+      try { localStorage.removeItem('cyberaudit_user'); } catch { /* Storage availability cannot undo a successful reset. */ }
     } catch (err) {
       setError(err.response?.data?.error || 'No se pudo cambiar la contraseña.');
     } finally {
@@ -41,15 +44,22 @@ const ResetPassword = () => {
   return (
     <div className="page auth-page">
       <div className="auth-card">
-        <h1 className="auth-title">Nueva contraseña</h1>
-        {!token && <div className="error-banner" role="alert">Falta el token del enlace de recuperación.</div>}
+        <h1 className="auth-title">{success ? 'Contraseña cambiada' : 'Nueva contraseña'}</h1>
+        {!token && <div className="error-banner" role="alert">Este enlace de recuperación está incompleto. Solicita uno nuevo para cambiar tu contraseña.</div>}
         {success ? (
-          <p role="status">{success} <a href="/auth" className="auth-link">Iniciar sesión</a></p>
+          <>
+            <p role="status">Tu contraseña se ha cambiado. Inicia sesión con la nueva contraseña.</p>
+            <p>Cambiar la contraseña no confirma tu correo. Si aún está pendiente, solicita un enlace de confirmación.</p>
+            <p className="auth-switch"><a href="/auth" className="auth-link">Iniciar sesión</a></p>
+            <p className="auth-switch"><a href="/verify-email" className="auth-link">Confirmar mi correo</a></p>
+          </>
         ) : token ? (
-          <form onSubmit={handleSubmit} className="auth-form">
+          <form onSubmit={handleSubmit} className="auth-form" aria-busy={loading}>
             <label className="form-label" htmlFor="new-password">Contraseña nueva</label>
             <input
               id="new-password"
+              disabled={loading}
+              aria-describedby="reset-password-help"
               className="form-input"
               type="password"
               value={password}
@@ -58,10 +68,11 @@ const ResetPassword = () => {
               minLength={8}
               required
             />
-            <p>Mínimo 8 caracteres, con una mayúscula, una minúscula y un número.</p>
+            <p id="reset-password-help">{PASSWORD_HELP}</p>
             <label className="form-label" htmlFor="confirm-password">Repite la contraseña</label>
             <input
               id="confirm-password"
+              disabled={loading}
               className="form-input"
               type="password"
               value={confirmation}
@@ -75,7 +86,7 @@ const ResetPassword = () => {
             </button>
           </form>
         ) : null}
-        <p className="auth-switch"><Link to="/forgot-password" className="auth-link">Solicitar otro enlace</Link></p>
+        {!success && <p className="auth-switch"><Link to="/forgot-password" className="auth-link">Solicitar otro enlace</Link></p>}
       </div>
     </div>
   );
