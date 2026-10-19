@@ -4,6 +4,7 @@ const nodemailer = require('nodemailer');
 
 test('el correo de recuperación indica diez minutos en texto y HTML', async t => {
   const config = {
+    NC_MAIL_MODE: 'smtp587',
     SMTP_HOST: 'smtp.example.test', SMTP_PORT: '587',
     SMTP_USER: 'cuenta-ficticia', SMTP_PASS: 'clave-ficticia',
     SMTP_FROM: 'no-reply@example.test'
