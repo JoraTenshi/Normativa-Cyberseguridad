@@ -29,6 +29,7 @@ async function enter() {
  api.get.mockImplementation(path=>Promise.resolve(fixture(path)));
  await act(async()=>root.render(<ApiWorkspace/>));
  await act(async()=>Simulate.change(container.querySelector('select'),{target:{value:'b'}}));
+ await act(async()=>Simulate.click(button('Entrar en el espacio')));
 }
 function button(text) { return Array.from(container.querySelectorAll('button')).find(b=>b.textContent===text); }
 test('el detalle del dashboard abre la operación correcta, sin recrearla',async()=>{
@@ -82,6 +83,35 @@ test('lista exclusivamente empresas que devuelve el servidor',async()=>{
  await act(async()=>root.render(<ApiWorkspace/>));expect(container.querySelectorAll('option')).toHaveLength(2);
  expect(container.textContent).toContain('Empresa autorizada');expect(container.textContent).not.toContain('Cuenta ficticia');
 });
+test('elegir una organización no abre el dashboard hasta confirmar',async()=>{
+ api.get.mockImplementation(path=>Promise.resolve(path.startsWith('/me/organizaciones')
+  ? {organizaciones:[{id:'b',nombre:'Empresa autorizada',rol:'administrador'}],siguiente:null} : fixture(path)));
+ await act(async()=>root.render(<ApiWorkspace/>));
+ expect(button('Entrar en el espacio').disabled).toBe(true);
+ await act(async()=>Simulate.change(container.querySelector('select'),{target:{value:'b'}}));
+ expect(container.querySelector('select').value).toBe('b');
+ expect(button('Entrar en el espacio').disabled).toBe(false);
+ expect(container.querySelector('.desk-shell')).toBeNull();
+ await act(async()=>Simulate.click(button('Entrar en el espacio')));
+ expect(container.querySelector('.desk-shell')).not.toBeNull();
+ expect(container.querySelector('select').value).toBe('b');
+});
+test('el cambio de organización también espera confirmación',async()=>{
+ const memberships={organizaciones:[
+  {id:'b',nombre:'Empresa B',rol:'administrador'},
+  {id:'c',nombre:'Empresa C',rol:'administrador'}
+ ],siguiente:null};
+ api.get.mockImplementation(path=>Promise.resolve(path.startsWith('/me/organizaciones') ? memberships : fixture(path)));
+ await act(async()=>root.render(<ApiWorkspace/>));
+ await act(async()=>Simulate.change(container.querySelector('select'),{target:{value:'b'}}));
+ await act(async()=>Simulate.click(button('Entrar en el espacio')));
+ expect(container.querySelector('.desk-scope-note strong').textContent).toBe('Empresa B');
+ await act(async()=>Simulate.change(container.querySelector('select'),{target:{value:'c'}}));
+ expect(container.querySelector('select').value).toBe('c');
+ expect(container.querySelector('.desk-scope-note strong').textContent).toBe('Empresa B');
+ await act(async()=>Simulate.click(button('Cambiar de organización')));
+ expect(container.querySelector('.desk-scope-note strong').textContent).toBe('Empresa C');
+});
 test('fallo de red no produce datos de ejemplo',async()=>{
  api.get.mockRejectedValue(new Error('sin red'));await act(async()=>root.render(<ApiWorkspace/>));
  expect(container.querySelector('[role="alert"]')).not.toBeNull();expect(container.querySelectorAll('option')).toHaveLength(1);
@@ -89,6 +119,7 @@ test('fallo de red no produce datos de ejemplo',async()=>{
 test('colaborador no ve controles administrativos habilitados',async()=>{
  api.get.mockImplementation(path=>Promise.resolve(path==='/me/organizaciones'?{organizaciones:[{id:'b',nombre:'Empresa autorizada',rol:'consulta'}]}:{documentos:[]}));
  await act(async()=>root.render(<ApiWorkspace/>));await act(async()=>Simulate.change(container.querySelector('select'),{target:{value:'b'}}));
+ await act(async()=>Simulate.click(button('Entrar en el espacio')));
  const buttons=Array.from(container.querySelectorAll('button'));
  expect(buttons.find(b=>b.textContent==='Contexto de empresa').disabled).toBe(true);
  expect(buttons.find(b=>b.textContent==='Perfil y alcance').disabled).toBe(true);

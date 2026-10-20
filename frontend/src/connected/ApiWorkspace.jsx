@@ -25,6 +25,8 @@ export default function ApiWorkspace() {
   const route = useNavigate();
   const [closing, setClosing] = useState(false), [closeError, setCloseError] = useState('');
   const [companies, setCompanies] = useState([]), [selected, setSelected] = useState(null);
+  // Choosing an option must not open (or leave) a workspace until confirmed.
+  const [choice, setChoice] = useState(null);
   const [error, setError] = useState(null), [busy, setBusy] = useState(true), [next, setNext] = useState(null);
   const [retry, setRetry] = useState(0), [cursor, setCursor] = useState(null);
   useEffect(() => {
@@ -41,13 +43,16 @@ export default function ApiWorkspace() {
       setCompanies(data.organizaciones); setNext(data.siguiente);
       // Reconfirm membership on the selected page before revealing the editor.
       setSelected(old => old ? data.organizaciones.find(o => o.id === old.id) || null : null);
+      setChoice(old => old && !data.organizaciones.some(o => o.id === old) ? null : old);
       setBusy(false);
     }, e => { if (active) { setError(e); setBusy(false); } });
     return () => { active = false; };
   }, [api, phase, generation, cursor, retry]);
-  function select(id) {
-    if (selected?.id === id || !confirmLeave()) return;
-    setSelected(companies.find(o => o.id === id) || null);
+  function enterChoice() {
+    const organization = companies.find(o => o.id === choice);
+    if (!organization || busy || error || phase !== 'authenticated' || !confirmLeave()) return;
+    setSelected(organization);
+    setChoice(null);
   }
   async function closeSession() {
     if (closing || !confirmLeave('Cerrar sesión descartará los cambios sin guardar. ¿Continuar?')) return;
@@ -59,10 +64,11 @@ export default function ApiWorkspace() {
     finally { setClosing(false); }
   }
   const selector = <div className="desk-company-picker">
-      <label>Organización<select value={selected?.id || ''} disabled={busy || !!error} onChange={e => select(e.target.value)}>
-        <option value="">Selecciona una organización</option>
+      <label>Organización<select value={choice === null ? selected?.id || '' : choice} disabled={busy || !!error} onChange={e => setChoice(e.target.value)}>
+        <option value="" disabled={!!selected}>Selecciona una organización</option>
         {companies.map(o => <option key={o.id} value={o.id}>{o.nombre}</option>)}
       </select></label>
+      {!selected || (choice && choice !== selected.id) ? <button type="button" className="desk-confirm-organization api-primary" disabled={busy || !!error || !choice || choice === selected?.id} onClick={enterChoice}>{selected ? 'Cambiar de organización' : 'Entrar en el espacio'}</button> : null}
       <div className="desk-picker-actions"><button disabled={busy} onClick={() => { if (confirmLeave()) { setSelected(null); setRetry(n => n+1); } }}>Actualizar organizaciones</button>
         {cursor && <button disabled={busy} onClick={() => { if (confirmLeave()) { setSelected(null); setCursor(null); } }}>Primera página</button>}
         {next && <button disabled={busy} onClick={() => { if (confirmLeave()) { setSelected(null); setCursor(next); } }}>Más organizaciones</button>}
@@ -84,10 +90,10 @@ export default function ApiWorkspace() {
 function Connected({ api, organization, selector }) {
   const base = orgPath(organization.id), [section, setSection] = useState('overview');
   const [operationId, setOperationId] = useState(null);
-  const heading = React.useRef(null), first = React.useRef(true);
+  const heading = React.useRef(null);
   const admin = organization.rol === 'administrador';
   const navigate = (next,id = null) => { if ((next !== section || id !== null) && confirmLeave()) { setOperationId(id); setSection(next); } };
-  useEffect(() => { if (first.current) first.current = false; else if(!(section==='tasks'&&operationId?.id))heading.current?.focus({preventScroll:true}); }, [section,operationId]);
+  useEffect(() => { if (!(section === 'tasks' && operationId?.id)) heading.current?.focus({preventScroll:true}); }, [section,operationId]);
   return <div className="desk-shell"><aside className="desk-nav">
     <span className="desk-overline">GESTIÓN DEL TRABAJO</span>
     <nav aria-label="Secciones del Workspace">{Object.entries(sections).map(([id,name]) => <button key={id} aria-current={section === id ? 'page' : undefined} onClick={() => navigate(id)} disabled={['profile','context','operations','regulations','tasks','rat','units','rights','eipd'].includes(id) && !admin} title={['profile','context','operations','regulations','tasks','rat','units','rights','eipd'].includes(id) && !admin ? 'Disponible para el administrador de la organización' : undefined}><Glyph type={icons[id]}/><span>{name}</span></button>)}</nav>
