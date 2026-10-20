@@ -5,7 +5,7 @@ import { register, loginApi, verify2fa, resendVerification } from '../services/a
 import { PrivacyAccess } from '../components/CookieBanner';
 import { PASSWORD_HELP, validPassword, VERIFICATION_REQUESTED, REGISTRATION_REQUESTED } from './account-feedback';
 import { isLocalTeacherDemo } from '../utils/localTeacherDemo';
-import { canOfferPasswordSave, offerPasswordSave } from '../services/browserPasswordManager';
+import { canOfferPasswordSave, canChooseSavedPassword, chooseSavedPassword, offerPasswordSave } from '../services/browserPasswordManager';
 
 const esRutaInterna = destino =>
   typeof destino === 'string' && /^\/(?![/\\])[^\\\s]*$/.test(destino);
@@ -27,6 +27,8 @@ const Auth = ({ embedded = false }) => {
   const [totpCode, setTotpCode] = useState('');
   const [mantenerSesion, setMantenerSesion] = useState(false);
   const [recordarPassword, setRecordarPassword] = useState(false);
+  const [choosingSavedPassword, setChoosingSavedPassword] = useState(false);
+  const [finalizingSignIn, setFinalizingSignIn] = useState(false);
   const [registrationComplete, setRegistrationComplete] = useState(false);
 
   const { user, phase, login } = useAuth();
@@ -46,7 +48,7 @@ const Auth = ({ embedded = false }) => {
   }, [embedded, localTeacherDemo, location.key, location.search]);
 
   // Si ya hay sesión iniciada, no mostrar el formulario: redirigir.
-  if (!embedded && user && phase === 'authenticated') return <Navigate to={from} replace />;
+  if (!embedded && user && phase === 'authenticated' && !finalizingSignIn) return <Navigate to={from} replace />;
 
   const handleChange = e => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -54,6 +56,23 @@ const Auth = ({ embedded = false }) => {
   };
 
   const switchTab = t => { pendingPasswordSave.current = null; setTab(t); setError(null); setNotice(null); setCanResend(false); setNeeds2fa(false); setRegistrationComplete(false); setTotpCode(''); setForm(prev => ({ ...prev, password: '' })); };
+
+  const handleChooseSavedPassword = async () => {
+    if (loading || choosingSavedPassword) return;
+    const key = location.key;
+    setChoosingSavedPassword(true);
+    setNotice(null);
+    const saved = await chooseSavedPassword();
+    if (view.current.mounted && view.current.key === key) {
+      if (saved) {
+        setForm(prev => ({ ...prev, email: saved.email, password: saved.password }));
+        setError(null);
+      } else {
+        setNotice('No se seleccionó ninguna contraseña guardada en este navegador. Puedes escribirla o usar el gestor de contraseñas del navegador.');
+      }
+      setChoosingSavedPassword(false);
+    }
+  };
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -80,7 +99,9 @@ const Auth = ({ embedded = false }) => {
       }
 
       pendingPasswordSave.current = null;
-      const submitted = { email: form.email.trim(), password: form.password };
+      // Password managers can fill DOM inputs without emitting React change events.
+      const fields = new FormData(e.currentTarget);
+      const submitted = { email: String(fields.get('email') || '').trim(), password: String(fields.get('password') || '') };
       const data = await loginApi(submitted.email, submitted.password, mantenerSesion);
       if (!current()) return;
       setForm(prev => ({ ...prev, password: '' }));
@@ -91,9 +112,11 @@ const Auth = ({ embedded = false }) => {
         return;
       }
 
+      setFinalizingSignIn(true);
       if (!(await login())) throw new Error('No se ha podido confirmar la sesión en el servidor.');
       if (!current()) return;
-      if (recordarPassword) offerPasswordSave(submitted);
+      if (recordarPassword) await offerPasswordSave(submitted);
+      if (!current()) return;
       if (!embedded) navigate(from, { replace: true });
     } catch (err) {
       if (!current()) return;
@@ -102,7 +125,7 @@ const Auth = ({ embedded = false }) => {
         : err.response?.data?.error || err.message || 'Error de conexión con el servidor');
       setCanResend(err.response?.data?.code === 'EMAIL_NOT_VERIFIED');
     } finally {
-      if (current()) setLoading(false);
+      if (current()) { setLoading(false); setFinalizingSignIn(false); }
     }
   };
 
@@ -137,16 +160,18 @@ const Auth = ({ embedded = false }) => {
       await verify2fa(totpCode);
       if (!current()) return;
       setTotpCode('');
+      setFinalizingSignIn(true);
       if (!(await login())) throw new Error('No se ha podido confirmar la sesión en el servidor.');
       if (!current()) return;
-      if (pendingPasswordSave.current) offerPasswordSave(pendingPasswordSave.current);
+      if (pendingPasswordSave.current) await offerPasswordSave(pendingPasswordSave.current);
+      if (!current()) return;
       pendingPasswordSave.current = null;
       if (!embedded) navigate(from, { replace: true });
     } catch (err) {
       if (!current()) return;
       setError(err.response?.data?.error || 'Código incorrecto');
     } finally {
-      if (current()) setLoading(false);
+      if (current()) { setLoading(false); setFinalizingSignIn(false); }
     }
   };
 
@@ -249,9 +274,11 @@ const Auth = ({ embedded = false }) => {
           </div>}
           {tab === 'login' && <div className="form-group">
             {canOfferPasswordSave() ? <label><input type="checkbox" disabled={loading} checked={recordarPassword}
-              onChange={e => setRecordarPassword(e.target.checked)} /> Recordar contraseña en este navegador</label>
+              onChange={e => setRecordarPassword(e.target.checked)} /> Pedir al navegador que guarde la contraseña</label>
               : <span>Tu navegador puede ofrecerte guardar la contraseña al iniciar sesión.</span>}
-            <small>Solo si lo aceptas, el navegador te ofrecerá guardarla tras iniciar sesión y completar la verificación en dos pasos. No la guarda NormativaCheck. No utilizar en equipos compartidos.</small>
+            <small>El navegador decide si la guarda. NormativaCheck no almacena tu contraseña en este dispositivo. No utilizar en equipos compartidos.</small>
+            {canChooseSavedPassword() && <button type="button" className="auth-link" disabled={loading || choosingSavedPassword}
+              onClick={handleChooseSavedPassword}>Usar contraseña guardada</button>}
           </div>}
           {notice && <p role="status">{notice}</p>}
           {tab === 'register' && (
