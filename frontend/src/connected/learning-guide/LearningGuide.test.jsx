@@ -44,10 +44,11 @@ test('optional nonmodal guide highlights real mounted content; no auto completio
   expect(document.querySelector('.learning-guide-target')).toBe(screen.getByRole('heading', {name:'Pantalla overview'}));
   expect(readProgress('account-a').value.steps['overview.locate']).toBe('visited');
   expect(navigate).not.toHaveBeenCalled();
-  fireEvent.click(screen.getByRole('button', {name:'Siguiente objetivo →'}));
+  fireEvent.click(screen.getByRole('button', {name:'Siguiente'}));
   expect(readProgress('account-a').value.steps['overview.locate']).toBe('visited');
-  fireEvent.click(screen.getByRole('button', {name:'Lo he comprendido'}));
-  expect(readProgress('account-a').value.steps['overview.understand']).toBe('understood');
+  fireEvent.click(screen.getByRole('button', {name:'Ver'}));
+  expect(readProgress('account-a').value.steps['overview.understand']).toBe('visited');
+  expect(Object.values(readProgress('account-a').value.steps)).not.toContain('understood');
   expect(input).toHaveValue('Puedo seguir trabajando');
 });
 
@@ -78,16 +79,17 @@ test('cancel workspace discard preserves draft, section and progress; accepting 
 
 test('close/escape is always available, returns focus and resume does not restore business state', () => {
   render(<App/>); openGuide(); choose('Vista general');
-  fireEvent.click(screen.getByRole('button', {name:'Siguiente objetivo →'}));
+  fireEvent.click(screen.getByRole('button', {name:'Siguiente'}));
   fireEvent.keyDown(document, {key:'Escape'});
   expect(screen.queryByRole('complementary')).toBeNull();
   expect(screen.getByRole('button', {name:'Guía de uso'})).toHaveFocus();
   expect(document.querySelector('.learning-guide-target')).toBeNull();
   openGuide(); fireEvent.click(screen.getByRole('button', {name:'Retomar donde lo dejé'}));
   expect(screen.getByText(/Objetivo 2 de 2/)).toBeInTheDocument();
-  fireEvent.click(screen.getByRole('button', {name:'Omitir este objetivo'}));
-  expect(readProgress('account-a').value.steps['overview.understand']).toBe('skipped');
-  expect(screen.getByText(/0 de 34 objetivos/)).toBeInTheDocument();
+  expect(screen.getByRole('button', {name:'Siguiente'})).toBeDisabled();
+  fireEvent.click(screen.getByRole('link', {name:'Índice de capítulos'}));
+  expect(readProgress('account-a').value.steps['overview.understand']).toBe('visited');
+  expect(screen.getByRole('navigation', {name:'Capítulos de aprendizaje'})).toBeInTheDocument();
 });
 
 test('security dialog owns Escape; the guide does not close it or trap keyboard focus', () => {
@@ -100,17 +102,17 @@ test('security dialog owns Escape; the guide does not close it or trap keyboard 
 
 test('reduced motion applies initially and updates live without disabling interaction', () => {
   motion.matches = true; render(<App/>); openGuide(); choose('Vista general');
-  fireEvent.click(screen.getByRole('button', {name:'Mostrar la zona'}));
+  fireEvent.click(screen.getByRole('button', {name:'Ver'}));
   expect(Element.prototype.scrollIntoView).toHaveBeenLastCalledWith({behavior:'auto',block:'center'});
   act(() => {motion.matches = false; mediaListener();});
-  fireEvent.click(screen.getByRole('button', {name:'Mostrar la zona'}));
+  fireEvent.click(screen.getByRole('button', {name:'Ver'}));
   expect(Element.prototype.scrollIntoView).toHaveBeenLastCalledWith({behavior:'smooth',block:'center'});
   expect(screen.getByRole('button', {name:'Cerrar y pausar la guía'})).toBeEnabled();
 });
 
 test.each(['org','role','generation','locked','account'])('%s change pauses and does not leak old context', async change => {
   const view = render(<App/>); openGuide(); choose('Vista general');
-  fireEvent.click(screen.getByRole('button', {name:'Lo he comprendido'}));
+  fireEvent.click(screen.getByRole('button', {name:'Ver'}));
   let props = {};
   if (change === 'org') props.org = 'org-b';
   if (change === 'role') props.role = 'consulta';
@@ -122,7 +124,7 @@ test.each(['org','role','generation','locked','account'])('%s change pauses and 
   expect(document.querySelector('.learning-guide-target')).toBeNull();
   if (change === 'locked') expect(screen.queryByRole('button', {name:'Guía de uso'})).toBeNull();
   if (change === 'account') {
-    openGuide(); expect(screen.getByText(/0 de 34 objetivos/)).toBeInTheDocument();
+    openGuide(); expect(screen.getByRole('navigation', {name:'Capítulos de aprendizaje'})).toBeInTheDocument();
     expect(readProgress('account-b').value.lastStep).toBeNull();
   }
 });
@@ -133,12 +135,14 @@ test('membership recheck gap cannot conceal an organization change', () => {
   view.rerender(<App org="org-b"/>); expect(screen.queryByRole('complementary')).toBeNull();
 });
 
-test('storage quota failures preserve the app and in-memory declarations', () => {
+test('storage quota failures preserve the app and in-memory last viewed step', () => {
   jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw Error('quota'); });
   render(<App/>); openGuide(); choose('Vista general');
-  fireEvent.click(screen.getByRole('button', {name:'Lo he comprendido'}));
+  fireEvent.click(screen.getByRole('button', {name:'Siguiente'}));
   expect(screen.getByText(/almacenamiento no está disponible/)).toBeInTheDocument();
-  expect(screen.getByText(/1 de 34 objetivos/)).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('link', {name:'Índice de capítulos'}));
+  fireEvent.click(screen.getByRole('button', {name:'Retomar donde lo dejé'}));
+  expect(screen.getByText('Objetivo 2 de 2')).toBeInTheDocument();
 });
 
 test('corrupt progress is not rendered; unknown IDs cannot become routes or markup', () => {

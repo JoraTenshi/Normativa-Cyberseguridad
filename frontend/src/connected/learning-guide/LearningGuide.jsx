@@ -73,7 +73,7 @@ function GuideSession({ auth, surfaces, children }) {
   const [chapterId, setChapterId] = useState(null), [index, setIndex] = useState(0);
   const [pending, setPending] = useState(null), [notice, setNotice] = useState('');
   const [saved, setSaved] = useState(null);
-  const title = useRef(null), launcher = useRef(null), returnFocus = useRef(null);
+  const title = useRef(null), launcher = useRef(null), returnFocus = useRef(null), panel = useRef(null);
   const wasVisible = useRef(false);
   const priorScope = useRef(null), priorGeneration = useRef(auth.generation), priorPath = useRef(location.pathname);
   const authenticated = auth.phase === 'authenticated' && !!auth.user?.id;
@@ -135,7 +135,11 @@ function GuideSession({ auth, surfaces, children }) {
   }, [visible, practice, menu, pending, arrived, step, persist]);
 
   useEffect(() => {
-    if (visible) title.current?.focus({ preventScroll:true });
+    if (visible) {
+      if (panel.current) panel.current.scrollTop=0;
+      title.current?.focus({ preventScroll:true });
+      if (!practice) panel.current?.scrollIntoView?.({block:'start',behavior:'auto'});
+    }
   }, [visible, practice, menu, chapterId, index]);
   const close = useCallback(() => {
     setOpen(false); setPending(null);
@@ -193,44 +197,36 @@ function GuideSession({ auth, surfaces, children }) {
   }
   const lastId = saved?.value.lastStep;
   const lastChapter = chapters.find(item => item.steps.some(s => s.id === lastId));
-  const knownSteps = chapters.flatMap(item => item.steps);
-  const understood = knownSteps.filter(s => saved?.value.steps[s.id] === 'understood').length;
-  const skipped = knownSteps.filter(s => saved?.value.steps[s.id] === 'skipped').length;
-  const status = { visited:'Visto', understood:'Comprendido por ti', skipped:'Omitido' };
+  function showIndex(event) { event?.preventDefault(); setPractice(false); setPending(null); setMenu(true); }
 
   return <div className={`learning-layout${visible ? ' learning-layout--open' : ''}`}>
     <div className="learning-app-content">{children}</div>
     {authenticated && surface && !visible && <div className="learning-launchers"><button className="learning-launcher" onClick={event => start(event,true)}><Compass/>Tus primeros pasos</button><button ref={launcher} className="learning-launcher learning-secondary-launcher" onClick={event => start(event)}>Guía de uso</button></div>}
-    {authenticated && <aside hidden={!visible} className="learning-panel" aria-labelledby="learning-title">
-      <header><span className="learning-symbol"><Compass/></span><div><span className="learning-eyebrow">APRENDE A UTILIZAR TU ESPACIO</span><h2 id="learning-title" ref={title} tabIndex={-1}>{practice ? 'Tus primeros pasos' : menu ? 'Elige qué quieres aprender' : chapter?.title || 'Guía de uso'}</h2></div>
+    {authenticated && <aside ref={panel} hidden={!visible} className="learning-panel" aria-labelledby="learning-title">
+      <header><span className="learning-symbol"><Compass/></span><div><span className="learning-eyebrow">APRENDE A UTILIZAR TU ESPACIO</span><h2 id="learning-title" ref={title} tabIndex={-1}>{practice ? 'Tus primeros pasos' : menu ? 'Índice de capítulos' : chapter?.title || 'Guía de uso'}</h2></div>
         <button className="learning-close" aria-label="Cerrar y pausar la guía" onClick={close}>×</button></header>
-      <FirstSteps active={practice && visible} surface={surface} userId={auth.user?.id} reduced={reduced} onChapters={() => {setPractice(false);setMenu(true);}}/>
+      <FirstSteps active={practice && visible} surface={surface} userId={auth.user?.id} reduced={reduced} onChapters={showIndex}/>
       <div hidden={practice}>
-      <button className="learning-primary" onClick={() => {setPractice(true);setPending(null);}}>Empezar «Tus primeros pasos»</button>
+      {menu && <a className="learning-index-link" href="#practice-title" onClick={event => {event.preventDefault();setPractice(true);setPending(null);}}>Tus primeros pasos</a>}
       <p className="learning-intro">Tú decides el ritmo. Puedes usar la pantalla, saltar capítulos y volver después. La guía no guarda ni modifica tu trabajo.</p>
       <p className="learning-storage">{saved?.persistent ? 'Progreso guardado solo en este navegador; no se sincroniza.' : 'Progreso solo en esta sesión de la guía: el almacenamiento no está disponible o el registro anterior no era válido.'}</p>
-      <p className="learning-summary">{understood} de {knownSteps.length} objetivos marcados como comprendidos{skipped ? ` · ${skipped} omitidos` : ''}, en los capítulos disponibles aquí. No mide cumplimiento normativo.</p>
       {notice && <p className="learning-notice" role="status">{notice}</p>}
       {pending && <div className="learning-notice" role="status"><p>Esperando la sección. Si hay un aviso de cambios sin guardar, decide en ese aviso.</p><button onClick={() => { setPending(null); setMenu(true); }}>Volver a capítulos</button></div>}
       {menu ? <>
         {lastChapter && <button className="learning-primary" onClick={() => go(lastChapter, lastChapter.steps.findIndex(s => s.id === lastId))}>Retomar donde lo dejé</button>}
-        <nav aria-label="Capítulos de aprendizaje"><ol className="learning-chapters">{chapters.map(item => <li key={item.id}><button disabled={!!pending} onClick={() => go(item)}><span>{item.group}</span><strong>{item.title}</strong><small>{item.steps.filter(s => saved?.value.steps[s.id] === 'understood').length} / {item.steps.length} comprendidos</small></button></li>)}</ol></nav>
+        <nav id="learning-chapter-index" aria-label="Capítulos de aprendizaje"><ol className="learning-chapters">{chapters.map(item => <li key={item.id}><button disabled={!!pending} onClick={() => go(item)}><span>{item.group}</span><strong>{item.title}</strong><small>{item.steps.length} apartados</small></button></li>)}</ol></nav>
       </> : chapter && step ? <>
-        <button className="learning-back" onClick={() => { setPending(null); setMenu(true); }}>← Todos los capítulos</button>
         <section className="learning-step" key={step.id} aria-labelledby="learning-step-title">
-          <p className="learning-step-count" aria-live="polite">Objetivo {index + 1} de {chapter.steps.length} · {status[saved?.value.steps[step.id]] || 'Por explorar'}</p>
+          <p className="learning-step-count" aria-live="polite">Objetivo {index + 1} de {chapter.steps.length}</p>
           <h3 id="learning-step-title">{step.title}</h3><p>{step.text}</p><p className="learning-goal">{step.goal}</p>
           {!arrived && <p role="status">Has cambiado de sección. Vuelve al capítulo para continuar o elige otro; no marcamos pasos automáticamente.</p>}
-          <div className="learning-actions"><button disabled={!arrived || !!pending} onClick={showTarget}>Mostrar la zona</button>
-            <button className="learning-primary" disabled={!arrived || !!pending} onClick={() => persist(step.id, 'understood')}>Lo he comprendido</button>
-            <button disabled={!arrived || !!pending} onClick={() => { persist(step.id, 'skipped'); index + 1 < chapter.steps.length ? go(chapter, index + 1) : setMenu(true); }}>Omitir este objetivo</button></div>
+          <div className="learning-actions"><button className="learning-primary" disabled={!!pending} onClick={() => arrived ? showTarget() : go(chapter,index)}>Ver</button></div>
         </section>
-        <div className="learning-paging"><button disabled={index === 0 || !!pending} onClick={() => go(chapter, index - 1)}>Anterior</button>{index + 1 < chapter.steps.length
-          ? <button disabled={!!pending} onClick={() => go(chapter, index + 1)}>Siguiente objetivo →</button>
-          : <button onClick={() => setMenu(true)}>Elegir otro capítulo →</button>}</div>
+        <div className="learning-paging"><button disabled={index === 0 || !!pending} onClick={() => go(chapter, index - 1)}>Anterior</button><button disabled={index + 1 >= chapter.steps.length || !!pending} onClick={() => go(chapter, index + 1)}>Siguiente</button></div>
+        <a className="learning-index-link" href="#learning-chapter-index" onClick={showIndex}>Índice de capítulos</a>
       </> : <button onClick={() => setMenu(true)}>Ver capítulos disponibles</button>}
       </div>
-      <footer><button onClick={close}>Pausar y seguir trabajando</button><p>Completar la guía es una declaración de aprendizaje, no una certificación. Los permisos y las acciones siguen siendo los de la aplicación.</p></footer>
+      <footer><button onClick={close}>Pausar y seguir trabajando</button><p>La guía no evalúa el cumplimiento. Los permisos y las acciones siguen siendo los de la aplicación.</p></footer>
     </aside>}
   </div>;
 }

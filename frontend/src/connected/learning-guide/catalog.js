@@ -18,7 +18,7 @@ function chapter(id, title, description, goal, detail, options = {}) {
     { id:id+'.locate', title:'Sitúa esta parte de tu trabajo', text:description,
       goal:'Localiza la información en la zona resaltada. Puedes seguir utilizando la aplicación.', target:'heading' },
     { id:id+'.understand', title:goal, text:detail,
-      goal:'Revísalo a tu ritmo. «Lo he comprendido» registra tu propia valoración, no una evaluación ni una operación realizada.', target:'content' }
+      goal:'Revísalo a tu ritmo. Usa «Ver» para localizar esta parte de la aplicación sin modificar tu trabajo.', target:'content' }
   ] };
 }
 const ws = (id, description, goal, detail) => chapter(id, WORKSPACE_SECTIONS[id], description, goal, detail,
@@ -42,7 +42,7 @@ export const CHAPTERS = [
   ws('eipd', 'La detección EIPD organiza la información para valorar si corresponde una evaluación de impacto. No es por sí misma una evaluación terminada.',
     'Identifica lo que falta revisar', 'Consulta una detección existente, sus referencias y versiones cuando estén disponibles. Distingue una cuestión pendiente de una conclusión revisada. Un listado vacío no te impide comprender esta sección.'),
   ws('tasks', 'Las actuaciones conectan el trabajo pendiente con su motivo, sus responsables y su estado. Una tarea cerrada no demuestra automáticamente que una obligación esté acreditada.',
-    'Conecta motivo, responsable y siguiente paso', 'Abre una actuación accesible y busca esas tres piezas. Distingue los cambios de la tarea de la revisión del requisito. No debes asignar, cerrar ni guardar nada para marcar este capítulo como comprendido.'),
+    'Conecta motivo, responsable y siguiente paso', 'Abre una actuación accesible y busca esas tres piezas. Distingue los cambios de la tarea de la revisión del requisito. No necesitas asignar, cerrar ni guardar nada para explorar este capítulo.'),
   ws('documents', 'La documentación conserva archivos, metadatos y versiones vinculados al trabajo de tu empresa. Aportar un documento y revisar su contenido son pasos distintos.',
     'Reconoce el documento y su contexto', 'Si tienes documentos accesibles, consulta sus datos y versiones. No necesitas subir ni descargar un archivo para usar la guía. Si no aparece una acción de edición, puede depender de tu permiso; la guía no lo amplía.'),
   ws('regulations', 'Normativa del alcance relaciona requisitos, fuentes y actuaciones. Distingue una referencia legal, un compromiso contractual y un marco de referencia.',

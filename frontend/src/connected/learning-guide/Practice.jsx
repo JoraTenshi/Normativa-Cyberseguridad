@@ -59,6 +59,8 @@ export function FirstSteps({active, surface, userId, reduced, onChapters}) {
   const context = useContext(Context), [saved,setSaved] = useState(null), [index,setIndex] = useState(0);
   const [notice,setNotice] = useState(''), [begun,setBegun] = useState(false);
   const [pending,setPending] = useState(false);
+  const [focusRequest,setFocusRequest] = useState(0);
+  const wantsFocus = useRef(false), stepTitle = useRef(null);
   const loaded = saved !== null;
   const scope = surface?.practiceScope, role = surface?.role;
   const available = surface?.kind === 'workspace' && surface.ready && ['administrador','consulta','colaborador'].includes(role);
@@ -81,7 +83,7 @@ export function FirstSteps({active, surface, userId, reduced, onChapters}) {
     if (resume >= 0) setIndex(resume);
   }, [active,saved,userId,steps]);
   useEffect(() => {
-    if (!active || prior.current !== scope) { armed.current = false; setBegun(false); setPending(false); setNotice(''); }
+    if (!active || prior.current !== scope) { armed.current = false; wantsFocus.current=false; setBegun(false); setPending(false); setNotice(''); }
     prior.current = scope;
   }, [active,scope]);
   useEffect(() => {
@@ -95,9 +97,17 @@ export function FirstSteps({active, surface, userId, reduced, onChapters}) {
     return () => node.classList.remove('learning-guide-target');
   }, [active,begun,sectionMatches,node]);
   useEffect(() => {
+    if (!active || !begun || !wantsFocus.current || !sectionMatches || !node || node.closest('[hidden], [inert]')) return;
+    wantsFocus.current=false;
+    node.scrollIntoView?.({behavior:reduced?'auto':'smooth',block:'center'});
+    if (!node.hasAttribute('tabindex')) node.setAttribute('tabindex','-1');
+    node.focus({preventScroll:true});
+  }, [active,begun,sectionMatches,node,reduced,focusRequest]);
+  useEffect(() => { if (active && available && loaded) stepTitle.current?.focus({preventScroll:true}); }, [active,available,loaded,index]);
+  useEffect(() => {
     if (!pending) return undefined;
     if (sectionMatches) { setPending(false); return undefined; }
-    const timer = setTimeout(() => {setPending(false);armed.current=false;setNotice('No hemos llegado a la sección. Tu pantalla y sus borradores siguen bajo tu control.');},8000);
+    const timer = setTimeout(() => {setPending(false);armed.current=false;wantsFocus.current=false;setNotice('No hemos llegado a la sección. Tu pantalla y sus borradores siguen bajo tu control.');},8000);
     return () => clearTimeout(timer);
   }, [pending,sectionMatches]);
   useEffect(() => {
@@ -106,44 +116,35 @@ export function FirstSteps({active, surface, userId, reduced, onChapters}) {
         event.id !== (step.detail || step.target) || !['practiced','empty'].includes(event.outcome)) return;
     boundary.current = event.serial;
     mark(step.id,event.outcome);
-    setNotice(event.outcome === 'empty' ? 'Consulta realizada sin datos visibles. No se ha inventado ningún registro.' : 'Práctica observada: has consultado información de este espacio.');
+    setNotice('');
   }, [context?.event,active,begun,sectionMatches,scope,step,mark]);
   if (!active) return null;
   const flags = saved?.value.steps[step.id] || {};
   function begin() {
     if (!available) return;
-    boundary.current = context?.event?.serial || 0; armed.current=true; setNotice('');
+    boundary.current = context?.event?.serial || 0; armed.current=true; wantsFocus.current=false; setNotice('');
     if (surface.section !== step.section && surface.navigate(step.section) !== true) {
       armed.current=false;setNotice('No se ha cambiado de sección ni descartado tu borrador.');return;
     }
+    wantsFocus.current=true;setFocusRequest(value=>value+1);
     setBegun(true);setPending(surface.section !== step.section);
   }
-  function next(value) { armed.current=false;setBegun(false);setPending(false);setNotice('');setIndex(value); }
-  function focusTarget() {
-    if (!node || !sectionMatches || node.closest('[hidden], [inert]')) return;
-    node.scrollIntoView?.({behavior:reduced?'auto':'smooth',block:'center'});
-    if (!node.hasAttribute('tabindex')) node.setAttribute('tabindex','-1');
-    node.focus({preventScroll:true});
-  }
+  function next(value) { armed.current=false;wantsFocus.current=false;setBegun(false);setPending(false);setNotice('');setIndex(value); }
   return <div className="first-steps">
-    <p>Cinco prácticas breves con tus permisos actuales. Puedes omitirlas o seguir trabajando; no necesitas crear datos.</p>
+    <p>Cinco prácticas breves con tus permisos actuales. Avanza a tu ritmo; no necesitas crear datos.</p>
     <p className="learning-storage">{!saved ? 'Recuperando tu progreso local…' : saved.persistent ? 'Progreso separado por cuenta, solo en este navegador.' : 'Progreso solo en memoria; el almacenamiento no está disponible o no era válido.'}</p>
     <p className="learning-summary">{steps.filter(s => saved?.value.steps[s.id]?.practiced).length} de 5 prácticas observadas · {steps.filter(s => saved?.value.steps[s.id]?.empty && !saved?.value.steps[s.id]?.practiced).length} exploradas sin datos. No mide cumplimiento.</p>
     {!available ? <p role="status">Entra primero en una empresa con acceso confirmado. Si todavía no tienes acceso, utiliza «Mis solicitudes». No necesitas crear registros para aprender.</p> : <>
       <nav aria-label="Tus cinco primeros pasos"><ol className="first-step-list">{steps.map((s,i) => <li key={s.id}><button aria-current={i===index?'step':undefined} onClick={() => next(i)}><span>{i+1}</span>{s.title}</button></li>)}</ol></nav>
-      <section aria-labelledby="practice-title"><p className="learning-step-count" aria-live="polite">Paso {index+1} de 5</p><h3 id="practice-title">{step.title}</h3><p>{step.text}</p>
-        <p className="practice-states">Explicación vista{flags.practiced?' · Práctica observada':''}{flags.empty?' · Explorado sin datos':''}{flags.understood?' · Comprendido por ti':''}{flags.skipped?' · Omitido':''}</p>
-        <div className="learning-actions"><button className="learning-primary" onClick={begin} disabled={pending}>{begun ? 'Volver a la práctica' : 'Ir a practicar'}</button>
-          {begun && sectionMatches && <button onClick={focusTarget} disabled={!node}>Señalar el control</button>}
-          {begun && sectionMatches && target?.empty && <button onClick={() => { mark(step.id,'empty');setNotice('Has explorado una sección sin datos visibles. No cuenta como lectura de un registro.'); }}>He explorado el estado sin datos</button>}
-          <button onClick={() => mark(step.id,'understood')}>Lo he comprendido</button>
-          <button onClick={() => {mark(step.id,'skipped');if(index<4)next(index+1);}}>Omitir esta práctica</button></div>
+      <section aria-labelledby="practice-title"><p className="learning-step-count" aria-live="polite">Paso {index+1} de 5</p><h3 id="practice-title" ref={stepTitle} tabIndex={-1}>{step.title}</h3><p>{step.text}</p>
+        {(flags.practiced || flags.empty) && <p className="practice-states" role="status">{flags.practiced ? 'Práctica observada en este navegador.' : 'Consulta realizada sin datos. No cuenta como lectura de un registro.'}</p>}
+        <div className="learning-actions"><button className="learning-primary" onClick={begin} disabled={pending}>Ver</button></div>
         {pending && <p role="status">Abriendo la sección…</p>}
         {begun && sectionMatches && !target && <p role="status">Esperando el contenido disponible. Si aparece un error en la aplicación, reintenta allí; no lo contamos como práctica.</p>}
         {notice && <p role="status" className="learning-notice">{notice}</p>}
-        <div className="learning-paging"><button disabled={index===0} onClick={() => next(index-1)}>Paso anterior</button><button disabled={index===4} onClick={() => next(index+1)}>Siguiente paso</button></div>
-        {index===4 && <p>Este es el último paso. Tu progreso distingue lo practicado, lo omitido y tu propia valoración; no es una certificación.</p>}
+        <div className="learning-paging"><button disabled={index===0} onClick={() => next(index-1)}>Anterior</button><button disabled={index===4} onClick={() => next(index+1)}>Siguiente</button></div>
+        {index===4 && <p>Este es el último paso. Puedes elegir otro tema en el índice de capítulos.</p>}
       </section></>}
-    <button className="learning-back" onClick={onChapters}>Explorar la guía por capítulos</button>
+    <a className="learning-index-link" href="#learning-chapter-index" onClick={event=>{event.preventDefault();onChapters();}}>Índice de capítulos</a>
   </div>;
 }

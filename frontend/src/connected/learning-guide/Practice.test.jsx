@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {render,screen,fireEvent,waitFor,act} from '@testing-library/react';
+import {render,screen,fireEvent,waitFor,act,within} from '@testing-library/react';
 import {MemoryRouter} from 'react-router-dom';
 import LearningGuideProvider, {useLearningSurface} from './LearningGuide';
 import {usePracticeTarget,usePracticeRemote,journey} from './Practice';
@@ -26,20 +26,63 @@ function Workspace({org='org-a',role='administrador',ready=true}) {
 }
 function App(props){return <MemoryRouter future={{v7_startTransition:true,v7_relativeSplatPath:true}}><LearningGuideProvider><Workspace {...props}/></LearningGuideProvider></MemoryRouter>;}
 function start(){fireEvent.click(screen.getByRole('button',{name:'Tus primeros pasos'}));}
-function documents(){fireEvent.click(screen.getByRole('button',{name:/Localiza tu documentación/}));fireEvent.click(screen.getByRole('button',{name:'Ir a practicar'}));}
+function documents(){fireEvent.click(screen.getByRole('button',{name:/Localiza tu documentación/}));fireEvent.click(screen.getByRole('button',{name:'Ver'}));}
 
-test('5 objectives and separate evidence: viewing or understanding does not simulate practice',()=>{
+test.each(['administrador','consulta','colaborador'])('index from first steps shows every permitted chapter and really navigates for %s',async role=>{
+ api.get.mockReset().mockResolvedValue({documentos:[]});render(<App role={role}/>);start();
+ screen.getByRole('complementary').scrollTop=500;
+ fireEvent.click(screen.getByRole('link',{name:'Índice de capítulos'}));
+ expect(screen.getByRole('complementary').scrollTop).toBe(0);
+ expect(screen.getByRole('heading',{name:'Índice de capítulos'})).toHaveFocus();
+ const nav=screen.getByRole('navigation',{name:'Capítulos de aprendizaje'});
+ expect(within(nav).getAllByRole('button')).toHaveLength(role==='administrador'?17:8);
+ expect(within(nav).getByRole('button',{name:/Mi cuenta y seguridad/})).toBeInTheDocument();
+ if(role!=='administrador')expect(within(nav).queryByRole('button',{name:/Tareas y responsables/})).toBeNull();
+ fireEvent.click(within(nav).getByRole('button',{name:/Documentación/}));
+ await screen.findByText('Pantalla documents');
+ expect(screen.getByRole('heading',{name:'Documentación'})).toHaveFocus();
+ expect(Element.prototype.scrollIntoView).toHaveBeenLastCalledWith({block:'start',behavior:'auto'});
+ expect(screen.getByRole('button',{name:'Ver'})).toBeEnabled();
+ expect(screen.getByRole('button',{name:'Anterior'})).toBeDisabled();
+ expect(screen.getByRole('button',{name:'Siguiente'})).toBeEnabled();
+ expect(readPractice('learner').value.steps.company).toEqual({seen:true});
+});
+
+test('retired controls and labels stay absent while legacy progress is preserved in both guides',()=>{
+ const legacy={seen:true,practiced:true,empty:true,understood:true,skipped:true};
+ localStorage.setItem(practiceKey('learner'),JSON.stringify({version:2,steps:{company:legacy},lastStep:'company'}));
+ localStorage.setItem(storageKey('learner'),JSON.stringify({version:1,steps:{'overview.locate':'understood','overview.understand':'skipped'},lastStep:'overview.locate'}));
+ render(<App/>);start();
+ const retired=/Omitir esta práctica|Señalar el control|Lo he comprendido|He explorado el estado sin datos|Ir a practicar|Volver a la práctica|Paso anterior|Siguiente paso|Omitir este objetivo/;
+ expect(screen.queryByRole('button',{name:retired})).toBeNull();
+ expect(screen.queryByText(/Explicación vista|Comprendido por ti|Omitido/)).toBeNull();
+ expect(screen.getByText('Práctica observada en este navegador.')).toBeInTheDocument();
+ fireEvent.click(screen.getByRole('button',{name:'Siguiente'}));fireEvent.click(screen.getByRole('button',{name:'Anterior'}));
+ expect(readPractice('learner').value.steps.company).toEqual(legacy);
+ expect(readPractice('learner').value.steps.services).toEqual({seen:true});
+ fireEvent.click(screen.getByRole('link',{name:'Índice de capítulos'}));
+ fireEvent.click(within(screen.getByRole('navigation',{name:'Capítulos de aprendizaje'})).getByRole('button',{name:/Vista general/}));
+ fireEvent.click(screen.getByRole('button',{name:'Siguiente'}));
+ expect(screen.queryByRole('button',{name:retired})).toBeNull();
+ expect(screen.queryByText(/Comprendido por ti|Omitido|Lo he comprendido/)).toBeNull();
+ expect(JSON.parse(localStorage.getItem(storageKey('learner'))).steps).toEqual({'overview.locate':'understood','overview.understand':'skipped'});
+});
+
+test('five objectives: navigation and Ver never simulate practice or understanding',()=>{
  render(<App/>);start();expect(screen.getByText(/0 de 5 prácticas observadas/)).toBeInTheDocument();
- fireEvent.click(screen.getByRole('button',{name:'Lo he comprendido'}));
- expect(readPractice('learner').value.steps.company).toEqual({seen:true,understood:true});
+ fireEvent.click(screen.getByRole('button',{name:'Siguiente'}));
+ fireEvent.click(screen.getByRole('button',{name:'Anterior'}));
+ expect(readPractice('learner').value.steps.company).toEqual({seen:true});
+ expect(readPractice('learner').value.steps.services).toEqual({seen:true});
  fireEvent.click(screen.getByRole('button',{name:'Empresa y permisos'}));
  expect(readPractice('learner').value.steps.company.practiced).toBeUndefined();
- fireEvent.click(screen.getByRole('button',{name:'Ir a practicar'}));fireEvent.click(screen.getByRole('button',{name:'Empresa y permisos'}));
+ fireEvent.click(screen.getByRole('button',{name:'Ver'}));fireEvent.click(screen.getByRole('button',{name:'Empresa y permisos'}));
  expect(readPractice('learner').value.steps.company.practiced).toBe(true);
  expect(screen.getByText(/1 de 5 prácticas observadas/)).toBeInTheDocument();
  expect(screen.queryByRole('dialog')).toBeNull();
- fireEvent.click(screen.getByRole('button',{name:'Señalar el control'}));
+ fireEvent.click(screen.getByRole('button',{name:'Ver'}));
  expect(Element.prototype.scrollIntoView).toHaveBeenLastCalledWith({behavior:'auto',block:'center'});
+ expect(screen.getByRole('button',{name:'Empresa y permisos'})).toHaveFocus();
 });
 test('a filter needs a new successful response, not arrival, loading or an error',async()=>{
  let resolve;api.get.mockResolvedValueOnce({documentos:[{id:'private-id'}]}).mockImplementationOnce(()=>new Promise(r=>{resolve=r;}));
@@ -52,15 +95,17 @@ test('a filter needs a new successful response, not arrival, loading or an error
  expect(localStorage.getItem(practiceKey('learner'))).not.toMatch(/SECRET|private-id|org-a/);
 });
 test('empty success is explored without data, not a practiced record',async()=>{
- api.get.mockReset().mockResolvedValue({documentos:[]});render(<App/>);start();documents();
- await screen.findByRole('button',{name:'He explorado el estado sin datos'});
- fireEvent.click(screen.getByRole('button',{name:'He explorado el estado sin datos'}));
+ api.get.mockReset().mockImplementation(async()=>({documentos:[]}));render(<App/>);start();documents();
+ await waitFor(()=>expect(screen.getByLabelText('Filtro real')).toHaveClass('learning-guide-target'));
+ expect(readPractice('learner').value.steps.documents).toEqual({seen:true});
+ fireEvent.change(screen.getByLabelText('Filtro real'),{target:{value:'archived'}});
+ await screen.findByText('Consulta realizada sin datos. No cuenta como lectura de un registro.');
  expect(readPractice('learner').value.steps.documents).toEqual({seen:true,empty:true});
  expect(screen.getByText(/0 de 5 prácticas observadas · 1 exploradas sin datos/)).toBeInTheDocument();
 });
 test('failed filter never marks a practice or invents data',async()=>{
  api.get.mockReset().mockResolvedValueOnce({documentos:[]}).mockRejectedValueOnce(Error('offline'));
- render(<App/>);start();documents();await screen.findByRole('button',{name:'He explorado el estado sin datos'});
+ render(<App/>);start();documents();await waitFor(()=>expect(screen.getByLabelText('Filtro real')).toHaveClass('learning-guide-target'));
  fireEvent.change(screen.getByLabelText('Filtro real'),{target:{value:'archived'}});await screen.findByText('Error real');
  expect(readPractice('learner').value.steps.documents).toEqual({seen:true});
  expect(screen.queryByRole('button',{name:'He explorado el estado sin datos'})).toBeNull();
@@ -71,7 +116,7 @@ test.each(['consulta','colaborador'])('%s has a permitted document equivalent, n
  expect(journey(role)).toHaveLength(5);
 });
 test.each(['org','role','account','lock'])('%s changes pause and do not leak practice',async kind=>{
- const view=render(<App/>);start();fireEvent.click(screen.getByRole('button',{name:'Ir a practicar'}));
+ const view=render(<App/>);start();fireEvent.click(screen.getByRole('button',{name:'Ver'}));
  if(kind==='account')mockAuth={...mockAuth,user:{id:'other'}};
  if(kind==='lock')mockAuth={...mockAuth,phase:'locked',generation:2};
  view.rerender(<App org={kind==='org'?'org-b':'org-a'} role={kind==='role'?'consulta':'administrador'}/>);
@@ -84,7 +129,7 @@ test('cancel preserves draft and stays on the explanation; accepting only naviga
  render(<App/>);fireEvent.change(screen.getByLabelText('Borrador'),{target:{value:'Keep me'}});markDraft('practice-test',true);
  start();documents();expect(screen.getByText('Pantalla overview')).toBeInTheDocument();expect(screen.getByLabelText('Borrador')).toHaveValue('Keep me');
  expect(readPractice('learner').value.steps.documents.practiced).toBeUndefined();
- confirm.mockReturnValue(true);fireEvent.click(screen.getByRole('button',{name:'Ir a practicar'}));await screen.findByText('Pantalla documents');
+ confirm.mockReturnValue(true);fireEvent.click(screen.getByRole('button',{name:'Ver'}));await screen.findByText('Pantalla documents');
  expect(confirm).toHaveBeenCalledTimes(2);
 });
 test('v1 is untouched; v2 corruption and unknown IDs are rejected',()=>{
@@ -97,9 +142,10 @@ test('v1 is untouched; v2 corruption and unknown IDs are rejected',()=>{
 });
 test('quota failure keeps progress in the mounted session and close restores focus',()=>{
  jest.spyOn(Storage.prototype,'setItem').mockImplementation(()=>{throw Error('quota');});render(<App/>);start();
- fireEvent.click(screen.getByRole('button',{name:'Lo he comprendido'}));expect(screen.getByText(/Comprendido por ti/)).toBeInTheDocument();
+ fireEvent.click(screen.getByRole('button',{name:'Ver'}));fireEvent.click(screen.getByRole('button',{name:'Empresa y permisos'}));
+ expect(screen.getByText(/1 de 5 prácticas observadas/)).toBeInTheDocument();
  fireEvent.keyDown(document,{key:'Escape'});expect(screen.getByRole('button',{name:'Guía de uso'})).toHaveFocus();
- start();expect(screen.getByText(/Comprendido por ti/)).toBeInTheDocument();
+ start();expect(screen.getByText(/1 de 5 prácticas observadas/)).toBeInTheDocument();
 });
 test('resume restores only the explanation, never navigation or evidence of practice',()=>{
  localStorage.setItem(practiceKey('learner'),JSON.stringify({version:2,steps:{documents:{seen:true}},lastStep:'documents'}));
@@ -109,7 +155,7 @@ test('resume restores only the explanation, never navigation or evidence of prac
 });
 test('a pending response after changing company cannot earn progress in the new company',async()=>{
  let resolve;api.get.mockReset().mockResolvedValueOnce({documentos:[]}).mockImplementationOnce(()=>new Promise(r=>{resolve=r;}));
- const view=render(<App/>);start();documents();await screen.findByRole('button',{name:'He explorado el estado sin datos'});
+ const view=render(<App/>);start();documents();await waitFor(()=>expect(screen.getByLabelText('Filtro real')).toHaveClass('learning-guide-target'));
  fireEvent.change(screen.getByLabelText('Filtro real'),{target:{value:'archived'}});
  view.rerender(<App org="org-b"/>);await act(async()=>resolve({documentos:[{id:'old-company'}]}));
  expect(readPractice('learner').value.steps.documents.practiced).toBeUndefined();

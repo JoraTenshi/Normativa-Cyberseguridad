@@ -30,6 +30,8 @@
 .learning-panel button,.learning-launcher { font:600 15px/1.45 system-ui,sans-serif; cursor:pointer; border:1px solid #8ca58d; color:#153e30; background:#fffdf7; border-radius:12px; padding:10px 14px; min-height:44px; }
 .learning-panel button:disabled { opacity:.55; cursor:not-allowed; }
 .learning-panel button:focus-visible,.learning-launcher:focus-visible { outline:3px solid #aa6516; outline-offset:3px; }
+.learning-panel .learning-index-link { display:inline-flex; align-items:center; min-height:44px; margin-top:10px; color:#235b48; font-weight:600; text-decoration:underline; text-underline-offset:4px; }
+.learning-panel .learning-index-link:focus-visible { outline:3px solid #aa6516; outline-offset:3px; border-radius:4px; }
 .learning-panel .learning-primary { background:#235b48; color:#fff; border-color:#235b48; }
 .learning-panel .learning-close { flex:0 0 40px; display:grid; place-items:center; width:40px; min-height:40px; height:40px; padding:0; border-radius:50%; font-size:27px; line-height:1; }
 .learning-symbol { flex-shrink:0; color:#235b48; }
