@@ -19,6 +19,7 @@ import DPCaseWorkspace from './DPCaseWorkspace';
 
 const sections = { overview:'Vista general', profile:'Perfil y alcance', operations:'Operaciones y cuestiones', rat:'Registro de actividades (RAT)', units:'Finalidades, flujos y privacidad', rights:'Solicitudes de derechos', eipd:'Detección EIPD', tasks:'Tareas y responsables', documents:'Documentación', regulations:'Normativa del alcance', activity:'Historial de actividad', spaces:'Servicios y productos', context:'Contexto de empresa' };
 const icons = {overview:'grid',profile:'book',operations:'tasks',rat:'book',units:'book',rights:'book',eipd:'book',tasks:'check',documents:'file',regulations:'book',activity:'clock',spaces:'grid',context:'book'};
+const accessLabels = { administrador:'permisos de administración', colaborador:'permisos de colaboración', consulta:'permisos de consulta' };
 export default function ApiWorkspace() {
   const api = useMemo(() => createApi(), []);
   const { user, phase, generation, logout } = useAuth();
@@ -41,9 +42,11 @@ export default function ApiWorkspace() {
     api.get('/me/organizaciones'+queryString({ despues:cursor, limite:50 })).then(data => {
       if (!active) return;
       setCompanies(data.organizaciones); setNext(data.siguiente);
+      // Only a complete first page with one active membership is unambiguous.
+      const soleOrganization = !cursor && !data.siguiente && data.organizaciones.length === 1 ? data.organizaciones[0] : null;
       // Reconfirm membership on the selected page before revealing the editor.
-      setSelected(old => old ? data.organizaciones.find(o => o.id === old.id) || null : null);
-      setChoice(old => old && !data.organizaciones.some(o => o.id === old) ? null : old);
+      setSelected(old => data.organizaciones.find(o => o.id === old?.id) || soleOrganization);
+      setChoice(old => soleOrganization || !data.organizaciones.some(o => o.id === old) ? null : old);
       setBusy(false);
     }, e => { if (active) { setError(e); setBusy(false); } });
     return () => { active = false; };
@@ -63,17 +66,22 @@ export default function ApiWorkspace() {
     } catch { setCloseError('No se ha confirmado el cierre. El trabajo sigue aquí; vuelve a intentarlo.'); }
     finally { setClosing(false); }
   }
-  const selector = <div className="desk-company-picker">
-      <label>Organización<select value={choice === null ? selected?.id || '' : choice} disabled={busy || !!error} onChange={e => setChoice(e.target.value)}>
+  const refreshMemberships = () => { if (confirmLeave()) setRetry(n => n + 1); };
+  const needsChoice = companies.length > 1 || !!cursor || !!next;
+  const chosenOrganization = companies.find(o => o.id === choice);
+  const selector = needsChoice ? <div className="desk-company-picker">
+      <label>Empresa con la que vas a trabajar<select aria-describedby="organization-choice-help" value={choice === null ? selected?.id || '' : choice} disabled={busy || !!error} onChange={e => setChoice(e.target.value)}>
         <option value="" disabled={!!selected}>Selecciona una organización</option>
         {companies.map(o => <option key={o.id} value={o.id}>{o.nombre}</option>)}
       </select></label>
+      <p className="desk-choice-help" id="organization-choice-help">Cada empresa tiene sus propios datos y permisos. Sus servicios y actividades se eligen después, dentro de su espacio.</p>
+      {chosenOrganization && choice !== selected?.id && <p className="desk-choice-preview" aria-live="polite">Entrarás en {chosenOrganization.nombre} con {accessLabels[chosenOrganization.rol] || 'los permisos de tu membresía'}; las demás empresas seguirán separadas.</p>}
       {!selected || (choice && choice !== selected.id) ? <button type="button" className="desk-confirm-organization api-primary" disabled={busy || !!error || !choice || choice === selected?.id} onClick={enterChoice}>{selected ? 'Cambiar de organización' : 'Entrar en el espacio'}</button> : null}
-      <div className="desk-picker-actions"><button disabled={busy} onClick={() => { if (confirmLeave()) { setSelected(null); setRetry(n => n+1); } }}>Actualizar organizaciones</button>
+      <div className="desk-picker-actions"><button disabled={busy} onClick={refreshMemberships}>Actualizar organizaciones</button>
         {cursor && <button disabled={busy} onClick={() => { if (confirmLeave()) { setSelected(null); setCursor(null); } }}>Primera página</button>}
         {next && <button disabled={busy} onClick={() => { if (confirmLeave()) { setSelected(null); setCursor(next); } }}>Más organizaciones</button>}
       </div>
-    </div>;
+    </div> : selected ? <button type="button" className="desk-membership-refresh" disabled={busy} onClick={refreshMemberships}>Actualizar acceso a mi empresa</button> : null;
   return <div className="api-app desk-v2">
     <a className="desk-skip" href="#workspace-main">Saltar al contenido</a>
     {process.env.REACT_APP_VALIDATION_BUILD === 'true' && <div className="desk-environment"><span className="desk-live-dot"/>Entorno de validación <span>· Usa únicamente datos de prueba</span></div>}
@@ -83,7 +91,7 @@ export default function ApiWorkspace() {
     {/* Keep the editor mounted during lock/recheck; never reveal it until membership is confirmed. */}
     <div hidden={busy || !!error || phase !== 'authenticated'}>
       {selected ? <Connected key={user.id+':'+selected.id+':'+selected.rol} api={api} organization={selected} selector={selector}/>
-        : <section className="desk-welcome" id="workspace-main" tabIndex={-1}><span className="desk-overline">TU ESPACIO DE TRABAJO</span><h1>Un punto de partida para cada caso.</h1><p>Selecciona tu organización para consultar su actividad y continuar donde lo dejaste.</p>{selector}{!busy && !error && !companies.length && <div className="desk-enrollment-start"><h2>Solicita el espacio de tu empresa</h2><p>No tienes organizaciones activas en esta página. Puedes presentar una solicitud o consultar su revisión. Verificar tu correo no activa el acceso: es necesaria la aprobación de la administración de NormativaCheck.</p><button onClick={() => { if (confirmLeave()) route('/solicitudes-de-alta'); }}>Solicitar espacio o consultar mi alta</button></div>}<small>Solo aparecen organizaciones con una membresía activa confirmada por el servidor.</small></section>}
+        : <section className="desk-welcome" id="workspace-main" tabIndex={-1}><span className="desk-overline">TU ESPACIO DE TRABAJO</span><h1>Un punto de partida para cada caso.</h1>{needsChoice && <p>Elige la empresa en la que vas a trabajar. Si gestionas varias, cada una mantiene su información por separado.</p>}{selector}{!busy && !error && !companies.length && <div className="desk-enrollment-start"><h2>Solicita el espacio de tu empresa</h2><p>No tienes organizaciones activas en esta página. Puedes presentar una solicitud o consultar su revisión. Verificar tu correo no activa el acceso: es necesaria la aprobación de la administración de NormativaCheck.</p><button onClick={() => { if (confirmLeave()) route('/solicitudes-de-alta'); }}>Solicitar espacio o consultar mi alta</button></div>}{needsChoice && <small>Solo aparecen empresas con una membresía activa confirmada por el servidor.</small>}</section>}
     </div>
   </div>;
 }
