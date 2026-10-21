@@ -71,6 +71,15 @@ test('remembering a session does not promise longer absolute or inactivity limit
   expect(session).toContain('8 horas desde el acceso y 30 minutos sin actividad');
   expect(session).not.toContain('amplía su duración');
 });
+test('storage information distinguishes the optional account guide from the fictitious demo', () => {
+  render(<CookieBanner/>);
+  expect(screen.getByRole('complementary',{name:'Información de almacenamiento'})).toHaveTextContent('la guía de uso de tu cuenta');
+  fireEvent.click(screen.getByRole('button',{name:'Ver información'}));
+  const guide=TEXTOS_LEGALES.cookies.secciones.find(([title])=>title==='Guía de uso de la cuenta')[1];
+  expect(guide).toContain('por cuenta');
+  expect(guide).toContain('No guarda allí contraseñas, documentos ni datos de la empresa');
+  expect(screen.getByRole('dialog')).toHaveTextContent('Este progreso no se sincroniza con otros dispositivos');
+});
 test('privacy account contact separates identity, contact and sender clarification into three paragraphs',()=>{
   render(<ModalLegal tipo="privacidad" onCerrar={()=>{}}/>);
   const section=screen.getByRole('heading',{name:'Responsable de los datos de las cuentas'}).parentElement;
