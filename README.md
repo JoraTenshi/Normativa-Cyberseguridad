@@ -1,6 +1,6 @@
 # NormativaCheck — Práctica 3
 
-## Entrada y aprendizaje opcional (cambio local, 21 de octubre de 2026)
+## Entrada y aprendizaje opcional
 
 La entrada utiliza exclusivamente las membresías confirmadas por la API: una única
 empresa en una primera página completa abre su espacio directamente; varias empresas
@@ -30,9 +30,10 @@ si el almacenamiento falla, se conserva en memoria mientras siga montada la sesi
 No se sincroniza entre dispositivos. La interfaz respeta movimiento reducido y ofrece
 navegación por teclado, cierre y vuelta al trabajo.
 
-Este apartado describe el código de este lote, no confirma publicación o despliegue.
-La validación con API simulada o componentes no sustituye aceptación contra el backend
-real. Seguridad R2, el paquete docente y la infraestructura quedan fuera de estos cambios.
+Este apartado describe el alcance del código. La versión instalada en cada entorno debe
+comprobarse por su identidad de entrega; la validación con API simulada o componentes no
+sustituye la aceptación contra el backend real. Seguridad R2, el paquete docente y la
+infraestructura quedan fuera de estos cambios.
 
 NormativaCheck es una aplicación web, desarrollada en el marco académico de la Práctica 3 y con proyección de uso profesional, que ayuda a pequeñas empresas españolas de software y ciberseguridad a organizar actividades, alcances, requisitos, tareas, documentos, evidencias y revisiones. Permite registrar qué se ha examinado, con qué información y con qué resultado razonado. El producto sigue en desarrollo: no certifica cumplimiento ni sustituye asesoramiento jurídico.
 
