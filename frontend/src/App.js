@@ -17,6 +17,7 @@ import EnrollmentPortal from './connected/EnrollmentPortal';
 import SessionBoundary from './session/SessionBoundary';
 import DraftNavigationGuard from './session/DraftNavigationGuard';
 import CookieBanner     from './components/CookieBanner';
+import LearningGuideProvider, { LearningRouteSurface } from './connected/learning-guide/LearningGuide';
 
 import './App.css';
 import './product/green-theme.css';
@@ -42,11 +43,11 @@ function Application() {
   return (
     <>
         <DraftNavigationGuard />
-        <SessionBoundary><div className="app green-app">
+        <SessionBoundary><LearningGuideProvider><div className="app green-app">
           <CookieBanner />
           {!workspace && !publicPage && <ProductHeader />}
           <div className={workspace || publicPage ? 'workspace-content' : 'main-content'}>
-            <Routes>
+            <LearningRouteSurface><Routes>
               <Route path="/"          element={<PublicExperience />} />
               <Route path="/cuestionario/:normativaId" element={<PreviousEvaluationNotice />} />
               <Route path="/resultado" element={<PreviousEvaluationNotice />} />
@@ -73,10 +74,10 @@ function Application() {
                   <Link to="/" className="btn-primary">Volver al inicio</Link>
                 </div>
               } />
-            </Routes>
+            </Routes></LearningRouteSurface>
           </div>
           <ProductFooter />
-        </div></SessionBoundary>
+        </div></LearningGuideProvider></SessionBoundary>
     </>
   );
 }

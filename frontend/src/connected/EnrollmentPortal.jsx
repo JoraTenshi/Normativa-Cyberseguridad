@@ -8,6 +8,7 @@ import { EnrollmentDecision, EnrollmentStatus, EnrollmentSummary } from './Enrol
 import { capabilitiesPath, emptyRequest, ownRequestsPath, parseCapabilities, parseList, parseRequest, platformRequestsPath, requestBody, requestLabels, requestPath, requestView, requestStates } from './enrollment-model';
 import './connected.css';
 import './enrollment.css';
+import { useLearningSurface } from './learning-guide/LearningGuide';
 
 // Stale data stays mounted only to preserve same-account drafts, but never becomes
 // actionable while a new identity/generation/path is being checked.
@@ -47,6 +48,8 @@ function EnrollmentAccount({ auth, admin }) {
   const epoch = `${auth.user.id}:${auth.generation}`, authenticated = auth.phase === 'authenticated';
   const caps = useEnrollmentRead(api, capabilitiesPath, epoch, authenticated, parseCapabilities);
   const allowed = caps.ready && (!admin || (caps.data.gestionarAltas === true && caps.data.requiereMfa === false));
+  const guideContent = useLearningSurface({ id:'enrollment', kind:'route', chapter:admin ? 'review' : 'requests',
+    priority:2, ready:authenticated && allowed, allowed, scope:admin ? 'platform-reviewer' : undefined });
   const [cursor, setCursor] = useState(null), [filter, setFilter] = useState(''), [selected, setSelected] = useState(null), [creating, setCreating] = useState(false);
   const listPath = (admin ? platformRequestsPath : ownRequestsPath) + queryString({ limite: 20, despues: cursor, estado: admin && filter ? filter : undefined });
   const list = useEnrollmentRead(api, listPath, epoch, allowed, data => parseList(data, admin));
@@ -57,7 +60,7 @@ function EnrollmentAccount({ auth, admin }) {
     {!caps.ready && <section className="enrollment-status"><p role="status">{caps.error ? 'No se ha podido confirmar el acceso a las solicitudes.' : 'Comprobando los permisos de tu sesión…'}</p><ErrorBox error={caps.error}/>{caps.error && <button onClick={recheck}>Reintentar conexión</button>}</section>}
     {caps.ready && admin && !caps.data.gestionarAltas && !caps.data.requiereMfa && <section className="enrollment-status" role="alert"><h2>No tienes permiso para revisar altas</h2><p>La administración de una empresa no concede autoridad para aprobar solicitudes de la plataforma.</p></section>}
     {caps.ready && admin && caps.data.requiereMfa && <section className="enrollment-status"><h2>Completa la protección de tu cuenta</h2><p>Para revisar altas necesitas el segundo factor de NormativaCheck. La verificación en dos pasos de tu correo no lo sustituye.</p><button onClick={() => move(() => route('/settings'))}>Ir a la seguridad de mi cuenta</button></section>}
-    <main className="enrollment-content" hidden={!allowed}>
+    <main ref={guideContent} className="enrollment-content" hidden={!allowed}>
       {admin && allowed && caps.data.requiereAutenticacionReciente && <section className="enrollment-status"><h2>Confirma tu identidad antes de decidir</h2><p>Puedes consultar solicitudes, pero aprobar, rechazar o pedir aclaraciones exige una autenticación reciente.</p><button onClick={() => auth.machine.lock('Confirma tu identidad con la misma cuenta y el segundo factor para decidir sobre altas. El borrador permanece en esta pestaña.')}>Volver a identificarme</button></section>}
       {selected ? <><button className="api-back" onClick={() => move(() => { setSelected(null); list.refresh(); })}>← Volver a solicitudes</button><EnrollmentDetail key={selected} api={api} id={selected} admin={admin} epoch={epoch} active={allowed} capabilities={caps.ready ? caps.data : null} onCapabilities={recheck} onReauthenticate={() => auth.machine.lock('Vuelve a identificarte con la misma cuenta para continuar con la decisión. El borrador se conserva.')} onMemberships={checkMemberships}/></>
         : creating ? <><button className="api-back" onClick={() => move(() => setCreating(false))}>← Volver a solicitudes</button><EnrollmentEditor api={api} active={allowed} onSaved={row => { setCreating(false); setSelected(row.id); list.refresh(); }}/></>

@@ -16,8 +16,10 @@ import { Brand } from '../product/ProductFrame';
 import RatWorkspace from './RatWorkspace';
 import DPUnitWorkspace from './DPUnitWorkspace';
 import DPCaseWorkspace from './DPCaseWorkspace';
+import { useLearningSurface } from './learning-guide/LearningGuide';
+import { WORKSPACE_SECTIONS } from './learning-guide/catalog';
 
-const sections = { overview:'Vista general', profile:'Perfil y alcance', operations:'Operaciones y cuestiones', rat:'Registro de actividades (RAT)', units:'Finalidades, flujos y privacidad', rights:'Solicitudes de derechos', eipd:'Detección EIPD', tasks:'Tareas y responsables', documents:'Documentación', regulations:'Normativa del alcance', activity:'Historial de actividad', spaces:'Servicios y productos', context:'Contexto de empresa' };
+const sections = WORKSPACE_SECTIONS;
 const icons = {overview:'grid',profile:'book',operations:'tasks',rat:'book',units:'book',rights:'book',eipd:'book',tasks:'check',documents:'file',regulations:'book',activity:'clock',spaces:'grid',context:'book'};
 const accessLabels = { administrador:'permisos de administración', colaborador:'permisos de colaboración', consulta:'permisos de consulta' };
 export default function ApiWorkspace() {
@@ -30,6 +32,8 @@ export default function ApiWorkspace() {
   const [choice, setChoice] = useState(null);
   const [error, setError] = useState(null), [busy, setBusy] = useState(true), [next, setNext] = useState(null);
   const [retry, setRetry] = useState(0), [cursor, setCursor] = useState(null);
+  const guideEntry = useLearningSurface({ id:'workspace-entry', kind:'entry', chapter:'entry', priority:2,
+    ready:phase === 'authenticated' && !busy && !error && !selected });
   useEffect(() => {
     const previous = document.title;
     document.title = 'NormativaCheck · Espacio de trabajo';
@@ -82,7 +86,7 @@ export default function ApiWorkspace() {
         {next && <button disabled={busy} onClick={() => { if (confirmLeave()) { setSelected(null); setCursor(next); } }}>Más organizaciones</button>}
       </div>
     </div> : selected ? <button type="button" className="desk-membership-refresh" disabled={busy} onClick={refreshMemberships}>Actualizar acceso a mi empresa</button> : null;
-  return <div className="api-app desk-v2">
+  return <div className="api-app desk-v2" ref={guideEntry}>
     <a className="desk-skip" href="#workspace-main">Saltar al contenido</a>
     {process.env.REACT_APP_VALIDATION_BUILD === 'true' && <div className="desk-environment"><span className="desk-live-dot"/>Entorno de validación <span>· Usa únicamente datos de prueba</span></div>}
     <header className="desk-top"><div className="desk-brand"><Brand/><span className="desk-top-label">Espacio de trabajo</span></div><div className="desk-account"><span className="desk-avatar" aria-hidden="true">{user.nombre?.slice(0,1).toUpperCase() || 'N'}</span><span>{user.nombre}</span><button onClick={() => { if (confirmLeave()) route('/solicitudes-de-alta'); }}>Mis solicitudes</button><EnrollmentAccessLink/><button onClick={() => { if (confirmLeave()) route('/historial'); }}>Evaluaciones guardadas</button><button onClick={() => { if (confirmLeave()) route('/settings'); }}>Mi cuenta</button><button onClick={closeSession} disabled={closing}>{closing ? 'Cerrando…' : 'Cerrar sesión'}</button></div></header>
@@ -90,24 +94,31 @@ export default function ApiWorkspace() {
     {(busy || error) && <div className="desk-connection">{busy && <p role="status">Comprobando membresías…</p>}<ErrorBox error={error}/>{error && <button onClick={() => setRetry(n => n+1)}>Reintentar conexión</button>}</div>}
     {/* Keep the editor mounted during lock/recheck; never reveal it until membership is confirmed. */}
     <div hidden={busy || !!error || phase !== 'authenticated'}>
-      {selected ? <Connected key={user.id+':'+selected.id+':'+selected.rol} api={api} organization={selected} selector={selector}/>
+      {selected ? <Connected key={user.id+':'+selected.id+':'+selected.rol} api={api} organization={selected} selector={selector} guideReady={!busy && !error && phase === 'authenticated'}/>
         : <section className="desk-welcome" id="workspace-main" tabIndex={-1}><span className="desk-overline">TU ESPACIO DE TRABAJO</span><h1>Un punto de partida para cada caso.</h1>{needsChoice && <p>Elige la empresa en la que vas a trabajar. Si gestionas varias, cada una mantiene su información por separado.</p>}{selector}{!busy && !error && !companies.length && <div className="desk-enrollment-start"><h2>Solicita el espacio de tu empresa</h2><p>No tienes organizaciones activas en esta página. Puedes presentar una solicitud o consultar su revisión. Verificar tu correo no activa el acceso: es necesaria la aprobación de la administración de NormativaCheck.</p><button onClick={() => { if (confirmLeave()) route('/solicitudes-de-alta'); }}>Solicitar espacio o consultar mi alta</button></div>}{needsChoice && <small>Solo aparecen empresas con una membresía activa confirmada por el servidor.</small>}</section>}
     </div>
   </div>;
 }
-function Connected({ api, organization, selector }) {
+function Connected({ api, organization, selector, guideReady }) {
   const base = orgPath(organization.id), [section, setSection] = useState('overview');
   const [operationId, setOperationId] = useState(null);
   const heading = React.useRef(null);
   const admin = organization.rol === 'administrador';
-  const navigate = (next,id = null) => { if ((next !== section || id !== null) && confirmLeave()) { setOperationId(id); setSection(next); } };
+  const navigate = (next,id = null) => {
+    if (next === section && id === null) return true;
+    if (!confirmLeave()) return false;
+    setOperationId(id); setSection(next); return true;
+  };
+  const guideContent = useLearningSurface({ id:'workspace', kind:'workspace', chapter:'entry', priority:3,
+    section, scope:organization.id+':'+organization.rol, role:organization.rol, ready:guideReady,
+    heading, navigate });
   useEffect(() => { if (!(section === 'tasks' && operationId?.id)) heading.current?.focus({preventScroll:true}); }, [section,operationId]);
   return <div className="desk-shell"><aside className="desk-nav">
     <span className="desk-overline">GESTIÓN DEL TRABAJO</span>
     <nav aria-label="Secciones del Workspace">{Object.entries(sections).map(([id,name]) => <button key={id} aria-current={section === id ? 'page' : undefined} onClick={() => navigate(id)} disabled={['profile','context','operations','regulations','tasks','rat','units','rights','eipd'].includes(id) && !admin} title={['profile','context','operations','regulations','tasks','rat','units','rights','eipd'].includes(id) && !admin ? 'Disponible para el administrador de la organización' : undefined}><Glyph type={icons[id]}/><span>{name}</span></button>)}</nav>
     <div className="desk-scope-note"><strong>{organization.nombre}</strong><small>{admin ? 'Administrador empresarial' : 'Acceso según membresía'}</small><p>Los permisos se comprueban en el servidor en cada consulta y cambio.</p></div>
     <details className="desk-help"><summary>Cómo usar este espacio</summary><p>Describe una operación, aclara sus datos y conserva su documentación. El historial permite seguir los cambios.</p><p>Las actuaciones conservan responsables y cambios. Su cierre no sustituye la revisión del requisito.</p></details>
-  </aside><section id="workspace-main" className="desk-main" aria-labelledby="workspace-title"><header className="desk-page-header"><div><span className="desk-overline">{organization.nombre}</span><h1 id="workspace-title" ref={heading} tabIndex={-1}>{sections[section]}</h1><p>{section === 'overview' ? 'Tu actividad, documentación y siguientes pasos, en un mismo lugar.' : 'Datos y cambios de tu organización, conectados al servidor.'}</p></div>{selector}</header>
+  </aside><section id="workspace-main" ref={guideContent} className="desk-main" aria-labelledby="workspace-title"><header className="desk-page-header"><div><span className="desk-overline">{organization.nombre}</span><h1 id="workspace-title" ref={heading} tabIndex={-1}>{sections[section]}</h1><p>{section === 'overview' ? 'Tu actividad, documentación y siguientes pasos, en un mismo lugar.' : 'Datos y cambios de tu organización, conectados al servidor.'}</p></div>{selector}</header>
     {section === 'overview' && <Dashboard api={api} base={base} admin={admin} onNavigate={navigate}/>}
     {section === 'profile' && admin && <CompanyProfile api={api} base={base}/>}
     {section === 'context' && admin && <ContextPage api={api} base={base}/>}
