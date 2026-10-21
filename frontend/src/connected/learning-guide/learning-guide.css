@@ -1,4 +1,24 @@
 .learning-layout { min-width:0; }
+.learning-panel[hidden] { display:none; }
+.learning-launchers { position:fixed; right:20px; bottom:20px; display:flex; flex-wrap:wrap; justify-content:flex-end; gap:8px; max-width:calc(100vw - 24px); z-index:30; }
+.learning-launchers .learning-launcher { position:static; }
+.learning-launchers .learning-secondary-launcher { background:#f4f7ed; color:#173d32; }
+.first-step-list { padding:0; list-style:none; display:grid; gap:8px; }
+.first-step-list button { width:100%; display:flex; gap:12px; align-items:center; text-align:left; }
+.first-step-list button[aria-current] { background:#dceccf; border-color:#235b48; }
+.first-step-list span { display:grid; place-items:center; border-radius:50%; background:#235b48; color:white; flex:0 0 30px; height:30px; }
+.practice-states { padding:10px; border-left:3px solid #507649; font-size:14px; }
+.desk-v2 .desk-company-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr)); gap:16px; margin:18px 0; }
+.desk-v2 .desk-company-card { padding:22px; border:1px solid #9ab79a; border-radius:18px; background:#edf4e5; }
+.desk-v2 .desk-company-card strong { font-size:22px; overflow-wrap:anywhere; }
+.desk-v2 .desk-company-picker { min-width:0; max-width:100%; }
+.desk-v2 .desk-company-picker summary,.desk-company-context summary { font-size:18px; font-weight:650; padding:12px 0; cursor:pointer; }
+.desk-company-context { margin-bottom:12px; max-width:600px; }
+.desk-v2 .desk-page-header .desk-company-context p,
+.api-app.desk-v2 .desk-company-picker .desk-choice-help,
+.api-app.desk-v2 .desk-company-card p { font-size:16px; line-height:1.6; }
+.api-app.desk-v2 .desk-company-card button { min-height:44px; }
+.desk-v2 .desk-page-header > div { min-width:0; }
 .learning-app-content { min-width:0; }
 .learning-layout--open { display:grid; grid-template-columns:minmax(0,1fr) minmax(320px,380px); align-items:start; gap:16px; padding-right:16px; background:#e8efe4; }
 .learning-panel { position:sticky; top:12px; max-height:calc(100dvh - 24px); overflow:auto; overscroll-behavior:contain; margin:12px 0; padding:22px; border:1px solid #a9bfa6; border-radius:22px; background:#f4f7ed; color:#173d32; box-shadow:0 14px 36px #153e301f; font:400 16px/1.6 system-ui,sans-serif; z-index:20; }

@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { CHAPTERS, chaptersFor, hasArrived } from './catalog';
 import { readProgress, setStep, writeProgress } from './progress';
 import './learning-guide.css';
+import { PracticeProvider, FirstSteps } from './Practice';
 
 const GuideContext = createContext(null);
 
@@ -18,9 +19,10 @@ export function useLearningSurface(descriptor) {
   useEffect(() => {
     if (!register) return undefined;
     return register({ id, kind, chapter, section, scope, role, ready, allowed, priority, root,
+      practiceScope:descriptor.practiceScope,
       heading:() => live.current.heading?.current || root.current,
       navigate:next => live.current.navigate?.(next) });
-  }, [register, id, kind, chapter, section, scope, role, ready, allowed, priority]);
+  }, [register, id, kind, chapter, section, scope, role, ready, allowed, priority, descriptor.practiceScope]);
   return root;
 }
 
@@ -44,7 +46,7 @@ export default function LearningGuideProvider({ children }) {
   }, []);
   const context = useMemo(() => ({ register }), [register]);
   return <GuideContext.Provider value={context}>
-    <GuideSession key={auth.user?.id || 'anonymous'} auth={auth} surfaces={surfaces}>{children}</GuideSession>
+    <PracticeProvider key={auth.user?.id || 'anonymous'}><GuideSession key={auth.user?.id || 'anonymous'} auth={auth} surfaces={surfaces}>{children}</GuideSession></PracticeProvider>
   </GuideContext.Provider>;
 }
 
@@ -66,6 +68,7 @@ function useReducedMotion() {
 function GuideSession({ auth, surfaces, children }) {
   const route = useNavigate(), location = useLocation();
   const reduced = useReducedMotion();
+  const [practice, setPractice] = useState(false);
   const [open, setOpen] = useState(false), [menu, setMenu] = useState(true);
   const [chapterId, setChapterId] = useState(null), [index, setIndex] = useState(0);
   const [pending, setPending] = useState(null), [notice, setNotice] = useState('');
@@ -128,12 +131,12 @@ function GuideSession({ auth, surfaces, children }) {
   }, [pending, surface]);
 
   useEffect(() => {
-    if (visible && !menu && !pending && arrived && step) persist(step.id, 'visited');
-  }, [visible, menu, pending, arrived, step, persist]);
+    if (visible && !practice && !menu && !pending && arrived && step) persist(step.id, 'visited');
+  }, [visible, practice, menu, pending, arrived, step, persist]);
 
   useEffect(() => {
     if (visible) title.current?.focus({ preventScroll:true });
-  }, [visible, menu, chapterId, index]);
+  }, [visible, practice, menu, chapterId, index]);
   const close = useCallback(() => {
     setOpen(false); setPending(null);
   }, []);
@@ -157,15 +160,15 @@ function GuideSession({ auth, surfaces, children }) {
     return () => document.removeEventListener('keydown', escape);
   }, [visible, close]);
   useEffect(() => {
-    if (!visible || menu || pending || !arrived || !target || target.closest('[hidden], [inert]')) return undefined;
+    if (!visible || practice || menu || pending || !arrived || !target || target.closest('[hidden], [inert]')) return undefined;
     target.classList.add('learning-guide-target');
     return () => target.classList.remove('learning-guide-target');
-  }, [visible, menu, pending, arrived, target, step]);
+  }, [visible, practice, menu, pending, arrived, target, step]);
 
-  function start(event) {
+  function start(event, firstSteps = false) {
     returnFocus.current = event?.currentTarget || document.activeElement;
     if (!saved) setSaved(readProgress(auth.user.id));
-    setOpen(true); setMenu(true); setNotice('');
+    setPractice(firstSteps); setOpen(true); setMenu(true); setNotice('');
   }
   function go(nextChapter, nextIndex = 0) {
     if (!authenticated || !chapters.some(item => item.id === nextChapter.id)) return;
@@ -197,10 +200,13 @@ function GuideSession({ auth, surfaces, children }) {
 
   return <div className={`learning-layout${visible ? ' learning-layout--open' : ''}`}>
     <div className="learning-app-content">{children}</div>
-    {authenticated && surface && !visible && <button ref={launcher} className="learning-launcher" onClick={start}><Compass/>Guía de uso</button>}
-    {visible && <aside className="learning-panel" aria-labelledby="learning-title">
-      <header><span className="learning-symbol"><Compass/></span><div><span className="learning-eyebrow">APRENDE A UTILIZAR TU ESPACIO</span><h2 id="learning-title" ref={title} tabIndex={-1}>{menu ? 'Elige qué quieres aprender' : chapter?.title || 'Guía de uso'}</h2></div>
+    {authenticated && surface && !visible && <div className="learning-launchers"><button className="learning-launcher" onClick={event => start(event,true)}><Compass/>Tus primeros pasos</button><button ref={launcher} className="learning-launcher learning-secondary-launcher" onClick={event => start(event)}>Guía de uso</button></div>}
+    {authenticated && <aside hidden={!visible} className="learning-panel" aria-labelledby="learning-title">
+      <header><span className="learning-symbol"><Compass/></span><div><span className="learning-eyebrow">APRENDE A UTILIZAR TU ESPACIO</span><h2 id="learning-title" ref={title} tabIndex={-1}>{practice ? 'Tus primeros pasos' : menu ? 'Elige qué quieres aprender' : chapter?.title || 'Guía de uso'}</h2></div>
         <button className="learning-close" aria-label="Cerrar y pausar la guía" onClick={close}>×</button></header>
+      <FirstSteps active={practice && visible} surface={surface} userId={auth.user?.id} reduced={reduced} onChapters={() => {setPractice(false);setMenu(true);}}/>
+      <div hidden={practice}>
+      <button className="learning-primary" onClick={() => {setPractice(true);setPending(null);}}>Empezar «Tus primeros pasos»</button>
       <p className="learning-intro">Tú decides el ritmo. Puedes usar la pantalla, saltar capítulos y volver después. La guía no guarda ni modifica tu trabajo.</p>
       <p className="learning-storage">{saved?.persistent ? 'Progreso guardado solo en este navegador; no se sincroniza.' : 'Progreso solo en esta sesión de la guía: el almacenamiento no está disponible o el registro anterior no era válido.'}</p>
       <p className="learning-summary">{understood} de {knownSteps.length} objetivos marcados como comprendidos{skipped ? ` · ${skipped} omitidos` : ''}, en los capítulos disponibles aquí. No mide cumplimiento normativo.</p>
@@ -223,6 +229,7 @@ function GuideSession({ auth, surfaces, children }) {
           ? <button disabled={!!pending} onClick={() => go(chapter, index + 1)}>Siguiente objetivo →</button>
           : <button onClick={() => setMenu(true)}>Elegir otro capítulo →</button>}</div>
       </> : <button onClick={() => setMenu(true)}>Ver capítulos disponibles</button>}
+      </div>
       <footer><button onClick={close}>Pausar y seguir trabajando</button><p>Completar la guía es una declaración de aprendizaje, no una certificación. Los permisos y las acciones siguen siendo los de la aplicación.</p></footer>
     </aside>}
   </div>;

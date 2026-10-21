@@ -1,3 +1,4 @@
+import { usePracticeRemote } from './learning-guide/Practice';
 import React, { useEffect, useRef, useState } from 'react';
 import { ApiError, downloadBlob, queryString, resourceId } from '../api-client';
 import { confirmLeave } from './draft-state';
@@ -48,7 +49,7 @@ function RecordList({api,base,kind,onOpen,onCreate,filter={},actionViews={},onAc
 function RecordDetail({api,base,kind,id,packages,onOpen,onBack,onNavigate,backToOrigin,actionViews,onActionView}) {
   const [categorization,setCategorization]=useState(false);
   const [version,setVersion]=useState(undefined),[edit,setEdit]=useState(false),[review,setReview]=useState(false),[facts,setFacts]=useState(false),[downloadError,setDownloadError]=useState(null);
-  const path=normativePath(base,kind,id),remote=useRemote(api,normativePath(base,kind,id,version)),dto=remote.data;
+  const path=normativePath(base,kind,id),remote=usePracticeRemote(api,normativePath(base,kind,id,version),kind==='actuaciones'?'task':null,base,null,true),dto=remote.data;
   const arrival=useTaskArrival(id,kind==='actuaciones',!!dto&&!remote.loading&&!remote.error&&dto.id===id);
   async function openPDF(ref){try{setDownloadError(null);const blob=await api.download(base+'/documentos/'+resourceId(ref.documentoId)+'/versiones/'+ref.numero+'/archivo');const digest=await crypto.subtle.digest('SHA-256',await blob.arrayBuffer());const hash=[...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,'0')).join('');if(hash!==ref.sha256)throw new ApiError('El archivo recibido no coincide con la huella de esta evidencia. No se descargará.',503);downloadBlob(blob,'evidencia-version-'+ref.numero+'.pdf');}catch(e){setDownloadError(e);}}
   function saved(){setEdit(false);setReview(false);setFacts(false);setVersion(undefined);remote.refresh();}
@@ -64,7 +65,7 @@ function RecordDetail({api,base,kind,id,packages,onOpen,onBack,onNavigate,backTo
       kind==='evidencias'?<EvidenceRead dto={dto} openPDF={openPDF}/>:
       kind==='designaciones'?<DesignationRead designation={dto.contenido.designacion} openPDF={openPDF}/>:
       kind==='sujetos-funcionales'?<><h3>{dto.contenido.sujeto.tipo==='persona'?'Persona':'Unidad organizativa'}</h3><p>{dto.contenido.sujeto.procedenciaOrganizativa}</p><p>{dto.contenido.sujeto.membresiaId?'Cuenta vinculada: '+dto.contenido.sujeto.membresiaId:'Sin cuenta vinculada'}</p><Notice>Este registro no concede permisos ni prueba, por sí solo, una designación o el ejercicio de una función.</Notice></>:
-      kind==='actuaciones'?<><p>{dto.contenido.descripcion}</p><p>Estado: {dto.contenido.estado.replaceAll('_',' ')} · responsable {dto.contenido.responsableMembresiaId}</p><Notice>Esta actuación no modifica la satisfacción de los requisitos.</Notice><h3>Requisitos vinculados</h3>{dto.contenido.relaciones.map(r=><div className="api-row" key={r.requisitoId}><p>Requisito {r.requisitoId} · v{r.versionRequisito}</p><button onClick={()=>onOpen('requisitos',r.requisitoId)}>Abrir requisito actual</button></div>)}</>:
+      kind==='actuaciones'?<div ref={remote.practiceRef}><p>{dto.contenido.descripcion}</p><p>Estado: {dto.contenido.estado.replaceAll('_',' ')} · responsable {dto.contenido.responsableMembresiaId}</p><Notice>Esta actuación no modifica la satisfacción de los requisitos.</Notice><h3>Requisitos vinculados</h3>{dto.contenido.relaciones.map(r=><div className="api-row" key={r.requisitoId}><p>Requisito {r.requisitoId} · v{r.versionRequisito}</p><button onClick={()=>onOpen('requisitos',r.requisitoId)}>Abrir requisito actual</button></div>)}</div>:
       <><p>{dto.contenido.descripcion}</p><p>Alcance {dto.contenido.alcance.id} · v{dto.contenido.alcance.version}</p><JsonDetail value={dto.contenido.hechos} label="Datos declarados de este sistema"/>{kind==='sistemas'&&<button className="api-primary" onClick={()=>setCategorization(true)}>Consultar categorización ENS del sistema</button>}</>}
       <RecordVersions api={api} path={path} onSelect={setVersion}/><JsonDetail value={{referencia:dto.referencia,revision:dto.revision,permisos:dto.permisos,horaServidor:dto.horaServidor}} label="Identidad, versión, huella y autor del registro"/>
     </>}

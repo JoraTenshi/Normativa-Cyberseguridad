@@ -17,6 +17,7 @@ import RatWorkspace from './RatWorkspace';
 import DPUnitWorkspace from './DPUnitWorkspace';
 import DPCaseWorkspace from './DPCaseWorkspace';
 import { useLearningSurface } from './learning-guide/LearningGuide';
+import { usePracticeTarget } from './learning-guide/Practice';
 import { WORKSPACE_SECTIONS } from './learning-guide/catalog';
 
 const sections = WORKSPACE_SECTIONS;
@@ -28,8 +29,6 @@ export default function ApiWorkspace() {
   const route = useNavigate();
   const [closing, setClosing] = useState(false), [closeError, setCloseError] = useState('');
   const [companies, setCompanies] = useState([]), [selected, setSelected] = useState(null);
-  // Choosing an option must not open (or leave) a workspace until confirmed.
-  const [choice, setChoice] = useState(null);
   const [error, setError] = useState(null), [busy, setBusy] = useState(true), [next, setNext] = useState(null);
   const [retry, setRetry] = useState(0), [cursor, setCursor] = useState(null);
   const guideEntry = useLearningSurface({ id:'workspace-entry', kind:'entry', chapter:'entry', priority:2,
@@ -50,16 +49,14 @@ export default function ApiWorkspace() {
       const soleOrganization = !cursor && !data.siguiente && data.organizaciones.length === 1 ? data.organizaciones[0] : null;
       // Reconfirm membership on the selected page before revealing the editor.
       setSelected(old => data.organizaciones.find(o => o.id === old?.id) || soleOrganization);
-      setChoice(old => soleOrganization || !data.organizaciones.some(o => o.id === old) ? null : old);
       setBusy(false);
     }, e => { if (active) { setError(e); setBusy(false); } });
     return () => { active = false; };
   }, [api, phase, generation, cursor, retry]);
-  function enterChoice() {
-    const organization = companies.find(o => o.id === choice);
+  function enterChoice(id) {
+    const organization = companies.find(o => o.id === id);
     if (!organization || busy || error || phase !== 'authenticated' || !confirmLeave()) return;
     setSelected(organization);
-    setChoice(null);
   }
   async function closeSession() {
     if (closing || !confirmLeave('Cerrar sesión descartará los cambios sin guardar. ¿Continuar?')) return;
@@ -72,20 +69,18 @@ export default function ApiWorkspace() {
   }
   const refreshMemberships = () => { if (confirmLeave()) setRetry(n => n + 1); };
   const needsChoice = companies.length > 1 || !!cursor || !!next;
-  const chosenOrganization = companies.find(o => o.id === choice);
-  const selector = needsChoice ? <div className="desk-company-picker">
-      <label>Empresa con la que vas a trabajar<select aria-describedby="organization-choice-help" value={choice === null ? selected?.id || '' : choice} disabled={busy || !!error} onChange={e => setChoice(e.target.value)}>
-        <option value="" disabled={!!selected}>Selecciona una organización</option>
-        {companies.map(o => <option key={o.id} value={o.id}>{o.nombre}</option>)}
-      </select></label>
-      <p className="desk-choice-help" id="organization-choice-help">Cada empresa tiene sus propios datos y permisos. Sus servicios y actividades se eligen después, dentro de su espacio.</p>
-      {chosenOrganization && choice !== selected?.id && <p className="desk-choice-preview" aria-live="polite">Entrarás en {chosenOrganization.nombre} con {accessLabels[chosenOrganization.rol] || 'los permisos de tu membresía'}; las demás empresas seguirán separadas.</p>}
-      {!selected || (choice && choice !== selected.id) ? <button type="button" className="desk-confirm-organization api-primary" disabled={busy || !!error || !choice || choice === selected?.id} onClick={enterChoice}>{selected ? 'Cambiar de organización' : 'Entrar en el espacio'}</button> : null}
-      <div className="desk-picker-actions"><button disabled={busy} onClick={refreshMemberships}>Actualizar organizaciones</button>
-        {cursor && <button disabled={busy} onClick={() => { if (confirmLeave()) { setSelected(null); setCursor(null); } }}>Primera página</button>}
-        {next && <button disabled={busy} onClick={() => { if (confirmLeave()) { setSelected(null); setCursor(next); } }}>Más organizaciones</button>}
-      </div>
-    </div> : selected ? <button type="button" className="desk-membership-refresh" disabled={busy} onClick={refreshMemberships}>Actualizar acceso a mi empresa</button> : null;
+  const selector = needsChoice ? <details className="desk-company-picker" open={!selected || undefined}>
+    <summary>{selected ? 'Cambiar de empresa' : 'Empresas a las que puedes acceder'}</summary>
+    <p className="desk-choice-help">Cada empresa tiene sus propios datos y permisos. Sus servicios y actividades se eligen después, dentro de su espacio.</p>
+    <div className="desk-company-cards">{companies.map(o => <article key={o.id} className="desk-company-card">
+      <strong>{o.nombre}</strong><p>{accessLabels[o.rol] || 'Permisos de tu membresía'}</p>
+      <button type="button" className="api-primary" disabled={busy || !!error || selected?.id === o.id} onClick={() => enterChoice(o.id)} aria-label={'Trabajar con ' + o.nombre}>{selected?.id === o.id ? 'Empresa activa' : 'Trabajar con esta empresa'}</button>
+    </article>)}</div>
+    <div className="desk-picker-actions"><button disabled={busy} onClick={refreshMemberships}>Actualizar organizaciones</button>
+      {cursor && <button disabled={busy} onClick={() => { if (confirmLeave()) { setSelected(null); setCursor(null); } }}>Primera página</button>}
+      {next && <button disabled={busy} onClick={() => { if (confirmLeave()) { setSelected(null); setCursor(next); } }}>Más organizaciones</button>}
+    </div>
+  </details> : selected ? <button type="button" className="desk-membership-refresh" disabled={busy} onClick={refreshMemberships}>Actualizar acceso a mi empresa</button> : null;
   return <div className="api-app desk-v2" ref={guideEntry}>
     <a className="desk-skip" href="#workspace-main">Saltar al contenido</a>
     {process.env.REACT_APP_VALIDATION_BUILD === 'true' && <div className="desk-environment"><span className="desk-live-dot"/>Entorno de validación <span>· Usa únicamente datos de prueba</span></div>}
@@ -95,7 +90,7 @@ export default function ApiWorkspace() {
     {/* Keep the editor mounted during lock/recheck; never reveal it until membership is confirmed. */}
     <div hidden={busy || !!error || phase !== 'authenticated'}>
       {selected ? <Connected key={user.id+':'+selected.id+':'+selected.rol} api={api} organization={selected} selector={selector} guideReady={!busy && !error && phase === 'authenticated'}/>
-        : <section className="desk-welcome" id="workspace-main" tabIndex={-1}><span className="desk-overline">TU ESPACIO DE TRABAJO</span><h1>Un punto de partida para cada caso.</h1>{needsChoice && <p>Elige la empresa en la que vas a trabajar. Si gestionas varias, cada una mantiene su información por separado.</p>}{selector}{!busy && !error && !companies.length && <div className="desk-enrollment-start"><h2>Solicita el espacio de tu empresa</h2><p>No tienes organizaciones activas en esta página. Puedes presentar una solicitud o consultar su revisión. Verificar tu correo no activa el acceso: es necesaria la aprobación de la administración de NormativaCheck.</p><button onClick={() => { if (confirmLeave()) route('/solicitudes-de-alta'); }}>Solicitar espacio o consultar mi alta</button></div>}{needsChoice && <small>Solo aparecen empresas con una membresía activa confirmada por el servidor.</small>}</section>}
+        : <section className="desk-welcome" id="workspace-main" tabIndex={-1}><span className="desk-overline">TU ESPACIO DE TRABAJO</span><h1>Mi espacio de empresa</h1>{needsChoice && <p>Elige la empresa en la que vas a trabajar. Si gestionas varias, cada una mantiene su información por separado.</p>}{selector}{!busy && !error && !companies.length && <div className="desk-enrollment-start"><h2>{!cursor && !next ? 'Todavía no tienes acceso a una empresa' : 'No hay empresas en esta página'}</h2><p> Puedes presentar una solicitud o consultar su revisión. Verificar tu correo no activa el acceso: es necesaria la aprobación de la administración de NormativaCheck.</p><button onClick={() => { if (confirmLeave()) route('/solicitudes-de-alta'); }}>Solicitar espacio o consultar mi alta</button></div>}{needsChoice && <small>Solo aparecen empresas con una membresía activa confirmada por el servidor.</small>}</section>}
     </div>
   </div>;
 }
@@ -110,15 +105,16 @@ function Connected({ api, organization, selector, guideReady }) {
     setOperationId(id); setSection(next); return true;
   };
   const guideContent = useLearningSurface({ id:'workspace', kind:'workspace', chapter:'entry', priority:3,
-    section, scope:organization.id+':'+organization.rol, role:organization.rol, ready:guideReady,
+    section, scope:organization.id+':'+organization.rol, practiceScope:base, role:organization.rol, ready:guideReady,
     heading, navigate });
+  const companyPractice = usePracticeTarget('company', base, guideReady);
   useEffect(() => { if (!(section === 'tasks' && operationId?.id)) heading.current?.focus({preventScroll:true}); }, [section,operationId]);
   return <div className="desk-shell"><aside className="desk-nav">
     <span className="desk-overline">GESTIÓN DEL TRABAJO</span>
     <nav aria-label="Secciones del Workspace">{Object.entries(sections).map(([id,name]) => <button key={id} aria-current={section === id ? 'page' : undefined} onClick={() => navigate(id)} disabled={['profile','context','operations','regulations','tasks','rat','units','rights','eipd'].includes(id) && !admin} title={['profile','context','operations','regulations','tasks','rat','units','rights','eipd'].includes(id) && !admin ? 'Disponible para el administrador de la organización' : undefined}><Glyph type={icons[id]}/><span>{name}</span></button>)}</nav>
     <div className="desk-scope-note"><strong>{organization.nombre}</strong><small>{admin ? 'Administrador empresarial' : 'Acceso según membresía'}</small><p>Los permisos se comprueban en el servidor en cada consulta y cambio.</p></div>
     <details className="desk-help"><summary>Cómo usar este espacio</summary><p>Describe una operación, aclara sus datos y conserva su documentación. El historial permite seguir los cambios.</p><p>Las actuaciones conservan responsables y cambios. Su cierre no sustituye la revisión del requisito.</p></details>
-  </aside><section id="workspace-main" ref={guideContent} className="desk-main" aria-labelledby="workspace-title"><header className="desk-page-header"><div><span className="desk-overline">{organization.nombre}</span><h1 id="workspace-title" ref={heading} tabIndex={-1}>{sections[section]}</h1><p>{section === 'overview' ? 'Tu actividad, documentación y siguientes pasos, en un mismo lugar.' : 'Datos y cambios de tu organización, conectados al servidor.'}</p></div>{selector}</header>
+  </aside><section id="workspace-main" ref={guideContent} className="desk-main" aria-labelledby="workspace-title"><header className="desk-page-header"><div><details ref={companyPractice.root} className="desk-company-context" onToggle={event => {if(event.currentTarget.open)companyPractice.observe('practiced');}}><summary>Empresa y permisos</summary><p><strong>{organization.nombre}</strong> · {accessLabels[organization.rol] || 'Permisos de tu membresía'}</p><p>Este es tu espacio de empresa. Sus servicios y productos se consultan dentro; no son cuentas independientes.</p></details><span className="desk-overline">{organization.nombre}</span><h1 id="workspace-title" ref={heading} tabIndex={-1}>{sections[section]}</h1><p>{section === 'overview' ? 'Tu actividad, documentación y siguientes pasos, en un mismo lugar.' : 'Datos y cambios de tu organización, conectados al servidor.'}</p></div>{selector}</header>
     {section === 'overview' && <Dashboard api={api} base={base} admin={admin} onNavigate={navigate}/>}
     {section === 'profile' && admin && <CompanyProfile api={api} base={base}/>}
     {section === 'context' && admin && <ContextPage api={api} base={base}/>}

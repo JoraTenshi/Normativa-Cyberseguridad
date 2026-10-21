@@ -1,5 +1,39 @@
 # NormativaCheck — Práctica 3
 
+## Entrada y aprendizaje opcional (cambio local, 21 de octubre de 2026)
+
+La entrada utiliza exclusivamente las membresías confirmadas por la API: una única
+empresa en una primera página completa abre su espacio directamente; varias empresas
+o una respuesta paginada ofrecen tarjetas con nombre y permisos y una acción explícita
+para entrar. Una página vacía no se presenta como solicitud pendiente. Una carga o un
+error no se interpreta como ausencia de empresas. Los cambios de espacio conservan el
+aviso existente sobre borradores. No se clasifican empresas de demostración por su nombre.
+
+«Tus primeros pasos» es opcional y convive con la guía por capítulos. Sus cinco objetivos
+son reconocer la empresa activa, consultar servicios/productos, filtrar documentos,
+consultar una actuación (o un documento autorizado para consulta/colaboración) y leer
+un evento de actividad. Los controles se resaltan mediante referencias a componentes
+reales. No hay clics automáticos, creación de datos, cargas, descargas, cambios de permisos
+ni operaciones de seguridad ejecutadas por la guía.
+
+La explicación vista, la práctica observada, el estado explorado sin datos, la omisión
+y «comprendido por ti» son estados distintos. Cambiar un filtro solo cuenta después de
+una respuesta nueva y correcta; un error no suma. La guía no acredita cumplimiento ni
+prueba que el usuario haya comprendido un requisito. El contador práctico mantiene cinco
+objetivos y adapta la cuarta práctica a los permisos confirmados.
+
+El progreso local `normativacheck-first-steps-v2:<cuenta>` contiene identificadores de
+objetivos, indicadores booleanos y el último objetivo, separados por cuenta. No guarda
+contenido, identificadores empresariales ni filtros. No migra las declaraciones de la
+guía v1 a prácticas observadas. Al bloquear la sesión o cambiar empresa/permisos se pausa;
+si el almacenamiento falla, se conserva en memoria mientras siga montada la sesión.
+No se sincroniza entre dispositivos. La interfaz respeta movimiento reducido y ofrece
+navegación por teclado, cierre y vuelta al trabajo.
+
+Este apartado describe el código de este lote, no confirma publicación o despliegue.
+La validación con API simulada o componentes no sustituye aceptación contra el backend
+real. Seguridad R2, el paquete docente y la infraestructura quedan fuera de estos cambios.
+
 NormativaCheck es una aplicación web, desarrollada en el marco académico de la Práctica 3 y con proyección de uso profesional, que ayuda a pequeñas empresas españolas de software y ciberseguridad a organizar actividades, alcances, requisitos, tareas, documentos, evidencias y revisiones. Permite registrar qué se ha examinado, con qué información y con qué resultado razonado. El producto sigue en desarrollo: no certifica cumplimiento ni sustituye asesoramiento jurídico.
 
 <a id="para-el-profesorado"></a>

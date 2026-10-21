@@ -50,7 +50,7 @@ test('membresía revocada no vuelve a mostrar el editor tras reautenticarse',asy
  useAuth.mockReturnValue({user:{id:'a',nombre:'Ana'},phase:'authenticated',generation:2});
  await act(async()=>root.render(<ApiWorkspace/>));
  expect(container.querySelector('[aria-label="Borrador de operación"]')).toBeNull();
- expect(container.textContent).toContain('No tienes organizaciones activas');
+ expect(container.textContent).toContain('Todavía no tienes acceso a una empresa');
 });
 test('fallo al cerrar sesión no redirige ni desmonta el trabajo',async()=>{
  const logout=jest.fn().mockResolvedValue(false);
@@ -70,7 +70,7 @@ test('cierre confirmado vuelve al acceso y cuenta navega a ajustes',async()=>{
 });
 afterEach(()=>{act(()=>root.unmount());container.remove();delete global.IS_REACT_ACT_ENVIRONMENT;});
 test('sin membresías no crea empresa ni inicia sesión demo',async()=>{
- await act(async()=>root.render(<ApiWorkspace/>));expect(container.textContent).toContain('No tienes organizaciones activas');
+ await act(async()=>root.render(<ApiWorkspace/>));expect(container.textContent).toContain('Todavía no tienes acceso a una empresa');
  expect(api.get.mock.calls.map(c=>c[0])).toEqual(['/me/organizaciones']);
  expect(container.querySelector('select')).toBeNull();expect(container.querySelector('input')).toBeNull();
  await act(async()=>Simulate.click(button('Solicitar espacio o consultar mi alta')));
@@ -90,23 +90,23 @@ test('varias empresas explican el aislamiento y exigen confirmar la elección',a
  api.get.mockImplementation(path=>Promise.resolve(path.startsWith('/me/organizaciones')
   ? {organizaciones:[{id:'b',nombre:'Empresa autorizada',rol:'administrador'},{id:'c',nombre:'Otra empresa',rol:'consulta'}],siguiente:null} : fixture(path)));
  await act(async()=>root.render(<ApiWorkspace/>));
- expect(button('Entrar en el espacio').disabled).toBe(true);
+ expect(container.querySelector('[aria-label="Trabajar con Empresa autorizada"]').disabled).toBe(false);
  expect(container.textContent).toContain('Cada empresa tiene sus propios datos y permisos');
  expect(container.textContent).toContain('Sus servicios y actividades se eligen después');
- await act(async()=>Simulate.change(container.querySelector('select'),{target:{value:'b'}}));
- expect(container.querySelector('select').value).toBe('b');
- expect(container.textContent).toContain('Entrarás en Empresa autorizada con permisos de administración');
- expect(button('Entrar en el espacio').disabled).toBe(false);
+
+ expect(container.querySelector('select')).toBeNull();
+ expect(container.textContent).toContain('permisos de administración');
+ expect(container.querySelector('[aria-label="Trabajar con Empresa autorizada"]').disabled).toBe(false);
  expect(container.querySelector('.desk-shell')).toBeNull();
- await act(async()=>Simulate.click(button('Entrar en el espacio')));
+ await act(async()=>Simulate.click(container.querySelector('[aria-label="Trabajar con Empresa B"]') || container.querySelector('[aria-label="Trabajar con Empresa autorizada"]')));
  expect(container.querySelector('.desk-shell')).not.toBeNull();
- expect(container.querySelector('select').value).toBe('b');
+ expect(container.querySelector('select')).toBeNull();
 });
 test('una primera página de una empresa con más páginas no entra automáticamente',async()=>{
  api.get.mockResolvedValue({organizaciones:[{id:'b',nombre:'Empresa autorizada',rol:'administrador'}],siguiente:'otra-pagina'});
  await act(async()=>root.render(<ApiWorkspace/>));
  expect(container.querySelector('.desk-shell')).toBeNull();
- expect(button('Entrar en el espacio').disabled).toBe(true);
+ expect(container.querySelector('[aria-label="Trabajar con Empresa autorizada"]').disabled).toBe(false);
  expect(button('Más organizaciones')).toBeDefined();
 });
 test('el cambio de organización también espera confirmación',async()=>{
@@ -116,13 +116,13 @@ test('el cambio de organización también espera confirmación',async()=>{
  ],siguiente:null};
  api.get.mockImplementation(path=>Promise.resolve(path.startsWith('/me/organizaciones') ? memberships : fixture(path)));
  await act(async()=>root.render(<ApiWorkspace/>));
- await act(async()=>Simulate.change(container.querySelector('select'),{target:{value:'b'}}));
- await act(async()=>Simulate.click(button('Entrar en el espacio')));
+
+ await act(async()=>Simulate.click(container.querySelector('[aria-label="Trabajar con Empresa B"]') || container.querySelector('[aria-label="Trabajar con Empresa autorizada"]')));
  expect(container.querySelector('.desk-scope-note strong').textContent).toBe('Empresa B');
- await act(async()=>Simulate.change(container.querySelector('select'),{target:{value:'c'}}));
- expect(container.querySelector('select').value).toBe('c');
+
+ expect(container.querySelector('select')).toBeNull();
  expect(container.querySelector('.desk-scope-note strong').textContent).toBe('Empresa B');
- await act(async()=>Simulate.click(button('Cambiar de organización')));
+ await act(async()=>Simulate.click(container.querySelector('[aria-label="Trabajar con Empresa C"]')));
  expect(container.querySelector('.desk-scope-note strong').textContent).toBe('Empresa C');
 });
 test('al cambiar de empresa se aplican los permisos de la nueva membresía',async()=>{
@@ -132,13 +132,13 @@ test('al cambiar de empresa se aplican los permisos de la nueva membresía',asyn
  ],siguiente:null};
  api.get.mockImplementation(path=>Promise.resolve(path.startsWith('/me/organizaciones') ? memberships : fixture(path)));
  await act(async()=>root.render(<ApiWorkspace/>));
- await act(async()=>Simulate.change(container.querySelector('select'),{target:{value:'b'}}));
- await act(async()=>Simulate.click(button('Entrar en el espacio')));
+
+ await act(async()=>Simulate.click(container.querySelector('[aria-label="Trabajar con Empresa B"]') || container.querySelector('[aria-label="Trabajar con Empresa autorizada"]')));
  expect(button('Operaciones y cuestiones').disabled).toBe(false);
- await act(async()=>Simulate.change(container.querySelector('select'),{target:{value:'c'}}));
- expect(container.textContent).toContain('Entrarás en Empresa C con permisos de consulta');
+
+ expect(container.textContent).toContain('permisos de consulta');
  expect(button('Operaciones y cuestiones').disabled).toBe(false);
- await act(async()=>Simulate.click(button('Cambiar de organización')));
+ await act(async()=>Simulate.click(container.querySelector('[aria-label="Trabajar con Empresa C"]')));
  expect(container.querySelector('.desk-scope-note strong').textContent).toBe('Empresa C');
  expect(button('Operaciones y cuestiones').disabled).toBe(true);
 });
