@@ -60,7 +60,9 @@ function createApp({ rateLimits = true, politicaSesiones = 'persistente' } = {})
   if (rateLimits) {
     app.use(rateLimit({
       windowMs: 15 * 60 * 1000,
-      max: 100,
+      // La navegación del espacio de trabajo y las comprobaciones de sesión
+      // comparten IP. Mantener los límites específicos de autenticación abajo.
+      max: 300,
       standardHeaders: true,
       legacyHeaders: false,
       skip: (req) => req.path === '/health',
