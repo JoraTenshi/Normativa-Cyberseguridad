@@ -21,6 +21,7 @@ const {
   hashTokenVerificacionEmail
 } = require('../utils/emailVerification');
 const { readTotpSecret } = require('../utils/totpEncryption');
+const { excedeLimiteBcrypt, MENSAJE_PASSWORD_LARGA } = require('../utils/password');
 const { errorCorreoSeguro } = require('../utils/smtpTransport');
 
 const { JWT_SECRET, JWT_EXPIRES, generateJti, requireAuth } = require('../middleware/auth');
@@ -148,6 +149,9 @@ router.post('/register', async (req, res) => {
         ok: false,
         error: 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número'
       });
+    }
+    if (excedeLimiteBcrypt(password)) {
+      return res.status(400).json({ ok: false, error: MENSAJE_PASSWORD_LARGA });
     }
 
     const exists = await Usuario.findOne({
@@ -382,6 +386,13 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ ok: false, error: 'Email y contraseña son obligatorios' });
     }
 
+    // Ninguna contraseña válida supera 72 bytes; si se comparara, bcrypt la truncaría y una cuenta con
+    // 72 bytes exactos aceptaría cualquier texto que empiece igual. Mismo trabajo y respuesta que sin cuenta.
+    if (excedeLimiteBcrypt(password)) {
+      await bcrypt.compare(password, DUMMY_HASH);
+      return res.status(401).json({ ok: false, error: 'Credenciales incorrectas' });
+    }
+
     const usuario = await Usuario.findOne({ email: normalizarEmail(email) });
 
     if (!usuario) {
@@ -560,6 +571,9 @@ router.post('/reset-password', async (req, res) => {
     }
     if (typeof password !== 'string' || !PASSWORD_RE.test(password)) {
       return res.status(400).json({ ok: false, error: 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número' });
+    }
+    if (excedeLimiteBcrypt(password)) {
+      return res.status(400).json({ ok: false, error: MENSAJE_PASSWORD_LARGA });
     }
 
     const passwordHash = await bcrypt.hash(password, 12);

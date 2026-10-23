@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const { excedeLimiteBcrypt, MENSAJE_PASSWORD_LARGA } = require('../utils/password');
 
 const MAX_ATTEMPTS = 5;
 const LOCK_MINUTES = 15;
@@ -21,7 +22,9 @@ const OrganizacionSchema = new mongoose.Schema({
 const UsuarioSchema = new mongoose.Schema({
   nombre:        { type: String, required: true, trim: true, maxlength: 100, match: /^[^<>]+$/ },
   email:         { type: String, required: true, unique: true, lowercase: true, trim: true },
-  password:      { type: String, required: true },
+  // Se valida la contraseña en claro, antes del hash de pre('save'): bcrypt ignora lo que pase de 72 bytes.
+  password:      { type: String, required: true,
+    validate: { validator: v => !excedeLimiteBcrypt(v), message: MENSAJE_PASSWORD_LARGA } },
   organizacion:     { type: OrganizacionSchema, default: () => ({}) },
   // Solo se cambia en la base de datos (ver README); ninguna ruta lo modifica.
   rol:              { type: String, enum: ['usuario', 'admin'], default: 'usuario' },

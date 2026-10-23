@@ -1,0 +1,54 @@
+const crypto = require('node:crypto');
+
+process.env.JWT_SECRET = crypto.randomBytes(32).toString('hex');
+process.env.TOTP_ENCRYPTION_KEY = crypto.randomBytes(32).toString('hex');
+process.env.APP_URL = 'https://localhost';
+
+// Tres hallazgos de autenticación de la evaluación (23/10/2026). Estas pruebas no usan MongoDB; la
+// concurrencia real se comprueba con scripts/run-hallazgos-auth-mongo.js sobre un Mongo temporal.
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const request = require('supertest');
+
+const Usuario = require('../models/Usuario');
+const { createApp } = require('../app');
+const { MAX_PASSWORD_BYTES, excedeLimiteBcrypt } = require('../utils/password');
+
+const app = createApp({ rateLimits: false });
+const post = (ruta, cuerpo) => request(app).post(ruta).set('X-Requested-With', 'XMLHttpRequest').send(cuerpo);
+const de72 = 'Aa1' + 'x'.repeat(69);
+
+// ── A. bcrypt trunca a 72 bytes ─────────────────────────────────────────────
+test('A: el límite se mide en bytes UTF-8, no en caracteres', () => {
+  assert.equal(MAX_PASSWORD_BYTES, 72);
+  assert.equal(excedeLimiteBcrypt(de72), false);
+  assert.equal(excedeLimiteBcrypt(de72 + 'y'), true);
+  assert.equal(excedeLimiteBcrypt('Aa1' + 'ñ'.repeat(35)), true, '38 caracteres pero 73 bytes');
+  assert.equal(excedeLimiteBcrypt('Aa1' + 'ñ'.repeat(34)), false, '71 bytes');
+});
+
+test('A: el modelo rechaza guardar una contraseña de más de 72 bytes, pero no un hash existente', () => {
+  const base = { nombre: 'Ana', email: 'ana@example.invalid' };
+  assert.ok(new Usuario({ ...base, password: de72 + 'y' }).validateSync().errors.password);
+  assert.equal(new Usuario({ ...base, password: de72 }).validateSync(), undefined);
+  assert.equal(new Usuario({ ...base, password: '$2a$12$' + 'x'.repeat(53) }).validateSync(), undefined);
+});
+
+test('A: registro y restablecimiento con más de 72 bytes responden 400', async (t) => {
+  t.mock.method(Usuario, 'findOne', async () => { throw new Error('no debe consultar la base de datos'); });
+  t.mock.method(Usuario, 'updateOne', async () => { throw new Error('no debe consultar la base de datos'); });
+  const r1 = await post('/auth/register', { nombre: 'Ana', email: 'ana@example.invalid', password: de72 + 'y' });
+  assert.equal(r1.status, 400);
+  assert.match(r1.body.error, /72 bytes/);
+  const r2 = await post('/auth/reset-password', { token: 'a'.repeat(64), password: 'Aa1' + 'ñ'.repeat(40) });
+  assert.equal(r2.status, 400);
+  assert.match(r2.body.error, /72 bytes/);
+});
+
+test('A: el login con más de 72 bytes falla sin comparar contra la cuenta (no hay equivalencia por truncado)', async (t) => {
+  const consulta = t.mock.method(Usuario, 'findOne', async () => { throw new Error('no debe buscar la cuenta'); });
+  const r = await post('/auth/login', { email: 'ana@example.invalid', password: de72 + 'cualquier-sufijo' });
+  assert.equal(r.status, 401);
+  assert.equal(r.body.error, 'Credenciales incorrectas');
+  assert.equal(consulta.mock.callCount(), 0);
+});
