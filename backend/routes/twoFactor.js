@@ -4,6 +4,7 @@ const qrcode    = require('qrcode');
 const Usuario   = require('../models/Usuario');
 const { requireAuth } = require('../middleware/auth');
 const { encryptTotpSecret, readTotpSecret } = require('../utils/totpEncryption');
+const { pasoDelCodigo, consumirPaso, MENSAJE_CODIGO_USADO } = require('../utils/totpPaso');
 
 const { esBDNoDisponible } = require('../utils/bd');
 const router = express.Router();
@@ -90,13 +91,8 @@ router.post('/enable', requireAuth, async (req, res) => {
       return res.status(400).json({ ok: false, error: 'Primero llama a POST /me/2fa/setup' });
     }
 
-    const valid = speakeasy.totp.verify({
-      secret:   readTotpSecret(usuario.twoFactorPendingSecret, usuario._id),
-      encoding: 'base32',
-      token,
-      window:   1
-    });
-    if (!valid) {
+    const paso = pasoDelCodigo(readTotpSecret(usuario.twoFactorPendingSecret, usuario._id), token);
+    if (paso === null) {
       return res.status(401).json({ ok: false, error: 'Código incorrecto' });
     }
 
@@ -114,7 +110,9 @@ router.post('/enable', requireAuth, async (req, res) => {
           twoFactorSecret:           usuario.twoFactorPendingSecret,
           twoFactorEnabled:          true,
           twoFactorPendingSecret:    null,
-          twoFactorPendingExpiresAt: null
+          twoFactorPendingExpiresAt: null,
+          // El código de activación queda gastado: no sirve después para iniciar sesión.
+          twoFactorLastStep:         paso
         },
         ...(esPersistente(req) ? { $inc:{ sessionVersion:1 } } : {})
       }
@@ -146,14 +144,13 @@ router.post('/disable', requireAuth, async (req, res) => {
       return res.status(409).json({ ok: false, error: '2FA no está activado' });
     }
 
-    const valid = speakeasy.totp.verify({
-      secret:   readTotpSecret(usuario.twoFactorSecret, usuario._id),
-      encoding: 'base32',
-      token,
-      window:   1
-    });
-    if (!valid) {
+    const paso = pasoDelCodigo(readTotpSecret(usuario.twoFactorSecret, usuario._id), token);
+    if (paso === null) {
       return res.status(401).json({ ok: false, error: 'Código incorrecto' });
+    }
+    // Un código ya usado (por ejemplo, el del inicio de sesión) no sirve para desactivar el 2FA.
+    if (!(await consumirPaso(Usuario, { _id: usuario._id, twoFactorEnabled: true }, paso))) {
+      return res.status(401).json({ ok: false, error: MENSAJE_CODIGO_USADO });
     }
 
     if (esPersistente(req)) {

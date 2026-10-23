@@ -115,8 +115,11 @@ async function comprobar(uri) {
     assert.ok(buenos.length >= 1);
     assert.ok(setups.every(r => [200, 409].includes(r.status)));
     if (buenos.length === 2) assert.equal(buenos[0].body.data.secret, buenos[1].body.data.secret);
-    const codigo = () => speakeasy.totp({ secret: buenos[0].body.data.secret, encoding: 'base32' });
-    assert.equal((await post('/me/2fa/enable', cookieA, { token: codigo() })).status, 200);
+    // Cada código TOTP vale una vez: se activa con el del intervalo anterior y se entra con el actual.
+    const codigo = (desplazamiento = 0) => speakeasy.totp({
+      secret: buenos[0].body.data.secret, encoding: 'base32', time: Math.floor(Date.now() / 1000) + desplazamiento
+    });
+    assert.equal((await post('/me/2fa/enable', cookieA, { token: codigo(-30) })).status, 200);
     assert.equal((await post('/me/2fa/setup', cookieA)).status, 409);
     const pendiente = await post('/auth/login', '', { email: a.email, password });
     const cookiePendiente = cookieDe(pendiente, 'cyberaudit_2fa_pending');

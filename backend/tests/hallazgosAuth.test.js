@@ -9,10 +9,12 @@ process.env.APP_URL = 'https://localhost';
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const request = require('supertest');
+const speakeasy = require('speakeasy');
 
 const Usuario = require('../models/Usuario');
 const { createApp } = require('../app');
 const { MAX_PASSWORD_BYTES, excedeLimiteBcrypt } = require('../utils/password');
+const { pasoDelCodigo, consumirPaso, PERIODO_S } = require('../utils/totpPaso');
 
 const app = createApp({ rateLimits: false });
 const post = (ruta, cuerpo) => request(app).post(ruta).set('X-Requested-With', 'XMLHttpRequest').send(cuerpo);
@@ -70,4 +72,37 @@ test('B: recordFailedLogin es una sola actualización atómica (sin leer y reesc
   assert.ok(cond[1] instanceof Date && cond[1] > new Date());
   assert.equal(cond[2], '$lockUntil');
   assert.equal(JSON.stringify(pipeline).includes('"loginAttempts":3'), false, 'no debe escribir un valor calculado en Node');
+});
+
+// ── C. un código TOTP vale una vez ──────────────────────────────────────────
+const secret = speakeasy.generateSecret({ length: 20 }).base32;
+const ahora = 1_800_000_000_000;
+const codigoEn = s => speakeasy.totp({ secret, encoding: 'base32', time: Math.floor(ahora / 1000) + s });
+const pasoActual = Math.floor(ahora / 1000 / PERIODO_S);
+
+test('C: pasoDelCodigo identifica el intervalo del código dentro de la ventana de ±1', () => {
+  assert.equal(pasoDelCodigo(secret, codigoEn(-30), ahora), pasoActual - 1);
+  assert.equal(pasoDelCodigo(secret, codigoEn(0), ahora), pasoActual);
+  assert.equal(pasoDelCodigo(secret, codigoEn(30), ahora), pasoActual + 1);
+  assert.equal(pasoDelCodigo(secret, codigoEn(90), ahora), null);
+  assert.equal(pasoDelCodigo(secret, '000000x', ahora), null);
+  assert.equal(pasoDelCodigo(secret, 123456, ahora), null);
+});
+
+test('C: consumirPaso solo acepta un paso posterior al último y lo registra en la misma operación', async () => {
+  const doc = { _id: 'u1', twoFactorEnabled: true, twoFactorLastStep: null };
+  const cumple = (f) => Object.entries(f).every(([k, v]) =>
+    k === '$or' ? v.some(a => cumple(a)) : v && typeof v === 'object' && '$lt' in v ? doc[k] != null && doc[k] < v.$lt
+      : v === null ? doc[k] == null : doc[k] === v);
+  const Modelo = { updateOne: async (filtro, update) => {
+    if (!cumple(filtro)) return { matchedCount: 0 };
+    Object.assign(doc, update.$set); return { matchedCount: 1 };
+  } };
+  const filtro = { _id: 'u1', twoFactorEnabled: true };
+
+  assert.equal(await consumirPaso(Modelo, filtro, pasoActual), true);
+  assert.equal(doc.twoFactorLastStep, pasoActual);
+  assert.equal(await consumirPaso(Modelo, filtro, pasoActual), false, 'mismo código, otro reto');
+  assert.equal(await consumirPaso(Modelo, filtro, pasoActual - 1), false, 'código anterior');
+  assert.equal(await consumirPaso(Modelo, filtro, pasoActual + 1), true, 'código siguiente');
 });

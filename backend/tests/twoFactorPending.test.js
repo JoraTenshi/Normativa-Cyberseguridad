@@ -36,6 +36,19 @@ Usuario.findOneAndUpdate = (filter, update) => {
   const resultado = Promise.resolve(cumple ? { ...user } : null);
   return { select: () => resultado, then: (ok, ko) => resultado.then(ok, ko) };
 };
+// Igual que MongoDB en Usuario.updateOne (consumo del paso TOTP y desactivación): igualdad, null, $lt y $or.
+const cumpleFiltro = (doc, filtro) => Object.entries(filtro).every(([k, v]) =>
+  k === '_id' ? String(v) === String(doc._id)
+    : k === '$or' ? v.some(alternativa => cumpleFiltro(doc, alternativa))
+      : v && typeof v === 'object' && '$lt' in v ? doc[k] != null && doc[k] < v.$lt
+        : v === null ? doc[k] == null : doc[k] === v);
+const actualizarComoMongo = (doc, filtro, update) => {
+  if (!cumpleFiltro(doc, filtro)) return { matchedCount: 0, modifiedCount: 0 };
+  Object.assign(doc, update.$set ?? {});
+  for (const [k, n] of Object.entries(update.$inc ?? {})) doc[k] = (doc[k] ?? 0) + n;
+  return { matchedCount: 1, modifiedCount: 1 };
+};
+Usuario.updateOne = async (filtro, update) => actualizarComoMongo(user, filtro, update);
 RevokedToken.exists = async () => null;
 
 const app = createApp({ rateLimits:false, politicaSesiones:'legado_pruebas' });

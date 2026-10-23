@@ -48,6 +48,8 @@ async function comprobar({uri,nombreBD}) {
     return secret;
   };
   const codigo=secret=>speakeasy.totp({secret,encoding:'base32'});
+  // Cada código TOTP vale una vez: los flujos con varios pasos usan intervalos consecutivos (ventana ±1).
+  const codigoEn=(secret,s)=>speakeasy.totp({secret,encoding:'base32',time:Math.floor(Date.now()/1000)+s});
   const verify=(pending,token)=>call('post','/auth/2fa/verify',pending).send({token});
   try {
     await mongoose.connect(uri,{dbName:nombreBD,serverSelectionTimeoutMS:2500});
@@ -193,11 +195,11 @@ async function comprobar({uri,nombreBD}) {
       const setup=await call('post','/me/2fa/setup',c).send({});
       assert.equal(setup.status,200);
       const secret=setup.body.data.secret;
-      const enable=await call('post','/me/2fa/enable',c).send({token:codigo(secret)});
+      const enable=await call('post','/me/2fa/enable',c).send({token:codigoEn(secret,-30)});
       assert.equal(enable.status,200);assert.equal(enable.body.requiereReautenticacion,true);
       assert.equal((await me(c)).status,401);
-      const pending=cookie(await login(u),'cyberaudit_2fa_pending'),v=await verify(pending,codigo(secret)),nuevo=cookie(v);
-      const disable=await call('post','/me/2fa/disable',nuevo).send({token:codigo(secret)});
+      const pending=cookie(await login(u),'cyberaudit_2fa_pending'),v=await verify(pending,codigoEn(secret,0)),nuevo=cookie(v);
+      const disable=await call('post','/me/2fa/disable',nuevo).send({token:codigoEn(secret,30)});
       assert.equal(disable.status,200);assert.equal((await me(nuevo)).status,401);
       assert.equal((await login(u)).status,200);
     });

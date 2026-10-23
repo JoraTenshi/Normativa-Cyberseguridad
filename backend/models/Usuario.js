@@ -36,6 +36,8 @@ const UsuarioSchema = new mongoose.Schema({
   // Secreto en configuración: solo pasa a twoFactorSecret cuando /enable verifica un código.
   twoFactorPendingSecret:    { type: String, default: null, select: false },
   twoFactorPendingExpiresAt: { type: Date,   default: null, select: false },
+  // Último intervalo TOTP aceptado: cada código vale una sola vez (utils/totpPaso.js).
+  twoFactorLastStep:         { type: Number, default: null, select: false },
 
   emailVerifiedAt: {
     type: Date,

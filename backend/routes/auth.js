@@ -4,7 +4,6 @@ const crypto       = require('crypto');
 const bcrypt       = require('bcryptjs');
 const router       = express.Router();
 const jwt          = require('jsonwebtoken');
-const speakeasy    = require('speakeasy');
 const Usuario      = require('../models/Usuario');
 const RevokedToken = require('../models/RevokedToken');
 const {
@@ -22,6 +21,7 @@ const {
 } = require('../utils/emailVerification');
 const { readTotpSecret } = require('../utils/totpEncryption');
 const { excedeLimiteBcrypt, MENSAJE_PASSWORD_LARGA } = require('../utils/password');
+const { pasoDelCodigo, consumirPaso, MENSAJE_CODIGO_USADO } = require('../utils/totpPaso');
 const { errorCorreoSeguro } = require('../utils/smtpTransport');
 
 const { JWT_SECRET, JWT_EXPIRES, generateJti, requireAuth } = require('../middleware/auth');
@@ -482,15 +482,13 @@ router.post('/2fa/verify', async (req, res) => {
     const alreadyUsed = await RevokedToken.exists({ jti: payload.jti });
     if (alreadyUsed) return res.status(401).json({ ok: false, error: 'Sesión de verificación ya utilizada' });
 
-    const valid = speakeasy.totp.verify({
-      secret:   readTotpSecret(usuario.twoFactorSecret, usuario._id),
-      encoding: 'base32',
-      token:    totpToken,
-      window:   1
-    });
-
-    if (!valid) {
+    const paso = pasoDelCodigo(readTotpSecret(usuario.twoFactorSecret, usuario._id), totpToken);
+    if (paso === null) {
       return res.status(401).json({ ok: false, error: 'Código incorrecto' });
+    }
+    // Un código vale una sola vez, aunque haya otro reto abierto (o en paralelo) para la misma cuenta.
+    if (!(await consumirPaso(Usuario, { _id: usuario._id, twoFactorEnabled: true }, paso))) {
+      return res.status(401).json({ ok: false, error: MENSAJE_CODIGO_USADO });
     }
 
     try {

@@ -62,6 +62,20 @@ test('2FA usa el secreto cifrado en configuración, activación, acceso y desact
     const resultado = Promise.resolve(cumple ? user : null);
     return { select: () => resultado, then: (ok, ko) => resultado.then(ok, ko) };
   };
+  const originalUpdateOne = Usuario.updateOne;
+  // Igual que MongoDB en Usuario.updateOne (consumo del paso TOTP y desactivación): igualdad, null, $lt y $or.
+  const cumpleFiltro = (doc, filtro) => Object.entries(filtro).every(([k, v]) =>
+    k === '_id' ? String(v) === String(doc._id)
+      : k === '$or' ? v.some(alternativa => cumpleFiltro(doc, alternativa))
+        : v && typeof v === 'object' && '$lt' in v ? doc[k] != null && doc[k] < v.$lt
+          : v === null ? doc[k] == null : doc[k] === v);
+  const actualizarComoMongo = (doc, filtro, update) => {
+    if (!cumpleFiltro(doc, filtro)) return { matchedCount: 0, modifiedCount: 0 };
+    Object.assign(doc, update.$set ?? {});
+    for (const [k, n] of Object.entries(update.$inc ?? {})) doc[k] = (doc[k] ?? 0) + n;
+    return { matchedCount: 1, modifiedCount: 1 };
+  };
+  Usuario.updateOne = async (filtro, update) => actualizarComoMongo(user, filtro, update);
   RevokedToken.exists = async () => false;
   RevokedToken.create = async () => ({});
 
@@ -105,7 +119,12 @@ test('2FA usa el secreto cifrado en configuración, activación, acceso y desact
     assert.equal(badSetup.response.status, 500);
     user.twoFactorPendingSecret = stored;
 
-    const code = speakeasy.totp({ secret: setup.body.data.secret, encoding: 'base32' });
+    // Cada código TOTP vale una sola vez: activar, entrar y desactivar usan intervalos consecutivos
+    // (la ventana de ±1 intervalo admite el anterior, el actual y el siguiente).
+    const codigoEn = desplazamiento => speakeasy.totp({
+      secret: setup.body.data.secret, encoding: 'base32', time: Math.floor(Date.now() / 1000) + desplazamiento
+    });
+    const code = codigoEn(-30);
     const enabled = await request(`${base}/me/2fa/enable`, 'POST', fullCookie, { token: code });
     assert.equal(enabled.response.status, 200);
     assert.equal(user.twoFactorEnabled, true);
@@ -121,7 +140,10 @@ test('2FA usa el secreto cifrado en configuración, activación, acceso y desact
     const pendingCookie = login.response.headers.get('set-cookie')?.split(';')[0];
     assert.match(pendingCookie, /^cyberaudit_2fa_pending=/);
 
-    const verified = await request(`${base}/auth/2fa/verify`, 'POST', pendingCookie, { token: code });
+    const reutilizado = await request(`${base}/auth/2fa/verify`, 'POST', pendingCookie, { token: code });
+    assert.equal(reutilizado.response.status, 401, 'el código de activación no sirve para entrar');
+
+    const verified = await request(`${base}/auth/2fa/verify`, 'POST', pendingCookie, { token: codigoEn(0) });
     assert.equal(verified.response.status, 200);
     assert.equal(verified.body.data.usuario.email, user.email);
     const clearedPending = verified.response.headers.getSetCookie()
@@ -129,7 +151,7 @@ test('2FA usa el secreto cifrado en configuración, activación, acceso y desact
     assert.match(clearedPending, /Expires=/);
     assert.doesNotMatch(clearedPending, /Max-Age=/i);
 
-    const disabled = await request(`${base}/me/2fa/disable`, 'POST', fullCookie, { token: code });
+    const disabled = await request(`${base}/me/2fa/disable`, 'POST', fullCookie, { token: codigoEn(30) });
     assert.equal(disabled.response.status, 200);
     assert.equal(user.twoFactorEnabled, false);
     assert.equal(user.twoFactorSecret, null);
@@ -158,6 +180,7 @@ test('2FA usa el secreto cifrado en configuración, activación, acceso y desact
     Usuario.findById = originalFindById;
     Usuario.findOne = originalFindOne;
     Usuario.findOneAndUpdate = originalFindOneAndUpdate;
+    Usuario.updateOne = originalUpdateOne;
     RevokedToken.exists = originalRevokedExists;
     RevokedToken.create = originalRevokedCreate;
     await new Promise(resolve => server.close(resolve));

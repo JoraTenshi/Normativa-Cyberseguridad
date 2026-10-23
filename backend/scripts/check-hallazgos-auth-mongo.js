@@ -109,6 +109,48 @@ async function comprobar({ uri, nombreBD }) {
       assert.equal((await login(u.email, clave)).status, 200);
       assert.equal((await Usuario.findById(u._id)).loginAttempts, 0);
     });
+
+    // ── C. un código TOTP sirve una sola vez ────────────────────────────────
+    await caso('C1 el mismo código no completa dos retos distintos', async () => {
+      const { u, secret } = await conMfa();
+      const p1 = pendiente(await login(u.email, clave)), p2 = pendiente(await login(u.email, clave));
+      assert.ok(p1 && p2 && p1 !== p2);
+      const c = codigo(secret);
+      assert.equal((await call('post', '/auth/2fa/verify', p1).send({ token: c })).status, 200);
+      const r2 = await call('post', '/auth/2fa/verify', p2).send({ token: c });
+      assert.equal(r2.status, 401);
+      assert.equal(sesion(r2), undefined, 'no debe emitir sesión');
+    });
+    await caso('C2 dos retos en paralelo con el mismo código: una sola sesión', async () => {
+      const { u, secret } = await conMfa();
+      const ps = [pendiente(await login(u.email, clave)), pendiente(await login(u.email, clave))];
+      const c = codigo(secret);
+      const estados = (await Promise.all(ps.map(p => call('post', '/auth/2fa/verify', p).send({ token: c })))).map(r => r.status).sort();
+      assert.deepEqual(estados, [200, 401]);
+    });
+    await caso('C3 un código posterior (siguiente intervalo) sí se acepta', async () => {
+      const { u, secret } = await conMfa();
+      await conSesionMfa(u, secret);
+      const p = pendiente(await login(u.email, clave));
+      assert.equal((await call('post', '/auth/2fa/verify', p).send({ token: codigo(secret, 30) })).status, 200);
+    });
+    await caso('C4 desactivar 2FA con un código ya usado: 401; con uno nuevo: 200', async () => {
+      const { u, secret } = await conMfa();
+      const s = await conSesionMfa(u, secret);
+      assert.equal((await call('post', '/me/2fa/disable', s).send({ token: codigo(secret) })).status, 401);
+      assert.equal((await Usuario.findById(u._id)).twoFactorEnabled, true);
+      assert.equal((await call('post', '/me/2fa/disable', s).send({ token: codigo(secret, 30) })).status, 200);
+    });
+    await caso('C5 el código usado para activar 2FA no sirve para iniciar sesión', async () => {
+      const u = await cuenta();
+      const r = await login(u.email, clave), s = sesion(r);
+      const setup = await call('post', '/me/2fa/setup', s);
+      assert.equal(setup.status, 200);
+      const c = codigo(setup.body.data.secret);
+      assert.equal((await call('post', '/me/2fa/enable', s).send({ token: c })).status, 200);
+      const p = pendiente(await login(u.email, clave));
+      assert.equal((await call('post', '/auth/2fa/verify', p).send({ token: c })).status, 401);
+    });
   } finally { await mongoose.disconnect(); }
   if (fallos.length) throw new Error(fallos.length + ' caso(s) fallidos: ' + fallos.join(' | '));
   return resultados;

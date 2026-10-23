@@ -60,6 +60,19 @@ Usuario.findOne = async ({ email }) => (email === usuario.email ? usuario : null
 Usuario.findById = id => ({
   select: async () => { caidaSiProcede(); return String(id) === usuario._id ? usuario : null; }
 });
+// Igual que MongoDB en Usuario.updateOne (consumo del paso TOTP y desactivación): igualdad, null, $lt y $or.
+const cumpleFiltro = (doc, filtro) => Object.entries(filtro).every(([k, v]) =>
+  k === '_id' ? String(v) === String(doc._id)
+    : k === '$or' ? v.some(alternativa => cumpleFiltro(doc, alternativa))
+      : v && typeof v === 'object' && '$lt' in v ? doc[k] != null && doc[k] < v.$lt
+        : v === null ? doc[k] == null : doc[k] === v);
+const actualizarComoMongo = (doc, filtro, update) => {
+  if (!cumpleFiltro(doc, filtro)) return { matchedCount: 0, modifiedCount: 0 };
+  Object.assign(doc, update.$set ?? {});
+  for (const [k, n] of Object.entries(update.$inc ?? {})) doc[k] = (doc[k] ?? 0) + n;
+  return { matchedCount: 1, modifiedCount: 1 };
+};
+Usuario.updateOne = async (filtro, update) => { caidaSiProcede(); return actualizarComoMongo(usuario, filtro, update); };
 
 // ── Test app ──────────────────────────────────────────────────────────────────
 const app = express();
@@ -79,7 +92,7 @@ test.before(async () => {
   base = `http://127.0.0.1:${server.address().port}`;
 });
 test.after(() => server.close());
-test.beforeEach(() => { revocados.clear(); mongoCaido = false; retrasoExistsMs = 0; });
+test.beforeEach(() => { revocados.clear(); mongoCaido = false; retrasoExistsMs = 0; usuario.twoFactorLastStep = null; });
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function cookieDe(res, nombre) {
