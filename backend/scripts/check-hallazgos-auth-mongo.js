@@ -87,6 +87,28 @@ async function comprobar({ uri, nombreBD }) {
       assert.ok(tras.resetPasswordToken, 'el enlace no debe consumirse');
       assert.equal((await login(u.email, clave)).status, 200);
     });
+
+    // ── B. contador de intentos fallidos con peticiones simultáneas ─────────
+    await caso('B1 cinco fallos simultáneos cuentan cinco y bloquean la cuenta', async () => {
+      const u = await cuenta();
+      const estados = (await Promise.all(Array.from({ length: 5 }, () => login(u.email, 'Incorrecta-1')))).map(r => r.status);
+      assert.deepEqual(estados, [401, 401, 401, 401, 401]);
+      const tras = await Usuario.findById(u._id);
+      assert.equal(tras.loginAttempts, 5, 'intentos registrados: ' + tras.loginAttempts);
+      assert.ok(tras.lockUntil > new Date(), 'la cuenta debe quedar bloqueada');
+      assert.equal((await login(u.email, clave)).status, 429);
+    });
+    await caso('B2 diez fallos simultáneos tras cuatro previos no se pierden', async () => {
+      const u = await cuenta({ loginAttempts: 4 });
+      await Promise.all(Array.from({ length: 10 }, () => login(u.email, 'Incorrecta-2')));
+      const tras = await Usuario.findById(u._id);
+      assert.ok(tras.loginAttempts >= 5 && tras.lockUntil > new Date(), 'intentos: ' + tras.loginAttempts);
+    });
+    await caso('B3 un acceso correcto reinicia el contador', async () => {
+      const u = await cuenta({ loginAttempts: 3 });
+      assert.equal((await login(u.email, clave)).status, 200);
+      assert.equal((await Usuario.findById(u._id)).loginAttempts, 0);
+    });
   } finally { await mongoose.disconnect(); }
   if (fallos.length) throw new Error(fallos.length + ' caso(s) fallidos: ' + fallos.join(' | '));
   return resultados;

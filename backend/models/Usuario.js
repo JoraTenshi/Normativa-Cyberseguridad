@@ -77,13 +77,17 @@ UsuarioSchema.methods.isLocked = function () {
   return this.lockUntil && this.lockUntil > Date.now();
 };
 
+// Incremento y bloqueo en una sola actualización atómica: leer el contador, sumar 1 en Node y guardarlo
+// perdía intentos cuando llegaban varios a la vez (cinco fallos simultáneos contaban como uno).
 UsuarioSchema.methods.recordFailedLogin = function () {
-  const attempts = this.loginAttempts + 1;
-  const update = { loginAttempts: attempts };
-  if (attempts >= MAX_ATTEMPTS) {
-    update.lockUntil = new Date(Date.now() + LOCK_MINUTES * 60 * 1000);
-  }
-  return this.updateOne(update);
+  return this.constructor.updateOne({ _id: this._id }, [
+    { $set: { loginAttempts: { $add: [{ $ifNull: ['$loginAttempts', 0] }, 1] } } },
+    { $set: { lockUntil: { $cond: [
+      { $gte: ['$loginAttempts', MAX_ATTEMPTS] },
+      new Date(Date.now() + LOCK_MINUTES * 60 * 1000),
+      '$lockUntil'
+    ] } } }
+  ]);
 };
 
 UsuarioSchema.methods.resetLoginAttempts = function () {

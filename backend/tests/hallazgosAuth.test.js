@@ -52,3 +52,22 @@ test('A: el login con más de 72 bytes falla sin comparar contra la cuenta (no h
   assert.equal(r.body.error, 'Credenciales incorrectas');
   assert.equal(consulta.mock.callCount(), 0);
 });
+
+// ── B. contador de bloqueo atómico ──────────────────────────────────────────
+test('B: recordFailedLogin es una sola actualización atómica (sin leer y reescribir el contador)', async (t) => {
+  const llamadas = [];
+  t.mock.method(Usuario, 'updateOne', async (...args) => { llamadas.push(args); return { matchedCount: 1 }; });
+  const u = new Usuario({ nombre: 'Ana', email: 'ana@example.invalid', password: 'x', loginAttempts: 2 });
+  await u.recordFailedLogin();
+
+  assert.equal(llamadas.length, 1);
+  const [filtro, pipeline] = llamadas[0];
+  assert.deepEqual(filtro, { _id: u._id });
+  assert.ok(Array.isArray(pipeline), 'debe ser un pipeline de actualización');
+  assert.deepEqual(pipeline[0].$set.loginAttempts, { $add: [{ $ifNull: ['$loginAttempts', 0] }, 1] });
+  const cond = pipeline[1].$set.lockUntil.$cond;
+  assert.deepEqual(cond[0], { $gte: ['$loginAttempts', 5] });
+  assert.ok(cond[1] instanceof Date && cond[1] > new Date());
+  assert.equal(cond[2], '$lockUntil');
+  assert.equal(JSON.stringify(pipeline).includes('"loginAttempts":3'), false, 'no debe escribir un valor calculado en Node');
+});
