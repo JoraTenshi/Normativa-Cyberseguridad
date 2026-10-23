@@ -450,3 +450,45 @@ Fecha: 4 de octubre de 2026. Estado: superada; quedan tres observaciones abierta
 - El proceso del backend se ejecuta como `root` dentro del contenedor (ya señalado en este registro como «permisos del proceso del contenedor»).
 - El scraper no atiende `SIGTERM`: `docker compose stop` lo mata tras 10 s (código 137), así que cada `make down` espera ese tiempo.
 - Con MongoDB caído, `POST /auth/login` (y el resto de rutas de `routes/auth.js`) responde 500 en 5 s, no 503; solo la comprobación de sesión y `POST /resultado` distinguen la base de datos no disponible.
+
+## SEG-032: contraseñas de más de 72 bytes equivalentes por el límite de bcrypt
+
+Fecha: 23 de octubre de 2026. Estado: corregido y probado. Hallazgo señalado en la evaluación de la práctica (memoria, capítulo 7).
+
+**Evidencia.** bcrypt solo usa los primeros 72 bytes. `PASSWORD_RE` exigía un mínimo de 8 caracteres pero ningún máximo, así que el registro y el restablecimiento aceptaban contraseñas más largas, y en el inicio de sesión una cuenta con 72 bytes exactos aceptaba cualquier texto que empezara igual. Reproducido sobre MongoDB 7.0.14 real con el código de `main` (`c1bfbd59`): registro con 73 bytes aceptado y acceso con «contraseña de 72 bytes + sufijo» con HTTP 200.
+
+**Cambio.** `backend/utils/password.js` mide la longitud en bytes UTF-8 (una «ñ» cuenta dos). Registro y `reset-password` responden 400 por encima de 72 bytes; el modelo `Usuario` valida la contraseña en claro antes del hash, de modo que tampoco la guardan los scripts. El inicio de sesión rechaza más de 72 bytes con la misma comparación ficticia y el mismo mensaje que una cuenta inexistente, sin consultar la cuenta. Los hashes existentes siguen siendo válidos; una cuenta creada antes con una contraseña más larga tendría que restablecerla.
+
+**Prueba.** `backend/tests/hallazgosAuth.test.js` (bytes frente a caracteres, validador del modelo, 400 en registro y restablecimiento, login sin consulta) y casos A1–A5 de `backend/scripts/check-hallazgos-auth-mongo.js`. Con el código anterior fallan; con el nuevo pasan.
+
+## SEG-033: incrementos perdidos del contador de intentos fallidos
+
+Fecha: 23 de octubre de 2026. Estado: corregido y probado. Hallazgo señalado en la evaluación.
+
+**Evidencia.** `recordFailedLogin` leía `loginAttempts`, sumaba 1 en Node y escribía el resultado. Sobre MongoDB real, **cinco fallos simultáneos quedaban registrados como uno** y la cuenta no se bloqueaba, de modo que un ataque en paralelo no activaba el bloqueo.
+
+**Cambio.** Una sola actualización atómica con pipeline: incrementa el contador y fija `lockUntil` al llegar a 5 en la misma operación. El comportamiento secuencial no cambia.
+
+**Prueba.** Casos B1–B3 sobre MongoDB real (cinco fallos simultáneos cuentan cinco y bloquean; diez simultáneos tras cuatro previos bloquean; un acceso correcto reinicia) y prueba unitaria de que la actualización es única y sin valor calculado en Node.
+
+## SEG-034: reutilización de un código TOTP entre retos
+
+Fecha: 23 de octubre de 2026. Estado: corregido y probado. Hallazgo señalado en la evaluación.
+
+**Evidencia.** Cada reto de 2FA era de un solo uso, pero el código no: el mismo código completaba dos retos distintos (también en paralelo), servía para desactivar el 2FA después de haber entrado con él y el código de activación servía para iniciar sesión. Reproducido sobre MongoDB real.
+
+**Cambio.** `backend/utils/totpPaso.js` identifica el intervalo de 30 s del código (misma ventana de ±1 intervalo que antes) y lo consume con una actualización condicional: solo se acepta si es posterior al último aceptado, guardado en `Usuario.twoFactorLastStep` (RFC 6238 §5.2). Se aplica en `/auth/2fa/verify` y `/me/2fa/disable`; `/me/2fa/enable` registra el intervalo del código de activación. Un código repetido recibe 401 «Ese código ya se ha utilizado; espera al siguiente».
+
+**Prueba.** Casos C1–C5 sobre MongoDB real y pruebas unitarias de `pasoDelCodigo` y `consumirPaso`. Cuatro pruebas existentes reutilizaban el mismo código para activar, entrar y desactivar (precisamente el comportamiento corregido) y ahora usan intervalos consecutivos: `tests/twoFactorRoutes.test.js`, el caso de activación y desactivación de `scripts/check-acceso-sesion-mongo.js` y el de 2FA de `scripts/check-integration-mongo.js`; los dobles de `Usuario.updateOne` de `tests/authToken.test.js` y `tests/twoFactorPending.test.js` aplican el filtro como MongoDB.
+
+## Verificación de SEG-032 a SEG-034
+
+Fecha: 23 de octubre de 2026.
+
+```sh
+cd backend
+npm test
+MONGOD_TEST_BINARY=/ruta/absoluta/a/mongod node scripts/run-hallazgos-auth-mongo.js
+```
+
+`npm test`: 1.406 pruebas, todas superadas (1.399 antes del cambio, todas superadas). `run-hallazgos-auth-mongo.js` con MongoDB 7.0.14: 13 casos superados; con el código de `main` anterior fallan 10 (los 3 restantes son de control). Siguen completos `run-acceso-sesion-mongo.js` (24 grupos), la comprobación de integración (9 grupos) y el resto de runners, salvo `run-alternativas-mongo.js` y `run-registros-normativos-mongo.js`, que fallan igual con y sin este cambio (`10 !== 2` y `10 !== 5` en su primera comprobación) y no tocan autenticación.
